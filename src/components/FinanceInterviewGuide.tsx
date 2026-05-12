@@ -3117,13 +3117,13 @@ const FinanceInterviewGuide = () => {
 
       {/* PAGE: CONCEPTS */}
       {activePage === 'concepts' && (
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="mb-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="mb-8 sm:mb-10">
             <div className="flex items-center gap-3 mb-3">
-              <div className="h-px w-12 bg-blue-700" />
-              <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
+              <div className="h-px w-8 sm:w-12 bg-blue-700" />
+              <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
               Les <span className="italic font-light text-blue-700">concepts essentiels</span>
             </h2>
             <p className="text-blue-700 mt-3 font-light max-w-3xl">
