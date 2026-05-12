@@ -3018,32 +3018,32 @@ const FinanceInterviewGuide = () => {
                 const userRating = ratings[q.id] || 0;
                 return (
                   <div key={q.id} className={`bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
-                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-6 flex items-start gap-4">
+                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-serif text-lg transition-all ${isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
-                          {userRating >= 4 ? <CheckCircle2 className="w-6 h-6" /> : String(index + 1).padStart(2, '0')}
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
+                          {userRating >= 4 ? <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" /> : String(index + 1).padStart(2, '0')}
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <span className={`text-xs uppercase tracking-wider font-semibold px-2.5 py-1 rounded border ${getCategoryColor(q.category)}`}>
+                          <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold px-2 sm:px-2.5 py-1 rounded border ${getCategoryColor(q.category)}`}>
                             {q.category === 'brainteaser' && '⚡ '}
                             {getCategoryLabel(q.category)}
                           </span>
-                          <span className={`text-xs uppercase tracking-wider font-semibold px-2.5 py-1 rounded border ${getDifficultyColor(q.difficulty)}`}>{q.difficulty}</span>
+                          <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold px-2 sm:px-2.5 py-1 rounded border ${getDifficultyColor(q.difficulty)}`}>{q.difficulty}</span>
                           <div className="ml-auto"><StarRating value={userRating} onChange={(v) => updateRating(q.id, v)} size="sm" /></div>
                         </div>
-                        <h3 className="text-blue-950 font-serif text-xl leading-snug">{q.question}</h3>
+                        <h3 className="text-blue-950 font-serif text-base sm:text-xl leading-snug">{q.question}</h3>
                       </div>
                       <div className={`flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
-                        <ChevronRight className="w-6 h-6 text-blue-500" />
+                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
                       </div>
                     </button>
 
 
                     {isExpanded && (
-                      <div className="px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
-                        <div className="ml-16 mt-6 space-y-6">
+                      <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
+                        <div className="ml-0 sm:ml-16 mt-6 space-y-6">
                           <div>
                             <div className="flex items-center gap-2 mb-3">
                               <div className="h-px w-6 bg-blue-700" />
