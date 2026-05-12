@@ -2436,7 +2436,7 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
     <div className={`bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${
       isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'
     }`}>
-      <button onClick={onToggle} className="w-full text-left p-6 flex items-start gap-4">
+      <button onClick={onToggle} className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
         <div className="flex-shrink-0">
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
             isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : 'bg-blue-50 text-blue-700'
