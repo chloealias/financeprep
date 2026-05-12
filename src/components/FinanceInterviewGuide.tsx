@@ -2464,8 +2464,8 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
 
 
       {isExpanded && (
-        <div className="px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
-          <div className="ml-16 mt-6 space-y-6">
+        <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
+          <div className="ml-0 sm:ml-16 mt-6 space-y-6">
             {/* Simple */}
             <div>
               <div className="flex items-center gap-2 mb-3">
