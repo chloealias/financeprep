@@ -2918,7 +2918,7 @@ const FinanceInterviewGuide = () => {
 
 
           {/* NAVIGATION */}
-          <div className="mt-6 sm:mt-8 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto sm:overflow-visible scrollbar-none">
+          <div className="mt-6 sm:mt-8 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto sm:overflow-visible [scrollbar-width:none] [scrollbar-none::-webkit-scrollbar]:hidden">
             <div className="flex sm:flex-wrap gap-2 min-w-max sm:min-w-0">
               {pages.map((p) => {
                 const Icon = p.icon;
