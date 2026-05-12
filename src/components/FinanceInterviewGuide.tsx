@@ -2900,17 +2900,17 @@ const FinanceInterviewGuide = () => {
         <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
 
-        <div className="relative max-w-7xl mx-auto px-6 py-12">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-12 bg-blue-400" />
-            <span className="text-blue-300 text-sm tracking-[0.3em] uppercase font-light">Guide professionnel</span>
+            <div className="h-px w-8 sm:w-12 bg-blue-400" />
+            <span className="text-blue-300 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Guide professionnel</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-serif text-white tracking-tight leading-none">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-[1.05]">
             Finance Interview
             <br />
             <span className="italic font-light text-blue-200">Questions & Concepts</span>
           </h1>
-          <p className="text-blue-100 text-base md:text-lg max-w-3xl mt-5 font-light leading-relaxed">
+          <p className="text-blue-100 text-sm sm:text-base lg:text-lg max-w-3xl mt-4 sm:mt-5 font-light leading-relaxed">
             La référence pour préparer vos entretiens en{' '}
             <span className="font-medium text-white">Transaction Services</span> et{' '}
             <span className="font-medium text-white">M&A</span>. Plus de 90 questions, 15 concepts détaillés, et un suivi de votre progression.
@@ -2918,26 +2918,28 @@ const FinanceInterviewGuide = () => {
 
 
           {/* NAVIGATION */}
-          <div className="mt-8 flex flex-wrap gap-2">
-            {pages.map((p) => {
-              const Icon = p.icon;
-              const isActive = activePage === p.id;
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => setActivePage(p.id)}
-                  className={`flex items-center gap-2.5 px-5 py-3 rounded-xl font-medium transition-all border-2 ${
-                    isActive
-                      ? 'bg-white text-blue-950 border-white shadow-lg'
-                      : 'bg-white/10 text-blue-100 border-blue-400/30 hover:bg-white/20'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{p.label}</span>
-                  {p.count && <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-blue-100 text-blue-800' : 'bg-blue-400/20 text-blue-200'}`}>{p.count}</span>}
-                </button>
-              );
-            })}
+          <div className="mt-6 sm:mt-8 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto sm:overflow-visible scrollbar-none">
+            <div className="flex sm:flex-wrap gap-2 min-w-max sm:min-w-0">
+              {pages.map((p) => {
+                const Icon = p.icon;
+                const isActive = activePage === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => setActivePage(p.id)}
+                    className={`flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-sm font-medium transition-all border-2 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-white text-blue-950 border-white shadow-lg'
+                        : 'bg-white/10 text-blue-100 border-blue-400/30 hover:bg-white/20'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{p.label}</span>
+                    {p.count && <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-blue-100 text-blue-800' : 'bg-blue-400/20 text-blue-200'}`}>{p.count}</span>}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
