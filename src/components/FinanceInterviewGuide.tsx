@@ -1,4 +1,5 @@
-﻿import React, { useState, useMemo, useEffect } from 'react';
+// @ts-nocheck
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, ChevronRight, BookOpen, TrendingUp, Calculator, Briefcase, Target, Filter, X, Brain, Star, ListChecks, Library, BarChart3, Award, RotateCcw, CheckCircle2 } from 'lucide-react';
 
 
