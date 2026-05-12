@@ -2891,35 +2891,35 @@ const FinanceInterviewGuide = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100 pb-24 sm:pb-0">
       {/* HEADER */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900">
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(59,130,246,0.4) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99,102,241,0.4) 0%, transparent 50%)' }} />
         </div>
         <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-8 sm:w-12 bg-blue-400" />
-            <span className="text-blue-300 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Guide professionnel</span>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+            <div className="h-px w-6 sm:w-12 bg-blue-400" />
+            <span className="text-blue-300 text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase font-light">Guide professionnel</span>
           </div>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-[1.05]">
+          <h1 className="text-2xl sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-[1.05]">
             Finance Interview
             <br />
             <span className="italic font-light text-blue-200">Questions & Concepts</span>
           </h1>
-          <p className="text-blue-100 text-sm sm:text-base lg:text-lg max-w-3xl mt-4 sm:mt-5 font-light leading-relaxed">
+          <p className="text-blue-100 text-xs sm:text-base lg:text-lg max-w-3xl mt-3 sm:mt-5 font-light leading-relaxed">
             La référence pour préparer vos entretiens en{' '}
             <span className="font-medium text-white">Transaction Services</span> et{' '}
             <span className="font-medium text-white">M&A</span>. Plus de 90 questions, 15 concepts détaillés, et un suivi de votre progression.
           </p>
 
 
-          {/* NAVIGATION */}
-          <div className="mt-6 sm:mt-8 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto sm:overflow-visible [scrollbar-width:none] [scrollbar-none::-webkit-scrollbar]:hidden">
-            <div className="flex sm:flex-wrap gap-2 min-w-max sm:min-w-0">
+          {/* NAVIGATION (desktop / tablet) */}
+          <div className="hidden sm:block mt-8">
+            <div className="flex flex-wrap gap-2">
               {pages.map((p) => {
                 const Icon = p.icon;
                 const isActive = activePage === p.id;
@@ -2927,7 +2927,7 @@ const FinanceInterviewGuide = () => {
                   <button
                     key={p.id}
                     onClick={() => setActivePage(p.id)}
-                    className={`flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-sm font-medium transition-all border-2 whitespace-nowrap ${
+                    className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-all border-2 whitespace-nowrap ${
                       isActive
                         ? 'bg-white text-blue-950 border-white shadow-lg'
                         : 'bg-white/10 text-blue-100 border-blue-400/30 hover:bg-white/20'
@@ -2944,6 +2944,38 @@ const FinanceInterviewGuide = () => {
         </div>
       </div>
 
+      {/* BOTTOM TAB BAR (mobile only) */}
+      <nav
+        className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-lg border-t border-blue-200 shadow-[0_-4px_20px_-4px_rgba(30,58,138,0.15)]"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        <div className="flex items-stretch justify-around">
+          {pages.map((p) => {
+            const Icon = p.icon;
+            const isActive = activePage === p.id;
+            return (
+              <button
+                key={p.id}
+                onClick={() => setActivePage(p.id)}
+                className={`flex-1 flex flex-col items-center justify-center gap-1 py-2.5 px-1 transition-colors min-h-[60px] ${
+                  isActive ? 'text-blue-900' : 'text-blue-400'
+                }`}
+              >
+                <div className={`relative flex items-center justify-center w-12 h-7 rounded-full transition-all ${isActive ? 'bg-blue-100' : ''}`}>
+                  <Icon className="w-5 h-5" />
+                  {p.count && (
+                    <span className={`absolute -top-1 -right-0 text-[9px] font-semibold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center ${isActive ? 'bg-blue-900 text-white' : 'bg-blue-200 text-blue-800'}`}>
+                      {p.count}
+                    </span>
+                  )}
+                </div>
+                <span className={`text-[10px] leading-none ${isActive ? 'font-semibold' : 'font-medium'}`}>{p.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
 
       {/* PAGE: QUESTIONS */}
       {activePage === 'questions' && (
@@ -2958,7 +2990,7 @@ const FinanceInterviewGuide = () => {
 
             <div className="relative mb-5">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" />
-              <input type="text" placeholder="Rechercher une question, un concept..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-12 py-3 bg-blue-50/50 border border-blue-200 rounded-lg text-blue-950 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+              <input type="text" placeholder="Rechercher une question, un concept..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-12 py-3 bg-blue-50/50 border border-blue-200 rounded-lg text-base text-blue-950 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
               {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-700"><X className="w-5 h-5" /></button>}
             </div>
 
