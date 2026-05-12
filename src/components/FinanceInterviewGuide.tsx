@@ -2947,9 +2947,9 @@ const FinanceInterviewGuide = () => {
 
       {/* PAGE: QUESTIONS */}
       {activePage === 'questions' && (
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* Filtres */}
-          <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-4 sm:p-6 mb-6 sm:mb-8">
             <div className="flex items-center gap-2 mb-5">
               <Filter className="w-4 h-4 text-blue-700" />
               <h2 className="text-blue-950 font-serif text-lg">Filtres & recherche</h2>
