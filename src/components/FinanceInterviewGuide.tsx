@@ -2436,7 +2436,7 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
     <div className={`bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${
       isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'
     }`}>
-      <button onClick={onToggle} className="w-full text-left p-6 flex items-start gap-4">
+      <button onClick={onToggle} className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
         <div className="flex-shrink-0">
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
             isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : 'bg-blue-50 text-blue-700'
@@ -2464,8 +2464,8 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
 
 
       {isExpanded && (
-        <div className="px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
-          <div className="ml-16 mt-6 space-y-6">
+        <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
+          <div className="ml-0 sm:ml-16 mt-6 space-y-6">
             {/* Simple */}
             <div>
               <div className="flex items-center gap-2 mb-3">
@@ -2601,16 +2601,16 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
 
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      <div className="mb-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="mb-8 sm:mb-10">
         <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-12 bg-blue-700" />
-          <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">Suivi de progression</span>
+          <div className="h-px w-8 sm:w-12 bg-blue-700" />
+          <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Suivi de progression</span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
           Mon <span className="italic font-light text-blue-700">avancée</span>
         </h2>
-        <p className="text-blue-700 mt-3 font-light">Notez chaque question de 1 à 5 étoiles pour suivre votre maîtrise. Visez ≥ 4 pour considérer une question acquise.</p>
+        <p className="text-blue-700 mt-3 font-light text-sm sm:text-base">Notez chaque question de 1 à 5 étoiles pour suivre votre maîtrise. Visez ≥ 4 pour considérer une question acquise.</p>
       </div>
 
 
@@ -2900,17 +2900,17 @@ const FinanceInterviewGuide = () => {
         <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
 
-        <div className="relative max-w-7xl mx-auto px-6 py-12">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-12 bg-blue-400" />
-            <span className="text-blue-300 text-sm tracking-[0.3em] uppercase font-light">Guide professionnel</span>
+            <div className="h-px w-8 sm:w-12 bg-blue-400" />
+            <span className="text-blue-300 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Guide professionnel</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-serif text-white tracking-tight leading-none">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-[1.05]">
             Finance Interview
             <br />
             <span className="italic font-light text-blue-200">Questions & Concepts</span>
           </h1>
-          <p className="text-blue-100 text-base md:text-lg max-w-3xl mt-5 font-light leading-relaxed">
+          <p className="text-blue-100 text-sm sm:text-base lg:text-lg max-w-3xl mt-4 sm:mt-5 font-light leading-relaxed">
             La référence pour préparer vos entretiens en{' '}
             <span className="font-medium text-white">Transaction Services</span> et{' '}
             <span className="font-medium text-white">M&A</span>. Plus de 90 questions, 15 concepts détaillés, et un suivi de votre progression.
@@ -2918,26 +2918,28 @@ const FinanceInterviewGuide = () => {
 
 
           {/* NAVIGATION */}
-          <div className="mt-8 flex flex-wrap gap-2">
-            {pages.map((p) => {
-              const Icon = p.icon;
-              const isActive = activePage === p.id;
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => setActivePage(p.id)}
-                  className={`flex items-center gap-2.5 px-5 py-3 rounded-xl font-medium transition-all border-2 ${
-                    isActive
-                      ? 'bg-white text-blue-950 border-white shadow-lg'
-                      : 'bg-white/10 text-blue-100 border-blue-400/30 hover:bg-white/20'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{p.label}</span>
-                  {p.count && <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-blue-100 text-blue-800' : 'bg-blue-400/20 text-blue-200'}`}>{p.count}</span>}
-                </button>
-              );
-            })}
+          <div className="mt-6 sm:mt-8 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto sm:overflow-visible [scrollbar-width:none] [scrollbar-none::-webkit-scrollbar]:hidden">
+            <div className="flex sm:flex-wrap gap-2 min-w-max sm:min-w-0">
+              {pages.map((p) => {
+                const Icon = p.icon;
+                const isActive = activePage === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => setActivePage(p.id)}
+                    className={`flex items-center gap-2 sm:gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl text-sm font-medium transition-all border-2 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-white text-blue-950 border-white shadow-lg'
+                        : 'bg-white/10 text-blue-100 border-blue-400/30 hover:bg-white/20'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{p.label}</span>
+                    {p.count && <span className={`text-xs px-2 py-0.5 rounded-full ${isActive ? 'bg-blue-100 text-blue-800' : 'bg-blue-400/20 text-blue-200'}`}>{p.count}</span>}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
@@ -2945,9 +2947,9 @@ const FinanceInterviewGuide = () => {
 
       {/* PAGE: QUESTIONS */}
       {activePage === 'questions' && (
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* Filtres */}
-          <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-4 sm:p-6 mb-6 sm:mb-8">
             <div className="flex items-center gap-2 mb-5">
               <Filter className="w-4 h-4 text-blue-700" />
               <h2 className="text-blue-950 font-serif text-lg">Filtres & recherche</h2>
@@ -3016,32 +3018,32 @@ const FinanceInterviewGuide = () => {
                 const userRating = ratings[q.id] || 0;
                 return (
                   <div key={q.id} className={`bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
-                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-6 flex items-start gap-4">
+                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
-                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center font-serif text-lg transition-all ${isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
-                          {userRating >= 4 ? <CheckCircle2 className="w-6 h-6" /> : String(index + 1).padStart(2, '0')}
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
+                          {userRating >= 4 ? <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" /> : String(index + 1).padStart(2, '0')}
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <span className={`text-xs uppercase tracking-wider font-semibold px-2.5 py-1 rounded border ${getCategoryColor(q.category)}`}>
+                          <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold px-2 sm:px-2.5 py-1 rounded border ${getCategoryColor(q.category)}`}>
                             {q.category === 'brainteaser' && '⚡ '}
                             {getCategoryLabel(q.category)}
                           </span>
-                          <span className={`text-xs uppercase tracking-wider font-semibold px-2.5 py-1 rounded border ${getDifficultyColor(q.difficulty)}`}>{q.difficulty}</span>
+                          <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold px-2 sm:px-2.5 py-1 rounded border ${getDifficultyColor(q.difficulty)}`}>{q.difficulty}</span>
                           <div className="ml-auto"><StarRating value={userRating} onChange={(v) => updateRating(q.id, v)} size="sm" /></div>
                         </div>
-                        <h3 className="text-blue-950 font-serif text-xl leading-snug">{q.question}</h3>
+                        <h3 className="text-blue-950 font-serif text-base sm:text-xl leading-snug">{q.question}</h3>
                       </div>
                       <div className={`flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
-                        <ChevronRight className="w-6 h-6 text-blue-500" />
+                        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
                       </div>
                     </button>
 
 
                     {isExpanded && (
-                      <div className="px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
-                        <div className="ml-16 mt-6 space-y-6">
+                      <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
+                        <div className="ml-0 sm:ml-16 mt-6 space-y-6">
                           <div>
                             <div className="flex items-center gap-2 mb-3">
                               <div className="h-px w-6 bg-blue-700" />
@@ -3115,13 +3117,13 @@ const FinanceInterviewGuide = () => {
 
       {/* PAGE: CONCEPTS */}
       {activePage === 'concepts' && (
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="mb-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="mb-8 sm:mb-10">
             <div className="flex items-center gap-3 mb-3">
-              <div className="h-px w-12 bg-blue-700" />
-              <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
+              <div className="h-px w-8 sm:w-12 bg-blue-700" />
+              <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
               Les <span className="italic font-light text-blue-700">concepts essentiels</span>
             </h2>
             <p className="text-blue-700 mt-3 font-light max-w-3xl">
@@ -3167,7 +3169,7 @@ const FinanceInterviewGuide = () => {
 
 
       {/* Footer */}
-      <div className="max-w-7xl mx-auto px-6 py-12 mt-8 border-t border-blue-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 mt-8 border-t border-blue-200">
         <div className="text-center">
           <div className="inline-flex items-center gap-3 mb-3">
             <div className="h-px w-12 bg-blue-700" />
