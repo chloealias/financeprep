@@ -3169,7 +3169,7 @@ const FinanceInterviewGuide = () => {
 
 
       {/* Footer */}
-      <div className="max-w-7xl mx-auto px-6 py-12 mt-8 border-t border-blue-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 mt-8 border-t border-blue-200">
         <div className="text-center">
           <div className="inline-flex items-center gap-3 mb-3">
             <div className="h-px w-12 bg-blue-700" />
