@@ -3783,7 +3783,7 @@ const FinanceInterviewGuide = () => {
       const matchSearch = searchQuery === '' || q.question.toLowerCase().includes(searchQuery.toLowerCase()) || q.explanation.toLowerCase().includes(searchQuery.toLowerCase());
       const rating = ratings[q.id] || 0;
       const matchRating = ratingFilter === 'all' || (ratingFilter === 'unrated' && rating === 0) || (ratingFilter === 'weak' && rating > 0 && rating <= 2) || (ratingFilter === 'mastered' && rating >= 4);
-      const matchReview = !showReviewOnly || reviewList.includes(q.id);
+      const matchReview = !showReviewOnly || reviewList.length === 0 || reviewList.includes(q.id);
       return matchCategory && matchDifficulty && matchSearch && matchRating && matchReview;
     });
   }, [activeCategory, activeDifficulty, searchQuery, ratings, ratingFilter, showReviewOnly, reviewList]);
