@@ -2505,8 +2505,8 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel, index, t
                   <div className="h-px w-6 bg-blue-700" />
                   <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">Formule clé</h4>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 overflow-x-auto">
-                  <code className="text-blue-900 font-mono text-sm leading-relaxed whitespace-pre">{concept.formula}</code>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
+                  <code className="block text-blue-900 font-mono text-[13px] sm:text-sm leading-relaxed whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{concept.formula}</code>
                 </div>
               </div>
             )}
