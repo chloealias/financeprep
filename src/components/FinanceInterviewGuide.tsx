@@ -3404,6 +3404,48 @@ const FinanceInterviewGuide = () => {
             </div>
           </div>
 
+          {/* Mini-bar de navigation : visible quand un concept est ouvert */}
+          {(() => {
+            const activeIdx = filteredConcepts.findIndex((c) => c.id === expandedConcept);
+            if (activeIdx === -1) return null;
+            const active = filteredConcepts[activeIdx];
+            const goTo = (idx) => {
+              if (idx < 0 || idx >= filteredConcepts.length) return;
+              setExpandedConcept(filteredConcepts[idx].id);
+            };
+            return (
+              <div className="sticky top-32 z-10 mb-4 bg-blue-900 text-white rounded-xl shadow-md px-3 py-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => goTo(activeIdx - 1)}
+                  disabled={activeIdx === 0}
+                  aria-label="Concept précédent"
+                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                >
+                  <ChevronRight className="w-4 h-4 rotate-180" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setExpandedConcept(null)}
+                  className="flex-1 min-w-0 text-left flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-blue-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                  aria-label="Replier le concept ouvert"
+                  title="Replier"
+                >
+                  <span className="tabular-nums text-blue-300 text-xs flex-shrink-0">{activeIdx + 1}/{filteredConcepts.length}</span>
+                  <span className="font-serif text-sm truncate">{active.title}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => goTo(activeIdx + 1)}
+                  disabled={activeIdx === filteredConcepts.length - 1}
+                  aria-label="Concept suivant"
+                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })()}
 
           <div className="space-y-3 sm:space-y-4">
             {filteredConcepts.map((c, i) => (
