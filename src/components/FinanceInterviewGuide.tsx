@@ -2980,13 +2980,13 @@ const FinanceInterviewGuide = () => {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-12 lg:py-16">
           {/* Mobile title — compact branded mark */}
-          <div className="sm:hidden flex items-center gap-2.5">
-            <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-white/10 border border-blue-400/30 backdrop-blur-sm">
+          <div className="sm:hidden flex items-center gap-2.5 min-w-0">
+            <div className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-lg bg-white/10 border border-blue-400/30 backdrop-blur-sm">
               <span className="font-serif text-white text-base leading-none">FI</span>
             </div>
-            <div className="flex flex-col leading-tight">
-              <span className="font-serif text-white text-base tracking-tight">Finance Interview</span>
-              <span className="text-[10px] text-blue-300 tracking-[0.18em] uppercase font-light">TS · M&amp;A</span>
+            <div className="flex flex-col leading-tight min-w-0 flex-1">
+              <span className="font-serif text-white text-[15px] tracking-tight whitespace-nowrap">Finance Interview</span>
+              <span className="text-[9px] text-blue-300 tracking-[0.16em] uppercase font-light whitespace-nowrap">TS · M&amp;A</span>
             </div>
           </div>
 
