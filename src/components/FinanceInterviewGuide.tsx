@@ -2401,6 +2401,764 @@ const questions = [
         "Conclure positivement : montrer la trajectoire d'amélioration, pas un déficit figé."
       ],
       tip: "Évitez à tout prix : 'je suis perfectionniste', 'je travaille trop dur', 'je suis trop passionné'. Ces réponses sont des red flags."
+    },
+
+    // ===== NOUVELLES QUESTIONS — VALORISATION (Q90-Q95) =====
+    {
+      id: 90,
+      category: 'valuation',
+      difficulty: 'intermédiaire',
+      question: "Qu'est-ce qu'un football field de valorisation ?",
+      explanation: "En une phrase — Un graphique en barres horizontales qui affiche côte à côte les fourchettes de valeur données par chaque méthode (DCF, comparables, transactions, LBO). On y lit en un coup d'œil la zone où se situe la \"vraie\" valeur. Pourquoi : outil de synthèse incontournable en M&A, le candidat doit montrer qu'il sait défendre une fourchette, pas un point unique.",
+      steps: [
+        "Principe : chaque méthode = une barre horizontale (min/max). D'où le nom \"football field\" (terrain de foot vu de haut).",
+        "Méthodes typiquement affichées : DCF (sensibilités WACC × g), Trading Comps, Precedent Transactions, LBO (TRI 20-25%), 52-week high/low, broker targets.",
+        "Largeur de la barre = incertitude de la méthode. Un DCF large reflète la sensibilité aux hypothèses.",
+        "Zone de chevauchement central = fourchette consensuelle, souvent le \"fair value\".",
+        "À présenter au client : \"La majorité des méthodes converge entre X et Y, ce qui constitue notre fourchette cible.\"",
+        "Astuce : exclure les méthodes peu pertinentes (LBO pour une cotée stable) plutôt que les inclure et minorer.",
+        "Erreur fréquente : afficher 8 méthodes pour faire \"sérieux\" — préférer 4-5 méthodes bien construites."
+      ],
+      tip: "Toujours préciser la date de la valorisation : les multiples bougent de 1-2 turns en quelques mois."
+    },
+    {
+      id: 91,
+      category: 'valuation',
+      difficulty: 'basique',
+      question: "Quels sont les principaux multiples de valorisation et quand les utiliser ?",
+      explanation: "En une phrase — Chaque multiple a son terrain de jeu : EV/EBITDA pour l'industrie standard, EV/Sales pour les non-rentables, P/E pour les cotées matures, EV/EBIT pour les industries lourdes, P/B pour les banques. Pourquoi : question d'ouverture classique, le candidat doit montrer qu'il sait choisir le bon multiple selon le secteur et la situation.",
+      steps: [
+        "EV/EBITDA : multiple universel. Neutre vis-à-vis de la structure financière et des politiques d'amortissement. Référence en M&A mid-cap (6-12x typique).",
+        "EV/EBIT : préféré dans les industries capitalistiques (industrie lourde, télécoms). Prend en compte l'usure des actifs via l'amortissement.",
+        "EV/Sales : utilisé pour entreprises non rentables (early-stage, retournement) ou très cycliques. Limite : ignore la marge.",
+        "P/E (Price/Earnings) : multiple grand public et cotées. Sensible au levier et à la fiscalité — peu comparable cross-border.",
+        "P/B (Price/Book) : banques, assurances, foncières — actifs comptables = bonne proxy de valeur économique.",
+        "EV/(EBITDA−CAPEX) : industries où le CAPEX de maintenance est énorme (ciment, sidérurgie). Mesure mieux le cash réel généré.",
+        "Multiples sectoriels : EV/Reserves (pétrole), EV/Room (hôtellerie), EV/MWh (utilities), EV/ARR (SaaS), EV/Patient (santé).",
+        "Forward vs trailing : en M&A on utilise les multiples forward (NTM EBITDA) car ils anticipent la création de valeur."
+      ],
+      tip: "Toujours préciser si le multiple est trailing (passé) ou forward (futur) — un écart de 12 mois peut faire 20% de différence."
+    },
+    {
+      id: 92,
+      category: 'valuation',
+      difficulty: 'avancé',
+      question: "Pourquoi un même multiple EV/EBITDA peut-il être très différent entre deux sociétés du même secteur ?",
+      explanation: "En une phrase — Parce que le multiple capture la qualité du business : croissance, marge, capital intensity, risque. Une entreprise qui croît à 15% avec 25% de marge se paie deux fois plus cher qu'une qui croît à 3% avec 10%. Pourquoi : question avancée qui teste la compréhension intuitive du lien entre fondamentaux et multiples.",
+      steps: [
+        "Croissance : à WACC égal, une croissance de 8% au lieu de 3% peut doubler le multiple (formule de Gordon).",
+        "Marge EBITDA : 30% vs 10% reflète soit du pricing power, soit une structure de coûts moins lourde — premium justifié.",
+        "Conversion cash : EBITDA → FCF dépend du CAPEX et du BFR. Deux entreprises avec même EBITDA mais conversion cash différente ne valent pas la même chose.",
+        "Récurrence / visibilité : un business subscription/SaaS se paie plus cher qu'un business projet ou one-off.",
+        "Taille et liquidité : une mid-cap se paie 20-30% moins cher qu'une large-cap équivalente (size discount).",
+        "Risque opérationnel : concentration clients, dépendance fournisseurs, exposition cyclique → décote.",
+        "Qualité du management et gouvernance : succession claire, équipe en place, track record → premium.",
+        "Synergies attendues : un même actif peut valoir 8x pour un financier et 11x pour un industriel."
+      ],
+      tip: "Devant un écart de multiple, demande-toi toujours \"qu'est-ce qui justifie cette différence ?\" — pas de prime sans raison."
+    },
+    {
+      id: 93,
+      category: 'valuation',
+      difficulty: 'avancé',
+      question: "Comment valoriser une startup non rentable ?",
+      explanation: "En une phrase — Pas de DCF classique possible. On utilise EV/Sales, EV/ARR (SaaS), la méthode VC (rétro-projection depuis la valeur de sortie), ou un DCF long horizon avec courbe en J. Pourquoi : sujet brûlant en PE et VC, teste la capacité à adapter la boîte à outils standard.",
+      steps: [
+        "Pourquoi le DCF classique ne marche pas : pas de FCF positifs avant 5-10 ans → la valeur dépend entièrement de la valeur terminale.",
+        "Méthode 1 — Multiples de revenus : EV/Sales (5-15x pour SaaS premium), EV/ARR pour subscription. Comparer à des transactions récentes.",
+        "Méthode 2 — Méthode du Venture Capitalist : projeter la valeur à la sortie à 5-7 ans via un multiple, actualiser à 40-60% (taux qui reflète le risque d'échec).",
+        "Méthode 3 — DCF en deux phases : phase d'investissement avec pertes, puis phase de maturité avec marges stabilisées.",
+        "Méthode 4 — Métriques opérationnelles : valeur par utilisateur actif (DAU/MAU), LTV/CAC, churn — utilisées en cross-référence.",
+        "Méthode 5 — First Chicago Method : pondérer 3 scénarios (succès, base, échec) par leur probabilité.",
+        "Tours de table récents : le post-money de la dernière ronde est un point de référence.",
+        "Toujours croiser plusieurs méthodes et présenter une fourchette large."
+      ],
+      tip: "Pour le SaaS, cite la \"règle des 40\" (croissance % + marge EBITDA % ≥ 40) — benchmark standard que les investisseurs adorent entendre."
+    },
+    {
+      id: 94,
+      category: 'valuation',
+      difficulty: 'intermédiaire',
+      question: "Qu'est-ce qu'une prime d'acquisition et combien vaut-elle typiquement ?",
+      explanation: "En une phrase — C'est l'écart entre le prix payé et le cours de bourse avant rumeur. Typiquement 25-40% pour une cible cotée. Elle paie le contrôle, les synergies attendues, et \"convainc\" les actionnaires de vendre. Pourquoi : question structurante en M&A.",
+      steps: [
+        "Définition : Prime = (Offre par action / Cours non perturbé) − 1, où \"non perturbé\" = cours 1 mois avant la rumeur.",
+        "Niveaux typiques : 25-40% pour une cible cotée standard, jusqu'à 60-100% en bidding war.",
+        "Composantes : prime de contrôle pure (~15-20%), valeur des synergies revenant au vendeur, prime stratégique (rareté de l'actif), prime de scarcity.",
+        "Pourquoi cette prime : convaincre les actionnaires de vendre, payer valeur stand-alone + part des synergies, couvrir risque d'exécution.",
+        "Acheteur stratégique vs financier : un industriel paiera typiquement 15-25% de plus qu'un PE car il extrait des synergies opérationnelles.",
+        "Mode de paiement : prime plus élevée en cash qu'en actions (incertitude assumée par l'acheteur).",
+        "Sur le non coté : prime difficile à calculer — on regarde les multiples vs comparables.",
+        "Erreur d'analyste : utiliser un cours \"spoilé\" (post-rumeur) comme référence — toujours prendre un cours non perturbé."
+      ],
+      tip: "Dis : \"La prime moyenne en Europe sur 10 ans est ~30%, mais peut atteindre 100% en bidding war (cf. Veolia/Suez)\"."
+    },
+    {
+      id: 95,
+      category: 'valuation',
+      difficulty: 'intermédiaire',
+      question: "Quelle est la différence entre un trading comp et un precedent transaction ?",
+      explanation: "En une phrase — Le trading comp regarde les multiples des concurrents cotés en bourse aujourd'hui. Le precedent transaction regarde les multiples auxquels des concurrents ont été VENDUS. Le 2e est plus élevé car il inclut la prime de contrôle. Pourquoi : distinction cruciale en M&A.",
+      steps: [
+        "Trading comps : multiples des sociétés cotées comparables aujourd'hui (snapshot). Source : Bloomberg, CapIQ, FactSet.",
+        "Precedent transactions : multiples payés lors de transactions M&A passées sur des comparables. Source : MergerMarket, Dealogic.",
+        "Premier écart — prime de contrôle : les precedents incluent la prime payée pour acquérir le contrôle (~25-40% vs cours).",
+        "Deuxième écart — synergies : les multiples de transactions reflètent la valeur attendue des synergies pour l'acheteur stratégique.",
+        "Conséquence : les multiples de precedents sont typiquement 1-3 turns d'EBITDA au-dessus des trading comps.",
+        "Limites des precedents : données souvent incomplètes (deals privés), conditions de marché passées, hétérogénéité (asset deal vs share deal).",
+        "Limites des trading comps : pas de prime de contrôle, sensibles aux fluctuations court-terme, public vs private discount souvent oublié.",
+        "Best practice : présenter les deux dans le football field — bornes basses (trading) et bornes hautes (transactions)."
+      ],
+      tip: "Filtre les transactions pré-COVID si tu cherches un benchmark 2025-2026 — les multiples ont structurellement bougé."
+    },
+
+    // ===== NOUVELLES QUESTIONS — DCF (Q96-Q99) =====
+    {
+      id: 96,
+      category: 'dcf',
+      difficulty: 'intermédiaire',
+      question: "Comment calcule-t-on la valeur terminale ? Quelles méthodes existent ?",
+      explanation: "En une phrase — Deux méthodes : Gordon-Shapiro (perpétuité à croissance g) ou Multiple de sortie (EV/EBITDA × EBITDA terminal). On présente toujours les deux. Pourquoi : la valeur terminale fait 60-80% de la valeur DCF — mal la calculer = mal valoriser.",
+      steps: [
+        "Méthode 1 — Gordon-Shapiro : TV = FCF_n+1 / (WACC − g), où g est la croissance perpétuelle.",
+        "Choix de g : doit être ≤ croissance économique long terme (1-3% en zone euro, max ~4% en émergents).",
+        "Méthode 2 — Exit Multiple : TV = EBITDA_n × Multiple cible. Multiple basé sur les comparables actuels (médiane).",
+        "Sanity check : calculer le g \"implicite\" du multiple de sortie. Si > 4-5%, c'est suspect.",
+        "Actualisation : la valeur terminale est en \"année n\" — il faut la ramener à aujourd'hui en divisant par (1+WACC)^n.",
+        "Importance dans l'EV : typiquement 60-80% de l'EV → toujours faire des sensibilités sur WACC × g et WACC × multiple.",
+        "Mid-year convention : si les FCF tombent au milieu de l'année, ajuster en divisant par (1+WACC)^(n−0,5).",
+        "Best practice : présenter les deux méthodes en parallèle, expliquer l'écart, prendre la moyenne ou la médiane."
+      ],
+      tip: "Si l'écart entre Gordon et Exit Multiple est > 20%, c'est qu'un des deux est mal calibré — refais les hypothèses."
+    },
+    {
+      id: 97,
+      category: 'dcf',
+      difficulty: 'avancé',
+      question: "Qu'est-ce que la mid-year convention et pourquoi l'utiliser ?",
+      explanation: "En une phrase — Par défaut on actualise comme si tous les flux tombaient le 31 décembre. La mid-year convention dit : \"En vrai, le cash tombe en continu pendant l'année\". On divise par (1+WACC)^(n−0.5). Résultat : valeur ~5% plus élevée. Pourquoi : détail technique qui distingue les bons candidats.",
+      steps: [
+        "Convention par défaut : on actualise FCF_n avec (1+WACC)^n, supposant que tout le cash arrive le 31 décembre — irréaliste.",
+        "Mid-year convention : on suppose que le cash arrive en moyenne au milieu de l'année (30 juin) → on divise par (1+WACC)^(n−0,5).",
+        "Impact : la valeur augmente d'environ √(1+WACC) − 1, soit ~3-5% selon le WACC.",
+        "Application à la valeur terminale : si on utilise Gordon, la TV est aussi capitalisée à mid-year → on actualise par (1+WACC)^(n−0,5).",
+        "Quand l'utiliser : standard dans les DCF d'investissement bancaire et de PE. Pas systématique en corporate finance.",
+        "Pour saisonnalité forte (retail, agroalimentaire) : on peut faire des FCF trimestriels et actualiser au milieu de chaque trimestre.",
+        "Stub period : si l'année 1 est partielle (ex: deal en juin), on actualise au milieu de la stub period."
+      ],
+      tip: "Démarque-toi en mentionnant la mid-year convention spontanément quand tu expliques un DCF — c'est un détail de connaisseur."
+    },
+    {
+      id: 98,
+      category: 'dcf',
+      difficulty: 'intermédiaire',
+      question: "Que se passe-t-il pour la valeur DCF si le WACC augmente de 1% ?",
+      explanation: "En une phrase — La valeur baisse fortement : typiquement 10-20% pour 100 bps de WACC en plus. Les flux lointains sont actualisés davantage et surtout la valeur terminale (60-80% de l'EV) chute mécaniquement. Pourquoi : question de sensibilité fréquente.",
+      steps: [
+        "Effet direct : chaque FCF est divisé par (1+WACC)^t → plus WACC ↑, plus la valeur ↓.",
+        "Effet amplifié sur la valeur terminale : Gordon → TV = FCF / (WACC − g). Si WACC passe de 8% à 9% (g = 2%), TV passe de FCF/0,06 à FCF/0,07 → −14%.",
+        "Effet de durée : plus l'horizon est long, plus la sensibilité au WACC est forte (intérêts composés).",
+        "Ordre de grandeur : +1% WACC ≈ −10 à −20% de valeur (dépendant du business et du g).",
+        "Idée intuitive : un WACC plus élevé = investisseurs plus exigeants = business plus risqué ou plus levered = on paie moins cher.",
+        "Lien conjoncture : quand les taux montent (2022-2023), le WACC monte → valorisations baissent → moins de deals.",
+        "Toujours faire un tableau de sensibilité WACC × g (5×5 ou 7×7) — attendu dans tout pitchbook M&A."
+      ],
+      tip: "\"Le DCF est un thermomètre des taux d'intérêt\" — quand les taux montent, les valorisations baissent mécaniquement."
+    },
+    {
+      id: 99,
+      category: 'dcf',
+      difficulty: 'avancé',
+      question: "Faut-il utiliser un WACC constant ou variable dans le temps ?",
+      explanation: "En une phrase — En théorie variable (la structure de capital évolue), en pratique constant pour simplifier. Sauf en LBO où la dette se rembourse vite : on utilise alors l'APV (Adjusted Present Value). Pourquoi : question avancée, distingue ceux qui ont lu Damodaran.",
+      steps: [
+        "Argument théorique : la structure financière change → D/V et E/V changent → WACC change. Un WACC constant est une approximation.",
+        "Argument pratique : en business \"normal\", la structure cible (D/E) reste stable → WACC ≈ constant. Marche en 90% des cas.",
+        "Cas où il faut un WACC variable : LBO, restructuration, entreprise en croissance forte.",
+        "Méthode 1 — WACC année par année : recalculer le WACC chaque année avec la structure financière projetée. Lourd et auto-référent.",
+        "Méthode 2 — APV (Adjusted Present Value) : actualiser les FCFF au coût UNLEVERED des fonds propres (Ku), puis ajouter séparément la valeur actualisée du tax shield.",
+        "Formule APV : EV = Σ FCFF / (1+Ku)^t + Σ Tax_Shield / (1+Kd)^t.",
+        "Avantage APV : isole la valeur de la dette (bouclier fiscal) — pédagogique en LBO.",
+        "Limite APV : suppose un coût de la dette indépendant du levier — irréaliste à très haut levier."
+      ],
+      tip: "Mentionner l'APV en LBO impressionne — c'est la méthode \"académique\" enseignée à HEC, ESCP et dans les masters spécialisés."
+    },
+
+    // ===== NOUVELLES QUESTIONS — COMPTABILITÉ (Q100-Q106) =====
+    {
+      id: 100,
+      category: 'accounting',
+      difficulty: 'intermédiaire',
+      question: "Si l'EBITDA augmente de 100€, qu'est-ce qui se passe sur les 3 états financiers ?",
+      explanation: "En une phrase — P&L : EBITDA +100, Résultat net +75 (après IS à 25%). Bilan : Cash +75, Equity +75. Cash flow : CFO +75. Pourquoi : variante classique du \"walk me through the financial statements\", teste la maîtrise complète des liens entre états.",
+      steps: [
+        "P&L : EBITDA +100. Hypothèse : pas d'impact sur D&A ni intérêts. EBIT +100. Résultat avant impôt +100. IS (25%) = −25. Résultat net = +75.",
+        "Bilan, actif : la trésorerie augmente de 75 (cash réellement encaissé, après impôt).",
+        "Bilan, passif : les réserves (capitaux propres) augmentent de 75.",
+        "Le bilan reste équilibré : actif +75 = passif +75. ✓",
+        "Tableau de flux : démarrer du résultat net = +75. Pas de retraitement non-cash → CFO +75. CFI et CFF inchangés.",
+        "Variation de cash totale : +75, qui correspond bien à la hausse de trésorerie au bilan. ✓",
+        "Variante piège : si l'EBITDA augmente via une provision reprise → c'est non-cash → CFO ne bouge pas du même montant.",
+        "Variante piège 2 : si l'augmentation vient d'une vente à crédit → cash 0, créances clients +100 → CFO retraité (−100 de ΔBFR)."
+      ],
+      tip: "Toujours partir du résultat net pour le tableau de flux (méthode indirecte) — c'est la convention IFRS la plus utilisée."
+    },
+    {
+      id: 101,
+      category: 'accounting',
+      difficulty: 'avancé',
+      question: "Qu'est-ce que l'impôt différé et comment se crée-t-il ?",
+      explanation: "En une phrase — C'est de l'impôt \"décalé\" dans le temps. Il apparaît quand les règles comptables et fiscales divergent (ex : amortissement 10 ans en compta vs 5 ans en fiscal → moins d'impôt aujourd'hui = DTL). Pourquoi : sujet incontournable en TS et audit.",
+      steps: [
+        "Définition : différence temporaire entre résultat comptable et résultat fiscal qui se résorbe dans le futur.",
+        "DTL (Deferred Tax Liability) — impôt à payer plus tard : on a payé MOINS d'impôt aujourd'hui que ce que les comptes laissent voir. Cas typique : amortissement fiscal plus rapide.",
+        "DTA (Deferred Tax Asset) — impôt \"avance\" à récupérer : on a payé PLUS d'impôt aujourd'hui. Cas typique : déficits fiscaux reportables, provisions non déductibles immédiatement.",
+        "Sources principales : amortissements (rythme fiscal vs comptable), provisions, pertes reportables, plus-values en sursis, instruments dérivés.",
+        "Calcul : différence temporaire × taux d'IS futur attendu (~25% en France 2026).",
+        "Présentation au bilan : DTA en actif non courant, DTL en passif non courant. Compensation possible si même juridiction.",
+        "Reconnaissance d'un DTA : seulement si l'entreprise prévoit assez de bénéfices futurs pour les utiliser (IAS 12).",
+        "Impact M&A : un gros DTA d'une cible déficitaire peut être un actif caché (mais souvent limité par les règles \"change of control\")."
+      ],
+      tip: "En due diligence, toujours challenger les DTA non reconnus : ils peuvent valoir plusieurs millions et booster le prix."
+    },
+    {
+      id: 102,
+      category: 'accounting',
+      difficulty: 'avancé',
+      question: "Comment traite-t-on les stock-options dans les états financiers ?",
+      explanation: "En une phrase — C'est une charge comptable (étalée sur la période d'acquisition) qui dilue les actionnaires. P&L : charge non-cash. Bilan : augmentation des réserves. Valorisation : retraitement via méthode du Treasury Stock pour le diluted EPS. Pourquoi : sujet en pleine actualité (tech, SaaS).",
+      steps: [
+        "Comptabilisation IFRS 2 : juste valeur des options à la date d'attribution, étalée sur la période d'acquisition (vesting).",
+        "Impact P&L : charge de personnel (intégrée dans \"salary\" ou \"SBC\" — Stock-Based Compensation). Non-cash → retraitée dans le CFO.",
+        "Impact bilan : la charge crédite un compte de capitaux propres (\"paid-in capital\"). Pas d'impact cash.",
+        "Effet dilutif : à l'exercice, de nouvelles actions sont créées → dilution. Méthode Treasury Stock pour calculer le diluted share count.",
+        "Méthode Treasury Stock : options ITM, cash récupéré à l'exercice, actions rachetables avec ce cash au cours actuel, Net new shares = options ITM − actions rachetées.",
+        "Polémique en tech : Meta, Google affichent un EBITDA élevé en excluant la SBC. Les analystes pro retraitent généralement la SBC en charge cash-équivalente.",
+        "En LBO : la SBC du management (MEP) est typiquement structurée en sweet equity ou ratchet, hors comptes IFRS classiques.",
+        "Impact valorisation : utiliser le diluted share count (et non le basic) pour calculer le prix par action."
+      ],
+      tip: "En tech, regarde le ratio SBC / Sales : > 10% = entreprise qui se rémunère \"en papier\" — souvent vu comme un red flag."
+    },
+    {
+      id: 103,
+      category: 'accounting',
+      difficulty: 'avancé',
+      question: "Comment traite-t-on les frais de R&D : charge ou immobilisation ?",
+      explanation: "En une phrase — En IFRS, la recherche est en charge, le développement peut être immobilisé si 6 critères sont remplis. En US GAAP, tout est en charge sauf logiciels. Pourquoi : question avancée typique audit/TS, demande une connaissance technique précise des normes.",
+      steps: [
+        "IFRS — IAS 38 : recherche en charge (P&L immédiat), développement immobilisable si 6 critères (PIRATE).",
+        "US GAAP : R&D entièrement en charge (sauf logiciels en développement interne — ASC 350-40).",
+        "Impact P&L si capitalisé : la charge devient une immobilisation au bilan, amortie sur 3-10 ans → EBITDA plus élevé, mais D&A plus élevée plus tard.",
+        "Manipulation possible : capitaliser agressivement pour gonfler l'EBITDA court terme — red flag majeur en QoE.",
+        "Cas spécifique : pharma et biotech capitalisent massivement, tech moins. Analyser le ratio R&D capitalisé / R&D total.",
+        "En valorisation : Damodaran propose de re-capitaliser TOUTE la R&D (même en charge) pour mieux refléter la valeur des actifs intangibles.",
+        "Sur la conversion cash : que la R&D soit en charge ou capitalisée, le cash sort identiquement.",
+        "Goodwill vs intangibles : la R&D capitalisée crée des actifs incorporels qui se déprécient ; le goodwill ne s'amortit pas mais peut être déprécié."
+      ],
+      tip: "Sur un dossier R&D-intensif, toujours demander la décomposition R&D capitalisée vs en charge — un changement de politique peut tout fausser."
+    },
+    {
+      id: 104,
+      category: 'accounting',
+      difficulty: 'intermédiaire',
+      question: "Quelle est la différence entre CAPEX de maintenance et CAPEX de croissance ?",
+      explanation: "En une phrase — Maintenance = remplacer une machine cassée pour rester à isopérimètre. Croissance = augmenter capacité ou entrer sur un nouveau marché. Distinction cruciale en LBO et DCF. Pourquoi : distinction clé en PE et TS.",
+      steps: [
+        "CAPEX de maintenance : remplacement des actifs existants à hauteur de leur usure. Ordre de grandeur : ≈ D&A annuelle dans un business stable.",
+        "CAPEX de croissance : investissements pour augmenter la capacité, ouvrir des sites, développer de nouveaux produits.",
+        "Pourquoi la distinction est critique : en valorisation \"stand-alone\", on doit couvrir au minimum le CAPEX de maintenance. Le CAPEX de croissance est optionnel.",
+        "FCF maintenance = EBITDA − maintenance CAPEX − ΔBFR − impôts ; FCF total = idem − growth CAPEX.",
+        "En LBO : on regarde si la cible peut financer le CAPEX maintenance ET le service de la dette à partir de l'EBITDA.",
+        "Comment le mesurer : (a) demander au management, (b) comparer historique CAPEX vs D&A, (c) regarder les projets identifiés.",
+        "Cas piège : entreprise en surinvestissement (CAPEX >> D&A pendant 5 ans) → analyser la nature.",
+        "Reporting réglementaire : certaines normes demandent de séparer maintenance vs growth dans le business plan."
+      ],
+      tip: "En due diligence financière, demande une analyse de CAPEX par catégorie (maintenance / IT / expansion / réglementaire)."
+    },
+    {
+      id: 105,
+      category: 'accounting',
+      difficulty: 'avancé',
+      question: "Comment fonctionne le test d'impairment du goodwill ?",
+      explanation: "En une phrase — Le goodwill ne s'amortit pas, mais on teste chaque année s'il vaut toujours sa valeur comptable. On compare valeur recouvrable (max entre fair value et value in use) à la valeur comptable de la CGU. Si inférieure → on déprécie. Irréversible. Pourquoi : question avancée audit/TS.",
+      steps: [
+        "Principe IAS 36 : le goodwill n'est jamais amorti. Test annuel obligatoire, plus dès qu'un indice de perte existe.",
+        "Niveau du test : Cash Generating Unit (CGU) — unité la plus petite générant des flux indépendants.",
+        "Étape 1 — Allocation du goodwill aux CGU lors de l'acquisition.",
+        "Étape 2 — Calcul de la valeur recouvrable = max (Juste valeur − coûts de cession ; Valeur d'utilité via DCF).",
+        "Étape 3 — Comparaison : si Valeur recouvrable < Valeur comptable de la CGU → perte d'impairment.",
+        "Étape 4 — Comptabilisation : la perte vient d'abord déprécier le goodwill, puis les autres actifs de la CGU au prorata.",
+        "Irréversibilité : une dépréciation de goodwill NE SE REPRISE JAMAIS (contrairement aux autres actifs).",
+        "Impact P&L et bilan : charge non-cash, mais signal négatif fort (\"on a payé trop cher\").",
+        "Cas célèbres : Vivendi/USA Networks, Bayer/Monsanto, AOL/Time Warner.",
+        "En M&A : un impairment historique sur la cible est un red flag."
+      ],
+      tip: "Toujours challenger les hypothèses de l'impairment test : un management \"optimiste\" va surestimer la valeur d'utilité pour éviter de déprécier."
+    },
+    {
+      id: 106,
+      category: 'accounting',
+      difficulty: 'intermédiaire',
+      question: "Comment reconnaît-on un revenu en IFRS 15 ?",
+      explanation: "En une phrase — 5 étapes : (1) identifier le contrat, (2) identifier les obligations de performance, (3) déterminer le prix, (4) allouer le prix, (5) reconnaître le revenu quand chaque obligation est satisfaite. Pourquoi : norme majeure depuis 2018, question typique audit/TS.",
+      steps: [
+        "Étape 1 — Contrat : identifier le contrat avec un client (oral, écrit, implicite si récurrent).",
+        "Étape 2 — Obligations de performance : décomposer le contrat en obligations distinctes (matériel + maintenance = 2 obligations).",
+        "Étape 3 — Prix total : déterminer la contrepartie attendue (fixe + variable, ajustée pour rabais probables).",
+        "Étape 4 — Allocation : répartir le prix entre les obligations selon leur prix de vente standalone.",
+        "Étape 5 — Reconnaissance : point-in-time si l'obligation est terminée d'un coup, over time si elle se déroule dans le temps.",
+        "Cas SaaS : revenu reconnu linéairement sur la durée du contrat. Cash encaissé d'avance → Deferred Revenue au passif.",
+        "Cas construction : reconnaissance over time selon l'avancement (méthode du pourcentage d'avancement).",
+        "Cas télécoms : abonnement + téléphone = allocation entre obligations → revenu téléphone reconnu day 1, abonnement sur 24 mois.",
+        "Indicateurs clés : Deferred Revenue (cash reçu non reconnu) au bilan ; Bookings vs Revenue dans le P&L."
+      ],
+      tip: "En SaaS, ne jamais confondre ARR (Annual Recurring Revenue, métrique business) et Revenue IFRS (métrique comptable) — ils diffèrent."
+    },
+
+    // ===== NOUVELLES QUESTIONS — M&A (Q107-Q111) =====
+    {
+      id: 107,
+      category: 'ma',
+      difficulty: 'avancé',
+      question: "Qu'est-ce qu'un purchase price allocation (PPA) ?",
+      explanation: "En une phrase — Quand on achète une entreprise, on doit réallouer le prix payé entre les actifs identifiables (machines, marques, contrats clients) à leur juste valeur, et le reste devient du goodwill. Pourquoi : sujet technique très posé en TS et audit.",
+      steps: [
+        "Définition : exercice obligatoire (IFRS 3) consistant à allouer le prix d'acquisition entre les actifs et passifs identifiables et le goodwill.",
+        "Étape 1 — Évaluer à la juste valeur tous les actifs et passifs identifiables (corporels, incorporels, dettes). Souvent au-dessus de la valeur comptable.",
+        "Étape 2 — Identifier des actifs incorporels non comptabilisés chez la cible : marques, listes clients, brevets, technologie, contrats long terme.",
+        "Étape 3 — Calculer le goodwill = Prix payé − Juste valeur nette des actifs identifiables.",
+        "Étape 4 — Définir les durées d'amortissement des incorporels (marques 10-20 ans, clients 5-15 ans, technologie 3-7 ans).",
+        "Étape 5 — Comptabiliser un éventuel deferred tax liability lié aux step-ups d'actifs.",
+        "Impact P&L post-acquisition : D&A supplémentaire sur les actifs identifiés → résultat net consolidé plus bas.",
+        "PPA préliminaire vs final : 12 mois pour finaliser (IFRS 3)."
+      ],
+      tip: "Sois attentif au ratio Goodwill/Prix : > 70% suggère un PPA superficiel ou une cible aux actifs très incorporels."
+    },
+    {
+      id: 108,
+      category: 'ma',
+      difficulty: 'intermédiaire',
+      question: "Quels sont les types de synergies en M&A et comment les estimer ?",
+      explanation: "En une phrase — Deux familles : synergies de revenus (cross-selling, pricing power) et synergies de coûts (suppression de doublons, économies d'échelle). Les synergies de coûts sont 2x plus fiables. Toujours présenter en valeur actualisée. Pourquoi : question fondamentale en M&A.",
+      steps: [
+        "Synergies de coûts (les plus fiables) : suppression de doublons (siège, fonctions support), économies d'échelle achats, consolidation de sites, IT.",
+        "Synergies de revenus (plus incertaines) : cross-selling de produits, accès à de nouveaux marchés géographiques, pricing power accru, R&D combinée.",
+        "Synergies financières : bouclier fiscal (utilisation de déficits), optimisation BFR, accès à des financements moins chers.",
+        "Synergies négatives (dissynergies) : perte de clients, dépréciation de marques, départ de talents clés.",
+        "Estimation : benchmarker des transactions similaires (synergies = 5-15% du CA de la cible), bottom-up site par site, top-down par fonction.",
+        "Coûts d'intégration : règle empirique = 1-2x les synergies annuelles en one-off (réorganisation, IT, communication).",
+        "Calendrier : 60% des synergies à 1 an, 80% à 2 ans, 100% à 3 ans (rare avant).",
+        "Valorisation : Σ Synergies nettes actualisées au WACC du combined → ajoute typiquement 10-20% à la valeur stand-alone."
+      ],
+      tip: "Cite la règle empirique : \"synergies réalisées = 60-80% des synergies annoncées\" — montre ta lucidité d'analyste."
+    },
+    {
+      id: 109,
+      category: 'ma',
+      difficulty: 'intermédiaire',
+      question: "Quelles sont les conditions suspensives typiques d'un SPA ?",
+      explanation: "En une phrase — Conditions à remplir entre signing et closing : autorisations antitrust, financement, autorisations sectorielles, MAC clause, conditions opérationnelles. Pourquoi : question juridico-financière fréquente, teste la phase entre signing et closing.",
+      steps: [
+        "Antitrust / concurrence : approbation des autorités (DG COMP en Europe, FTC/DOJ aux US, AMF en France). Délais : 25 jours minimum, jusqu'à 6+ mois pour phase II.",
+        "Réglementaire sectoriel : banque (BCE, ACPR), assurance (ACPR), télécoms (ARCEP), énergie (CRE), défense (procédure FDI).",
+        "Foreign Direct Investment (FDI) : contrôle des investissements étrangers, en hausse depuis 2019 (loi PACTE en France).",
+        "Financement (rare) : \"financing condition\" parfois pour les LBO si le financement n'est pas committé.",
+        "MAC clause (Material Adverse Change) : permet de sortir du deal si un événement adverse majeur survient sur la cible entre signing et closing.",
+        "Conditions opérationnelles : renouvellement de contrats clés, transfert de licences, autorisations spécifiques.",
+        "No-leakage (pour locked box) : engagement du vendeur à ne pas extraire de cash entre la locked box date et le closing.",
+        "Risques : un deal qui rate au closing pour cause antitrust (ex: Siemens/Alstom 2019, Illumina/Grail 2024) = perte sèche."
+      ],
+      tip: "Pour un deal cross-border, toujours mentionner FDI et antitrust dans plusieurs juridictions — délais de 6-12 mois possibles."
+    },
+    {
+      id: 110,
+      category: 'ma',
+      difficulty: 'avancé',
+      question: "Comment se structure un deal en cash + actions vs all-cash vs all-stock ?",
+      explanation: "En une phrase — All-cash : prix certain, levier financier. All-stock : préserve le cash mais dilue. Mixte : combine. Le choix dépend de la valorisation relative, du levier, et du désir de partager le risque post-deal. Pourquoi : question stratégique avancée.",
+      steps: [
+        "All-cash : prix certain pour le vendeur, levier financier pour l'acheteur (si financé par dette), pas de dilution. Préféré par les vendeurs.",
+        "All-stock : l'acheteur préserve son cash, les actionnaires de la cible deviennent actionnaires du combined → exposés à l'execution risk, ratio d'échange basé sur les cours pré-deal.",
+        "Mixte (cash + actions) : compromis. Permet d'optimiser fiscalité (régime de roll-over) et de partager le risque post-deal.",
+        "Choix selon valorisation relative : si A cher (P/E élevé), payer en actions est avantageux ; si A sous-valorisé, payer en cash préserve la valeur.",
+        "Choix selon levier : si A déjà très levered, payer en actions évite de surcharger le bilan.",
+        "Signaling theory : payer en cash signale confiance ; payer en actions peut signaler que A pense ses propres actions surévaluées.",
+        "Impact accretion/dilution : all-cash est plus relutif si le yield après-impôt du cash < yield d'EBITDA de la cible.",
+        "Fiscalité : en France, paiement en actions peut bénéficier d'un régime de différé d'imposition (article 150-0 B ter CGI)."
+      ],
+      tip: "Cite l'exemple : \"LVMH/Tiffany 2021 = all-cash car LVMH avait la trésorerie et voulait pas diluer la famille Arnault\"."
+    },
+    {
+      id: 111,
+      category: 'ma',
+      difficulty: 'intermédiaire',
+      question: "Qu'est-ce qu'un break-up fee et un reverse break-up fee ?",
+      explanation: "En une phrase — Break-up fee : indemnité que la CIBLE paie à l'acheteur si elle se retire. Reverse break-up fee : indemnité que l'ACHETEUR paie si LUI se retire (souvent en cas de problème antitrust). Niveau typique : 2-5% de l'EV. Pourquoi : concept juridique fréquemment demandé en M&A.",
+      steps: [
+        "Break-up fee : payée par la cible à l'acheteur en cas de retrait. Protège l'acheteur contre les coûts engagés (DD, advisors).",
+        "Cas d'application : cible accepte une meilleure offre (bidding war), board change de recommandation, actionnaires votent contre le deal.",
+        "Reverse break-up fee : payée par l'acheteur à la cible si l'acheteur se retire pour des raisons sous son contrôle.",
+        "Cas typiques de reverse fee : financement non bouclé, refus antitrust, acheteur change d'avis.",
+        "Niveaux typiques : 2-4% de l'EV pour break-up fee classique, jusqu'à 5-7% pour reverse fee en cas de risque antitrust élevé.",
+        "Cas emblématiques : AT&T/T-Mobile 2011 = $4Mds de reverse break-up fee payés par AT&T après échec antitrust.",
+        "Encadrement juridique : aux US le break-up fee doit être \"reasonable\" (Revlon doctrine), en Europe pas de limite formelle.",
+        "Lien avec exclusivité : break-up fee = compensation pour avoir donné l'exclusivité pendant la phase de DD."
+      ],
+      tip: "Différencie break-up fee et expense reimbursement : la 2e couvre juste les frais (advisors, banques) sans pénalité."
+    },
+
+    // ===== NOUVELLES QUESTIONS — LBO (Q112-Q117) =====
+    {
+      id: 112,
+      category: 'lbo',
+      difficulty: 'basique',
+      question: "Comment calcule-t-on le TRI (IRR) et le MOIC en LBO ?",
+      explanation: "En une phrase — MOIC = combien de fois on a multiplié son investissement (cash out / cash in). TRI = rendement annualisé en %. Cibles standards en PE : MOIC 2,5-3x sur 5 ans, TRI 20-25%. Pourquoi : métriques fondamentales du PE, question quasi systématique.",
+      steps: [
+        "MOIC = Total cash retourné aux investisseurs / Investissement initial. Métrique de \"absolute return\".",
+        "TRI (Internal Rate of Return) = taux d'actualisation qui annule la VAN des flux. Métrique de \"time-adjusted return\".",
+        "Relation simple si un seul cash-in et un seul cash-out : MOIC = (1 + TRI)^n, où n = horizon en années.",
+        "Exemple : MOIC 3x sur 5 ans → TRI = 3^(1/5) − 1 = 24,6%.",
+        "Cibles standards PE : MOIC 2,5-3x sur 5 ans, TRI 20-25% (TRI net après carried interest = ~15-20%).",
+        "Mid-market : TRI cible plus élevé (25-30%) car risque opérationnel supérieur.",
+        "Sources de TRI en LBO : (a) croissance EBITDA, (b) multiple expansion, (c) debt paydown (deleveraging).",
+        "Limites : TRI peut être gonflé par des sorties rapides (dividend recap), MOIC peut être faible mais TRI élevé sur short hold.",
+        "DPI (Distributions to Paid-In) : argent réellement rendu aux LPs. TVPI (Total Value to Paid-In) : DPI + valeur résiduelle."
+      ],
+      tip: "En entretien PE, sache calculer mentalement : MOIC 2x sur 5 ans = TRI ~15% ; 3x sur 5 ans = ~25% ; 2x sur 3 ans = ~26%."
+    },
+    {
+      id: 113,
+      category: 'lbo',
+      difficulty: 'intermédiaire',
+      question: "Quelle est la décomposition de la création de valeur en LBO ?",
+      explanation: "En une phrase — 3 leviers : (1) Croissance d'EBITDA, (2) Multiple expansion, (3) Debt paydown. Sur un deal réussi, la croissance d'EBITDA fait typiquement 50% de la création de valeur. Pourquoi : question structurante en PE.",
+      steps: [
+        "Levier 1 — Croissance EBITDA : augmentation organique (CA, marges) ou via acquisitions (build-up). Source de valeur la plus \"noble\".",
+        "Levier 2 — Multiple expansion : acheter à 8x EBITDA et revendre à 10x. Difficile à prédire — dépend du cycle.",
+        "Levier 3 — Debt paydown : à EV stable, si la dette baisse de 50, l'equity augmente de 50. Mécanique pure.",
+        "Décomposition standard d'un LBO réussi : EBITDA growth ~50%, multiple expansion ~20%, deleveraging ~30%.",
+        "Décomposition standard d'un LBO raté : EBITDA flat 0%, multiple compression −30%, deleveraging 30% → MOIC ≤ 1x.",
+        "Effet de levier financier : plus le levier initial est élevé, plus la sensibilité du TRI à l'EBITDA est forte.",
+        "Exemple : EV 100, debt 60, equity 40. Si EBITDA × 1,5 à multiple constant, EV = 150. Si dette remboursée à 30, equity = 120 = 3x MOIC.",
+        "Risque de l'effet de levier : ça marche dans les deux sens. EBITDA × 0,8 peut détruire toute l'equity."
+      ],
+      tip: "En entretien, dessine la \"value creation bridge\" : pile d'EBITDA × multiple = EV → enlever la dette = equity, avec les 3 leviers identifiés."
+    },
+    {
+      id: 114,
+      category: 'lbo',
+      difficulty: 'avancé',
+      question: "Qu'est-ce qu'un covenant et quels sont les principaux en LBO ?",
+      explanation: "En une phrase — Engagements financiers que la cible doit respecter pour garder son financement (Dette/EBITDA < 5x, EBITDA/Intérêts > 2x). Si breach, les banques peuvent exiger remboursement anticipé. Pourquoi : question avancée en LBO et structured finance.",
+      steps: [
+        "Définition : engagements contractuels (positifs ou négatifs) que l'emprunteur doit respecter sur la durée du financement.",
+        "Covenants financiers : ratios à respecter trimestriellement, testés par les banques.",
+        "Maintenance covenants : doivent être respectés en permanence, testés chaque trimestre. Ex : Net Debt/EBITDA < 5x, EBITDA/Interest > 2x.",
+        "Incurrence covenants : déclenchés seulement lors d'évènements spécifiques (nouvelle dette, dividende, acquisition).",
+        "Covenants opérationnels : pas de cession d'actifs > X€, pas de nouvelle dette, pas de dividendes au-dessus d'un cap.",
+        "\"Cov-lite\" : financements à covenants allégés (uniquement incurrence). Très répandus aux US, en hausse en Europe.",
+        "Conséquences du breach : (a) waiver du prêteur (avec fee), (b) renégociation, (c) accélération de la dette = défaut.",
+        "Headroom : marge avant breach. Un fonds PE négocie typiquement 30-40% de headroom à l'origine.",
+        "Equity cure : possibilité pour le sponsor d'injecter de l'equity pour remédier au breach (max 1-2 fois par 5 ans typiquement)."
+      ],
+      tip: "En analyse de deal, regarde toujours le \"headroom\" sur Dette/EBITDA au pire moment du business plan — si < 10%, le financement est trop serré."
+    },
+    {
+      id: 115,
+      category: 'lbo',
+      difficulty: 'avancé',
+      question: "Qu'est-ce qu'une dette PIK et de la mezzanine ?",
+      explanation: "En une phrase — Mezzanine : dette subordonnée (entre senior et equity), plus chère (10-15%), souvent avec warrants. PIK (Payment In Kind) : intérêts payés non en cash mais en nouvelle dette → préserve le cash. Pourquoi : question avancée sur la structuration LBO.",
+      steps: [
+        "Hiérarchie en LBO : (1) Senior debt (TLA, TLB, RCF), (2) Senior secured bonds, (3) Mezzanine, (4) Unitranche, (5) Equity.",
+        "Mezzanine : dette subordonnée, taux 10-15%, souvent assortie d'un warrant donnant accès à l'equity (1-5%). Subordonnée à la senior en cas de défaut.",
+        "PIK (Payment In Kind) : les intérêts ne sont pas payés en cash mais accumulés en dette additionnelle. Capital + intérêts à payer in fine.",
+        "Avantage PIK : préserve le cash pour rembourser la senior, utile en début de LBO quand l'EBITDA n'est pas encore optimisé.",
+        "Inconvénient PIK : la dette gonfle exponentiellement (intérêts sur intérêts), peut atteindre 2-3x le capital initial à 5 ans.",
+        "Mezzanine vs PIK : la mezzanine peut être PIK, partial PIK (mix cash + PIK), ou full cash.",
+        "Unitranche : combine senior + mezzanine en un seul tranche, structuré par les fonds de dette (Tikehau, Hayfin, ICG). Taux intermédiaire (6-9%).",
+        "Usage typique : LBO mid-cap = 60% senior + 10-15% mezz/PIK + 25% equity. Large-cap = senior + bonds."
+      ],
+      tip: "La PIK est en plein retour en 2024-2025 avec la hausse des taux — elle permet de continuer à structurer des LBO sans tuer le cash flow."
+    },
+    {
+      id: 116,
+      category: 'lbo',
+      difficulty: 'avancé',
+      question: "Qu'est-ce qu'un dividend recap et pourquoi en faire un ?",
+      explanation: "En une phrase — Le fonds PE re-leverage la cible (nouvelle dette) pour se reverser un dividende exceptionnel. Permet de cristalliser une partie du TRI sans vendre. Pourquoi : stratégie de PE très d'actualité, montre une vision approfondie du modèle.",
+      steps: [
+        "Mécanique : la cible émet de la nouvelle dette, le produit sert à verser un dividende exceptionnel au fonds.",
+        "Effet sur le sponsor : récupère du cash (réduit son capital immobilisé), améliore le TRI sur le hold.",
+        "Effet sur la cible : levier ré-augmente, future flexibilité réduite, intérêts en hausse.",
+        "Conditions favorables : EBITDA solide, marchés de dette ouverts, covenants respectés avec marge.",
+        "Typique : à mi-hold (2-3 ans après l'entry), quand la dette initiale a été remboursée et que l'EBITDA a grandi.",
+        "Impact TRI : recap à 3 ans qui rend 50% de l'investissement initial → TRI augmente de plusieurs points (effet \"raccourcissement\").",
+        "Limites : peut fragiliser la cible si le marché tourne (vu en 2008 et 2022), tension avec les prêteurs initiaux, signal \"vente difficile\" si répété.",
+        "Cas emblématiques : Pizza Hut, Toys \"R\" Us (recap excessifs → faillite), Burger King (TPG/3G)."
+      ],
+      tip: "Évoquer \"Toys R Us\" comme exemple de recap excessif qui a tué la cible — montre une lucidité critique sur les pratiques PE."
+    },
+    {
+      id: 117,
+      category: 'lbo',
+      difficulty: 'intermédiaire',
+      question: "Qu'est-ce qu'un secondary buy-out (SBO) et pourquoi ça se développe ?",
+      explanation: "En une phrase — Un fonds PE vend à un autre fonds PE. C'est désormais 40-50% des sorties en Europe. Beaucoup de dry powder, peu de cibles, et les fonds spécialisés peuvent encore créer de la valeur. Pourquoi : tendance majeure du PE.",
+      steps: [
+        "Définition : sortie d'un fonds PE vers un autre fonds PE (financial-to-financial). Par opposition à une vente stratégique ou une IPO.",
+        "Part de marché : 40-50% des exits PE en Europe en 2023-2024, contre 20% il y a 15 ans.",
+        "Drivers : (a) dry powder massif (~$2,5T globalement), (b) peu de cibles de qualité, (c) cibles déjà \"PE-ready\".",
+        "Pourquoi le SBO marche : (a) le nouveau fonds peut avoir une spécialisation différente, (b) thèses différentes (build-up, internationalisation, transformation digitale), (c) injection de fresh equity.",
+        "Limites : (a) \"double-dipping\" perçu négativement, (b) multiple expansion plus dure à second round, (c) tensions sur les management packages.",
+        "Tertiary, quaternary buyouts : phénomène en hausse — un même actif change de mains 3-4 fois entre fonds PE.",
+        "Cas emblématique : Picard Surgelés (LBO 6 fois consécutives entre 2001 et 2024).",
+        "Risques pour le marché : \"musical chairs\" effect — quand les taux montent, plus personne ne veut acheter."
+      ],
+      tip: "Cite Picard ou Verallia comme exemples de \"PE serial\" — actifs passés de fonds en fonds, illustrant la maturité du marché."
+    },
+
+    // ===== NOUVELLES QUESTIONS — TS (Q118-Q122) =====
+    {
+      id: 118,
+      category: 'ts',
+      difficulty: 'basique',
+      question: "Qu'est-ce qu'un EBITDA bridge ?",
+      explanation: "En une phrase — Tableau qui détaille comment on passe de l'EBITDA \"reporté\" à l'EBITDA \"ajusté\" (normalisé) qui servira au calcul du prix. Chaque ligne = un ajustement (non-récurrent, pro-forma, mark-up). Pourquoi : LE livrable phare de la DD financière.",
+      steps: [
+        "Point de départ : EBITDA reporté dans les comptes audités.",
+        "Ajustements \"one-off\" : éléments non-récurrents à retirer (charges de restructuration, litiges, pertes exceptionnelles, coûts de cession).",
+        "Ajustements \"pro-forma\" : impact des acquisitions/cessions réalisées en cours d'année (mise sur 12 mois pleins).",
+        "Ajustements \"management\" : add-backs proposés par le management (consultants, frais salon, surperformance one-off) — à challenger sévèrement.",
+        "Ajustements \"normalisation\" : éléments anormaux à standardiser (rémunération dirigeants, loyers intra-groupe non market).",
+        "Ajustements IFRS 16 : retraitement des loyers en amortissements + intérêts.",
+        "Output : EBITDA ajusté + run-rate (annualisé) = base de calcul du prix.",
+        "Best practice : tagger chaque ajustement (Quality A/B/C) selon la robustesse — les acheteurs n'acceptent pas tous les ajustements."
+      ],
+      tip: "En TS, garde toujours en tête : \"le vendeur veut maximiser l'EBITDA ajusté, l'acheteur veut le minimiser\" — ton rôle est de défendre la vérité économique."
+    },
+    {
+      id: 119,
+      category: 'ts',
+      difficulty: 'intermédiaire',
+      question: "Qu'est-ce que la Quality of Revenue (QoR) ?",
+      explanation: "En une phrase — Analyse de la \"qualité\" du chiffre d'affaires : récurrent vs one-shot, par client, par produit, par géographie, churn, LTV, pricing power. Voir si le CA est solide et prévisible. Pourquoi : devenue centrale en 2020-2025 avec l'explosion du SaaS.",
+      steps: [
+        "Définition : analyse approfondie du CA pour évaluer sa \"robustesse\" — récurrence, prévisibilité, sensibilité aux risques.",
+        "Récurrence : décomposer CA récurrent (subscription, contrat long terme) vs one-shot (projet, vente). Premium pour le récurrent.",
+        "Concentration client : top 10 clients = % du CA. Si > 50% = red flag.",
+        "Churn et rétention : Net Revenue Retention (NRR), Gross Retention, churn brut/net. Standards SaaS : NRR > 110% = excellent.",
+        "Pricing power : capacité de la cible à augmenter ses prix (passage à des hausses tarifaires).",
+        "Cohorte clients : comportement par génération de clients (acquisition année N, suivi sur 5 ans).",
+        "Backlog / pipeline : visibilité sur le CA futur via les contrats signés ou les prospects.",
+        "KPIs SaaS spécifiques : ARR, MRR, ACV, LTV/CAC, Magic Number, Rule of 40."
+      ],
+      tip: "En SaaS, demande toujours la NRR (Net Revenue Retention) — si < 100% = la base clients fond, signal très négatif."
+    },
+    {
+      id: 120,
+      category: 'ts',
+      difficulty: 'avancé',
+      question: "Comment fonctionne le processus de completion accounts ?",
+      explanation: "En une phrase — À l'opposé du locked box, on calcule le prix EFFECTIF au jour du closing : prix négocié ajusté à la hausse/baisse selon dette nette et BFR REELS au closing. Process plus long mais plus juste. Pourquoi : question technique typique en TS et M&A.",
+      steps: [
+        "Principe : le prix final n'est connu qu'APRÈS le closing, une fois les comptes de closing préparés et validés.",
+        "Étape 1 — Signing : SPA signé avec un prix \"estimé\" + formule d'ajustement (cash-free debt-free + working capital target).",
+        "Étape 2 — Closing : transfer de propriété. L'acheteur paye un prix \"préliminaire\" basé sur la dette nette estimée.",
+        "Étape 3 — Completion accounts : production des comptes au jour du closing (typiquement 30-90 jours après), par l'acheteur.",
+        "Étape 4 — Calcul du prix final : Prix final = Prix base + (BFR réel − BFR target) − (Dette nette réelle − Dette nette estimée).",
+        "Étape 5 — Settlement : versement complémentaire à la hausse (par acheteur) ou à la baisse (par vendeur) typiquement dans 60 jours.",
+        "Litiges fréquents : sur la définition exacte de cash, debt-like items, et BFR — résolus par un expert indépendant (typiquement un Big 4).",
+        "Avantage : prix juste, basé sur la réalité économique au closing. Inconvénient : long, complexe, source de litiges."
+      ],
+      tip: "Dans 80% des deals en France, c'est plutôt du locked box (plus simple et plus rapide). Le completion accounts reste standard aux US et en cross-border complexe."
+    },
+    {
+      id: 121,
+      category: 'ts',
+      difficulty: 'intermédiaire',
+      question: "Qu'est-ce que le mécanisme cash-free debt-free et comment l'appliquer ?",
+      explanation: "En une phrase — Le vendeur récupère tout le cash de la cible avant la vente, et rembourse toute la dette. L'acheteur n'achète \"que\" l'opérationnel. Base de tout calcul de prix en M&A privé. Pourquoi : convention de marché incontournable.",
+      steps: [
+        "Principe : on définit un prix sur la base d'une Enterprise Value (hors structure financière), puis on ajuste pour la dette nette réelle au closing.",
+        "Prix réellement payé = EV − Dette nette + Cash − Ajustement BFR.",
+        "\"Cash-free\" : le vendeur a récupéré tout le cash excédentaire avant la vente (sinon l'acheteur paierait pour son propre cash).",
+        "\"Debt-free\" : la dette financière est censée être remboursée au closing par le vendeur — sinon le prix est réduit du montant de la dette.",
+        "En pratique : on ne rembourse pas la dette (trop coûteux en pénalités), on ajuste juste le prix.",
+        "Cash minimum : il faut laisser dans la cible le \"cash de fonctionnement\" pour les opérations courantes (1-2 semaines de décaissement).",
+        "Debt-like items : éléments à traiter comme de la dette même s'ils ne sont pas dans la dette financière (provisions retraites, leasings, earn-out passés, fiscalité différée).",
+        "Working capital target : pour éviter que le vendeur \"vide\" le BFR avant la vente, on fixe un BFR cible (moyenne 12 mois)."
+      ],
+      tip: "La négociation porte typiquement plus sur la définition de \"debt like items\" que sur le multiple lui-même — où sont les vraies batailles."
+    },
+    {
+      id: 122,
+      category: 'ts',
+      difficulty: 'avancé',
+      question: "Comment normalise-t-on le BFR pour une transaction ?",
+      explanation: "En une phrase — On calcule la moyenne du BFR sur 12-24 mois pour neutraliser la saisonnalité. On vérifie qu'il n'y a pas de window dressing. On retraite les éléments non récurrents pour obtenir un BFR \"normatif\" qui servira de target. Pourquoi : sujet pratique central en TS.",
+      steps: [
+        "Définition BFR normatif : niveau \"moyen normal\" du BFR nécessaire pour faire tourner l'activité de manière standard.",
+        "Méthode 1 — Moyenne 12 mois : moyenne mensuelle sur les 12 derniers mois. Neutralise la saisonnalité.",
+        "Méthode 2 — Moyenne 24 mois : si saisonnalité ou volatilité forte. Plus robuste.",
+        "Méthode 3 — Ratios : DSO (Days Sales Outstanding), DPO (Days Payable Outstanding), DIO (Days Inventory Outstanding) appliqués au CA prévisionnel.",
+        "Retraitements typiques : (a) clients exceptionnels, (b) factoring/affacturage (à reverser pour voir le vrai BFR), (c) avances clients (deferred revenue), (d) variations exceptionnelles de stock.",
+        "Window dressing : le vendeur peut artificiellement réduire le BFR en fin d'année → analyser la tendance mois par mois.",
+        "Saisonnalité : retail, agroalimentaire, jouets — pic de stock avant les périodes hautes. Analyser sur cycle complet.",
+        "Use case : le BFR normatif sert de \"target\" dans le SPA. Toute déviation au closing impacte le prix (1:1)."
+      ],
+      tip: "Toujours grapher le BFR sur 24 mois mensuel — la saisonnalité saute aux yeux et indique le bon niveau de target."
+    },
+
+    // ===== NOUVELLES QUESTIONS — FIT & BRAINTEASERS (Q123-Q130) =====
+    {
+      id: 123,
+      category: 'brainteaser',
+      difficulty: 'basique',
+      question: "Où vous voyez-vous dans 5 ans ?",
+      explanation: "En une phrase — Réponse en 3 temps : (1) ambition concrète à 5 ans, (2) compétences à acquérir, (3) ouverture sans donner l'impression de \"passer\" par le poste. Pourquoi : question fit ultra classique, teste projection, ambition, cohérence avec le poste.",
+      steps: [
+        "Erreur 1 : \"Je serai associé(e)\" — trop ambitieux, déconnecté du parcours (associé = 10-15 ans en M&A).",
+        "Erreur 2 : \"Je ne sais pas, j'avance\" — manque d'ambition, peu rassurant.",
+        "Erreur 3 : \"Dans une autre industrie\" — montre que tu vois le poste comme un tremplin = red flag.",
+        "Bonne approche : \"Dans 5 ans, je me vois en VP/Senior chez vous, avec une expertise solide sur [secteur/type de deal], capable de driver des deals de A à Z.\"",
+        "Pour M&A boutique : \"Senior Associate avec une responsabilité directe sur des deals mid-cap, idéalement en cross-border.\"",
+        "Pour PE : \"Senior Associate dans votre fonds, ayant participé à 3-4 deals d'investissement et 1-2 sorties.\"",
+        "Pour TS : \"Senior Manager Big 4, expert sur [secteur], avec une double compétence financière et industrielle.\"",
+        "Bonus : mentionner une compétence à développer (\"structuration\", \"modélisation avancée\", \"leadership d'équipe\").",
+        "Ne JAMAIS dire : entrepreneur, autre cabinet, autre industrie, reconversion."
+      ],
+      tip: "Connecte ta vision 5 ans avec le poste précis : \"ce poste est la meilleure plateforme pour atteindre cet objectif\" — boucle parfaite."
+    },
+    {
+      id: 124,
+      category: 'brainteaser',
+      difficulty: 'intermédiaire',
+      question: "Racontez-moi un échec.",
+      explanation: "En une phrase — Choisir un VRAI échec (pas un faux modeste), analyser lucidement, expliquer les leçons apprises, montrer comment on a corrigé. Pourquoi : question fit révélatrice, teste honnêteté, capacité d'apprentissage, solidité psychologique.",
+      steps: [
+        "Erreur 1 — Le faux échec : \"j'ai eu 17 au lieu de 18 à un examen\" — détecté en 1 seconde.",
+        "Erreur 2 — L'échec déguisé en victoire : \"j'ai raté X mais c'est devenu un succès\" — esquive.",
+        "Erreur 3 — L'échec catastrophique : \"j'ai fait perdre 1M€ à mon stage\" — trop risqué.",
+        "Bonne approche : un échec modéré, lucidement analysé.",
+        "Structure STAR-L : Situation, Tâche, Action, Résultat (l'échec), Learning.",
+        "Catégorie 1 — Échec de gestion d'équipe : \"J'ai sous-estimé la communication avec mon équipe en assoc' étudiante → projet en retard. J'ai appris à over-communiquer.\"",
+        "Catégorie 2 — Échec de prise de décision : \"J'ai pris une décision trop vite sur [X], sans collecter tous les éléments. Depuis, j'utilise une grille de critères.\"",
+        "Catégorie 3 — Échec académique : \"J'ai raté [examen] à cause de [cause]. J'ai changé ma méthode et réussi [équivalent] ensuite.\"",
+        "Ne JAMAIS prendre : échec relationnel grave, problème de santé mentale, échec professionnel grave (licenciement)."
+      ],
+      tip: "Finis sur le learning, pas sur l'échec. \"Aujourd'hui je [comportement changé].\" = mature."
+    },
+    {
+      id: 125,
+      category: 'brainteaser',
+      difficulty: 'basique',
+      question: "Comment gérez-vous le stress et la pression ?",
+      explanation: "En une phrase — (1) reconnaître que la pression est inhérente au métier, (2) donner des stratégies concrètes (priorisation, sport, sommeil), (3) illustrer avec un exemple vécu. Pourquoi : M&A et audit sont des métiers extrêmes, le recruteur veut s'assurer que tu tiens.",
+      steps: [
+        "Erreur : \"Je ne stresse jamais\" — détecté comme mensonge ou inconscience.",
+        "Bonne approche : reconnaître que la pression existe + montrer des mécanismes de gestion.",
+        "Stratégie 1 — Priorisation : \"Je liste les tâches en début de journée par criticité (urgent × important). Je traite les top 3 en priorité.\"",
+        "Stratégie 2 — Hygiène de vie : \"Sport régulier, sommeil non négociable même en deal mode, alimentation correcte = ma base.\"",
+        "Stratégie 3 — Communication : \"Si la charge dépasse le possible, j'alerte tôt mon manager pour réajuster.\"",
+        "Stratégie 4 — Décomposition : \"Face à un livrable énorme, je le découpe en blocs de 2-3h. Ça rend l'inatteignable atteignable.\"",
+        "Stratégie 5 — Récupération : \"Le week-end, je coupe vraiment : pas de mails sauf urgences, activité différente du travail.\"",
+        "Exemple concret : \"En stage M&A, j'ai eu 3 deadlines simultanées sur 2 deals. J'ai priorisé avec mes managers, demandé l'aide d'un autre stagiaire, et tout livré à temps.\"",
+        "Citer les Stoïciens : \"ce qui dépend de moi : ma réaction. Ce qui ne dépend pas : la situation.\""
+      ],
+      tip: "Glisse une vraie pratique : \"je médite 10 min le matin\" ou \"je fais du HIIT 3x/semaine\". Concret > abstrait."
+    },
+    {
+      id: 126,
+      category: 'brainteaser',
+      difficulty: 'intermédiaire',
+      question: "Que feriez-vous avec 10 000€ à investir aujourd'hui ?",
+      explanation: "En une phrase — Allocation rationnelle : 50-60% en actions (ETF monde), 20-30% en obligations/monétaire, 10-20% en thématique pour montrer une opinion. Évite d'être trop conservateur ou trop spéculatif. Pourquoi : test de bon sens financier, culture marchés, raisonnement sous contrainte.",
+      steps: [
+        "Étape 1 — Horizon : \"10 ans, donc tolérance au risque élevée.\"",
+        "Étape 2 — Objectif : capitalisation (pas de besoin de revenus immédiat).",
+        "Allocation cœur (60-70%) : ETF actions monde (MSCI World ou S&P 500). Diversification automatique, frais bas.",
+        "Allocation diversification (15-25%) : obligations (ETF obligataire investment grade) ou monétaire si taux > 3%.",
+        "Allocation conviction (10-15%) : un secteur ou thématique sur lequel tu as une vue forte (IA, défense, énergie).",
+        "Couche optionnelle (5-10%) : crypto via Bitcoin/ETH ou or physique pour la diversification d'actifs.",
+        "Discipline : \"Je ne touche pas pendant 5 ans, je rééquilibre 1x/an.\" Évite le market timing.",
+        "Argument fiscal France : \"PEA pour les actions UE (exonération après 5 ans), assurance-vie pour le reste.\"",
+        "Erreur à éviter : \"tout en actions tech\" (concentré), \"tout en livret A\" (rendement < inflation), \"tout en crypto\" (spéculatif)."
+      ],
+      tip: "Mentionne le ratio Sharpe ou la diversification systémique — montre que tu raisonnes en finance moderne, pas en intuitions."
+    },
+    {
+      id: 127,
+      category: 'brainteaser',
+      difficulty: 'intermédiaire',
+      question: "Combien d'ascenseurs y a-t-il à Paris ?",
+      explanation: "En une phrase — Brain teaser d'estimation. Structurer en partant de la population ou du parc immobilier, faire des hypothèses chiffrées, conclure avec une fourchette. Réponse plausible : 50 000-80 000 intra-muros. Pourquoi : test de structuration mentale, le recruteur veut une démarche logique.",
+      steps: [
+        "Méthode 1 — Par les bâtiments : Paris intra-muros = 2,2M habitants, ~1,4M logements. Hypothèse : 60% en immeubles d'habitat collectif.",
+        "Calcul logements : 1,4M × 60% = 840k logements en collectif. Moyenne 20-30 logements / immeuble → 30k immeubles. 70% avec ascenseur → 21k ascenseurs résidentiels.",
+        "Méthode 2 — Tertiaire : Paris = 17M m² de bureaux. 1 ascenseur pour 1000 m² → 17 000 ascenseurs tertiaires.",
+        "Autres bâtiments : hôtels (~3k), commerces (5k), transports (1k), institutions (2k).",
+        "Total estimé : 21k résidentiels + 17k tertiaires + 11k autres ≈ 50 000 ascenseurs.",
+        "Sanity check : France entière ≈ 600 000 ascenseurs. Paris = ~10% de la pop urbaine dense → 50-80k plausible.",
+        "Réponse finale avec fourchette : \"Mon estimation est entre 50 000 et 80 000 ascenseurs à Paris intra-muros.\"",
+        "Si on parle Grand Paris (12M hab) : multiplier par 3 environ → 150-200k."
+      ],
+      tip: "Le brainteaser n'a pas de \"bonne\" réponse — c'est la structure qui compte. Pose tes hypothèses explicitement, fais des arrondis volontaires, propose une fourchette."
+    },
+    {
+      id: 128,
+      category: 'brainteaser',
+      difficulty: 'intermédiaire',
+      question: "Un train Paris-Lyon dure 2h. Si je marche 5 km/h vers le wagon arrière pendant le trajet, quelle distance ai-je parcourue par rapport au sol ?",
+      explanation: "En une phrase — Brain teaser de référentiel. Distance par rapport au sol = distance du train − distance marchée. TGV 200 km/h × 2h = 400 km. Moi : 5 km/h × 2h = 10 km en sens inverse → 390 km. Pourquoi : test de raisonnement physique, composition des vitesses.",
+      steps: [
+        "Identifier le référentiel : on demande la distance par rapport au SOL (référentiel fixe).",
+        "Vitesse du train par rapport au sol : ~200 km/h en TGV (à préciser comme hypothèse).",
+        "Vitesse du marcheur par rapport au train : 5 km/h vers l'arrière, donc vitesse négative.",
+        "Composition des vitesses : V_marcheur/sol = V_train/sol + V_marcheur/train = 200 − 5 = 195 km/h.",
+        "Sur 2h : distance = 195 × 2 = 390 km.",
+        "Sanity check : si je marche dans le sens du train, V = 205, distance = 410. Si je reste assis, V = 200, distance = 400. Cohérent.",
+        "Cas limite : si je cours à la même vitesse que le train mais à l'arrière, vitesse au sol = 0. Je reste statique au sol pendant que le train avance."
+      ],
+      tip: "Pour les brain teasers physiques, dessine toujours un schéma rapide + référentiel. 80% des erreurs viennent d'une confusion de référentiel."
+    },
+    {
+      id: 129,
+      category: 'brainteaser',
+      difficulty: 'intermédiaire',
+      question: "Pourquoi nous et pas le concurrent direct ?",
+      explanation: "En une phrase — Citer 2-3 différences spécifiques (positionnement, deals, culture) sans dénigrer le concurrent. Le test : montrer que tu as vraiment analysé le marché. Pourquoi : variante méchante du \"pourquoi nous\", le recruteur veut voir si tu as fait ton travail de différenciation.",
+      steps: [
+        "Erreur 1 : critiquer le concurrent (\"Lazard est en perte de vitesse\"). Ils se connaissent, c'est éliminatoire.",
+        "Erreur 2 : dire \"j'aime les deux\" → manque de conviction.",
+        "Erreur 3 : citer des éléments génériques (\"vous avez une bonne formation\") → pas différenciant.",
+        "Bonne approche : 3 différences SPÉCIFIQUES et FACTUELLES.",
+        "Différence 1 — Positionnement : \"Rothschild est plus mid-cap industriel quand Lazard est plus consumer. Mon intérêt étant sur l'industrie, Rothschild correspond mieux.\"",
+        "Différence 2 — Géographie : \"Vous avez 50 bureaux dans le monde quand X en a 25. Pour les deals cross-border que je veux faire, c'est différenciant.\"",
+        "Différence 3 — Culture : \"J'ai rencontré [alumni] qui m'a parlé de votre culture [valeur].\"",
+        "Différence 4 — Deal mix : \"Vous avez fait 40% de deals transformatifs en healthcare, ce qui correspond à mon focus sectoriel.\"",
+        "Conclure : \"Les deux sont d'excellentes maisons, mais pour moi et mes ambitions [spécifiques], c'est ici que je veux être.\""
+      ],
+      tip: "Toujours valider par un alumni rencontré : \"J'ai parlé à [nom], qui m'a confirmé [élément]\" — passe le test du factuel."
+    },
+    {
+      id: 130,
+      category: 'brainteaser',
+      difficulty: 'avancé',
+      question: "Si vous étiez CEO d'une entreprise pendant 1 an, que feriez-vous ?",
+      explanation: "En une phrase — Choisir une entreprise spécifique, poser un diagnostic clair, proposer 2-3 actions concrètes avec un horizon de temps. Démontre la prise de hauteur et l'esprit stratégique. Pourquoi : question avancée fit/strat, teste vision business, hiérarchisation, lucidité.",
+      steps: [
+        "Étape 1 — Choix de l'entreprise : prendre une que tu connais bien (alternance, étude de cas, secteur d'intérêt).",
+        "Étape 2 — Diagnostic : 2-3 enjeux clés (\"Carrefour souffre de marges en baisse, concurrence Amazon et hard discount, manque de différenciation\").",
+        "Étape 3 — Vision : où serait l'entreprise dans 3-5 ans si on réussit (\"Carrefour leader européen de l'omnicanal, marque forte sur le bio et la livraison rapide\").",
+        "Étape 4 — Actions concrètes (3 max) : (1) lever quick wins opérationnels, (2) lancer une transformation digitale ciblée, (3) repositionnement de marque.",
+        "Étape 5 — Mesure du succès : KPIs clairs (croissance LFL, marge EBITDA, NPS clients, market share).",
+        "Étape 6 — Risques et trade-offs : ce que tu choisis de NE PAS faire (cohérence stratégique).",
+        "Étape 7 — Confiance modeste : \"Bien sûr, en 1 an on ne transforme pas une telle entreprise, mais on peut poser les fondations.\"",
+        "Bonus : citer un benchmark (\"comme Best Buy aux US qui s'est transformé en partenariat avec Amazon\")."
+      ],
+      tip: "Choisis une entreprise qui parle au recruteur (cotée et connue) — exemples solides : Carrefour, Renault, Atos, Engie, Stellantis."
     }
   ];
 // =====================================================
