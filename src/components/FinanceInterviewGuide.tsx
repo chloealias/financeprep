@@ -2979,16 +2979,22 @@ const FinanceInterviewGuide = () => {
 
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-12 lg:py-16">
-          {/* Mobile title — compact branded mark */}
-          <div className="sm:hidden flex items-center gap-2.5 min-w-0">
-            <div className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-lg bg-white/10 border border-blue-400/30 backdrop-blur-sm">
+          {/* Mobile title — compact branded mark, acts as home link */}
+          <button
+            type="button"
+            onClick={() => setActivePage('questions')}
+            aria-label="Finance Interview — Transaction Services et M&A. Retour à l'accueil."
+            className="sm:hidden flex items-center gap-2.5 min-w-0 w-full text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+          >
+            <div aria-hidden="true" className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-lg bg-white/10 border border-blue-400/30 backdrop-blur-sm">
               <span className="font-serif text-white text-base leading-none">FI</span>
             </div>
             <div className="flex flex-col leading-tight min-w-0 flex-1">
-              <span className="font-serif text-white text-[15px] tracking-tight whitespace-nowrap">Finance Interview</span>
-              <span className="text-[9px] text-blue-300 tracking-[0.16em] uppercase font-light whitespace-nowrap">TS · M&amp;A</span>
+              <h1 className="font-serif text-white text-[15px] tracking-tight whitespace-nowrap m-0">Finance Interview</h1>
+              <span aria-hidden="true" className="text-[9px] text-blue-300 tracking-[0.16em] uppercase font-light whitespace-nowrap">TS · M&amp;A</span>
+              <span className="sr-only">Transaction Services et M&amp;A</span>
             </div>
-          </div>
+          </button>
 
           <div className="hidden sm:flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
             <div className="h-px w-6 sm:w-12 bg-blue-400" />
