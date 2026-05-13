@@ -2986,12 +2986,12 @@ const FinanceInterviewGuide = () => {
             aria-label="Finance Interview — Transaction Services et M&A. Retour à l'accueil."
             className="sm:hidden flex items-center gap-2.5 min-w-0 w-full text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
-            <div aria-hidden="true" className="flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-lg bg-white/10 border border-blue-400/30 backdrop-blur-sm">
-              <span className="font-serif text-white text-base leading-none">FI</span>
+            <div aria-hidden="true" className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-lg bg-white/10 border border-blue-400/30 backdrop-blur-sm">
+              <span className="font-serif text-white text-lg leading-none">FI</span>
             </div>
             <div className="flex flex-col leading-tight min-w-0 flex-1">
-              <h1 className="font-serif text-white text-[15px] tracking-tight whitespace-nowrap m-0">Finance Interview</h1>
-              <span aria-hidden="true" className="text-[9px] text-blue-300 tracking-[0.16em] uppercase font-light whitespace-nowrap">TS · M&amp;A</span>
+              <h1 className="font-serif text-white text-xl tracking-tight whitespace-nowrap m-0">Finance Interview</h1>
+              <span aria-hidden="true" className="text-[11px] text-blue-300 tracking-[0.18em] uppercase font-light whitespace-nowrap mt-0.5">TS · M&amp;A</span>
               <span className="sr-only">Transaction Services et M&amp;A</span>
             </div>
           </button>
