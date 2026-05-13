@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronRight, BookOpen, TrendingUp, Calculator, Briefcase, Target, Filter, X, Brain, Star, ListChecks, Library, BarChart3, Award, RotateCcw, CheckCircle2 } from 'lucide-react';
+import { Search, ChevronRight, BookOpen, TrendingUp, Calculator, Briefcase, Target, Filter, X, Brain, Star, ListChecks, Library, BarChart3, Award, RotateCcw, CheckCircle2, Bookmark, BookmarkCheck } from 'lucide-react';
 
 
 // =====================================================
@@ -3676,6 +3676,27 @@ const FinanceInterviewGuide = () => {
   const [ratingFilter, setRatingFilter] = useState(saved.ratingFilter ?? 'all'); // all | unrated | weak | mastered
   const [conceptCategory, setConceptCategory] = useState(saved.conceptCategory ?? 'all');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const REVIEW_KEY = 'finance-review-v1';
+  const [reviewList, setReviewList] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const raw = window.localStorage.getItem(REVIEW_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  });
+  const [showReviewOnly, setShowReviewOnly] = useState<boolean>(saved.showReviewOnly ?? false);
+
+  const toggleReview = (qid) => {
+    setReviewList((prev) => {
+      const next = prev.includes(qid) ? prev.filter((x) => x !== qid) : [...prev, qid];
+      try {
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(REVIEW_KEY, JSON.stringify(next));
+        }
+      } catch { /* ignore */ }
+      return next;
+    });
+  };
 
   // Persister les filtres et la recherche
   useEffect(() => {
@@ -3683,10 +3704,10 @@ const FinanceInterviewGuide = () => {
     try {
       window.localStorage.setItem(
         FILTERS_KEY,
-        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory }),
+        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory, showReviewOnly }),
       );
     } catch { /* ignore */ }
-  }, [activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory]);
+  }, [activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory, showReviewOnly]);
 
 
 
@@ -3762,9 +3783,10 @@ const FinanceInterviewGuide = () => {
       const matchSearch = searchQuery === '' || q.question.toLowerCase().includes(searchQuery.toLowerCase()) || q.explanation.toLowerCase().includes(searchQuery.toLowerCase());
       const rating = ratings[q.id] || 0;
       const matchRating = ratingFilter === 'all' || (ratingFilter === 'unrated' && rating === 0) || (ratingFilter === 'weak' && rating > 0 && rating <= 2) || (ratingFilter === 'mastered' && rating >= 4);
-      return matchCategory && matchDifficulty && matchSearch && matchRating;
+      const matchReview = !showReviewOnly || reviewList.includes(q.id);
+      return matchCategory && matchDifficulty && matchSearch && matchRating && matchReview;
     });
-  }, [activeCategory, activeDifficulty, searchQuery, ratings, ratingFilter]);
+  }, [activeCategory, activeDifficulty, searchQuery, ratings, ratingFilter, showReviewOnly, reviewList]);
 
 
   const filteredConcepts = useMemo(() => {
@@ -3990,13 +4012,33 @@ const FinanceInterviewGuide = () => {
                   labelIcon={Star}
                 />
               </div>
+
+              <div className="mt-5 pt-5 border-t border-blue-100">
+                <div className="text-blue-950 text-xs uppercase tracking-wider font-semibold mb-2 flex items-center gap-1.5">
+                  <Bookmark className="w-3.5 h-3.5" /> À réviser
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowReviewOnly((v) => !v)}
+                  disabled={reviewList.length === 0 && !showReviewOnly}
+                  className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all flex items-center gap-2 ${
+                    showReviewOnly
+                      ? 'bg-rose-600 text-white border-rose-600 shadow-md'
+                      : 'bg-white text-rose-700 border-rose-200 hover:border-rose-400 hover:bg-rose-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                  }`}
+                >
+                  {showReviewOnly ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                  {showReviewOnly ? 'Afficher tout' : 'Voir uniquement à réviser'}
+                  <span className={`ml-1 px-1.5 py-0.5 rounded text-xs font-bold ${showReviewOnly ? 'bg-white/20' : 'bg-rose-100 text-rose-800'}`}>{reviewList.length}</span>
+                </button>
+              </div>
             </div>
 
 
             <div className="mt-5 pt-5 border-t border-blue-100 flex items-center justify-between text-sm flex-wrap gap-2">
               <span className="text-blue-700"><span className="font-semibold text-blue-950">{stats.filtered}</span> question{stats.filtered > 1 ? 's' : ''} affichée{stats.filtered > 1 ? 's' : ''}</span>
-              {(activeCategory !== 'all' || activeDifficulty !== 'all' || searchQuery || ratingFilter !== 'all') && (
-                <button onClick={() => { setActiveCategory('all'); setActiveDifficulty('all'); setSearchQuery(''); setRatingFilter('all'); }} className="text-blue-700 hover:text-blue-900 underline underline-offset-2">Réinitialiser</button>
+              {(activeCategory !== 'all' || activeDifficulty !== 'all' || searchQuery || ratingFilter !== 'all' || showReviewOnly) && (
+                <button onClick={() => { setActiveCategory('all'); setActiveDifficulty('all'); setSearchQuery(''); setRatingFilter('all'); setShowReviewOnly(false); }} className="text-blue-700 hover:text-blue-900 underline underline-offset-2">Réinitialiser</button>
               )}
             </div>
           </div>
@@ -4014,8 +4056,17 @@ const FinanceInterviewGuide = () => {
                 const isExpanded = expandedQuestion === q.id;
                 const userRating = ratings[q.id] || 0;
                 return (
-                  <div key={q.id} className={`bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
-                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
+                  <div key={q.id} className={`relative bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : reviewList.includes(q.id) ? 'border-rose-300 hover:border-rose-400' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); toggleReview(q.id); }}
+                      aria-label={reviewList.includes(q.id) ? 'Retirer de la liste à réviser' : 'Marquer comme à réviser'}
+                      aria-pressed={reviewList.includes(q.id)}
+                      className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${reviewList.includes(q.id) ? 'bg-rose-600 text-white border-rose-600 shadow-md' : 'bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-400'}`}
+                    >
+                      {reviewList.includes(q.id) ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                    </button>
+                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-4 sm:p-6 pr-14 sm:pr-16 flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
                         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
                           {userRating >= 4 ? <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" /> : String(index + 1).padStart(2, '0')}
