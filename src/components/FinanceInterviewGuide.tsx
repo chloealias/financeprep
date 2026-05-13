@@ -3676,6 +3676,27 @@ const FinanceInterviewGuide = () => {
   const [ratingFilter, setRatingFilter] = useState(saved.ratingFilter ?? 'all'); // all | unrated | weak | mastered
   const [conceptCategory, setConceptCategory] = useState(saved.conceptCategory ?? 'all');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const REVIEW_KEY = 'finance-review-v1';
+  const [reviewList, setReviewList] = useState<string[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const raw = window.localStorage.getItem(REVIEW_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+  });
+  const [showReviewOnly, setShowReviewOnly] = useState<boolean>(saved.showReviewOnly ?? false);
+
+  const toggleReview = (qid) => {
+    setReviewList((prev) => {
+      const next = prev.includes(qid) ? prev.filter((x) => x !== qid) : [...prev, qid];
+      try {
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(REVIEW_KEY, JSON.stringify(next));
+        }
+      } catch { /* ignore */ }
+      return next;
+    });
+  };
 
   // Persister les filtres et la recherche
   useEffect(() => {
