@@ -3657,34 +3657,60 @@ const FilterRadioGroup = ({ label, value, onChange, options, activeClass, inacti
 // =====================================================
 const FinanceInterviewGuide = () => {
   const FILTERS_KEY = 'finance-filters-v1';
-  const loadFilters = () => {
-    if (typeof window === 'undefined') return null;
-    try {
-      const raw = window.localStorage.getItem(FILTERS_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch { return null; }
-  };
-  const saved = loadFilters() || {};
+  const ALLOWED_CATEGORIES = ['all', 'valuation', 'accounting', 'ma', 'ts', 'lbo', 'dcf', 'brainteaser'];
+  const ALLOWED_DIFFICULTIES = ['all', 'basique', 'intermédiaire', 'avancé'];
+  const ALLOWED_RATING_FILTERS = ['all', 'unrated', 'weak', 'mastered'];
 
+  const sanitizeFilters = (raw: any) => {
+    const o = raw && typeof raw === 'object' ? raw : {};
+    return {
+      activeCategory: ALLOWED_CATEGORIES.includes(o.activeCategory) ? o.activeCategory : 'all',
+      activeDifficulty: ALLOWED_DIFFICULTIES.includes(o.activeDifficulty) ? o.activeDifficulty : 'all',
+      searchQuery: typeof o.searchQuery === 'string' ? o.searchQuery : '',
+      ratingFilter: ALLOWED_RATING_FILTERS.includes(o.ratingFilter) ? o.ratingFilter : 'all',
+      conceptCategory: ALLOWED_CATEGORIES.includes(o.conceptCategory) ? o.conceptCategory : 'all',
+    };
+  };
+
+  // Démarrer avec les valeurs par défaut (évite les mismatches SSR/hydratation)
+  // puis hydrater depuis localStorage côté client.
   const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress
-  const [activeCategory, setActiveCategory] = useState(saved.activeCategory ?? 'all');
-  const [activeDifficulty, setActiveDifficulty] = useState(saved.activeDifficulty ?? 'all');
-  const [searchQuery, setSearchQuery] = useState(saved.searchQuery ?? '');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeDifficulty, setActiveDifficulty] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [expandedQuestion, setExpandedQuestion] = useState(null);
   const [expandedConcept, setExpandedConcept] = useState(null);
   const [ratings, setRatings] = useState({});
-  const [ratingFilter, setRatingFilter] = useState(saved.ratingFilter ?? 'all'); // all | unrated | weak | mastered
-  const [conceptCategory, setConceptCategory] = useState(saved.conceptCategory ?? 'all');
+  const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
+  const [conceptCategory, setConceptCategory] = useState('all');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const REVIEW_KEY = 'finance-review-v1';
-  const [reviewList, setReviewList] = useState<string[]>(() => {
-    if (typeof window === 'undefined') return [];
+  const [reviewList, setReviewList] = useState<string[]>([]);
+  // Volontairement NON persisté : le mode "à réviser" doit toujours être désactivé au chargement.
+  const [showReviewOnly, setShowReviewOnly] = useState<boolean>(false);
+  const [filtersHydrated, setFiltersHydrated] = useState(false);
+
+  // Hydratation depuis localStorage après le montage
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
     try {
-      const raw = window.localStorage.getItem(REVIEW_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch { return []; }
-  });
-  const [showReviewOnly, setShowReviewOnly] = useState<boolean>(saved.showReviewOnly ?? false);
+      const raw = window.localStorage.getItem(FILTERS_KEY);
+      if (raw) {
+        const f = sanitizeFilters(JSON.parse(raw));
+        setActiveCategory(f.activeCategory);
+        setActiveDifficulty(f.activeDifficulty);
+        setSearchQuery(f.searchQuery);
+        setRatingFilter(f.ratingFilter);
+        setConceptCategory(f.conceptCategory);
+      }
+      const rawReview = window.localStorage.getItem(REVIEW_KEY);
+      if (rawReview) {
+        const list = JSON.parse(rawReview);
+        if (Array.isArray(list)) setReviewList(list.filter((x) => typeof x === 'string'));
+      }
+    } catch { /* ignore */ }
+    setFiltersHydrated(true);
+  }, []);
 
   const toggleReview = (qid) => {
     setReviewList((prev) => {
@@ -3698,16 +3724,17 @@ const FinanceInterviewGuide = () => {
     });
   };
 
-  // Persister les filtres et la recherche
+  // Persister les filtres et la recherche (showReviewOnly volontairement exclu)
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !filtersHydrated) return;
     try {
       window.localStorage.setItem(
         FILTERS_KEY,
-        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory, showReviewOnly }),
+        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory }),
       );
     } catch { /* ignore */ }
-  }, [activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory, showReviewOnly]);
+  }, [filtersHydrated, activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory]);
+
 
 
 
