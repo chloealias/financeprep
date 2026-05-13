@@ -2431,7 +2431,7 @@ const StarRating = ({ value, onChange, size = 'md' }) => {
 // =====================================================
 //  CONCEPT CARD — Affichage d'un concept
 // =====================================================
-const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
+const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel, index, total, onPrev, onNext }) => {
   const cardRef = React.useRef(null);
   const wasExpanded = React.useRef(isExpanded);
 
