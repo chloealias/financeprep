@@ -2763,16 +2763,38 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
 //  COMPOSANT PRINCIPAL
 // =====================================================
 const FinanceInterviewGuide = () => {
+  const FILTERS_KEY = 'finance-filters-v1';
+  const loadFilters = () => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const raw = window.localStorage.getItem(FILTERS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch { return null; }
+  };
+  const saved = loadFilters() || {};
+
   const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [activeDifficulty, setActiveDifficulty] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState(saved.activeCategory ?? 'all');
+  const [activeDifficulty, setActiveDifficulty] = useState(saved.activeDifficulty ?? 'all');
+  const [searchQuery, setSearchQuery] = useState(saved.searchQuery ?? '');
   const [expandedQuestion, setExpandedQuestion] = useState(null);
   const [expandedConcept, setExpandedConcept] = useState(null);
   const [ratings, setRatings] = useState({});
-  const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
-  const [conceptCategory, setConceptCategory] = useState('all');
+  const [ratingFilter, setRatingFilter] = useState(saved.ratingFilter ?? 'all'); // all | unrated | weak | mastered
+  const [conceptCategory, setConceptCategory] = useState(saved.conceptCategory ?? 'all');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  // Persister les filtres et la recherche
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(
+        FILTERS_KEY,
+        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory }),
+      );
+    } catch { /* ignore */ }
+  }, [activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory]);
+
 
 
   // Charger les ratings depuis le stockage
