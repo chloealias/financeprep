@@ -1,6 +1,8 @@
 // @ts-nocheck
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search, ChevronRight, BookOpen, TrendingUp, Calculator, Briefcase, Target, Filter, X, Brain, Star, ListChecks, Library, BarChart3, Award, RotateCcw, CheckCircle2, Bookmark, BookmarkCheck } from 'lucide-react';
+import { GuideCard } from './GuideCard';
+import { guides } from '@/data/guides';
 
 
 // =====================================================
@@ -3851,6 +3853,7 @@ const FinanceInterviewGuide = () => {
   const pages = [
     { id: 'questions', label: 'Questions', icon: ListChecks, count: questions.length },
     { id: 'concepts', label: 'Concepts', icon: Library, count: concepts.length },
+    { id: 'guides', label: 'Guides', icon: BookOpen, count: guides.length },
     { id: 'progress', label: 'Ma progression', icon: BarChart3 },
   ];
 
@@ -4308,6 +4311,16 @@ const FinanceInterviewGuide = () => {
               />
             ))}
           </div>
+        </div>
+      )}
+
+
+      {/* PAGE: GUIDES */}
+      {activePage === 'guides' && (
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+          {guides.map((guide) => (
+            <GuideCard key={guide.id} guide={guide} />
+          ))}
         </div>
       )}
 
