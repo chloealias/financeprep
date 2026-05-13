@@ -2575,184 +2575,210 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
   const totalQuestions = questions.length;
   const ratedCount = Object.keys(ratings).filter((k) => ratings[k] > 0).length;
   const masteredCount = Object.keys(ratings).filter((k) => ratings[k] >= 4).length;
+  const weakCount = Object.values(ratings).filter((v) => v > 0 && v <= 2).length;
+  const unratedCount = totalQuestions - ratedCount;
   const avgRating = ratedCount > 0
     ? (Object.values(ratings).reduce((a, b) => a + b, 0) / ratedCount).toFixed(1)
     : '—';
-
+  const masteredPct = totalQuestions > 0 ? Math.round((masteredCount / totalQuestions) * 100) : 0;
 
   const ratingDist = [1, 2, 3, 4, 5].map((r) => ({
     rating: r,
     count: Object.values(ratings).filter((v) => v === r).length,
   }));
+  const distMax = Math.max(...ratingDist.map((x) => x.count), 1);
 
+  const byCategory = categories
+    .filter((c) => c.id !== 'all')
+    .map((cat) => {
+      const catQuestions = questions.filter((q) => q.category === cat.id);
+      const catRatings = catQuestions.map((q) => ratings[q.id] || 0);
+      const rated = catRatings.filter((r) => r > 0).length;
+      const mastered = catRatings.filter((r) => r >= 4).length;
+      const avg = rated > 0 ? (catRatings.reduce((a, b) => a + b, 0) / rated) : 0;
+      return { ...cat, total: catQuestions.length, rated, mastered, avg };
+    })
+    .sort((a, b) => {
+      const pa = a.total > 0 ? a.mastered / a.total : 0;
+      const pb = b.total > 0 ? b.mastered / b.total : 0;
+      return pb - pa;
+    });
 
-  const byCategory = categories.filter((c) => c.id !== 'all').map((cat) => {
-    const catQuestions = questions.filter((q) => q.category === cat.id);
-    const catRatings = catQuestions.map((q) => ratings[q.id] || 0);
-    const rated = catRatings.filter((r) => r > 0).length;
-    const mastered = catRatings.filter((r) => r >= 4).length;
-    const avg = rated > 0 ? (catRatings.reduce((a, b) => a + b, 0) / rated) : 0;
-    return { ...cat, total: catQuestions.length, rated, mastered, avg };
-  });
-
-
-  const weakQuestions = questions.filter((q) => ratings[q.id] > 0 && ratings[q.id] <= 2).slice(0, 5);
-  const unratedQuestions = questions.filter((q) => !ratings[q.id]).slice(0, 5);
-
+  const goToFilter = (filter) => {
+    setActiveCategory('all');
+    setRatingFilter(filter);
+    setActivePage('questions');
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-px w-8 sm:w-12 bg-blue-700" />
           <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Suivi de progression</span>
         </div>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
-          Mon <span className="italic font-light text-blue-700">avancée</span>
+          Ma <span className="italic font-light text-blue-700">progression</span>
         </h2>
-        <p className="text-blue-700 mt-3 font-light text-sm sm:text-base">Notez chaque question de 1 à 5 étoiles pour suivre votre maîtrise. Visez ≥ 4 pour considérer une question acquise.</p>
-      </div>
 
-
-      {/* KPIs principaux */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <div className="bg-white rounded-2xl border-2 border-blue-200 p-6 shadow-sm">
-          <div className="text-xs uppercase tracking-wider text-blue-600 font-semibold mb-2">Questions notées</div>
-          <div className="text-4xl font-serif text-blue-950">{ratedCount}<span className="text-xl text-blue-400">/{totalQuestions}</span></div>
-          <div className="mt-3 h-2 bg-blue-50 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-blue-600 to-indigo-700 transition-all" style={{ width: `${(ratedCount/totalQuestions)*100}%` }} />
+        <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
+          <div className="flex items-baseline justify-between gap-3 mb-3">
+            <span className="text-blue-700 text-sm font-light">Questions maîtrisées (≥ 4★)</span>
+            <span className="text-blue-950 font-serif text-lg">
+              <span className="text-2xl">{masteredCount}</span>
+              <span className="text-blue-400">/{totalQuestions}</span>
+              <span className="ml-2 text-blue-700 text-sm">· {masteredPct}%</span>
+            </span>
           </div>
-        </div>
-        <div className="bg-white rounded-2xl border-2 border-emerald-200 p-6 shadow-sm">
-          <div className="text-xs uppercase tracking-wider text-emerald-700 font-semibold mb-2">✓ Maîtrisées (≥4★)</div>
-          <div className="text-4xl font-serif text-emerald-800">{masteredCount}<span className="text-xl text-emerald-400">/{totalQuestions}</span></div>
-          <div className="mt-3 h-2 bg-emerald-50 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-700 transition-all" style={{ width: `${(masteredCount/totalQuestions)*100}%` }} />
+          <div
+            className="h-2.5 bg-blue-50 rounded-full overflow-hidden"
+            role="progressbar"
+            aria-valuenow={masteredPct}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={`${masteredPct} pour cent maîtrisé`}
+          >
+            <div className="h-full bg-blue-800 transition-all" style={{ width: `${masteredPct}%` }} />
           </div>
-        </div>
-        <div className="bg-white rounded-2xl border-2 border-blue-200 p-6 shadow-sm">
-          <div className="text-xs uppercase tracking-wider text-blue-600 font-semibold mb-2">Note moyenne</div>
-          <div className="text-4xl font-serif text-blue-950">{avgRating}<span className="text-xl text-blue-400">/5</span></div>
-          <div className="mt-3 flex items-center gap-1">
-            {[1,2,3,4,5].map((s) => (<Star key={s} className={`w-4 h-4 ${avgRating !== '—' && s <= Math.round(parseFloat(avgRating)) ? 'fill-amber-400 text-amber-400' : 'text-blue-200'}`} />))}
-          </div>
-        </div>
-        <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-2xl p-6 shadow-sm text-white">
-          <div className="text-xs uppercase tracking-wider text-blue-200 font-semibold mb-2">Reste à voir</div>
-          <div className="text-4xl font-serif">{totalQuestions - ratedCount}</div>
-          <div className="text-xs text-blue-200 mt-3">questions non notées</div>
         </div>
       </div>
 
+      {/* Bloc Reprendre */}
+      <section aria-label="Reprendre votre travail" className="mb-10">
+        <h3 className="text-blue-950 font-serif text-xl mb-4">Reprendre où vous en êtes</h3>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => goToFilter('weak')}
+            disabled={weakCount === 0}
+            aria-label={`Reprendre les ${weakCount} questions à retravailler`}
+            className="group text-left bg-blue-900 hover:bg-blue-950 disabled:bg-blue-200 disabled:cursor-not-allowed text-white rounded-2xl p-5 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+          >
+            <div className="text-xs uppercase tracking-[0.2em] text-blue-200 font-light mb-2">À retravailler</div>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="font-serif text-2xl">{weakCount} <span className="text-base font-light text-blue-200">question{weakCount > 1 ? 's' : ''}</span></div>
+                <div className="text-sm text-blue-100 font-light mt-1">Notées 1 ou 2 étoiles</div>
+              </div>
+              <ChevronRight className="w-6 h-6 text-blue-200 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+            </div>
+          </button>
 
-      {/* Distribution */}
-      <div className="bg-white rounded-2xl border-2 border-blue-100 p-6 mb-10 shadow-sm">
-        <h3 className="text-blue-950 font-serif text-xl mb-5">Répartition des notes</h3>
-        <div className="space-y-3">
-          {[5,4,3,2,1].map((r) => {
+          <button
+            type="button"
+            onClick={() => goToFilter('unrated')}
+            disabled={unratedCount === 0}
+            aria-label={`Découvrir les ${unratedCount} questions non notées`}
+            className="group text-left bg-white hover:bg-blue-50 disabled:opacity-60 disabled:cursor-not-allowed text-blue-950 rounded-2xl p-5 border border-blue-200 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+          >
+            <div className="text-xs uppercase tracking-[0.2em] text-blue-600 font-light mb-2">À découvrir</div>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="font-serif text-2xl">{unratedCount} <span className="text-base font-light text-blue-500">question{unratedCount > 1 ? 's' : ''}</span></div>
+                <div className="text-sm text-blue-600 font-light mt-1">Pas encore notées</div>
+              </div>
+              <ChevronRight className="w-6 h-6 text-blue-400 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+            </div>
+          </button>
+        </div>
+      </section>
+
+      {/* Vue d'ensemble compacte */}
+      <section aria-label="Vue d'ensemble" className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
+        <h3 className="text-blue-950 font-serif text-xl mb-5">Vue d'ensemble</h3>
+        <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-6">
+          <div>
+            <div className="text-2xl sm:text-3xl font-serif text-blue-950">{ratedCount}</div>
+            <div className="text-xs uppercase tracking-wider text-blue-600 font-light mt-1">Notées</div>
+          </div>
+          <div className="border-l border-blue-100 pl-4 sm:pl-6">
+            <div className="text-2xl sm:text-3xl font-serif text-blue-950">{masteredCount}</div>
+            <div className="text-xs uppercase tracking-wider text-blue-600 font-light mt-1">Maîtrisées</div>
+          </div>
+          <div className="border-l border-blue-100 pl-4 sm:pl-6">
+            <div className="text-2xl sm:text-3xl font-serif text-blue-950 flex items-baseline gap-1">
+              {avgRating}
+              {avgRating !== '—' && <Star className="w-4 h-4 fill-amber-400 text-amber-400" />}
+            </div>
+            <div className="text-xs uppercase tracking-wider text-blue-600 font-light mt-1">Moyenne</div>
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <div className="text-xs uppercase tracking-wider text-blue-600 font-light mb-2">Répartition des notes</div>
+          {[5, 4, 3, 2, 1].map((r) => {
             const d = ratingDist.find((x) => x.rating === r);
-            const max = Math.max(...ratingDist.map((x) => x.count), 1);
-            const pct = (d.count / max) * 100;
-            const color = r >= 4 ? 'from-emerald-500 to-emerald-700' : r === 3 ? 'from-blue-500 to-blue-700' : 'from-orange-400 to-red-500';
+            const pct = (d.count / distMax) * 100;
+            const intensity = r >= 4 ? 'bg-blue-800' : r === 3 ? 'bg-blue-500' : 'bg-blue-300';
             return (
               <div key={r} className="flex items-center gap-3">
-                <div className="flex items-center gap-1 w-28 flex-shrink-0">
-                  {[1,2,3,4,5].map((s) => (<Star key={s} className={`w-3.5 h-3.5 ${s <= r ? 'fill-amber-400 text-amber-400' : 'text-blue-100'}`} strokeWidth={1.5} />))}
+                <div className="flex items-center gap-0.5 w-20 flex-shrink-0">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className={`w-3 h-3 ${s <= r ? 'fill-amber-400 text-amber-400' : 'text-blue-100'}`} strokeWidth={1.5} />
+                  ))}
                 </div>
-                <div className="flex-1 h-7 bg-blue-50 rounded-md overflow-hidden">
-                  <div className={`h-full bg-gradient-to-r ${color} flex items-center justify-end pr-3 transition-all`} style={{ width: `${pct}%` }}>
-                    {d.count > 0 && <span className="text-white text-xs font-bold">{d.count}</span>}
-                  </div>
+                <div className="flex-1 h-2 bg-blue-50 rounded-full overflow-hidden">
+                  <div className={`h-full ${intensity} transition-all`} style={{ width: `${pct}%` }} />
                 </div>
-                <div className="w-12 text-right text-blue-700 font-semibold text-sm">{d.count}</div>
+                <div className="w-8 text-right text-blue-700 font-medium text-xs tabular-nums">{d.count}</div>
               </div>
             );
           })}
         </div>
-      </div>
-
+      </section>
 
       {/* Par catégorie */}
-      <div className="bg-white rounded-2xl border-2 border-blue-100 p-6 mb-10 shadow-sm">
-        <h3 className="text-blue-950 font-serif text-xl mb-5">Progression par catégorie</h3>
-        <div className="space-y-4">
+      <section aria-label="Progression par catégorie" className="mb-10 bg-white rounded-2xl border border-blue-100 shadow-sm overflow-hidden">
+        <h3 className="text-blue-950 font-serif text-xl px-5 sm:px-6 pt-5 sm:pt-6 mb-3">Par catégorie</h3>
+        <ul className="divide-y divide-blue-100">
           {byCategory.map((c) => {
             const Icon = c.icon;
             const pct = c.total > 0 ? (c.mastered / c.total) * 100 : 0;
             return (
-              <button
-                key={c.id}
-                onClick={() => { setActiveCategory(c.id); setActivePage('questions'); setRatingFilter('all'); }}
-                className="w-full text-left bg-blue-50/40 rounded-xl p-4 hover:bg-blue-100/50 transition-colors border border-blue-100"
-              >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-5 h-5 text-white" />
+              <li key={c.id}>
+                <button
+                  type="button"
+                  onClick={() => { setActiveCategory(c.id); setRatingFilter('all'); setActivePage('questions'); }}
+                  aria-label={`Voir les questions de ${c.label}, ${c.mastered} sur ${c.total} maîtrisées`}
+                  className="w-full text-left px-5 sm:px-6 py-4 hover:bg-blue-50/60 transition-colors flex items-center gap-4 focus:outline-none focus-visible:bg-blue-50"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-4.5 h-4.5 text-blue-800" />
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between gap-3 flex-wrap">
-                      <span className="font-semibold text-blue-950">{c.label}</span>
-                      <span className="text-sm text-blue-700">
-                        <span className="text-emerald-700 font-semibold">{c.mastered}</span> maîtrisées /{' '}
-                        <span className="text-blue-700 font-semibold">{c.rated}</span> notées /{' '}
-                        <span className="text-blue-400">{c.total}</span> total
-                        {c.avg > 0 && <span className="ml-3 text-amber-600 font-semibold">⭐ {c.avg.toFixed(1)}</span>}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline justify-between gap-3 mb-1.5">
+                      <span className="font-medium text-blue-950 truncate">{c.label}</span>
+                      <span className="text-sm text-blue-700 font-light tabular-nums flex-shrink-0">
+                        <span className="text-blue-950 font-medium">{c.mastered}</span>
+                        <span className="text-blue-400">/{c.total}</span>
                       </span>
                     </div>
-                    <div className="mt-2 h-2 bg-white rounded-full overflow-hidden border border-blue-100">
-                      <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-700 transition-all" style={{ width: `${pct}%` }} />
+                    <div
+                      className="h-1.5 bg-blue-50 rounded-full overflow-hidden"
+                      role="progressbar"
+                      aria-valuenow={Math.round(pct)}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                    >
+                      <div className="h-full bg-blue-700 transition-all" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
-                </div>
-              </button>
+                  <ChevronRight className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                </button>
+              </li>
             );
           })}
-        </div>
-      </div>
-
-
-      {/* À revoir + à découvrir */}
-      <div className="grid md:grid-cols-2 gap-6 mb-10">
-        <div className="bg-white rounded-2xl border-2 border-red-200 p-6 shadow-sm">
-          <h3 className="text-red-900 font-serif text-lg mb-4 flex items-center gap-2">🔴 Questions à retravailler</h3>
-          {weakQuestions.length === 0 ? (
-            <p className="text-blue-600 text-sm italic font-light">Aucune question notée ≤ 2 étoiles pour le moment.</p>
-          ) : (
-            <ul className="space-y-2.5">
-              {weakQuestions.map((q) => (
-                <li key={q.id} className="text-sm text-blue-900 leading-relaxed flex items-start gap-2">
-                  <span className="text-red-600 font-bold flex-shrink-0">{ratings[q.id]}★</span>
-                  <span className="line-clamp-2">{q.question}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="bg-white rounded-2xl border-2 border-blue-200 p-6 shadow-sm">
-          <h3 className="text-blue-900 font-serif text-lg mb-4 flex items-center gap-2">🔵 À découvrir (non notées)</h3>
-          {unratedQuestions.length === 0 ? (
-            <p className="text-emerald-700 text-sm italic font-light">🎉 Bravo, toutes les questions sont notées !</p>
-          ) : (
-            <ul className="space-y-2.5">
-              {unratedQuestions.map((q) => (
-                <li key={q.id} className="text-sm text-blue-900 leading-relaxed flex items-start gap-2">
-                  <span className="text-blue-400 font-bold flex-shrink-0">—</span>
-                  <span className="line-clamp-2">{q.question}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </div>
-
+        </ul>
+      </section>
 
       {/* Reset */}
       <div className="text-center">
         <button
           onClick={onReset}
-          className="inline-flex items-center gap-2 text-red-700 hover:text-red-900 text-sm font-medium underline underline-offset-4"
+          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-900 text-sm font-light underline underline-offset-4"
         >
-          <RotateCcw className="w-4 h-4" />
+          <RotateCcw className="w-3.5 h-3.5" />
           Réinitialiser toutes mes notes
         </button>
       </div>
