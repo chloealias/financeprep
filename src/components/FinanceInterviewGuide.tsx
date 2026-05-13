@@ -3333,8 +3333,8 @@ const FinanceInterviewGuide = () => {
 
       {/* PAGE: CONCEPTS */}
       {activePage === 'concepts' && (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="mb-8 sm:mb-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+          <div className="mb-6 sm:mb-10">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px w-8 sm:w-12 bg-blue-700" />
               <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
@@ -3342,34 +3342,47 @@ const FinanceInterviewGuide = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
               Les <span className="italic font-light text-blue-700">concepts essentiels</span>
             </h2>
-            <p className="text-blue-700 mt-3 font-light max-w-3xl">
+            <p className="text-blue-700 mt-3 font-light text-sm sm:text-base max-w-3xl hidden sm:block">
               {concepts.length} fiches pédagogiques. Chaque concept : explication en une phrase, formule, approfondissement, tableau de référence, schéma et pièges à éviter.
             </p>
           </div>
 
 
-          {/* Filtre concepts */}
-          <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-5 mb-8">
-            <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Filtrer par thématique</div>
-            <div className="flex flex-wrap gap-2">
-              {categories.filter((c) => c.id !== 'brainteaser').map((cat) => {
-                const Icon = cat.icon;
-                const isActive = conceptCategory === cat.id;
-                const count = cat.id === 'all' ? concepts.length : concepts.filter((c) => c.category === cat.id).length;
-                if (count === 0) return null;
-                return (
-                  <button key={cat.id} onClick={() => setConceptCategory(cat.id)} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-blue-900 text-white border-blue-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>
-                    <Icon className="w-4 h-4" />
-                    {cat.label}
-                    <span className={`text-xs px-1.5 py-0.5 rounded ${isActive ? 'bg-white/20' : 'bg-blue-50'}`}>{count}</span>
-                  </button>
-                );
-              })}
+          {/* Filtre concepts — barre horizontale sticky */}
+          <div className="sticky top-16 z-20 -mx-4 sm:mx-0 mb-6 sm:mb-8 bg-blue-50/95 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-0 border-b border-blue-100 sm:border-0">
+            <div className="sm:bg-white sm:rounded-2xl sm:shadow-sm sm:border sm:border-blue-100 sm:p-4">
+              <div className="hidden sm:block text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Filtrer par thématique</div>
+              <div
+                role="tablist"
+                aria-label="Filtrer les concepts par thématique"
+                className="flex gap-2 overflow-x-auto px-4 sm:px-0 py-3 sm:py-0 snap-x snap-mandatory scrollbar-hide"
+                style={{ scrollbarWidth: 'none' }}
+              >
+                {categories.filter((c) => c.id !== 'brainteaser').map((cat) => {
+                  const Icon = cat.icon;
+                  const isActive = conceptCategory === cat.id;
+                  const count = cat.id === 'all' ? concepts.length : concepts.filter((c) => c.category === cat.id).length;
+                  if (count === 0) return null;
+                  return (
+                    <button
+                      key={cat.id}
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => setConceptCategory(cat.id)}
+                      className={`flex-shrink-0 snap-start flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${isActive ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      <span className="whitespace-nowrap">{cat.label}</span>
+                      <span className={`text-[11px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/20' : 'bg-blue-50'}`}>{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {filteredConcepts.map((c) => (
               <ConceptCard key={c.id} concept={c} isExpanded={expandedConcept === c.id} onToggle={() => setExpandedConcept(expandedConcept === c.id ? null : c.id)} getCategoryLabel={getCategoryLabel} />
             ))}
