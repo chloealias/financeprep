@@ -4012,13 +4012,33 @@ const FinanceInterviewGuide = () => {
                   labelIcon={Star}
                 />
               </div>
+
+              <div className="mt-5 pt-5 border-t border-blue-100">
+                <div className="text-blue-950 text-xs uppercase tracking-wider font-semibold mb-2 flex items-center gap-1.5">
+                  <Bookmark className="w-3.5 h-3.5" /> À réviser
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowReviewOnly((v) => !v)}
+                  disabled={reviewList.length === 0 && !showReviewOnly}
+                  className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all flex items-center gap-2 ${
+                    showReviewOnly
+                      ? 'bg-rose-600 text-white border-rose-600 shadow-md'
+                      : 'bg-white text-rose-700 border-rose-200 hover:border-rose-400 hover:bg-rose-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                  }`}
+                >
+                  {showReviewOnly ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                  {showReviewOnly ? 'Afficher tout' : 'Voir uniquement à réviser'}
+                  <span className={`ml-1 px-1.5 py-0.5 rounded text-xs font-bold ${showReviewOnly ? 'bg-white/20' : 'bg-rose-100 text-rose-800'}`}>{reviewList.length}</span>
+                </button>
+              </div>
             </div>
 
 
             <div className="mt-5 pt-5 border-t border-blue-100 flex items-center justify-between text-sm flex-wrap gap-2">
               <span className="text-blue-700"><span className="font-semibold text-blue-950">{stats.filtered}</span> question{stats.filtered > 1 ? 's' : ''} affichée{stats.filtered > 1 ? 's' : ''}</span>
-              {(activeCategory !== 'all' || activeDifficulty !== 'all' || searchQuery || ratingFilter !== 'all') && (
-                <button onClick={() => { setActiveCategory('all'); setActiveDifficulty('all'); setSearchQuery(''); setRatingFilter('all'); }} className="text-blue-700 hover:text-blue-900 underline underline-offset-2">Réinitialiser</button>
+              {(activeCategory !== 'all' || activeDifficulty !== 'all' || searchQuery || ratingFilter !== 'all' || showReviewOnly) && (
+                <button onClick={() => { setActiveCategory('all'); setActiveDifficulty('all'); setSearchQuery(''); setRatingFilter('all'); setShowReviewOnly(false); }} className="text-blue-700 hover:text-blue-900 underline underline-offset-2">Réinitialiser</button>
               )}
             </div>
           </div>
