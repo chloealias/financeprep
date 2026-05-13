@@ -4056,8 +4056,17 @@ const FinanceInterviewGuide = () => {
                 const isExpanded = expandedQuestion === q.id;
                 const userRating = ratings[q.id] || 0;
                 return (
-                  <div key={q.id} className={`bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
-                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
+                  <div key={q.id} className={`relative bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : reviewList.includes(q.id) ? 'border-rose-300 hover:border-rose-400' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); toggleReview(q.id); }}
+                      aria-label={reviewList.includes(q.id) ? 'Retirer de la liste à réviser' : 'Marquer comme à réviser'}
+                      aria-pressed={reviewList.includes(q.id)}
+                      className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${reviewList.includes(q.id) ? 'bg-rose-600 text-white border-rose-600 shadow-md' : 'bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-400'}`}
+                    >
+                      {reviewList.includes(q.id) ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                    </button>
+                    <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-4 sm:p-6 pr-14 sm:pr-16 flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
                         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
                           {userRating >= 4 ? <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" /> : String(index + 1).padStart(2, '0')}
