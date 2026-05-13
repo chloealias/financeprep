@@ -3783,9 +3783,10 @@ const FinanceInterviewGuide = () => {
       const matchSearch = searchQuery === '' || q.question.toLowerCase().includes(searchQuery.toLowerCase()) || q.explanation.toLowerCase().includes(searchQuery.toLowerCase());
       const rating = ratings[q.id] || 0;
       const matchRating = ratingFilter === 'all' || (ratingFilter === 'unrated' && rating === 0) || (ratingFilter === 'weak' && rating > 0 && rating <= 2) || (ratingFilter === 'mastered' && rating >= 4);
-      return matchCategory && matchDifficulty && matchSearch && matchRating;
+      const matchReview = !showReviewOnly || reviewList.includes(q.id);
+      return matchCategory && matchDifficulty && matchSearch && matchRating && matchReview;
     });
-  }, [activeCategory, activeDifficulty, searchQuery, ratings, ratingFilter]);
+  }, [activeCategory, activeDifficulty, searchQuery, ratings, ratingFilter, showReviewOnly, reviewList]);
 
 
   const filteredConcepts = useMemo(() => {
