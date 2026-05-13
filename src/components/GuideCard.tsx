@@ -21,7 +21,7 @@ export function GuideCard({ guide }: GuideCardProps) {
         <div className="flex items-center gap-3">
           
           <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-semibold">
-            {String(guide.id).padStart(2; "0")}
+            {String(guide.id).padStart(2, "0")}
           </div>
 
           <div className="space-y-2">
