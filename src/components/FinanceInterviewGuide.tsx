@@ -2900,12 +2900,12 @@ const FinanceInterviewGuide = () => {
         <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-12 lg:py-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 sm:py-12 lg:py-16">
           <div className="hidden sm:flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
             <div className="h-px w-6 sm:w-12 bg-blue-400" />
             <span className="text-blue-300 text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase font-light">Guide professionnel</span>
           </div>
-          <h1 className="text-lg sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-tight sm:leading-[1.05]">
+          <h1 className="text-sm sm:text-5xl lg:text-6xl font-serif text-white tracking-tight leading-tight sm:leading-[1.05]">
             <span className="sm:hidden">Finance Interview</span>
             <span className="hidden sm:inline">Finance Interview<br /><span className="italic font-light text-blue-200">Questions & Concepts</span></span>
           </h1>
