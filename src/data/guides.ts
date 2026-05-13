@@ -10,7 +10,7 @@ export const guides = [
 
   {
     id: 2,
-    title: "Finance Acronyms",
+    title: "Glossaires des acronymes",
     category: "Technical",
     level: "Essential",
     description:
