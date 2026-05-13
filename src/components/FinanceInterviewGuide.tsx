@@ -2772,6 +2772,7 @@ const FinanceInterviewGuide = () => {
   const [ratings, setRatings] = useState({});
   const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
   const [conceptCategory, setConceptCategory] = useState('all');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
 
   // Charger les ratings depuis le stockage
@@ -2981,47 +2982,62 @@ const FinanceInterviewGuide = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* Filtres */}
           <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-4 sm:p-6 mb-6 sm:mb-8">
-            <div className="flex items-center gap-2 mb-5">
+            <div className="hidden sm:flex items-center gap-2 mb-5">
               <Filter className="w-4 h-4 text-blue-700" />
               <h2 className="text-blue-950 font-serif text-lg">Filtres & recherche</h2>
             </div>
 
 
-            <div className="relative mb-5">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" />
-              <input type="text" placeholder="Rechercher une question, un concept..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-12 py-3 bg-blue-50/50 border border-blue-200 rounded-lg text-base text-blue-950 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
-              {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-700"><X className="w-5 h-5" /></button>}
-            </div>
-
-
-            <div className="mb-5">
-              <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Catégorie</div>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => {
-                  const Icon = cat.icon;
-                  const isActive = activeCategory === cat.id;
-                  return (
-                    <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-blue-900 text-white border-blue-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>
-                      <Icon className="w-4 h-4" />
-                      {cat.label}
-                    </button>
-                  );
-                })}
+            <div className="flex items-center gap-2 mb-5 sm:mb-5">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" />
+                <input type="text" placeholder="Rechercher..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-12 py-3 bg-blue-50/50 border border-blue-200 rounded-lg text-base text-blue-950 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-700"><X className="w-5 h-5" /></button>}
               </div>
+              <button
+                onClick={() => setShowMobileFilters((v) => !v)}
+                aria-label="Afficher les filtres"
+                aria-expanded={showMobileFilters}
+                className={`sm:hidden relative flex-shrink-0 w-12 h-12 rounded-lg border flex items-center justify-center transition-all ${showMobileFilters ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-700 border-blue-200'}`}
+              >
+                <Filter className="w-5 h-5" />
+                {(activeCategory !== 'all' || activeDifficulty !== 'all' || ratingFilter !== 'all') && (
+                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400" />
+                )}
+              </button>
             </div>
 
 
-            <div className="grid md:grid-cols-2 gap-5">
-              <div>
-                <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Difficulté</div>
+            <div className={`${showMobileFilters ? 'block' : 'hidden'} sm:block`}>
+              <div className="mb-5">
+                <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Catégorie</div>
                 <div className="flex flex-wrap gap-2">
-                  {difficulties.map((diff) => { const isActive = activeDifficulty === diff.id; return (<button key={diff.id} onClick={() => setActiveDifficulty(diff.id)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-indigo-900 text-white border-indigo-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>{diff.label}</button>); })}
+                  {categories.map((cat) => {
+                    const Icon = cat.icon;
+                    const isActive = activeCategory === cat.id;
+                    return (
+                      <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-blue-900 text-white border-blue-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>
+                        <Icon className="w-4 h-4" />
+                        {cat.label}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-              <div>
-                <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3 flex items-center gap-1.5"><Star className="w-3 h-3" /> Filtre par notation</div>
-                <div className="flex flex-wrap gap-2">
-                  {ratingFilters.map((rf) => { const isActive = ratingFilter === rf.id; return (<button key={rf.id} onClick={() => setRatingFilter(rf.id)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-amber-600 text-white border-amber-600 shadow-md' : 'bg-white text-amber-700 border-amber-200 hover:border-amber-400 hover:bg-amber-50'}`}>{rf.label}</button>); })}
+
+
+              <div className="grid md:grid-cols-2 gap-5">
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Difficulté</div>
+                  <div className="flex flex-wrap gap-2">
+                    {difficulties.map((diff) => { const isActive = activeDifficulty === diff.id; return (<button key={diff.id} onClick={() => setActiveDifficulty(diff.id)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-indigo-900 text-white border-indigo-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>{diff.label}</button>); })}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3 flex items-center gap-1.5"><Star className="w-3 h-3" /> Filtre par notation</div>
+                  <div className="flex flex-wrap gap-2">
+                    {ratingFilters.map((rf) => { const isActive = ratingFilter === rf.id; return (<button key={rf.id} onClick={() => setRatingFilter(rf.id)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-amber-600 text-white border-amber-600 shadow-md' : 'bg-white text-amber-700 border-amber-200 hover:border-amber-400 hover:bg-amber-50'}`}>{rf.label}</button>); })}
+                  </div>
                 </div>
               </div>
             </div>
