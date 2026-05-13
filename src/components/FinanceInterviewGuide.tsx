@@ -3704,10 +3704,10 @@ const FinanceInterviewGuide = () => {
     try {
       window.localStorage.setItem(
         FILTERS_KEY,
-        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory }),
+        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory, showReviewOnly }),
       );
     } catch { /* ignore */ }
-  }, [activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory]);
+  }, [activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory, showReviewOnly]);
 
 
 
