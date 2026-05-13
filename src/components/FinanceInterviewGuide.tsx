@@ -4315,6 +4315,16 @@ const FinanceInterviewGuide = () => {
       )}
 
 
+      {/* PAGE: GUIDES */}
+      {activePage === 'guides' && (
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+          {guides.map((guide) => (
+            <GuideCard key={guide.id} guide={guide} />
+          ))}
+        </div>
+      )}
+
+
       {/* PAGE: PROGRESS */}
       {activePage === 'progress' && (
         <ProgressPage questions={questions} ratings={ratings} categories={categories} getCategoryLabel={getCategoryLabel} onReset={resetRatings} setActivePage={setActivePage} setActiveCategory={setActiveCategory} setRatingFilter={setRatingFilter} />
