@@ -2465,6 +2465,9 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel, index, t
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-500 tabular-nums">
+              {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+            </span>
             <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
               {getCategoryLabel(concept.category)}
             </span>
