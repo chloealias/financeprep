@@ -3406,8 +3406,18 @@ const FinanceInterviewGuide = () => {
 
 
           <div className="space-y-3 sm:space-y-4">
-            {filteredConcepts.map((c) => (
-              <ConceptCard key={c.id} concept={c} isExpanded={expandedConcept === c.id} onToggle={() => setExpandedConcept(expandedConcept === c.id ? null : c.id)} getCategoryLabel={getCategoryLabel} />
+            {filteredConcepts.map((c, i) => (
+              <ConceptCard
+                key={c.id}
+                concept={c}
+                index={i}
+                total={filteredConcepts.length}
+                isExpanded={expandedConcept === c.id}
+                onToggle={() => setExpandedConcept(expandedConcept === c.id ? null : c.id)}
+                onPrev={() => i > 0 && setExpandedConcept(filteredConcepts[i - 1].id)}
+                onNext={() => i < filteredConcepts.length - 1 && setExpandedConcept(filteredConcepts[i + 1].id)}
+                getCategoryLabel={getCategoryLabel}
+              />
             ))}
           </div>
         </div>
