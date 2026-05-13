@@ -2583,15 +2583,35 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel, index, t
               </div>
             )}
 
-            {/* Close button at the bottom */}
-            <div className="pt-2 flex justify-center">
+            {/* Footer navigation : précédent · compteur/replier · suivant */}
+            <div className="pt-2 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={onPrev}
+                disabled={index === 0}
+                aria-label="Concept précédent"
+                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 py-2 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              >
+                <ChevronRight className="w-4 h-4 rotate-180" />
+                <span className="hidden sm:inline">Précédent</span>
+              </button>
               <button
                 type="button"
                 onClick={onToggle}
                 className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-light px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-400 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
               >
-                Replier ce concept
-                <ChevronRight className="w-4 h-4 -rotate-90" />
+                <span className="tabular-nums text-blue-500 text-xs">{index + 1}/{total}</span>
+                <span>Replier</span>
+              </button>
+              <button
+                type="button"
+                onClick={onNext}
+                disabled={index === total - 1}
+                aria-label="Concept suivant"
+                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 py-2 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              >
+                <span className="hidden sm:inline">Suivant</span>
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
