@@ -2760,19 +2760,96 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
   );
 };
 // =====================================================
+//  FILTER RADIO GROUP (accessible)
+// =====================================================
+const FilterRadioGroup = ({ label, value, onChange, options, activeClass, inactiveClass, labelIcon: LabelIcon }) => {
+  const refs = React.useRef([]);
+  const groupId = React.useId();
+  const labelId = `${groupId}-label`;
+
+  const handleKeyDown = (e, idx) => {
+    const last = options.length - 1;
+    let next = idx;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = idx === last ? 0 : idx + 1;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = idx === 0 ? last : idx - 1;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = last;
+    else return;
+    e.preventDefault();
+    onChange(options[next].id);
+    refs.current[next]?.focus();
+  };
+
+  const focusedIndex = Math.max(0, options.findIndex((o) => o.id === value));
+
+  return (
+    <div className="mb-5">
+      <div id={labelId} className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3 flex items-center gap-1.5">
+        {LabelIcon && <LabelIcon className="w-3 h-3" aria-hidden="true" />}
+        {label}
+      </div>
+      <div role="radiogroup" aria-labelledby={labelId} className="flex flex-wrap gap-2">
+        {options.map((opt, idx) => {
+          const Icon = opt.icon;
+          const isActive = value === opt.id;
+          return (
+            <button
+              key={opt.id}
+              ref={(el) => (refs.current[idx] = el)}
+              type="button"
+              role="radio"
+              aria-checked={isActive}
+              tabIndex={idx === focusedIndex ? 0 : -1}
+              onClick={() => onChange(opt.id)}
+              onKeyDown={(e) => handleKeyDown(e, idx)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-blue-500 ${isActive ? activeClass : inactiveClass}`}
+            >
+              {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// =====================================================
 //  COMPOSANT PRINCIPAL
 // =====================================================
 const FinanceInterviewGuide = () => {
+  const FILTERS_KEY = 'finance-filters-v1';
+  const loadFilters = () => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const raw = window.localStorage.getItem(FILTERS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch { return null; }
+  };
+  const saved = loadFilters() || {};
+
   const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [activeDifficulty, setActiveDifficulty] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState(saved.activeCategory ?? 'all');
+  const [activeDifficulty, setActiveDifficulty] = useState(saved.activeDifficulty ?? 'all');
+  const [searchQuery, setSearchQuery] = useState(saved.searchQuery ?? '');
   const [expandedQuestion, setExpandedQuestion] = useState(null);
   const [expandedConcept, setExpandedConcept] = useState(null);
   const [ratings, setRatings] = useState({});
-  const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
-  const [conceptCategory, setConceptCategory] = useState('all');
+  const [ratingFilter, setRatingFilter] = useState(saved.ratingFilter ?? 'all'); // all | unrated | weak | mastered
+  const [conceptCategory, setConceptCategory] = useState(saved.conceptCategory ?? 'all');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  // Persister les filtres et la recherche
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(
+        FILTERS_KEY,
+        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory }),
+      );
+    } catch { /* ignore */ }
+  }, [activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory]);
+
 
 
   // Charger les ratings depuis le stockage
@@ -2990,55 +3067,74 @@ const FinanceInterviewGuide = () => {
 
             <div className="flex items-center gap-2 mb-5 sm:mb-5">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" />
-                <input type="text" placeholder="Rechercher..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-full pl-12 pr-12 py-3 bg-blue-50/50 border border-blue-200 rounded-lg text-base text-blue-950 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
-                {searchQuery && <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-700"><X className="w-5 h-5" /></button>}
+                <label htmlFor="finance-search" className="sr-only">Rechercher une question ou un concept</label>
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" aria-hidden="true" />
+                <input
+                  id="finance-search"
+                  type="search"
+                  placeholder="Rechercher..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === 'Escape' && searchQuery) { e.preventDefault(); setSearchQuery(''); } }}
+                  className="w-full pl-12 pr-12 py-3 bg-blue-50/50 border border-blue-200 rounded-lg text-base text-blue-950 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                {searchQuery && (
+                  <button type="button" onClick={() => setSearchQuery('')} aria-label="Effacer la recherche" className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">
+                    <X className="w-5 h-5" aria-hidden="true" />
+                  </button>
+                )}
               </div>
               <button
+                type="button"
                 onClick={() => setShowMobileFilters((v) => !v)}
-                aria-label="Afficher les filtres"
+                onKeyDown={(e) => { if (e.key === 'Escape' && showMobileFilters) { e.preventDefault(); setShowMobileFilters(false); } }}
+                aria-label={showMobileFilters ? 'Masquer les filtres' : 'Afficher les filtres'}
                 aria-expanded={showMobileFilters}
-                className={`sm:hidden relative flex-shrink-0 w-12 h-12 rounded-lg border flex items-center justify-center transition-all ${showMobileFilters ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-700 border-blue-200'}`}
+                aria-controls="mobile-filters-panel"
+                className={`sm:hidden relative flex-shrink-0 w-12 h-12 rounded-lg border flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${showMobileFilters ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-700 border-blue-200'}`}
               >
-                <Filter className="w-5 h-5" />
+                <Filter className="w-5 h-5" aria-hidden="true" />
                 {(activeCategory !== 'all' || activeDifficulty !== 'all' || ratingFilter !== 'all') && (
-                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400" />
+                  <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400" aria-hidden="true" />
                 )}
               </button>
             </div>
 
 
-            <div className={`${showMobileFilters ? 'block' : 'hidden'} sm:block`}>
-              <div className="mb-5">
-                <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Catégorie</div>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map((cat) => {
-                    const Icon = cat.icon;
-                    const isActive = activeCategory === cat.id;
-                    return (
-                      <button key={cat.id} onClick={() => setActiveCategory(cat.id)} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-blue-900 text-white border-blue-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>
-                        <Icon className="w-4 h-4" />
-                        {cat.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
+            <div
+              id="mobile-filters-panel"
+              role="region"
+              aria-label="Filtres"
+              onKeyDown={(e) => { if (e.key === 'Escape' && showMobileFilters) { setShowMobileFilters(false); } }}
+              className={`${showMobileFilters ? 'block' : 'hidden'} sm:block`}
+            >
+              <FilterRadioGroup
+                label="Catégorie"
+                value={activeCategory}
+                onChange={setActiveCategory}
+                options={categories.map((c) => ({ id: c.id, label: c.label, icon: c.icon }))}
+                activeClass="bg-blue-900 text-white border-blue-900 shadow-md"
+                inactiveClass="bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50"
+              />
 
               <div className="grid md:grid-cols-2 gap-5">
-                <div>
-                  <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Difficulté</div>
-                  <div className="flex flex-wrap gap-2">
-                    {difficulties.map((diff) => { const isActive = activeDifficulty === diff.id; return (<button key={diff.id} onClick={() => setActiveDifficulty(diff.id)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-indigo-900 text-white border-indigo-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>{diff.label}</button>); })}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3 flex items-center gap-1.5"><Star className="w-3 h-3" /> Filtre par notation</div>
-                  <div className="flex flex-wrap gap-2">
-                    {ratingFilters.map((rf) => { const isActive = ratingFilter === rf.id; return (<button key={rf.id} onClick={() => setRatingFilter(rf.id)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-amber-600 text-white border-amber-600 shadow-md' : 'bg-white text-amber-700 border-amber-200 hover:border-amber-400 hover:bg-amber-50'}`}>{rf.label}</button>); })}
-                  </div>
-                </div>
+                <FilterRadioGroup
+                  label="Difficulté"
+                  value={activeDifficulty}
+                  onChange={setActiveDifficulty}
+                  options={difficulties.map((d) => ({ id: d.id, label: d.label }))}
+                  activeClass="bg-indigo-900 text-white border-indigo-900 shadow-md"
+                  inactiveClass="bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50"
+                />
+                <FilterRadioGroup
+                  label="Filtre par notation"
+                  value={ratingFilter}
+                  onChange={setRatingFilter}
+                  options={ratingFilters.map((r) => ({ id: r.id, label: r.label }))}
+                  activeClass="bg-amber-600 text-white border-amber-600 shadow-md"
+                  inactiveClass="bg-white text-amber-700 border-amber-200 hover:border-amber-400 hover:bg-amber-50"
+                  labelIcon={Star}
+                />
               </div>
             </div>
 
