@@ -2431,7 +2431,7 @@ const StarRating = ({ value, onChange, size = 'md' }) => {
 // =====================================================
 //  CONCEPT CARD — Affichage d'un concept
 // =====================================================
-const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
+const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel, index, total, onPrev, onNext }) => {
   const cardRef = React.useRef(null);
   const wasExpanded = React.useRef(isExpanded);
 
@@ -2465,6 +2465,9 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-500 tabular-nums">
+              {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+            </span>
             <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
               {getCategoryLabel(concept.category)}
             </span>
@@ -2580,15 +2583,35 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
               </div>
             )}
 
-            {/* Close button at the bottom */}
-            <div className="pt-2 flex justify-center">
+            {/* Footer navigation : précédent · compteur/replier · suivant */}
+            <div className="pt-2 flex items-center justify-between gap-2">
+              <button
+                type="button"
+                onClick={onPrev}
+                disabled={index === 0}
+                aria-label="Concept précédent"
+                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 py-2 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              >
+                <ChevronRight className="w-4 h-4 rotate-180" />
+                <span className="hidden sm:inline">Précédent</span>
+              </button>
               <button
                 type="button"
                 onClick={onToggle}
                 className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-light px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-400 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
               >
-                Replier ce concept
-                <ChevronRight className="w-4 h-4 -rotate-90" />
+                <span className="tabular-nums text-blue-500 text-xs">{index + 1}/{total}</span>
+                <span>Replier</span>
+              </button>
+              <button
+                type="button"
+                onClick={onNext}
+                disabled={index === total - 1}
+                aria-label="Concept suivant"
+                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 py-2 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              >
+                <span className="hidden sm:inline">Suivant</span>
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -3381,10 +3404,62 @@ const FinanceInterviewGuide = () => {
             </div>
           </div>
 
+          {/* Mini-bar de navigation : visible quand un concept est ouvert */}
+          {(() => {
+            const activeIdx = filteredConcepts.findIndex((c) => c.id === expandedConcept);
+            if (activeIdx === -1) return null;
+            const active = filteredConcepts[activeIdx];
+            const goTo = (idx) => {
+              if (idx < 0 || idx >= filteredConcepts.length) return;
+              setExpandedConcept(filteredConcepts[idx].id);
+            };
+            return (
+              <div className="sticky top-32 z-10 mb-4 bg-blue-900 text-white rounded-xl shadow-md px-3 py-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => goTo(activeIdx - 1)}
+                  disabled={activeIdx === 0}
+                  aria-label="Concept précédent"
+                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                >
+                  <ChevronRight className="w-4 h-4 rotate-180" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setExpandedConcept(null)}
+                  className="flex-1 min-w-0 text-left flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-blue-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                  aria-label="Replier le concept ouvert"
+                  title="Replier"
+                >
+                  <span className="tabular-nums text-blue-300 text-xs flex-shrink-0">{activeIdx + 1}/{filteredConcepts.length}</span>
+                  <span className="font-serif text-sm truncate">{active.title}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => goTo(activeIdx + 1)}
+                  disabled={activeIdx === filteredConcepts.length - 1}
+                  aria-label="Concept suivant"
+                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            );
+          })()}
 
           <div className="space-y-3 sm:space-y-4">
-            {filteredConcepts.map((c) => (
-              <ConceptCard key={c.id} concept={c} isExpanded={expandedConcept === c.id} onToggle={() => setExpandedConcept(expandedConcept === c.id ? null : c.id)} getCategoryLabel={getCategoryLabel} />
+            {filteredConcepts.map((c, i) => (
+              <ConceptCard
+                key={c.id}
+                concept={c}
+                index={i}
+                total={filteredConcepts.length}
+                isExpanded={expandedConcept === c.id}
+                onToggle={() => setExpandedConcept(expandedConcept === c.id ? null : c.id)}
+                onPrev={() => i > 0 && setExpandedConcept(filteredConcepts[i - 1].id)}
+                onNext={() => i < filteredConcepts.length - 1 && setExpandedConcept(filteredConcepts[i + 1].id)}
+                getCategoryLabel={getCategoryLabel}
+              />
             ))}
           </div>
         </div>
