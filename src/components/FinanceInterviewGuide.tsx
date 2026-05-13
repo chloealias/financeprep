@@ -2772,6 +2772,7 @@ const FinanceInterviewGuide = () => {
   const [ratings, setRatings] = useState({});
   const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
   const [conceptCategory, setConceptCategory] = useState('all');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
 
   // Charger les ratings depuis le stockage
