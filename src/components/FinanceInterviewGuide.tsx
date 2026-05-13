@@ -2432,59 +2432,78 @@ const StarRating = ({ value, onChange, size = 'md' }) => {
 //  CONCEPT CARD — Affichage d'un concept
 // =====================================================
 const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
+  const cardRef = React.useRef(null);
+  const wasExpanded = React.useRef(isExpanded);
+
+  React.useEffect(() => {
+    if (isExpanded && !wasExpanded.current && cardRef.current) {
+      // Scroll the card to the top of the viewport, just under the sticky filter bar
+      const top = cardRef.current.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+    wasExpanded.current = isExpanded;
+  }, [isExpanded]);
+
   return (
-    <div className={`bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${
-      isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'
-    }`}>
-      <button onClick={onToggle} className="w-full text-left p-4 sm:p-6 flex items-start gap-3 sm:gap-4">
+    <div
+      ref={cardRef}
+      className={`bg-white rounded-2xl shadow-sm border transition-colors duration-200 overflow-hidden scroll-mt-24 ${
+        isExpanded ? 'border-blue-500 shadow-md' : 'border-blue-100 hover:border-blue-300'
+      }`}
+    >
+      <button
+        onClick={onToggle}
+        aria-expanded={isExpanded}
+        className="w-full text-left p-4 sm:p-5 flex items-start gap-3 sm:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-2xl"
+      >
         <div className="flex-shrink-0">
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
-            isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : 'bg-blue-50 text-blue-700'
+          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-colors ${
+            isExpanded ? 'bg-blue-800 text-white' : 'bg-blue-50 text-blue-700'
           }`}>
-            <Library className="w-6 h-6" />
+            <Library className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-3">
-            <span className="text-xs uppercase tracking-wider font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded border border-blue-200">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
               {getCategoryLabel(concept.category)}
             </span>
           </div>
-          <h3 className="text-blue-950 font-serif text-xl leading-snug">{concept.title}</h3>
+          <h3 className="text-blue-950 font-serif text-lg sm:text-xl leading-snug">{concept.title}</h3>
           {!isExpanded && (
-            <p className="text-blue-700 mt-2 text-sm leading-relaxed line-clamp-2 font-light">
+            <p className="text-blue-700 mt-1.5 text-sm leading-relaxed line-clamp-2 font-light">
               {concept.simple}
             </p>
           )}
         </div>
-        <div className={`flex-shrink-0 transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
-          <ChevronRight className="w-6 h-6 text-blue-500" />
+        <div className={`flex-shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}>
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
         </div>
       </button>
 
 
       {isExpanded && (
-        <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
-          <div className="ml-0 sm:ml-16 mt-6 space-y-6">
+        <div className="px-4 sm:px-6 pb-5 pt-2 border-t border-blue-100 bg-blue-50/20">
+          <div className="ml-0 sm:ml-16 mt-5 space-y-5">
             {/* Simple */}
             <div>
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-2">
                 <div className="h-px w-6 bg-blue-700" />
-                <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">En une phrase</h4>
+                <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">En une phrase</h4>
               </div>
-              <p className="text-blue-900 leading-relaxed font-light text-base">{concept.simple}</p>
+              <p className="text-blue-900 leading-relaxed font-light">{concept.simple}</p>
             </div>
 
 
             {/* Formule */}
             {concept.formula && (
               <div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">Formule clé</h4>
+                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">Formule clé</h4>
                 </div>
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-4">
-                  <code className="text-blue-900 font-mono text-sm leading-relaxed">{concept.formula}</code>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 overflow-x-auto">
+                  <code className="text-blue-900 font-mono text-sm leading-relaxed whitespace-pre">{concept.formula}</code>
                 </div>
               </div>
             )}
@@ -2493,9 +2512,9 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
             {/* Deep dive */}
             {concept.deepDive && (
               <div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">Pour aller plus loin</h4>
+                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">Pour aller plus loin</h4>
                 </div>
                 <p className="text-blue-900 leading-relaxed font-light">{concept.deepDive}</p>
               </div>
@@ -2505,13 +2524,13 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
             {/* Table */}
             {concept.table && (
               <div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">Tableau de référence</h4>
+                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">Tableau de référence</h4>
                 </div>
-                <div className="bg-white border-2 border-blue-200 rounded-lg overflow-hidden">
-                  <table className="w-full text-sm">
-                    <thead className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white">
+                <div className="bg-white border border-blue-200 rounded-lg overflow-x-auto -mx-4 sm:mx-0">
+                  <table className="w-full text-sm min-w-[480px]">
+                    <thead className="bg-blue-900 text-white">
                       <tr>
                         {concept.table.headers.map((h, i) => (
                           <th key={i} className="px-3 py-2.5 text-left text-xs uppercase tracking-wider font-semibold">{h}</th>
@@ -2536,9 +2555,9 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
             {/* Visual */}
             {concept.visual && (
               <div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">Schéma</h4>
+                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">Schéma</h4>
                 </div>
                 <Visual type={concept.visual} />
               </div>
@@ -2547,19 +2566,31 @@ const ConceptCard = ({ concept, isExpanded, onToggle, getCategoryLabel }) => {
 
             {/* Pitfalls */}
             {concept.pitfalls && concept.pitfalls.length > 0 && (
-              <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-200 rounded-xl p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-red-700 text-xs uppercase tracking-[0.2em] font-bold">⚠️ Pièges à éviter</span>
+              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-blue-900 text-xs uppercase tracking-[0.2em] font-bold">Pièges à éviter</span>
                 </div>
-                <ul className="space-y-2">
+                <ul className="space-y-1.5">
                   {concept.pitfalls.map((p, i) => (
-                    <li key={i} className="flex gap-2 text-red-900 text-sm leading-relaxed">
-                      <span className="text-red-500 flex-shrink-0">•</span><span>{p}</span>
+                    <li key={i} className="flex gap-2 text-blue-900 text-sm leading-relaxed font-light">
+                      <span className="text-blue-500 flex-shrink-0">•</span><span>{p}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
+
+            {/* Close button at the bottom */}
+            <div className="pt-2 flex justify-center">
+              <button
+                type="button"
+                onClick={onToggle}
+                className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-light px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-400 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+              >
+                Replier ce concept
+                <ChevronRight className="w-4 h-4 -rotate-90" />
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -3302,8 +3333,8 @@ const FinanceInterviewGuide = () => {
 
       {/* PAGE: CONCEPTS */}
       {activePage === 'concepts' && (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="mb-8 sm:mb-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+          <div className="mb-6 sm:mb-10">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px w-8 sm:w-12 bg-blue-700" />
               <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
@@ -3311,34 +3342,47 @@ const FinanceInterviewGuide = () => {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
               Les <span className="italic font-light text-blue-700">concepts essentiels</span>
             </h2>
-            <p className="text-blue-700 mt-3 font-light max-w-3xl">
+            <p className="text-blue-700 mt-3 font-light text-sm sm:text-base max-w-3xl hidden sm:block">
               {concepts.length} fiches pédagogiques. Chaque concept : explication en une phrase, formule, approfondissement, tableau de référence, schéma et pièges à éviter.
             </p>
           </div>
 
 
-          {/* Filtre concepts */}
-          <div className="bg-white rounded-2xl shadow-sm border border-blue-100 p-5 mb-8">
-            <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Filtrer par thématique</div>
-            <div className="flex flex-wrap gap-2">
-              {categories.filter((c) => c.id !== 'brainteaser').map((cat) => {
-                const Icon = cat.icon;
-                const isActive = conceptCategory === cat.id;
-                const count = cat.id === 'all' ? concepts.length : concepts.filter((c) => c.category === cat.id).length;
-                if (count === 0) return null;
-                return (
-                  <button key={cat.id} onClick={() => setConceptCategory(cat.id)} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border ${isActive ? 'bg-blue-900 text-white border-blue-900 shadow-md' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}>
-                    <Icon className="w-4 h-4" />
-                    {cat.label}
-                    <span className={`text-xs px-1.5 py-0.5 rounded ${isActive ? 'bg-white/20' : 'bg-blue-50'}`}>{count}</span>
-                  </button>
-                );
-              })}
+          {/* Filtre concepts — barre horizontale sticky */}
+          <div className="sticky top-16 z-20 -mx-4 sm:mx-0 mb-6 sm:mb-8 bg-blue-50/95 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-0 border-b border-blue-100 sm:border-0">
+            <div className="sm:bg-white sm:rounded-2xl sm:shadow-sm sm:border sm:border-blue-100 sm:p-4">
+              <div className="hidden sm:block text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Filtrer par thématique</div>
+              <div
+                role="tablist"
+                aria-label="Filtrer les concepts par thématique"
+                className="flex gap-2 overflow-x-auto px-4 sm:px-0 py-3 sm:py-0 snap-x snap-mandatory scrollbar-hide"
+                style={{ scrollbarWidth: 'none' }}
+              >
+                {categories.filter((c) => c.id !== 'brainteaser').map((cat) => {
+                  const Icon = cat.icon;
+                  const isActive = conceptCategory === cat.id;
+                  const count = cat.id === 'all' ? concepts.length : concepts.filter((c) => c.category === cat.id).length;
+                  if (count === 0) return null;
+                  return (
+                    <button
+                      key={cat.id}
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => setConceptCategory(cat.id)}
+                      className={`flex-shrink-0 snap-start flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${isActive ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50'}`}
+                    >
+                      <Icon className="w-3.5 h-3.5" />
+                      <span className="whitespace-nowrap">{cat.label}</span>
+                      <span className={`text-[11px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/20' : 'bg-blue-50'}`}>{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {filteredConcepts.map((c) => (
               <ConceptCard key={c.id} concept={c} isExpanded={expandedConcept === c.id} onToggle={() => setExpandedConcept(expandedConcept === c.id ? null : c.id)} getCategoryLabel={getCategoryLabel} />
             ))}
