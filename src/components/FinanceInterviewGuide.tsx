@@ -4049,7 +4049,17 @@ const FinanceInterviewGuide = () => {
             {filteredQuestions.length === 0 ? (
               <div className="bg-white rounded-2xl border border-blue-100 p-12 text-center">
                 <Search className="w-12 h-12 text-blue-300 mx-auto mb-4" />
-                <p className="text-blue-700 text-lg">Aucune question ne correspond à vos critères.</p>
+                <p className="text-blue-700 text-lg mb-4">
+                  {showReviewOnly && reviewList.length === 0
+                    ? "Vous n'avez encore marqué aucune question à réviser."
+                    : 'Aucune question ne correspond à vos critères.'}
+                </p>
+                <button
+                  onClick={() => { setActiveCategory('all'); setActiveDifficulty('all'); setSearchQuery(''); setRatingFilter('all'); setShowReviewOnly(false); }}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Réinitialiser les filtres
+                </button>
               </div>
             ) : (
               filteredQuestions.map((q, index) => {
