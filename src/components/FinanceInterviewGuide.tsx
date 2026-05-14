@@ -3428,12 +3428,8 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-8 sm:w-12 bg-blue-700" />
-          <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Suivi de progression</span>
-        </div>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
-          Ma <span className="italic font-light text-blue-700">progression</span>
+        <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
+          Ma progression
         </h2>
 
         <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
@@ -3886,17 +3882,11 @@ const FinanceInterviewGuide = () => {
             </div>
           </button>
 
-          <div className="hidden sm:flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-            <div className="h-px w-6 sm:w-12 bg-blue-400" />
-            <span className="text-blue-300 text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase font-light">Guide professionnel</span>
-          </div>
-          <h1 className="hidden sm:block text-5xl lg:text-6xl font-serif text-white tracking-tight leading-[1.05]">
-            Finance Interview<br /><span className="italic font-light text-blue-200">Questions & Concepts</span>
+          <h1 className="hidden sm:block text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight">
+            Finance Interview
           </h1>
-          <p className="hidden sm:block text-blue-100 text-xs sm:text-base lg:text-lg max-w-3xl mt-3 sm:mt-5 font-light leading-relaxed">
-            La référence pour préparer vos entretiens en{' '}
-            <span className="font-medium text-white">Transaction Services</span> et{' '}
-            <span className="font-medium text-white">M&A</span>. Plus de 90 questions, 15 concepts détaillés, et un suivi de votre progression.
+          <p className="hidden sm:block text-blue-200 text-sm lg:text-base mt-2 font-light">
+            Transaction Services · M&amp;A
           </p>
 
 
@@ -4207,15 +4197,11 @@ const FinanceInterviewGuide = () => {
       {activePage === 'concepts' && (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
           <div className="mb-6 sm:mb-10">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-px w-8 sm:w-12 bg-blue-700" />
-              <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
-              Les <span className="italic font-light text-blue-700">concepts essentiels</span>
+            <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
+              Concepts essentiels
             </h2>
-            <p className="text-blue-700 mt-3 font-light text-sm sm:text-base max-w-3xl hidden sm:block">
-              {concepts.length} fiches pédagogiques. Chaque concept : explication en une phrase, formule, approfondissement, tableau de référence, schéma et pièges à éviter.
+            <p className="text-blue-700 mt-2 font-light text-sm sm:text-base hidden sm:block">
+              {concepts.length} fiches pédagogiques.
             </p>
           </div>
 
