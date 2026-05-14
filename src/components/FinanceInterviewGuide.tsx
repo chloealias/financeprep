@@ -3675,6 +3675,7 @@ const FinanceInterviewGuide = () => {
   // puis hydrater depuis localStorage côté client.
   const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress | guides
   const [openGuideId, setOpenGuideId] = useState<number | null>(null);
+  const [acronymQuery, setAcronymQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeDifficulty, setActiveDifficulty] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
