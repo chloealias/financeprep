@@ -3428,12 +3428,8 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-8 sm:w-12 bg-blue-700" />
-          <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Suivi de progression</span>
-        </div>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
-          Ma <span className="italic font-light text-blue-700">progression</span>
+        <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
+          Ma progression
         </h2>
 
         <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
