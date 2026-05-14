@@ -3886,17 +3886,11 @@ const FinanceInterviewGuide = () => {
             </div>
           </button>
 
-          <div className="hidden sm:flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-            <div className="h-px w-6 sm:w-12 bg-blue-400" />
-            <span className="text-blue-300 text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase font-light">Guide professionnel</span>
-          </div>
-          <h1 className="hidden sm:block text-5xl lg:text-6xl font-serif text-white tracking-tight leading-[1.05]">
-            Finance Interview<br /><span className="italic font-light text-blue-200">Questions & Concepts</span>
+          <h1 className="hidden sm:block text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight">
+            Finance Interview
           </h1>
-          <p className="hidden sm:block text-blue-100 text-xs sm:text-base lg:text-lg max-w-3xl mt-3 sm:mt-5 font-light leading-relaxed">
-            La référence pour préparer vos entretiens en{' '}
-            <span className="font-medium text-white">Transaction Services</span> et{' '}
-            <span className="font-medium text-white">M&A</span>. Plus de 90 questions, 15 concepts détaillés, et un suivi de votre progression.
+          <p className="hidden sm:block text-blue-200 text-sm lg:text-base mt-2 font-light">
+            Transaction Services · M&amp;A
           </p>
 
 
