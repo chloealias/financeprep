@@ -4317,20 +4317,53 @@ const FinanceInterviewGuide = () => {
                 <GuideCard guide={guide} />
               </button>
               {openGuideId === guide.id && guide.id === 2 && (
-                <div className="bg-white rounded-3xl border border-blue-100 shadow-sm p-5 sm:p-6">
-                  <ul className="divide-y divide-blue-50">
-                    {acronyms.map((a) => (
-                      <li key={a.abbr} className="py-3 grid grid-cols-[minmax(90px,auto)_1fr] gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_1.2fr] sm:gap-x-6">
-                        <span className="font-semibold text-blue-900 text-sm sm:text-base">{a.abbr}</span>
-                        <span className="text-slate-700 text-sm sm:text-base col-start-2 sm:col-start-2">
-                          {a.english ?? <span className="text-slate-400 italic">—</span>}
-                        </span>
-                        <span className="text-slate-600 text-sm sm:text-base col-span-2 sm:col-span-1 sm:col-start-3">
-                          {a.french}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="bg-white rounded-3xl border border-blue-100 shadow-sm p-5 sm:p-6 space-y-5">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" aria-hidden="true" />
+                    <input
+                      type="search"
+                      value={acronymQuery}
+                      onChange={(e) => setAcronymQuery(e.target.value)}
+                      placeholder="Rechercher un acronyme ou une traduction…"
+                      className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-blue-100 bg-blue-50/40 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                    />
+                  </div>
+                  {(() => {
+                    const q = acronymQuery.trim().toLowerCase();
+                    const filtered = acronymSections
+                      .map((s) => ({
+                        ...s,
+                        items: q
+                          ? s.items.filter((a) =>
+                              [a.abbr, a.english ?? '', a.french].some((v) => v.toLowerCase().includes(q))
+                            )
+                          : s.items,
+                      }))
+                      .filter((s) => s.items.length > 0);
+                    if (filtered.length === 0) {
+                      return <p className="text-sm text-slate-500 italic">Aucun résultat.</p>;
+                    }
+                    return filtered.map((section) => (
+                      <div key={section.title} className="space-y-2">
+                        <h4 className="text-xs uppercase tracking-[0.18em] text-blue-700 font-medium">
+                          {section.title}
+                        </h4>
+                        <ul className="divide-y divide-blue-50">
+                          {section.items.map((a) => (
+                            <li key={a.abbr} className="py-3 grid grid-cols-[minmax(90px,auto)_1fr] gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_1.2fr] sm:gap-x-6">
+                              <span className="font-semibold text-blue-900 text-sm sm:text-base">{a.abbr}</span>
+                              <span className="text-slate-700 text-sm sm:text-base col-start-2 sm:col-start-2">
+                                {a.english ?? <span className="text-slate-400 italic">—</span>}
+                              </span>
+                              <span className="text-slate-600 text-sm sm:text-base col-span-2 sm:col-span-1 sm:col-start-3">
+                                {a.french}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ));
+                  })()}
                 </div>
               )}
             </div>
