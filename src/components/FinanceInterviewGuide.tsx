@@ -3860,37 +3860,21 @@ const FinanceInterviewGuide = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100 pb-24 sm:pb-0">
       {/* HEADER */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(59,130,246,0.4) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99,102,241,0.4) 0%, transparent 50%)' }} />
-        </div>
-        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-
-
+      <div className="relative bg-blue-900" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-12 lg:py-16">
-          {/* Mobile title — compact branded mark, acts as home link */}
+          {/* Mobile title */}
           <button
             type="button"
             onClick={() => setActivePage('questions')}
-            aria-label="Finance Interview — Transaction Services et M&A. Retour à l'accueil."
-            className="sm:hidden flex items-center gap-2.5 min-w-0 w-full text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+            aria-label="Finance Interview. Retour à l'accueil."
+            className="sm:hidden flex items-center min-w-0 w-full text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
           >
-            <div aria-hidden="true" className="flex-shrink-0 flex items-center justify-center w-11 h-11 rounded-lg bg-white/10 border border-blue-400/30 backdrop-blur-sm">
-              <span className="font-serif text-white text-lg leading-none">FI</span>
-            </div>
-            <div className="flex flex-col leading-tight min-w-0 flex-1">
-              <h1 className="font-serif text-white text-xl tracking-tight whitespace-nowrap m-0">Finance Interview</h1>
-              <span aria-hidden="true" className="text-[11px] text-blue-300 tracking-[0.18em] uppercase font-light whitespace-nowrap mt-0.5">TS · M&amp;A</span>
-              <span className="sr-only">Transaction Services et M&amp;A</span>
-            </div>
+            <h1 className="font-medium text-white text-xl tracking-tight whitespace-nowrap m-0">Finance Interview</h1>
           </button>
 
           <h1 className="hidden sm:block text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight">
             Finance Interview
           </h1>
-          <p className="hidden sm:block text-blue-200 text-sm lg:text-base mt-2 font-light">
-            Transaction Services · M&amp;A
-          </p>
 
 
           {/* NAVIGATION (desktop / tablet) */}
