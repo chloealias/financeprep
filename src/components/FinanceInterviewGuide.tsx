@@ -4086,17 +4086,56 @@ const FinanceInterviewGuide = () => {
                     </button>
                     <button onClick={() => setExpandedQuestion(isExpanded ? null : q.id)} className="w-full text-left p-4 sm:p-6 pr-14 sm:pr-16 flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
-                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? 'bg-gradient-to-br from-blue-700 to-indigo-800 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? 'bg-blue-700 text-white' : userRating >= 4 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
                           {userRating >= 4 ? <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" /> : String(index + 1).padStart(2, '0')}
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold px-2 sm:px-2.5 py-1 rounded border ${getCategoryColor(q.category)}`}>
-                            {q.category === 'brainteaser' && '⚡ '}
-                            {getCategoryLabel(q.category)}
-                          </span>
-                          <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold px-2 sm:px-2.5 py-1 rounded border ${getDifficultyColor(q.difficulty)}`}>{q.difficulty}</span>
+                        <div className="flex items-center gap-2 mb-3">
+                          {(() => {
+                            const cat = categories.find((c) => c.id === q.category);
+                            const CatIcon = cat?.icon ?? BookOpen;
+                            const isBrain = q.category === 'brainteaser';
+                            const catLabel = cat?.label ?? q.category;
+                            return (
+                              <>
+                                {/* Mobile: icône seule */}
+                                <span
+                                  title={catLabel}
+                                  aria-label={`Catégorie : ${catLabel}`}
+                                  className={`sm:hidden inline-flex items-center justify-center w-6 h-6 rounded-full ${isBrain ? 'bg-amber-50 text-amber-700' : 'bg-blue-50 text-blue-700'}`}
+                                >
+                                  <CatIcon className="w-3.5 h-3.5" />
+                                </span>
+                                {/* Desktop: pastille uniformisée */}
+                                <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded border bg-blue-50 text-blue-800 border-blue-100">
+                                  <CatIcon className="w-3.5 h-3.5" />
+                                  {catLabel}
+                                </span>
+                              </>
+                            );
+                          })()}
+
+                          {/* Difficulté */}
+                          {(() => {
+                            const filled = q.difficulty === 'basique' ? 1 : q.difficulty === 'intermédiaire' ? 2 : 3;
+                            const label = `Difficulté : ${q.difficulty}`;
+                            return (
+                              <>
+                                {/* Mobile: 3 dots */}
+                                <span className="sm:hidden inline-flex items-center gap-0.5" aria-label={label} title={label}>
+                                  {[0, 1, 2].map((i) => (
+                                    <span key={i} className={`w-1.5 h-1.5 rounded-full ${i < filled ? 'bg-blue-700' : 'bg-blue-200'}`} />
+                                  ))}
+                                </span>
+                                {/* Desktop: label */}
+                                <span className="hidden sm:inline-flex items-center text-xs font-medium px-2.5 py-1 rounded border bg-blue-50 text-blue-800 border-blue-100 capitalize">
+                                  {q.difficulty}
+                                </span>
+                              </>
+                            );
+                          })()}
+
                           <div className="ml-auto"><StarRating value={userRating} onChange={(v) => updateRating(q.id, v)} size="sm" /></div>
                         </div>
                         <h3 className="text-blue-950 font-serif text-base sm:text-xl leading-snug">{q.question}</h3>
