@@ -3673,7 +3673,8 @@ const FinanceInterviewGuide = () => {
 
   // Démarrer avec les valeurs par défaut (évite les mismatches SSR/hydratation)
   // puis hydrater depuis localStorage côté client.
-  const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress
+  const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress | guides
+  const [openGuideId, setOpenGuideId] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeDifficulty, setActiveDifficulty] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
