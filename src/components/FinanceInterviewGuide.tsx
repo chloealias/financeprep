@@ -4304,7 +4304,8 @@ const FinanceInterviewGuide = () => {
 
       {/* PAGE: GUIDES */}
       {activePage === 'guides' && (
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-4">
+          <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight mb-2">Guides</h2>
           {guides.map((guide) => (
             <GuideCard key={guide.id} guide={guide} />
           ))}
