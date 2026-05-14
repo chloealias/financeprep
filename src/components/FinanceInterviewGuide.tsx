@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Search, ChevronRight, BookOpen, TrendingUp, Calculator, Briefcase, Target, Filter, X, Brain, Star, ListChecks, Library, BarChart3, Award, RotateCcw, CheckCircle2, Bookmark, BookmarkCheck } from 'lucide-react';
 import { GuideCard } from './GuideCard';
 import { guides } from '@/data/guides';
+import { acronyms } from '@/data/acronyms';
 
 
 // =====================================================
@@ -3672,7 +3673,8 @@ const FinanceInterviewGuide = () => {
 
   // Démarrer avec les valeurs par défaut (évite les mismatches SSR/hydratation)
   // puis hydrater depuis localStorage côté client.
-  const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress
+  const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress | guides
+  const [openGuideId, setOpenGuideId] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeDifficulty, setActiveDifficulty] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -4307,7 +4309,31 @@ const FinanceInterviewGuide = () => {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-4">
           <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight mb-2">Guides</h2>
           {guides.map((guide) => (
-            <GuideCard key={guide.id} guide={guide} />
+            <div key={guide.id} className="space-y-3">
+              <button
+                onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
+                className="block w-full text-left"
+              >
+                <GuideCard guide={guide} />
+              </button>
+              {openGuideId === guide.id && guide.id === 2 && (
+                <div className="bg-white rounded-3xl border border-blue-100 shadow-sm p-5 sm:p-6">
+                  <ul className="divide-y divide-blue-50">
+                    {acronyms.map((a) => (
+                      <li key={a.abbr} className="py-3 grid grid-cols-[minmax(90px,auto)_1fr] gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_1.2fr] sm:gap-x-6">
+                        <span className="font-semibold text-blue-900 text-sm sm:text-base">{a.abbr}</span>
+                        <span className="text-slate-700 text-sm sm:text-base col-start-2 sm:col-start-2">
+                          {a.english ?? <span className="text-slate-400 italic">—</span>}
+                        </span>
+                        <span className="text-slate-600 text-sm sm:text-base col-span-2 sm:col-span-1 sm:col-start-3">
+                          {a.french}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           ))}
         </div>
       )}
