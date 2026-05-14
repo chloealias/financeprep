@@ -107,7 +107,7 @@ export const acronymSections: AcronymSection[] = [
       { abbr: "Locked Box", french: "Mécanisme de prix fixe à date passée" },
       { abbr: "Earn-Out", french: "Complément de prix sur performance future" },
       { abbr: "Vendor Loan", french: "Crédit-vendeur" },
-      { abbr: "OPA / OPE", english: "Offre Publique d'Achat / d'Échange", french: "Mécaniques de bourse" },
+      { abbr: "OPA / OPE", french: "Offre Publique d'Achat / d'Échange — mécaniques de bourse" },
     ],
   },
   {

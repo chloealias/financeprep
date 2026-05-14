@@ -4351,14 +4351,16 @@ const FinanceInterviewGuide = () => {
                         </h4>
                         <ul className="divide-y divide-blue-50">
                           {section.items.map((a) => (
-                            <li key={a.abbr} className="py-3 grid grid-cols-[minmax(90px,auto)_1fr] gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_1.2fr] sm:gap-x-6">
+                            <li key={a.abbr} className="py-3 grid grid-cols-[minmax(90px,auto)_1fr] gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_1.2fr] sm:gap-x-6 items-baseline">
                               <span className="font-semibold text-blue-900 text-sm sm:text-base">{a.abbr}</span>
-                              <span className="text-slate-700 text-sm sm:text-base col-start-2 sm:col-start-2">
-                                {a.english ?? <span className="text-slate-400 italic">—</span>}
-                              </span>
-                              <span className="text-slate-600 text-sm sm:text-base col-span-2 sm:col-span-1 sm:col-start-3">
-                                {a.french}
-                              </span>
+                              {a.english ? (
+                                <>
+                                  <span className="text-slate-700 text-sm sm:text-base col-start-2">{a.english}</span>
+                                  <span className="text-slate-600 text-sm sm:text-base col-span-2 sm:col-span-1 sm:col-start-3">{a.french}</span>
+                                </>
+                              ) : (
+                                <span className="text-slate-600 text-sm sm:text-base col-start-2 sm:col-start-2 sm:col-span-2">{a.french}</span>
+                              )}
                             </li>
                           ))}
                         </ul>
