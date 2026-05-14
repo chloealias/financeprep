@@ -3953,6 +3953,7 @@ const FinanceInterviewGuide = () => {
       {/* PAGE: QUESTIONS */}
       {activePage === 'questions' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight mb-6 sm:mb-8">Questions</h2>
           {/* Filtres */}
           <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-4 sm:p-6 mb-6 sm:mb-8">
             <div className="hidden sm:flex items-center gap-2 mb-5">
