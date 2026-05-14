@@ -4197,15 +4197,11 @@ const FinanceInterviewGuide = () => {
       {activePage === 'concepts' && (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
           <div className="mb-6 sm:mb-10">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-px w-8 sm:w-12 bg-blue-700" />
-              <span className="text-blue-700 text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase font-light">Bibliothèque conceptuelle</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif text-blue-950 leading-tight">
-              Les <span className="italic font-light text-blue-700">concepts essentiels</span>
+            <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
+              Concepts essentiels
             </h2>
-            <p className="text-blue-700 mt-3 font-light text-sm sm:text-base max-w-3xl hidden sm:block">
-              {concepts.length} fiches pédagogiques. Chaque concept : explication en une phrase, formule, approfondissement, tableau de référence, schéma et pièges à éviter.
+            <p className="text-blue-700 mt-2 font-light text-sm sm:text-base hidden sm:block">
+              {concepts.length} fiches pédagogiques.
             </p>
           </div>
 
