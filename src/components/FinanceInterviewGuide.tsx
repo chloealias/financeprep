@@ -4166,7 +4166,7 @@ const FinanceInterviewGuide = () => {
                             <ol className="space-y-3">
                               {q.steps.map((step, i) => (
                                 <li key={i} className="flex gap-4 bg-white rounded-lg p-4 border border-blue-100">
-                                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white font-serif text-sm flex items-center justify-center">{i + 1}</div>
+                                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-blue-700 text-white font-serif text-sm flex items-center justify-center">{i + 1}</div>
                                   <p className="text-blue-900 leading-relaxed flex-1 pt-0.5">{step}</p>
                                 </li>
                               ))}
