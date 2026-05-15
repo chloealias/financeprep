@@ -3652,6 +3652,306 @@ const FilterRadioGroup = ({ label, value, onChange, options, activeClass, inacti
 };
 
 // =====================================================
+//  COMPOSANTS BLOCS — Guide
+// =====================================================
+const BlocWrapper = ({ id, tag, titre, icon: Icon, openBloc, setOpenBloc, children }) => {
+  const isOpen = openBloc === id;
+  return (
+    <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-sm overflow-hidden">
+      <button
+        onClick={() => setOpenBloc(isOpen ? null : id)}
+        className="w-full text-left px-8 py-6 flex items-center justify-between group"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center flex-shrink-0">
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <div className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-0.5">{tag}</div>
+            <h3 className="text-xl font-serif text-blue-950">{titre}</h3>
+          </div>
+        </div>
+        <ChevronRight className={`w-5 h-5 text-blue-400 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
+      </button>
+      {isOpen && (
+        <div className="px-8 pb-8 pt-2 border-t border-blue-100">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const BlocCV = ({ openBloc, setOpenBloc }) => {
+  const [checked, setChecked] = useState({});
+  const [timerActive, setTimerActive] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(120);
+  const intervalRef = React.useRef(null);
+
+  const checklist = [
+    { id: 'c1', text: "Je connais le nom de mon interlocuteur et sa banque" },
+    { id: 'c2', text: "Je sais pourquoi cette banque / ce bureau spécifiquement" },
+    { id: 'c3', text: "J'ai un fil directeur (1 phrase qui relie tout mon parcours)" },
+    { id: 'c4', text: "J'ai au moins 1 chiffre concret par expérience clé" },
+    { id: 'c5', text: "Ma réponse tient en moins de 2 minutes" },
+    { id: 'c6', text: "Je termine par 'c'est pourquoi ce poste m'intéresse'" },
+  ];
+  const score = Object.values(checked).filter(Boolean).length;
+
+  useEffect(() => {
+    if (timerActive && timeLeft > 0) {
+      intervalRef.current = setInterval(() => setTimeLeft(t => t - 1), 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [timerActive, timeLeft]);
+
+  const resetTimer = () => { setTimerActive(false); setTimeLeft(120); };
+  const mm = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+  const ss = String(timeLeft % 60).padStart(2, '0');
+  const progress = (timeLeft / 120) * 100;
+
+  const pieges = [
+    "Réciter son CV chronologiquement sans fil directeur",
+    "Parler plus de 2 minutes sans y être invité",
+    "Mentionner des expériences non pertinentes pour le poste",
+    "Ne pas personnaliser pour la banque cible",
+    "Terminer sans transition vers 'pourquoi ce poste'",
+  ];
+
+  const dealSteps = [
+    { num: '01', label: 'Contexte', desc: "Quelle entreprise, quel secteur, quelle taille de deal (EV / equity value)" },
+    { num: '02', label: 'Logique stratégique', desc: "Pourquoi ce deal ? Synergies, consolidation, expansion géographique ?" },
+    { num: '03', label: 'Structure financière', desc: "Mix financement : cash / actions / dette. Multiple payé (EV/EBITDA)" },
+    { num: '04', label: 'Votre rôle', desc: "Votre équipe, vos livrables concrets (modèle, due dil, mémo, data room)" },
+    { num: '05', label: 'Outcome', desc: "Résultat du deal. Leçon apprise. Pourquoi ce deal est représentatif de vos compétences." },
+  ];
+
+  return (
+    <BlocWrapper id="cv" tag="La question d'ouverture" titre="Walk me through your CV / a deal" icon={User} openBloc={openBloc} setOpenBloc={setOpenBloc}>
+      <div className="mb-8">
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Checklist avant de répondre
+          {score === 6 && <span className="ml-2 bg-emerald-100 text-emerald-700 text-xs px-3 py-1 rounded-full font-medium">✓ Prêt à répondre</span>}
+        </div>
+        <div className="space-y-2 mb-3">
+          {checklist.map(item => (
+            <label key={item.id} className="flex items-center gap-3 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={!!checked[item.id]}
+                onChange={e => setChecked(c => ({ ...c, [item.id]: e.target.checked }))}
+                className="w-4 h-4 accent-blue-700"
+              />
+              <span className={`text-sm transition-all ${checked[item.id] ? 'line-through text-blue-300' : 'text-blue-900'}`}>
+                {item.text}
+              </span>
+            </label>
+          ))}
+        </div>
+        <div className="text-xs text-blue-500">{score}/6 critères cochés</div>
+      </div>
+
+      <div className="mb-8">
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Structure recommandée — Walk me through your CV
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { num: '01', titre: "L'origine", duree: '20 sec', desc: "D'où venez-vous ? Un fil conducteur, pas une liste chronologique. 1 phrase d'ancrage : 'J'ai toujours été attiré par la compréhension des entreprises à travers leurs chiffres.'", dark: false },
+            { num: '02', titre: "Le pivot", duree: '60 sec', desc: "Vos 2-3 expériences les plus pertinentes. Pour chacune : contexte (1 phrase) + action + résultat chiffré. Ne détaillez que ce qui compte pour le poste.", dark: false },
+            { num: '03', titre: "La cible", duree: '20 sec', desc: "Pourquoi cette banque, ce bureau, ce moment. Montrez que vous avez fait vos recherches. Terminez sur une conviction, pas une question.", dark: true },
+          ].map(acte => (
+            <div key={acte.num} className={`rounded-xl p-5 ${acte.dark ? 'bg-blue-900 text-white' : 'bg-blue-50 border border-blue-200'}`}>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-2xl font-serif font-light text-blue-300">{acte.num}</span>
+                <span className={`text-xs px-2 py-0.5 rounded-full ${acte.dark ? 'bg-blue-800 text-blue-300' : 'bg-blue-100 text-blue-600'}`}>{acte.duree}</span>
+              </div>
+              <div className={`font-serif text-lg mb-2 ${acte.dark ? 'text-white' : 'text-blue-950'}`}>{acte.titre}</div>
+              <div className={`text-sm font-light leading-relaxed ${acte.dark ? 'text-blue-200' : 'text-blue-700'}`}>{acte.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Variante — Walk me through a deal
+        </div>
+        <div className="bg-slate-50 rounded-xl p-6 border border-blue-100 space-y-3">
+          {dealSteps.map(step => (
+            <div key={step.num} className="flex gap-4">
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white text-sm font-serif flex items-center justify-center">{step.num}</div>
+              <div className="pt-1">
+                <span className="text-blue-950 font-medium text-sm">{step.label} — </span>
+                <span className="text-blue-700 text-sm font-light">{step.desc}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Timer d'entraînement
+        </div>
+        <div className="bg-white border-2 border-blue-100 rounded-xl p-6 text-center">
+          <div className={`text-5xl font-mono font-light mb-4 ${timeLeft === 0 ? 'text-red-500' : 'text-blue-950'}`}>
+            {mm}:{ss}
+          </div>
+          <div className="w-full bg-blue-100 rounded-full h-2 mb-6">
+            <div
+              className={`h-2 rounded-full transition-all duration-1000 ${timeLeft === 0 ? 'bg-red-400' : 'bg-blue-700'}`}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          {timeLeft === 0 && <div className="text-red-500 font-medium mb-4">Temps écoulé !</div>}
+          <div className="flex justify-center gap-3">
+            <button
+              onClick={() => setTimerActive(a => !a)}
+              disabled={timeLeft === 0}
+              className="px-6 py-2.5 bg-blue-900 text-white rounded-lg text-sm font-medium hover:bg-blue-800 disabled:opacity-40 transition-all"
+            >
+              {timerActive ? 'Pause' : timeLeft === 120 ? 'Démarrer (2 min)' : 'Reprendre'}
+            </button>
+            <button onClick={resetTimer} className="px-6 py-2.5 border border-blue-200 text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-50 transition-all">
+              Reset
+            </button>
+          </div>
+          <p className="text-blue-400 text-xs mt-4 italic">Répondez à voix haute. Enregistrez-vous si possible.</p>
+        </div>
+      </div>
+
+      <div>
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Pièges classiques
+        </div>
+        <div className="space-y-2">
+          {pieges.map((p, i) => (
+            <div key={i} className="flex gap-3 bg-red-50 border-l-4 border-red-400 rounded-r-lg px-4 py-3">
+              <X className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+              <span className="text-red-800 text-sm">{p}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </BlocWrapper>
+  );
+};
+
+const BlocPyramid = ({ openBloc, setOpenBloc }) => {
+  const starCards = [
+    { letter: 'S', label: 'Situation', quoi: 'Le contexte en 1-2 phrases maximum', erreur: 'Trop long — 30 sec max', exemple: "J'étais en stage M&A chez X, durant la phase de due diligence d'une acquisition dans le retail" },
+    { letter: 'T', label: 'Tâche', quoi: 'Votre rôle et objectif spécifique', erreur: "Confondre Tâche et Action — la tâche c'est CE QUE vous deviez faire, pas comment", exemple: "J'étais responsable de la revue du BFR historique et de la normalisation des EBITDA" },
+    { letter: 'A', label: 'Action', quoi: "CE QUE VOUS avez fait — toujours 'je', pas 'nous'", erreur: "Utiliser 'nous' — l'interviewer veut savoir VOTRE contribution personnelle", exemple: "J'ai construit un modèle de BFR mensuel sur 3 ans, identifié 2 ajustements non récurrents représentant 800k€ d'EBITDA normalisé" },
+    { letter: 'R', label: 'Résultat', quoi: 'Impact mesurable. Toujours chiffrer si possible.', erreur: "Terminer sans résultat — 'j'ai fait X' sans dire ce que ça a produit", exemple: "L'analyse a été intégrée au mémo d'acquisition. Le client a réduit son offre de 5% en conséquence." },
+  ];
+
+  const matrix = [
+    { q: "Pourquoi la finance ?",         pyramid: true,  star: false },
+    { q: "Parlez d'une difficulté",        pyramid: false, star: true  },
+    { q: "Quelle est votre valeur ajoutée ?", pyramid: true, star: false },
+    { q: "Travail en équipe — exemple ?",  pyramid: false, star: true  },
+    { q: "Expliquez-moi un concept",       pyramid: true,  star: false },
+    { q: "Une décision difficile ?",        pyramid: false, star: true  },
+    { q: "Pourquoi notre banque ?",        pyramid: true,  star: false },
+  ];
+
+  return (
+    <BlocWrapper id="pyramid" tag="Méta-framework" titre="Pyramid Principle + STAR" icon={Triangle} openBloc={openBloc} setOpenBloc={setOpenBloc}>
+      <p className="text-blue-700 font-light leading-relaxed mb-8">
+        Ces deux frameworks structurent toutes vos réponses — techniques ET comportementales. Les maîtriser, c'est paraître deux fois plus clair que les autres candidats, à niveau de connaissance égal.
+      </p>
+
+      <div className="mb-8">
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Pyramid Principle
+        </div>
+        <svg viewBox="0 0 500 280" className="w-full h-auto max-w-lg mx-auto mb-6">
+          <polygon points="250,20 180,90 320,90" fill="#1e3a8a" />
+          <text x="250" y="58" fontSize="13" fill="white" textAnchor="middle" fontWeight="bold">CONCLUSION</text>
+          <text x="250" y="76" fontSize="10" fill="#bfdbfe" textAnchor="middle">D'abord</text>
+          <polygon points="180,100 80,180 420,180" fill="#3b82f6" />
+          <text x="250" y="148" fontSize="13" fill="white" textAnchor="middle" fontWeight="bold">ARGUMENTS CLÉS</text>
+          <text x="250" y="165" fontSize="10" fill="#dbeafe" textAnchor="middle">2-3 raisons principales</text>
+          <polygon points="80,190 20,260 480,260" fill="#93c5fd" />
+          <text x="250" y="232" fontSize="13" fill="#1e3a8a" textAnchor="middle" fontWeight="bold">PREUVES & EXEMPLES</text>
+          <text x="250" y="250" fontSize="10" fill="#1e40af" textAnchor="middle">Chiffres, cas concrets, anecdotes</text>
+        </svg>
+        <div className="bg-blue-900 text-white rounded-xl p-5 mb-6">
+          <div className="text-blue-300 text-xs uppercase tracking-[0.2em] mb-2">Règle d'or</div>
+          <p className="font-light">Ne jamais commencer par le contexte. Commencer par la réponse. Le contexte vient ensuite pour justifier.</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+            <div className="text-red-700 text-xs font-semibold uppercase tracking-wider mb-2">❌ Sans Pyramid</div>
+            <p className="text-red-800 text-sm font-light italic">"J'ai toujours été intéressé par les chiffres... Au lycée j'aimais les maths... En L3 j'ai fait un cours de compta..."</p>
+          </div>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+            <div className="text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-2">✅ Avec Pyramid</div>
+            <p className="text-emerald-800 text-sm font-light italic">"La finance me permet de comprendre comment les entreprises créent de la valeur — c'est ce qui me passionne. [Conclusion] Premièrement... [Arguments] C'est notamment ce que j'ai fait chez X où... [Preuve]"</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Framework STAR
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          {starCards.map(card => (
+            <div key={card.letter} className="bg-white border-2 border-blue-100 rounded-xl p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white font-serif text-xl flex items-center justify-center">{card.letter}</div>
+                <span className="font-serif text-blue-950 text-lg">{card.label}</span>
+              </div>
+              <div className="text-blue-900 text-sm mb-2">{card.quoi}</div>
+              <div className="bg-red-50 rounded-lg px-3 py-2 mb-2 text-red-700 text-xs">⚠ {card.erreur}</div>
+              <div className="bg-blue-50 rounded-lg px-3 py-2 text-blue-700 text-xs italic">"{card.exemple}"</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+          <div className="h-px w-6 bg-blue-700" />
+          Quand utiliser quoi ?
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-blue-900 text-white">
+                <th className="text-left px-4 py-3 rounded-tl-lg font-medium">Question</th>
+                <th className="px-4 py-3 font-medium text-center">Pyramid</th>
+                <th className="px-4 py-3 rounded-tr-lg font-medium text-center">STAR</th>
+              </tr>
+            </thead>
+            <tbody>
+              {matrix.map((row, i) => (
+                <tr key={i} className={i % 2 === 0 ? 'bg-blue-50' : 'bg-white'}>
+                  <td className="px-4 py-3 text-blue-900">{row.q}</td>
+                  <td className="px-4 py-3 text-center">{row.pyramid ? <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">✓ Oui</span> : <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">—</span>}</td>
+                  <td className="px-4 py-3 text-center">{row.star ? <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">✓ Oui</span> : <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">—</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </BlocWrapper>
+  );
+};
+
+// =====================================================
 //  COMPOSANT PRINCIPAL
 // =====================================================
 const FinanceInterviewGuide = () => {
