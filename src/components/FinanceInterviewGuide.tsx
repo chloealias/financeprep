@@ -4334,13 +4334,19 @@ const FinanceInterviewGuide = () => {
           <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight mb-2">Guides</h2>
           {guides.map((guide) => (
             <div key={guide.id} className="space-y-3">
-              <button
-                onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
-                className="block w-full text-left"
-              >
-                <GuideCard guide={guide} />
-              </button>
-              {openGuideId === guide.id && guide.id === 2 && (
+              {guide.id === 2 ? (
+                <a href="/glossaire" className="block w-full text-left">
+                  <GuideCard guide={guide} />
+                </a>
+              ) : (
+                <button
+                  onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
+                  className="block w-full text-left"
+                >
+                  <GuideCard guide={guide} />
+                </button>
+              )}
+              {false && openGuideId === guide.id && guide.id === 2 && (
                 <div className="bg-white rounded-3xl border border-blue-100 shadow-sm p-5 sm:p-6 space-y-5">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400" aria-hidden="true" />
