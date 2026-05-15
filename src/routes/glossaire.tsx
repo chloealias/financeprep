@@ -279,6 +279,7 @@ function QcmMode() {
   const [picked, setPicked] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+  const [startTime] = useState(() => Date.now());
 
   const q = quiz[idx];
   const total = quiz.length;
