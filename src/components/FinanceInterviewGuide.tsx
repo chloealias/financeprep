@@ -3973,7 +3973,15 @@ const FinanceInterviewGuide = () => {
 
   // Démarrer avec les valeurs par défaut (évite les mismatches SSR/hydratation)
   // puis hydrater depuis localStorage côté client.
-  const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress | guides
+  const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress | guide | secteurs
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const tab = new URLSearchParams(window.location.search).get('tab');
+    if (tab && ['questions', 'concepts', 'guide', 'secteurs', 'progress'].includes(tab)) {
+      setActivePage(tab);
+    }
+  }, []);
   const [openGuideId, setOpenGuideId] = useState<number | null>(null);
   const [acronymQuery, setAcronymQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
