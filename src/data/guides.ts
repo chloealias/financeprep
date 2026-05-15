@@ -10,7 +10,7 @@ export const guides = [
 
   {
     id: 2,
-    title: "Glossaires des acronymes",
+    title: "Glossaire des acronymes",
     category: "Technical",
     level: "Essential",
     description:

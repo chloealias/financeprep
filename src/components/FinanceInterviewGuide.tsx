@@ -3682,7 +3682,7 @@ const BlocWrapper = ({ id, tag, titre, icon: Icon, openBloc, setOpenBloc, childr
   );
 };
 
-const BlocCV = ({ openBloc, setOpenBloc }) => {
+export const BlocCV = ({ openBloc, setOpenBloc }) => {
   const [checked, setChecked] = useState({});
   const [timerActive, setTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120);
@@ -3845,7 +3845,7 @@ const BlocCV = ({ openBloc, setOpenBloc }) => {
   );
 };
 
-const BlocPyramid = ({ openBloc, setOpenBloc }) => {
+export const BlocPyramid = ({ openBloc, setOpenBloc }) => {
   const starCards = [
     { letter: 'S', label: 'Situation', quoi: 'Le contexte en 1-2 phrases maximum', erreur: 'Trop long — 30 sec max', exemple: "J'étais en stage M&A chez X, durant la phase de due diligence d'une acquisition dans le retail" },
     { letter: 'T', label: 'Tâche', quoi: 'Votre rôle et objectif spécifique', erreur: "Confondre Tâche et Action — la tâche c'est CE QUE vous deviez faire, pas comment", exemple: "J'étais responsable de la revue du BFR historique et de la normalisation des EBITDA" },
@@ -4647,26 +4647,25 @@ const FinanceInterviewGuide = () => {
             </p>
           </div>
           <div className="space-y-4">
-            {guides.map((guide) => (
-              <div key={guide.id}>
-                {guide.id === 2 ? (
-                  <a href="/glossaire" className="block w-full text-left">
-                    <GuideCard guide={guide} />
-                  </a>
-                ) : (
-                  <button
-                    onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
-                    className="block w-full text-left"
-                  >
-                    <GuideCard guide={guide} />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="space-y-8 mt-8">
-            <BlocCV openBloc={openBloc} setOpenBloc={setOpenBloc} />
-            <BlocPyramid openBloc={openBloc} setOpenBloc={setOpenBloc} />
+            {guides.map((guide) => {
+              const href = guide.id === 1 ? '/cv' : guide.id === 2 ? '/glossaire' : guide.id === 3 ? '/pyramid' : null;
+              return (
+                <div key={guide.id}>
+                  {href ? (
+                    <a href={href} className="block w-full text-left">
+                      <GuideCard guide={guide} />
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
+                      className="block w-full text-left"
+                    >
+                      <GuideCard guide={guide} />
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
