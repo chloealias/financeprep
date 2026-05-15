@@ -4664,6 +4664,10 @@ const FinanceInterviewGuide = () => {
               </div>
             ))}
           </div>
+          <div className="space-y-8 mt-8">
+            <BlocCV openBloc={openBloc} setOpenBloc={setOpenBloc} />
+            <BlocPyramid openBloc={openBloc} setOpenBloc={setOpenBloc} />
+          </div>
         </div>
       )}
 
