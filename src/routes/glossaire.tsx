@@ -338,6 +338,28 @@ function QcmMode() {
         <span>Score : {score}</span>
       </div>
 
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs text-slate-500">Questions :</span>
+        {QCM_OPTIONS.map((opt) => {
+          const active = qCount === opt;
+          const label = opt === 'all' ? 'Toutes' : `${opt}`;
+          return (
+            <button
+              key={label}
+              type="button"
+              onClick={() => startQuiz(opt)}
+              className={`text-xs rounded-full px-2.5 py-1 transition border ${
+                active
+                  ? 'bg-blue-700 text-white border-blue-700'
+                  : 'bg-white text-slate-600 border-blue-100 hover:border-blue-300'
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+
       <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-5 text-center">
         <div className="text-xs uppercase tracking-[0.18em] text-blue-600 mb-2">Que signifie</div>
         <div className="text-2xl sm:text-3xl font-semibold text-blue-950">{q.acronym.abbr}</div>
