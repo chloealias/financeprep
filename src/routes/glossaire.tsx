@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useState } from 'react';
-import { Search, ArrowLeft } from 'lucide-react';
-import { acronymSections } from '@/data/acronyms';
+import { useMemo, useState } from 'react';
+import { Search, ArrowLeft, GraduationCap, RotateCw, ChevronLeft, ChevronRight, Shuffle, Check, X } from 'lucide-react';
+import { acronymSections, acronyms, type Acronym } from '@/data/acronyms';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 export const Route = createFileRoute('/glossaire')({
   head: () => ({
@@ -25,6 +33,7 @@ export const Route = createFileRoute('/glossaire')({
 
 function GlossairePage() {
   const [query, setQuery] = useState('');
+  const [learnOpen, setLearnOpen] = useState(false);
   const q = query.trim().toLowerCase();
 
   const filtered = acronymSections
@@ -51,13 +60,21 @@ function GlossairePage() {
           Retour
         </Link>
 
-        <header className="space-y-2">
+        <header className="space-y-3">
           <h1 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
             Glossaire des acronymes
           </h1>
           <p className="text-sm text-slate-600">
             Tous les acronymes indispensables en TS / IB / PE.
           </p>
+          <button
+            type="button"
+            onClick={() => setLearnOpen(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-blue-700 hover:bg-blue-800 transition-colors text-white text-sm font-medium px-4 py-2 shadow-sm"
+          >
+            <GraduationCap className="w-4 h-4" aria-hidden="true" />
+            Mode apprentissage
+          </button>
         </header>
 
         <div className="bg-white rounded-3xl border border-blue-100 shadow-sm p-5 sm:p-6 space-y-5">
@@ -113,6 +130,247 @@ function GlossairePage() {
             ))
           )}
         </div>
+      </div>
+
+      <Dialog open={learnOpen} onOpenChange={setLearnOpen}>
+        <DialogContent className="max-w-xl">
+          <DialogHeader>
+            <DialogTitle className="text-blue-950">Mode apprentissage</DialogTitle>
+            <DialogDescription>
+              Révise les acronymes en flashcards ou teste-toi en QCM.
+            </DialogDescription>
+          </DialogHeader>
+          <Tabs defaultValue="flash" className="w-full">
+            <TabsList className="grid grid-cols-2 w-full">
+              <TabsTrigger value="flash">Flashcards</TabsTrigger>
+              <TabsTrigger value="qcm">QCM</TabsTrigger>
+            </TabsList>
+            <TabsContent value="flash" className="pt-4">
+              <FlashcardMode />
+            </TabsContent>
+            <TabsContent value="qcm" className="pt-4">
+              <QcmMode />
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function meaningOf(a: Acronym): string {
+  return a.english ? `${a.english} — ${a.french}` : a.french;
+}
+
+function FlashcardMode() {
+  const [deck, setDeck] = useState<Acronym[]>(() => shuffle(acronyms));
+  const [idx, setIdx] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+
+  const card = deck[idx];
+
+  const next = () => {
+    setFlipped(false);
+    setIdx((i) => (i + 1) % deck.length);
+  };
+  const prev = () => {
+    setFlipped(false);
+    setIdx((i) => (i - 1 + deck.length) % deck.length);
+  };
+  const reshuffle = () => {
+    setDeck(shuffle(acronyms));
+    setIdx(0);
+    setFlipped(false);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between text-xs text-slate-500">
+        <span>{idx + 1} / {deck.length}</span>
+        <button
+          type="button"
+          onClick={reshuffle}
+          className="inline-flex items-center gap-1 text-blue-700 hover:text-blue-900"
+        >
+          <Shuffle className="w-3.5 h-3.5" /> Mélanger
+        </button>
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setFlipped((f) => !f)}
+        className="w-full min-h-[220px] rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white shadow-sm flex flex-col items-center justify-center gap-3 p-6 text-center transition hover:shadow-md"
+      >
+        {!flipped ? (
+          <>
+            <span className="text-xs uppercase tracking-[0.18em] text-blue-600">Acronyme</span>
+            <span className="text-3xl sm:text-4xl font-semibold text-blue-950">{card.abbr}</span>
+            <span className="text-xs text-slate-400 mt-2 inline-flex items-center gap-1">
+              <RotateCw className="w-3 h-3" /> Cliquer pour révéler
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="text-xs uppercase tracking-[0.18em] text-blue-600">Signification</span>
+            {card.english && (
+              <span className="text-base sm:text-lg font-medium text-blue-900">{card.english}</span>
+            )}
+            <span className="text-sm sm:text-base text-slate-700">{card.french}</span>
+          </>
+        )}
+      </button>
+
+      <div className="flex items-center justify-between gap-2">
+        <button
+          type="button"
+          onClick={prev}
+          className="inline-flex items-center gap-1 rounded-full border border-blue-100 px-3 py-1.5 text-sm text-blue-800 hover:bg-blue-50"
+        >
+          <ChevronLeft className="w-4 h-4" /> Précédent
+        </button>
+        <button
+          type="button"
+          onClick={next}
+          className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 py-1.5 text-sm"
+        >
+          Suivant <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+interface QcmQuestion {
+  acronym: Acronym;
+  choices: string[];
+  correct: string;
+}
+
+function buildQuiz(n = 10): QcmQuestion[] {
+  const pool = shuffle(acronyms).slice(0, n);
+  return pool.map((a) => {
+    const correct = meaningOf(a);
+    const distractors = shuffle(acronyms.filter((x) => x.abbr !== a.abbr))
+      .slice(0, 3)
+      .map(meaningOf);
+    return {
+      acronym: a,
+      choices: shuffle([correct, ...distractors]),
+      correct,
+    };
+  });
+}
+
+function QcmMode() {
+  const [quiz, setQuiz] = useState<QcmQuestion[]>(() => buildQuiz());
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState<string | null>(null);
+  const [score, setScore] = useState(0);
+  const [done, setDone] = useState(false);
+
+  const q = quiz[idx];
+  const total = quiz.length;
+
+  const choose = (c: string) => {
+    if (picked) return;
+    setPicked(c);
+    if (c === q.correct) setScore((s) => s + 1);
+  };
+
+  const next = () => {
+    if (idx + 1 >= total) {
+      setDone(true);
+      return;
+    }
+    setIdx((i) => i + 1);
+    setPicked(null);
+  };
+
+  const restart = () => {
+    setQuiz(buildQuiz());
+    setIdx(0);
+    setPicked(null);
+    setScore(0);
+    setDone(false);
+  };
+
+  if (done) {
+    return (
+      <div className="text-center space-y-4 py-6">
+        <div className="text-xs uppercase tracking-[0.18em] text-blue-600">Résultat</div>
+        <div className="text-4xl font-semibold text-blue-950">
+          {score} / {total}
+        </div>
+        <p className="text-sm text-slate-600">
+          {score === total ? 'Sans faute, bravo !' : score >= total * 0.7 ? 'Bon score, continue.' : 'À retravailler.'}
+        </p>
+        <button
+          type="button"
+          onClick={restart}
+          className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 text-sm"
+        >
+          <RotateCw className="w-4 h-4" /> Recommencer
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between text-xs text-slate-500">
+        <span>Question {idx + 1} / {total}</span>
+        <span>Score : {score}</span>
+      </div>
+
+      <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-5 text-center">
+        <div className="text-xs uppercase tracking-[0.18em] text-blue-600 mb-2">Que signifie</div>
+        <div className="text-2xl sm:text-3xl font-semibold text-blue-950">{q.acronym.abbr}</div>
+      </div>
+
+      <div className="space-y-2">
+        {q.choices.map((c) => {
+          const isCorrect = c === q.correct;
+          const isPicked = picked === c;
+          let cls = 'border-blue-100 hover:bg-blue-50';
+          if (picked) {
+            if (isCorrect) cls = 'border-green-300 bg-green-50';
+            else if (isPicked) cls = 'border-red-300 bg-red-50';
+            else cls = 'border-blue-100 opacity-60';
+          }
+          return (
+            <button
+              key={c}
+              type="button"
+              onClick={() => choose(c)}
+              disabled={!!picked}
+              className={`w-full text-left px-4 py-2.5 rounded-xl border text-sm transition flex items-start justify-between gap-2 ${cls}`}
+            >
+              <span className="text-slate-800">{c}</span>
+              {picked && isCorrect && <Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />}
+              {picked && isPicked && !isCorrect && <X className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={next}
+          disabled={!picked}
+          className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-1.5 text-sm"
+        >
+          {idx + 1 >= total ? 'Voir le résultat' : 'Suivant'} <ChevronRight className="w-4 h-4" />
+        </button>
       </div>
     </div>
   );
