@@ -3430,7 +3430,7 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
       {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
         <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
-          Ma progression
+          Progression
         </h2>
 
         <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
@@ -3856,7 +3856,7 @@ const FinanceInterviewGuide = () => {
     { id: 'concepts', label: 'Concepts', icon: Library, count: concepts.length },
     { id: 'guide', label: 'Guide', icon: BookMarked },
     { id: 'secteurs', label: 'Secteurs', icon: Globe },
-    { id: 'progress', label: 'Ma progression', icon: BarChart3 },
+    { id: 'progress', label: 'Progression', icon: BarChart3 },
   ];
 
 
@@ -4346,8 +4346,23 @@ const FinanceInterviewGuide = () => {
               6 modules indépendants. Maîtrisez chacun pour vous démarquer en entretien.
             </p>
           </div>
-          <div className="space-y-8">
-            <p className="text-blue-400 italic text-center py-12">Les blocs arrivent dans les prochains prompts.</p>
+          <div className="space-y-4">
+            {guides.map((guide) => (
+              <div key={guide.id}>
+                {guide.id === 2 ? (
+                  <a href="/glossaire" className="block w-full text-left">
+                    <GuideCard guide={guide} />
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
+                    className="block w-full text-left"
+                  >
+                    <GuideCard guide={guide} />
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       )}
