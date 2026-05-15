@@ -3684,6 +3684,8 @@ const FinanceInterviewGuide = () => {
   const [ratings, setRatings] = useState({});
   const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
   const [conceptCategory, setConceptCategory] = useState('all');
+  const [openBloc, setOpenBloc] = useState(null);
+  const [selectedSector, setSelectedSector] = useState(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const REVIEW_KEY = 'finance-review-v1';
   const [reviewList, setReviewList] = useState<string[]>([]);
