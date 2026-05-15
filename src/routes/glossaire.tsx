@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Search, ArrowLeft, GraduationCap, RotateCw, ChevronLeft, ChevronRight, Shuffle, Check, X } from 'lucide-react';
 import { acronymSections, acronyms, type Acronym } from '@/data/acronyms';
 import {
