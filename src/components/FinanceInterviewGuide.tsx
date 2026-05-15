@@ -3854,7 +3854,8 @@ const FinanceInterviewGuide = () => {
   const pages = [
     { id: 'questions', label: 'Questions', icon: ListChecks, count: questions.length },
     { id: 'concepts', label: 'Concepts', icon: Library, count: concepts.length },
-    { id: 'guides', label: 'Guides', icon: BookOpen, count: guides.length },
+    { id: 'guide', label: 'Guide', icon: BookMarked },
+    { id: 'secteurs', label: 'Secteurs', icon: Globe },
     { id: 'progress', label: 'Ma progression', icon: BarChart3 },
   ];
 
