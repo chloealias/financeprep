@@ -3430,7 +3430,7 @@ const ProgressPage = ({ questions, ratings, categories, getCategoryLabel, onRese
       {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
         <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
-          Ma progression
+          Progression
         </h2>
 
         <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
