@@ -270,8 +270,11 @@ function buildQuiz(n = 10): QcmQuestion[] {
   });
 }
 
+const QCM_OPTIONS = [5, 10, 15, 20, 'all'] as const;
+
 function QcmMode() {
-  const [quiz, setQuiz] = useState<QcmQuestion[]>(() => buildQuiz());
+  const [qCount, setQCount] = useState<number | 'all'>(10);
+  const [quiz, setQuiz] = useState<QcmQuestion[]>(() => buildQuiz(10));
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [score, setScore] = useState(0);
@@ -295,13 +298,17 @@ function QcmMode() {
     setPicked(null);
   };
 
-  const restart = () => {
-    setQuiz(buildQuiz());
+  const startQuiz = (count: number | 'all') => {
+    const n = count === 'all' ? acronyms.length : count;
+    setQCount(count);
+    setQuiz(buildQuiz(n));
     setIdx(0);
     setPicked(null);
     setScore(0);
     setDone(false);
   };
+
+  const restart = () => startQuiz(qCount);
 
   if (done) {
     return (
@@ -329,6 +336,28 @@ function QcmMode() {
       <div className="flex items-center justify-between text-xs text-slate-500">
         <span>Question {idx + 1} / {total}</span>
         <span>Score : {score}</span>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs text-slate-500">Questions :</span>
+        {QCM_OPTIONS.map((opt) => {
+          const active = qCount === opt;
+          const label = opt === 'all' ? 'Toutes' : `${opt}`;
+          return (
+            <button
+              key={label}
+              type="button"
+              onClick={() => startQuiz(opt)}
+              className={`text-xs rounded-full px-2.5 py-1 transition border ${
+                active
+                  ? 'bg-blue-700 text-white border-blue-700'
+                  : 'bg-white text-slate-600 border-blue-100 hover:border-blue-300'
+              }`}
+            >
+              {label}
+            </button>
+          );
+        })}
       </div>
 
       <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-5 text-center">
