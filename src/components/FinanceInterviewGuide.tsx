@@ -3856,7 +3856,7 @@ const FinanceInterviewGuide = () => {
     { id: 'concepts', label: 'Concepts', icon: Library, count: concepts.length },
     { id: 'guide', label: 'Guide', icon: BookMarked },
     { id: 'secteurs', label: 'Secteurs', icon: Globe },
-    { id: 'progress', label: 'Ma progression', icon: BarChart3 },
+    { id: 'progress', label: 'Progression', icon: BarChart3 },
   ];
 
 
