@@ -9,12 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as GlossaireRouteImport } from './routes/glossaire'
+import { Route as CvRouteImport } from './routes/cv'
 import { Route as IndexRouteImport } from './routes/index'
 
+const PyramidRoute = PyramidRouteImport.update({
+  id: '/pyramid',
+  path: '/pyramid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GlossaireRoute = GlossaireRouteImport.update({
   id: '/glossaire',
   path: '/glossaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvRoute = CvRouteImport.update({
+  id: '/cv',
+  path: '/cv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -25,37 +37,59 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cv': typeof CvRoute
   '/glossaire': typeof GlossaireRoute
+  '/pyramid': typeof PyramidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cv': typeof CvRoute
   '/glossaire': typeof GlossaireRoute
+  '/pyramid': typeof PyramidRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cv': typeof CvRoute
   '/glossaire': typeof GlossaireRoute
+  '/pyramid': typeof PyramidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/glossaire'
+  fullPaths: '/' | '/cv' | '/glossaire' | '/pyramid'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/glossaire'
-  id: '__root__' | '/' | '/glossaire'
+  to: '/' | '/cv' | '/glossaire' | '/pyramid'
+  id: '__root__' | '/' | '/cv' | '/glossaire' | '/pyramid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CvRoute: typeof CvRoute
   GlossaireRoute: typeof GlossaireRoute
+  PyramidRoute: typeof PyramidRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/pyramid': {
+      id: '/pyramid'
+      path: '/pyramid'
+      fullPath: '/pyramid'
+      preLoaderRoute: typeof PyramidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/glossaire': {
       id: '/glossaire'
       path: '/glossaire'
       fullPath: '/glossaire'
       preLoaderRoute: typeof GlossaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv': {
+      id: '/cv'
+      path: '/cv'
+      fullPath: '/cv'
+      preLoaderRoute: typeof CvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -70,8 +104,20 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CvRoute: CvRoute,
   GlossaireRoute: GlossaireRoute,
+  PyramidRoute: PyramidRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
