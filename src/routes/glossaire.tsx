@@ -270,8 +270,11 @@ function buildQuiz(n = 10): QcmQuestion[] {
   });
 }
 
+const QCM_OPTIONS = [5, 10, 15, 20, 'all'] as const;
+
 function QcmMode() {
-  const [quiz, setQuiz] = useState<QcmQuestion[]>(() => buildQuiz());
+  const [qCount, setQCount] = useState<number | 'all'>(10);
+  const [quiz, setQuiz] = useState<QcmQuestion[]>(() => buildQuiz(10));
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [score, setScore] = useState(0);
