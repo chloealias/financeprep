@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronRight, BookOpen, TrendingUp, Calculator, Briefcase, Target, Filter, X, Brain, Star, ListChecks, Library, BarChart3, Award, RotateCcw, CheckCircle2, Bookmark, BookmarkCheck } from 'lucide-react';
+import { Search, ChevronRight, BookOpen, TrendingUp, Calculator, Briefcase, Target, Filter, X, Brain, Star, ListChecks, Library, BarChart3, Award, RotateCcw, CheckCircle2, Bookmark, BookmarkCheck, BookMarked, Globe } from 'lucide-react';
 import { GuideCard } from './GuideCard';
 import { guides } from '@/data/guides';
 import { acronymSections } from '@/data/acronyms';
@@ -3684,6 +3684,8 @@ const FinanceInterviewGuide = () => {
   const [ratings, setRatings] = useState({});
   const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
   const [conceptCategory, setConceptCategory] = useState('all');
+  const [openBloc, setOpenBloc] = useState(null);
+  const [selectedSector, setSelectedSector] = useState(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const REVIEW_KEY = 'finance-review-v1';
   const [reviewList, setReviewList] = useState<string[]>([]);
@@ -3852,7 +3854,8 @@ const FinanceInterviewGuide = () => {
   const pages = [
     { id: 'questions', label: 'Questions', icon: ListChecks, count: questions.length },
     { id: 'concepts', label: 'Concepts', icon: Library, count: concepts.length },
-    { id: 'guides', label: 'Guides', icon: BookOpen, count: guides.length },
+    { id: 'guide', label: 'Guide', icon: BookMarked },
+    { id: 'secteurs', label: 'Secteurs', icon: Globe },
     { id: 'progress', label: 'Ma progression', icon: BarChart3 },
   ];
 
@@ -4328,26 +4331,43 @@ const FinanceInterviewGuide = () => {
       )}
 
 
-      {/* PAGE: GUIDES */}
-      {activePage === 'guides' && (
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-4">
-          <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight mb-2">Guides</h2>
-          {guides.map((guide) => (
-            <div key={guide.id} className="space-y-3">
-              {guide.id === 2 ? (
-                <a href="/glossaire" className="block w-full text-left">
-                  <GuideCard guide={guide} />
-                </a>
-              ) : (
-                <button
-                  onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
-                  className="block w-full text-left"
-                >
-                  <GuideCard guide={guide} />
-                </button>
-              )}
+      {/* PAGE: GUIDE */}
+      {activePage === 'guide' && (
+        <div className="max-w-5xl mx-auto px-6 py-12">
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-px w-12 bg-blue-700" />
+              <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">Méthodologie</span>
             </div>
-          ))}
+            <h2 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
+              Le <span className="italic font-light text-blue-700">guide complet</span>
+            </h2>
+            <p className="text-blue-700 mt-3 font-light max-w-3xl">
+              6 modules indépendants. Maîtrisez chacun pour vous démarquer en entretien.
+            </p>
+          </div>
+          <div className="space-y-8">
+            <p className="text-blue-400 italic text-center py-12">Les blocs arrivent dans les prochains prompts.</p>
+          </div>
+        </div>
+      )}
+
+      {/* PAGE: SECTEURS */}
+      {activePage === 'secteurs' && (
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="mb-10">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="h-px w-12 bg-blue-700" />
+              <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">Couverture sectorielle</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
+              Fiches <span className="italic font-light text-blue-700">sectorielles</span>
+            </h2>
+            <p className="text-blue-700 mt-3 font-light">
+              7 secteurs couvrant ~80% des deals. Cliquez sur un secteur pour ouvrir sa fiche.
+            </p>
+          </div>
+          <p className="text-blue-400 italic text-center py-12">La map et les fiches arrivent dans les prochains prompts.</p>
         </div>
       )}
 
