@@ -4647,26 +4647,25 @@ const FinanceInterviewGuide = () => {
             </p>
           </div>
           <div className="space-y-4">
-            {guides.map((guide) => (
-              <div key={guide.id}>
-                {guide.id === 2 ? (
-                  <a href="/glossaire" className="block w-full text-left">
-                    <GuideCard guide={guide} />
-                  </a>
-                ) : (
-                  <button
-                    onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
-                    className="block w-full text-left"
-                  >
-                    <GuideCard guide={guide} />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="space-y-8 mt-8">
-            <BlocCV openBloc={openBloc} setOpenBloc={setOpenBloc} />
-            <BlocPyramid openBloc={openBloc} setOpenBloc={setOpenBloc} />
+            {guides.map((guide) => {
+              const href = guide.id === 1 ? '/cv' : guide.id === 2 ? '/glossaire' : guide.id === 3 ? '/pyramid' : null;
+              return (
+                <div key={guide.id}>
+                  {href ? (
+                    <a href={href} className="block w-full text-left">
+                      <GuideCard guide={guide} />
+                    </a>
+                  ) : (
+                    <button
+                      onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
+                      className="block w-full text-left"
+                    >
+                      <GuideCard guide={guide} />
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
