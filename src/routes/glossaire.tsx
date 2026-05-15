@@ -298,13 +298,17 @@ function QcmMode() {
     setPicked(null);
   };
 
-  const restart = () => {
-    setQuiz(buildQuiz());
+  const startQuiz = (count: number | 'all') => {
+    const n = count === 'all' ? acronyms.length : count;
+    setQCount(count);
+    setQuiz(buildQuiz(n));
     setIdx(0);
     setPicked(null);
     setScore(0);
     setDone(false);
   };
+
+  const restart = () => startQuiz(qCount);
 
   if (done) {
     return (
