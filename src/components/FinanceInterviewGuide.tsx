@@ -3977,9 +3977,17 @@ const FinanceInterviewGuide = () => {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const tab = new URLSearchParams(window.location.search).get('tab');
-    if (tab && ['questions', 'concepts', 'guide', 'secteurs', 'progress'].includes(tab)) {
-      setActivePage(tab);
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('tab')) return; // pas de param → comportement par défaut (Questions)
+    const tab = params.get('tab');
+    const valid = ['questions', 'concepts', 'guide', 'secteurs', 'progress'];
+    // tab présent mais invalide → fallback silencieux sur Guide + nettoyage de l'URL
+    const target = tab && valid.includes(tab) ? tab : 'guide';
+    setActivePage(target);
+    if (target !== tab) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', 'guide');
+      window.history.replaceState(null, '', url.toString());
     }
   }, []);
   const [openGuideId, setOpenGuideId] = useState<number | null>(null);
