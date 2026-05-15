@@ -315,27 +315,62 @@ function QcmMode() {
     setPicked(null);
     setScore(0);
     setDone(false);
+    setStartTime(Date.now());
   };
 
   const restart = () => startQuiz(qCount);
+  const restartSame = () => {
+    setIdx(0);
+    setPicked(null);
+    setScore(0);
+    setDone(false);
+    setStartTime(Date.now());
+  };
 
   if (done) {
+    const elapsed = Date.now() - startTime;
+    const pct = total > 0 ? Math.round((score / total) * 100) : 0;
     return (
-      <div className="text-center space-y-4 py-6">
+      <div className="text-center space-y-5 py-6">
         <div className="text-xs uppercase tracking-[0.18em] text-blue-600">Résultat</div>
-        <div className="text-4xl font-semibold text-blue-950">
-          {score} / {total}
+
+        <div className="flex items-center justify-center gap-6">
+          <div className="space-y-1">
+            <div className="text-3xl font-semibold text-blue-950">{score} / {total}</div>
+            <div className="text-xs text-slate-500">bonnes réponses</div>
+          </div>
+          <div className="w-px h-10 bg-blue-100" />
+          <div className="space-y-1">
+            <div className="text-3xl font-semibold text-blue-950">{pct}%</div>
+            <div className="text-xs text-slate-500">de réussite</div>
+          </div>
+          <div className="w-px h-10 bg-blue-100" />
+          <div className="space-y-1">
+            <div className="text-3xl font-semibold text-blue-950">{formatDuration(elapsed)}</div>
+            <div className="text-xs text-slate-500">temps</div>
+          </div>
         </div>
+
         <p className="text-sm text-slate-600">
           {score === total ? 'Sans faute, bravo !' : score >= total * 0.7 ? 'Bon score, continue.' : 'À retravailler.'}
         </p>
-        <button
-          type="button"
-          onClick={restart}
-          className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 text-sm"
-        >
-          <RotateCw className="w-4 h-4" /> Recommencer
-        </button>
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={restartSame}
+            className="inline-flex items-center gap-1 rounded-full border border-blue-100 bg-white hover:bg-blue-50 text-blue-800 px-4 py-2 text-sm"
+          >
+            <RotateCw className="w-4 h-4" /> Recommencer la même session
+          </button>
+          <button
+            type="button"
+            onClick={restart}
+            className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 text-sm"
+          >
+            <Shuffle className="w-4 h-4" /> Nouveau quiz
+          </button>
+        </div>
       </div>
     );
   }
