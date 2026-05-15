@@ -4346,8 +4346,23 @@ const FinanceInterviewGuide = () => {
               6 modules indépendants. Maîtrisez chacun pour vous démarquer en entretien.
             </p>
           </div>
-          <div className="space-y-8">
-            <p className="text-blue-400 italic text-center py-12">Les blocs arrivent dans les prochains prompts.</p>
+          <div className="space-y-4">
+            {guides.map((guide) => (
+              <div key={guide.id}>
+                {guide.id === 2 ? (
+                  <a href="/glossaire" className="block w-full text-left">
+                    <GuideCard guide={guide} />
+                  </a>
+                ) : (
+                  <button
+                    onClick={() => setOpenGuideId(openGuideId === guide.id ? null : guide.id)}
+                    className="block w-full text-left"
+                  >
+                    <GuideCard guide={guide} />
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       )}
