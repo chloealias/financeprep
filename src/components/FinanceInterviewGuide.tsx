@@ -3682,7 +3682,7 @@ const BlocWrapper = ({ id, tag, titre, icon: Icon, openBloc, setOpenBloc, childr
   );
 };
 
-const BlocCV = ({ openBloc, setOpenBloc }) => {
+export const BlocCV = ({ openBloc, setOpenBloc }) => {
   const [checked, setChecked] = useState({});
   const [timerActive, setTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120);
@@ -3845,7 +3845,7 @@ const BlocCV = ({ openBloc, setOpenBloc }) => {
   );
 };
 
-const BlocPyramid = ({ openBloc, setOpenBloc }) => {
+export const BlocPyramid = ({ openBloc, setOpenBloc }) => {
   const starCards = [
     { letter: 'S', label: 'Situation', quoi: 'Le contexte en 1-2 phrases maximum', erreur: 'Trop long — 30 sec max', exemple: "J'étais en stage M&A chez X, durant la phase de due diligence d'une acquisition dans le retail" },
     { letter: 'T', label: 'Tâche', quoi: 'Votre rôle et objectif spécifique', erreur: "Confondre Tâche et Action — la tâche c'est CE QUE vous deviez faire, pas comment", exemple: "J'étais responsable de la revue du BFR historique et de la normalisation des EBITDA" },
