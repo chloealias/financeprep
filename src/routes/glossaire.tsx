@@ -270,6 +270,14 @@ function buildQuiz(n = 10): QcmQuestion[] {
   });
 }
 
+function formatDuration(ms: number): string {
+  const s = Math.max(0, Math.round(ms / 1000));
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  if (m > 0) return `${m} min ${sec} s`;
+  return `${sec} s`;
+}
+
 const QCM_OPTIONS = [5, 10, 15, 20, 'all'] as const;
 
 function QcmMode() {
