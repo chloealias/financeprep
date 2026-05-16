@@ -1,17 +1,29 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
 import { BlocPyramid } from '@/components/guide/BlocPyramid';
-import { GuideSubLayout } from '@/components/GuideSubLayout';
+import { GuidePageShell } from '@/components/GuidePageShell';
 
 export const Route = createFileRoute('/pyramid')({
+  head: () => ({
+    meta: [
+      { title: 'Pyramid Principle + STAR — FinancePrep' },
+      {
+        name: 'description',
+        content:
+          'Frameworks pour structurer vos réponses techniques et comportementales en entretien.',
+      },
+    ],
+  }),
   component: PyramidPage,
 });
 
-function PyramidPage() {
-  const [openBloc, setOpenBloc] = useState<string | null>('pyramid');
+function PyramidPage () {
   return (
-    <GuideSubLayout>
-      <BlocPyramid openBloc={openBloc} setOpenBloc={setOpenBloc} />
-    </GuideSubLayout>
+    <GuidePageShell
+      tag="Méta-framework"
+      title="Pyramid Principle + STAR"
+      description="Ces deux frameworks structurent toutes vos réponses — techniques et comportementales."
+    >
+      <BlocPyramid />
+    </GuidePageShell>
   );
 }

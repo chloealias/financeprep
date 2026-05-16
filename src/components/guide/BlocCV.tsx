@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { User, X } from 'lucide-react';
-import { BlocWrapper } from '@/components/guide/BlocWrapper';
+import { X } from 'lucide-react';
+import { GuideSectionTitle, guideCardClass } from '@/components/guide/guide-ui';
+import { loadCvChecklist, saveCvChecklist, type CvChecklist } from '@/lib/storage';
 
-export function BlocCV ({ openBloc, setOpenBloc }) {
-  const [checked, setChecked] = useState({});
+export function BlocCV () {
+  const [checked, setChecked] = useState<CvChecklist>(() =>
+    typeof window !== 'undefined' ? loadCvChecklist() : {},
+  );
+
+  const updateChecked = (id: string, value: boolean) => {
+    setChecked((prev) => {
+      const next = { ...prev, [id]: value };
+      if (!value) delete next[id];
+      saveCvChecklist(next);
+      return next;
+    });
+  };
   const [timerActive, setTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120);
   const intervalRef = React.useRef(null);
@@ -49,20 +61,19 @@ export function BlocCV ({ openBloc, setOpenBloc }) {
   ];
 
   return (
-    <BlocWrapper id="cv" tag="La question d'ouverture" titre="Walk me through your CV / a deal" icon={User} openBloc={openBloc} setOpenBloc={setOpenBloc}>
+    <>
       <div className="mb-8">
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
+        <GuideSectionTitle>
           Checklist avant de répondre
           {score === 6 && <span className="ml-2 bg-emerald-100 text-emerald-700 text-xs px-3 py-1 rounded-full font-medium">✓ Prêt à répondre</span>}
-        </div>
+        </GuideSectionTitle>
         <div className="space-y-2 mb-3">
           {checklist.map(item => (
             <label key={item.id} className="flex items-center gap-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={!!checked[item.id]}
-                onChange={e => setChecked(c => ({ ...c, [item.id]: e.target.checked }))}
+                onChange={(e) => updateChecked(item.id, e.target.checked)}
                 className="w-4 h-4 accent-blue-700"
               />
               <span className={`text-sm transition-all ${checked[item.id] ? 'line-through text-blue-300' : 'text-blue-900'}`}>
@@ -75,10 +86,7 @@ export function BlocCV ({ openBloc, setOpenBloc }) {
       </div>
 
       <div className="mb-8">
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
-          Structure recommandée — Walk me through your CV
-        </div>
+        <GuideSectionTitle>Structure recommandée — Walk me through your CV</GuideSectionTitle>
         <div className="grid md:grid-cols-3 gap-4">
           {[
             { num: '01', titre: "L'origine", duree: '20 sec', desc: "D'où venez-vous ? Un fil conducteur, pas une liste chronologique. 1 phrase d'ancrage : 'J'ai toujours été attiré par la compréhension des entreprises à travers leurs chiffres.'", dark: false },
@@ -98,11 +106,8 @@ export function BlocCV ({ openBloc, setOpenBloc }) {
       </div>
 
       <div className="mb-8">
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
-          Variante — Walk me through a deal
-        </div>
-        <div className="bg-slate-50 rounded-xl p-6 border border-blue-100 space-y-3">
+        <GuideSectionTitle>Variante — Walk me through a deal</GuideSectionTitle>
+        <div className={`${guideCardClass} p-6 bg-blue-50/50 space-y-3`}>
           {dealSteps.map(step => (
             <div key={step.num} className="flex gap-4">
               <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white text-sm font-serif flex items-center justify-center">{step.num}</div>
@@ -116,11 +121,8 @@ export function BlocCV ({ openBloc, setOpenBloc }) {
       </div>
 
       <div className="mb-8">
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
-          Timer d'entraînement
-        </div>
-        <div className="bg-white border-2 border-blue-100 rounded-xl p-6 text-center">
+        <GuideSectionTitle>Timer d'entraînement</GuideSectionTitle>
+        <div className={`${guideCardClass} p-6 text-center`}>
           <div className={`text-5xl font-mono font-light mb-4 ${timeLeft === 0 ? 'text-red-500' : 'text-blue-950'}`}>
             {mm}:{ss}
           </div>
@@ -148,10 +150,7 @@ export function BlocCV ({ openBloc, setOpenBloc }) {
       </div>
 
       <div>
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
-          Pièges classiques
-        </div>
+        <GuideSectionTitle>Pièges classiques</GuideSectionTitle>
         <div className="space-y-2">
           {pieges.map((p, i) => (
             <div key={i} className="flex gap-3 bg-red-50 border-l-4 border-red-400 rounded-r-lg px-4 py-3">
@@ -161,7 +160,7 @@ export function BlocCV ({ openBloc, setOpenBloc }) {
           ))}
         </div>
       </div>
-    </BlocWrapper>
+    </>
   );
 };
 

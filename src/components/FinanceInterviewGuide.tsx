@@ -7,19 +7,31 @@ import {
   RATING_FILTER_OPTIONS,
   getCategoryLabel,
 } from '@/lib/categories';
-import { GuideCard } from './GuideCard';
-import { guides } from '@/data/guides';
 import { questions } from '@/data/questions';
 import { concepts } from '@/data/concepts';
 import type { AppTab, HubNavTab } from '@/lib/app-tabs';
 import { normalizeHubTab } from '@/lib/app-tabs';
-import { clearRatings, loadRatingsWithLegacyMigration, saveRatings } from '@/lib/storage';
+import {
+  clearRatings,
+  loadRatings,
+  loadRatingsWithLegacyMigration,
+  loadReviewList,
+  loadSavedFilters,
+  questionIdKey,
+  saveRatings,
+  saveReviewList,
+  saveSavedFilters,
+  type QuestionRatings,
+  type SavedFilters,
+} from '@/lib/storage';
+import { guideModules } from '@/data/guide-modules';
 import { Visual } from '@/components/interview/Visual';
 import { StarRating } from '@/components/interview/StarRating';
 import { ConceptCard } from '@/components/interview/ConceptCard';
 import { ProgressPage } from '@/components/interview/ProgressPage';
 import { FilterRadioGroup } from '@/components/interview/FilterRadioGroup';
 import { AppHubLayout } from '@/components/hub/AppHubLayout';
+import { GuideModuleLink } from '@/components/guide/guide-ui';
 
 // =====================================================
 //  COMPOSANT PRINCIPAL
@@ -33,94 +45,86 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   const hubTab = normalizeHubTab(activePage);
   const setHubTab = (page: HubNavTab) => onPageChange(page);
 
-  const FILTERS_KEY = 'finance-filters-v1';
   const ALLOWED_CATEGORIES = ['all', 'valuation', 'accounting', 'ma', 'ts', 'lbo', 'dcf', 'brainteaser'];
   const ALLOWED_DIFFICULTIES = ['all', 'basique', 'intermédiaire', 'avancé'];
   const ALLOWED_RATING_FILTERS = ['all', 'unrated', 'weak', 'mastered'];
 
-  const sanitizeFilters = (raw: any) => {
-    const o = raw && typeof raw === 'object' ? raw : {};
+  const defaultFilters: SavedFilters = {
+    activeCategory: 'all',
+    activeDifficulty: 'all',
+    searchQuery: '',
+    ratingFilter: 'all',
+    conceptCategory: 'all',
+  };
+
+  const sanitizeFilters = (raw: unknown): SavedFilters => {
+    const o = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
     return {
-      activeCategory: ALLOWED_CATEGORIES.includes(o.activeCategory) ? o.activeCategory : 'all',
-      activeDifficulty: ALLOWED_DIFFICULTIES.includes(o.activeDifficulty) ? o.activeDifficulty : 'all',
+      activeCategory: ALLOWED_CATEGORIES.includes(o.activeCategory as string) ? (o.activeCategory as string) : 'all',
+      activeDifficulty: ALLOWED_DIFFICULTIES.includes(o.activeDifficulty as string) ? (o.activeDifficulty as string) : 'all',
       searchQuery: typeof o.searchQuery === 'string' ? o.searchQuery : '',
-      ratingFilter: ALLOWED_RATING_FILTERS.includes(o.ratingFilter) ? o.ratingFilter : 'all',
-      conceptCategory: ALLOWED_CATEGORIES.includes(o.conceptCategory) ? o.conceptCategory : 'all',
+      ratingFilter: ALLOWED_RATING_FILTERS.includes(o.ratingFilter as string) ? (o.ratingFilter as string) : 'all',
+      conceptCategory: ALLOWED_CATEGORIES.includes(o.conceptCategory as string) ? (o.conceptCategory as string) : 'all',
     };
   };
 
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [activeDifficulty, setActiveDifficulty] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const initialFilters =
+    typeof window !== 'undefined' ? loadSavedFilters(sanitizeFilters, defaultFilters) : defaultFilters;
+
+  const [activeCategory, setActiveCategory] = useState(initialFilters.activeCategory);
+  const [activeDifficulty, setActiveDifficulty] = useState(initialFilters.activeDifficulty);
+  const [searchQuery, setSearchQuery] = useState(initialFilters.searchQuery);
   const [expandedQuestion, setExpandedQuestion] = useState(null);
   const [expandedConcept, setExpandedConcept] = useState(null);
-  const [ratings, setRatings] = useState({});
-  const [ratingFilter, setRatingFilter] = useState('all'); // all | unrated | weak | mastered
-  const [conceptCategory, setConceptCategory] = useState('all');
-  const [openBloc, setOpenBloc] = useState(null);
+  const [ratings, setRatings] = useState<QuestionRatings>(() =>
+    typeof window !== 'undefined' ? loadRatings() : {},
+  );
+  const [ratingFilter, setRatingFilter] = useState(initialFilters.ratingFilter);
+  const [conceptCategory, setConceptCategory] = useState(initialFilters.conceptCategory);
   const [selectedSector, setSelectedSector] = useState(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const REVIEW_KEY = 'finance-review-v1';
-  const [reviewList, setReviewList] = useState<string[]>([]);
+  const [reviewList, setReviewList] = useState<string[]>(() =>
+    typeof window !== 'undefined' ? loadReviewList() : [],
+  );
   // Volontairement NON persisté : le mode "à réviser" doit toujours être désactivé au chargement.
   const [showReviewOnly, setShowReviewOnly] = useState<boolean>(false);
-  const [filtersHydrated, setFiltersHydrated] = useState(false);
+  const [filtersHydrated, setFiltersHydrated] = useState(typeof window !== 'undefined');
 
-  // Hydratation depuis localStorage après le montage
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const raw = window.localStorage.getItem(FILTERS_KEY);
-      if (raw) {
-        const f = sanitizeFilters(JSON.parse(raw));
-        setActiveCategory(f.activeCategory);
-        setActiveDifficulty(f.activeDifficulty);
-        setSearchQuery(f.searchQuery);
-        setRatingFilter(f.ratingFilter);
-        setConceptCategory(f.conceptCategory);
-      }
-      const rawReview = window.localStorage.getItem(REVIEW_KEY);
-      if (rawReview) {
-        const list = JSON.parse(rawReview);
-        if (Array.isArray(list)) setReviewList(list.filter((x) => typeof x === 'string'));
-      }
-    } catch { /* ignore */ }
     setFiltersHydrated(true);
   }, []);
 
-  const toggleReview = (qid) => {
+  const toggleReview = (qid: string | number) => {
+    const key = questionIdKey(qid);
     setReviewList((prev) => {
-      const next = prev.includes(qid) ? prev.filter((x) => x !== qid) : [...prev, qid];
-      try {
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem(REVIEW_KEY, JSON.stringify(next));
-        }
-      } catch { /* ignore */ }
+      const next = prev.includes(key) ? prev.filter((x) => x !== key) : [...prev, key];
+      saveReviewList(next);
       return next;
     });
   };
 
   // Persister les filtres et la recherche (showReviewOnly volontairement exclu)
   useEffect(() => {
-    if (typeof window === 'undefined' || !filtersHydrated) return;
-    try {
-      window.localStorage.setItem(
-        FILTERS_KEY,
-        JSON.stringify({ activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory }),
-      );
-    } catch { /* ignore */ }
+    if (!filtersHydrated) return;
+    saveSavedFilters({
+      activeCategory,
+      activeDifficulty,
+      searchQuery,
+      ratingFilter,
+      conceptCategory,
+    });
   }, [filtersHydrated, activeCategory, activeDifficulty, searchQuery, ratingFilter, conceptCategory]);
 
-
-
-
   useEffect(() => {
-    loadRatingsWithLegacyMigration().then(setRatings);
+    void loadRatingsWithLegacyMigration().then((migrated) => {
+      if (Object.keys(migrated).length > 0) setRatings(migrated);
+    });
   }, []);
 
-  const updateRating = (qid, value) => {
-    const next = { ...ratings, [qid]: value };
-    if (value === 0) delete next[qid];
+  const updateRating = (qid: string | number, value: number) => {
+    const key = questionIdKey(qid);
+    const next = { ...ratings, [key]: value };
+    if (value === 0) delete next[key];
     setRatings(next);
     saveRatings(next);
   };
@@ -141,9 +145,10 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
       const matchCategory = activeCategory === 'all' || q.category === activeCategory;
       const matchDifficulty = activeDifficulty === 'all' || q.difficulty === activeDifficulty;
       const matchSearch = searchQuery === '' || q.question.toLowerCase().includes(searchQuery.toLowerCase()) || q.explanation.toLowerCase().includes(searchQuery.toLowerCase());
-      const rating = ratings[q.id] || 0;
+      const qKey = questionIdKey(q.id);
+      const rating = ratings[qKey] || 0;
       const matchRating = ratingFilter === 'all' || (ratingFilter === 'unrated' && rating === 0) || (ratingFilter === 'weak' && rating > 0 && rating <= 2) || (ratingFilter === 'mastered' && rating >= 4);
-      const matchReview = !showReviewOnly || reviewList.length === 0 || reviewList.includes(q.id);
+      const matchReview = !showReviewOnly || reviewList.length === 0 || reviewList.includes(qKey);
       return matchCategory && matchDifficulty && matchSearch && matchRating && matchReview;
     });
   }, [activeCategory, activeDifficulty, searchQuery, ratings, ratingFilter, showReviewOnly, reviewList]);
@@ -312,18 +317,20 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
               </div>
             ) : (
               filteredQuestions.map((q, index) => {
+                const qKey = questionIdKey(q.id);
                 const isExpanded = expandedQuestion === q.id;
-                const userRating = ratings[q.id] || 0;
+                const userRating = ratings[qKey] || 0;
+                const inReview = reviewList.includes(qKey);
                 return (
-                  <div key={q.id} className={`relative bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : reviewList.includes(q.id) ? 'border-rose-300 hover:border-rose-400' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
+                  <div key={q.id} className={`relative bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? 'border-blue-500 shadow-xl shadow-blue-100' : inReview ? 'border-rose-300 hover:border-rose-400' : userRating >= 4 ? 'border-emerald-300 hover:border-emerald-400' : userRating > 0 && userRating <= 2 ? 'border-red-200 hover:border-red-300' : 'border-blue-100 hover:border-blue-300 hover:shadow-md'}`}>
                     <button
                       type="button"
                       onClick={(e) => { e.stopPropagation(); toggleReview(q.id); }}
-                      aria-label={reviewList.includes(q.id) ? 'Retirer de la liste à réviser' : 'Marquer comme à réviser'}
-                      aria-pressed={reviewList.includes(q.id)}
-                      className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${reviewList.includes(q.id) ? 'bg-rose-600 text-white border-rose-600 shadow-md' : 'bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-400'}`}
+                      aria-label={inReview ? 'Retirer de la liste à réviser' : 'Marquer comme à réviser'}
+                      aria-pressed={inReview}
+                      className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${inReview ? 'bg-rose-600 text-white border-rose-600 shadow-md' : 'bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-400'}`}
                     >
-                      {reviewList.includes(q.id) ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                      {inReview ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
                     </button>
                     <div className="w-full p-4 sm:p-6 pr-14 sm:pr-16 flex items-start gap-3 sm:gap-4">
                       <div
@@ -580,8 +587,8 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
 
       {/* PAGE: GUIDE */}
       {hubTab === 'guide' && (
-        <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="mb-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <div className="mb-10">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px w-12 bg-blue-700" />
               <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">Méthodologie</span>
@@ -590,18 +597,18 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
               Le <span className="italic font-light text-blue-700">guide complet</span>
             </h2>
             <p className="text-blue-700 mt-3 font-light max-w-3xl">
-              {guides.length} modules essentiels. Maîtrisez chacun pour vous démarquer en entretien.
+              6 guides interactifs. Cliquez sur un module pour l&apos;ouvrir en pleine page.
             </p>
           </div>
-          <div className="space-y-4">
-            {guides.map((guide) => (
-              <Link
-                key={guide.id}
-                to={guide.href}
-                className="block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-3xl"
-              >
-                <GuideCard guide={guide} />
-              </Link>
+          <div className="space-y-6">
+            {guideModules.map((module) => (
+              <GuideModuleLink
+                key={module.href}
+                to={module.href}
+                tag={module.tag}
+                title={module.title}
+                icon={module.icon}
+              />
             ))}
           </div>
         </div>

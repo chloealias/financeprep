@@ -11,7 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as GlossaireRouteImport } from './routes/glossaire'
+import { Route as ExcelRouteImport } from './routes/excel'
 import { Route as CvRouteImport } from './routes/cv'
+import { Route as ActualiteRouteImport } from './routes/actualite'
+import { Route as AccretionRouteImport } from './routes/accretion'
 import { Route as IndexRouteImport } from './routes/index'
 
 const PyramidRoute = PyramidRouteImport.update({
@@ -24,9 +27,24 @@ const GlossaireRoute = GlossaireRouteImport.update({
   path: '/glossaire',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExcelRoute = ExcelRouteImport.update({
+  id: '/excel',
+  path: '/excel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CvRoute = CvRouteImport.update({
   id: '/cv',
   path: '/cv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActualiteRoute = ActualiteRouteImport.update({
+  id: '/actualite',
+  path: '/actualite',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccretionRoute = AccretionRouteImport.update({
+  id: '/accretion',
+  path: '/accretion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,34 +55,68 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/accretion': typeof AccretionRoute
+  '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
+  '/excel': typeof ExcelRoute
   '/glossaire': typeof GlossaireRoute
   '/pyramid': typeof PyramidRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/accretion': typeof AccretionRoute
+  '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
+  '/excel': typeof ExcelRoute
   '/glossaire': typeof GlossaireRoute
   '/pyramid': typeof PyramidRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/accretion': typeof AccretionRoute
+  '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
+  '/excel': typeof ExcelRoute
   '/glossaire': typeof GlossaireRoute
   '/pyramid': typeof PyramidRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/cv' | '/glossaire' | '/pyramid'
+  fullPaths:
+    | '/'
+    | '/accretion'
+    | '/actualite'
+    | '/cv'
+    | '/excel'
+    | '/glossaire'
+    | '/pyramid'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/cv' | '/glossaire' | '/pyramid'
-  id: '__root__' | '/' | '/cv' | '/glossaire' | '/pyramid'
+  to:
+    | '/'
+    | '/accretion'
+    | '/actualite'
+    | '/cv'
+    | '/excel'
+    | '/glossaire'
+    | '/pyramid'
+  id:
+    | '__root__'
+    | '/'
+    | '/accretion'
+    | '/actualite'
+    | '/cv'
+    | '/excel'
+    | '/glossaire'
+    | '/pyramid'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccretionRoute: typeof AccretionRoute
+  ActualiteRoute: typeof ActualiteRoute
   CvRoute: typeof CvRoute
+  ExcelRoute: typeof ExcelRoute
   GlossaireRoute: typeof GlossaireRoute
   PyramidRoute: typeof PyramidRoute
 }
@@ -85,11 +137,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GlossaireRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/excel': {
+      id: '/excel'
+      path: '/excel'
+      fullPath: '/excel'
+      preLoaderRoute: typeof ExcelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cv': {
       id: '/cv'
       path: '/cv'
       fullPath: '/cv'
       preLoaderRoute: typeof CvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/actualite': {
+      id: '/actualite'
+      path: '/actualite'
+      fullPath: '/actualite'
+      preLoaderRoute: typeof ActualiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accretion': {
+      id: '/accretion'
+      path: '/accretion'
+      fullPath: '/accretion'
+      preLoaderRoute: typeof AccretionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -104,7 +177,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccretionRoute: AccretionRoute,
+  ActualiteRoute: ActualiteRoute,
   CvRoute: CvRoute,
+  ExcelRoute: ExcelRoute,
   GlossaireRoute: GlossaireRoute,
   PyramidRoute: PyramidRoute,
 }

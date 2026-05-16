@@ -1,7 +1,6 @@
-import { Triangle } from 'lucide-react';
-import { BlocWrapper } from '@/components/guide/BlocWrapper';
+import { GuideIntro, GuideSectionTitle } from '@/components/guide/guide-ui';
 
-export function BlocPyramid ({ openBloc, setOpenBloc }) {
+export function BlocPyramid () {
   const starCards = [
     { letter: 'S', label: 'Situation', quoi: 'Le contexte en 1-2 phrases maximum', erreur: 'Trop long — 30 sec max', exemple: "J'étais en stage M&A chez X, durant la phase de due diligence d'une acquisition dans le retail" },
     { letter: 'T', label: 'Tâche', quoi: 'Votre rôle et objectif spécifique', erreur: "Confondre Tâche et Action — la tâche c'est CE QUE vous deviez faire, pas comment", exemple: "J'étais responsable de la revue du BFR historique et de la normalisation des EBITDA" },
@@ -20,16 +19,13 @@ export function BlocPyramid ({ openBloc, setOpenBloc }) {
   ];
 
   return (
-    <BlocWrapper id="pyramid" tag="Méta-framework" titre="Pyramid Principle + STAR" icon={Triangle} openBloc={openBloc} setOpenBloc={setOpenBloc}>
-      <p className="text-blue-700 font-light leading-relaxed mb-8">
-        Ces deux frameworks structurent toutes vos réponses — techniques ET comportementales. Les maîtriser, c'est paraître deux fois plus clair que les autres candidats, à niveau de connaissance égal.
-      </p>
+    <>
+      <GuideIntro>
+        Ces deux frameworks structurent toutes vos réponses — techniques ET comportementales. Les maîtriser, c&apos;est paraître deux fois plus clair que les autres candidats, à niveau de connaissance égal.
+      </GuideIntro>
 
       <div className="mb-8">
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
-          Pyramid Principle
-        </div>
+        <GuideSectionTitle>Pyramid Principle</GuideSectionTitle>
         <svg
           viewBox="0 0 500 300"
           className="w-full h-auto max-w-lg mx-auto mb-6"
@@ -74,10 +70,7 @@ export function BlocPyramid ({ openBloc, setOpenBloc }) {
       </div>
 
       <div className="mb-8">
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
-          Framework STAR
-        </div>
+        <GuideSectionTitle>Framework STAR</GuideSectionTitle>
         <div className="grid md:grid-cols-2 gap-4">
           {starCards.map(card => (
             <div key={card.letter} className="bg-white border-2 border-blue-100 rounded-xl p-5">
@@ -94,10 +87,7 @@ export function BlocPyramid ({ openBloc, setOpenBloc }) {
       </div>
 
       <div>
-        <div className="text-sm font-semibold text-blue-900 uppercase tracking-wider mb-4 flex items-center gap-2">
-          <div className="h-px w-6 bg-blue-700" />
-          Quand utiliser quoi ?
-        </div>
+        <GuideSectionTitle>Quand utiliser quoi ?</GuideSectionTitle>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -119,7 +109,7 @@ export function BlocPyramid ({ openBloc, setOpenBloc }) {
           </table>
         </div>
       </div>
-    </BlocWrapper>
+    </>
   );
 };
 

@@ -1,0 +1,28 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { BlocActualite } from '@/components/guide/BlocActualite';
+import { GuidePageShell } from '@/components/GuidePageShell';
+
+export const Route = createFileRoute('/actualite')({
+  head: () => ({
+    meta: [
+      { title: 'Actualité M&A 2025-2026 — FinancePrep' },
+      {
+        name: 'description',
+        content:
+          'Deals récents à connaître pour montrer votre intérêt réel en entretien finance.',
+      },
+    ],
+  }),
+  component: ActualitePage,
+});
+
+function ActualitePage () {
+  return (
+    <GuidePageShell
+      tag="Preuve d'intérêt réel"
+      title="Actualité M&A 2025-2026"
+    >
+      <BlocActualite />
+    </GuidePageShell>
+  );
+}

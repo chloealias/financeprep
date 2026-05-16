@@ -11,8 +11,10 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import type { AppTab } from '@/lib/app-tabs';
+import { isStorageAvailable, questionIdKey } from '@/lib/storage';
 
 export function ProgressPage ({ questions, ratings, categories, getCategoryLabel, onReset, onPageChange, setActiveCategory, setRatingFilter }) {
+  const storageOk = typeof window !== 'undefined' ? isStorageAvailable() : true;
   const totalQuestions = questions.length;
   const ratedCount = Object.keys(ratings).filter((k) => ratings[k] > 0).length;
   const masteredCount = Object.keys(ratings).filter((k) => ratings[k] >= 4).length;
@@ -33,7 +35,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
     .filter((c) => c.id !== 'all')
     .map((cat) => {
       const catQuestions = questions.filter((q) => q.category === cat.id);
-      const catRatings = catQuestions.map((q) => ratings[q.id] || 0);
+      const catRatings = catQuestions.map((q) => ratings[questionIdKey(q.id)] || 0);
       const rated = catRatings.filter((r) => r > 0).length;
       const mastered = catRatings.filter((r) => r >= 4).length;
       const avg = rated > 0 ? (catRatings.reduce((a, b) => a + b, 0) / rated) : 0;
@@ -58,6 +60,14 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
         <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
           Progression
         </h2>
+        <p className="mt-2 text-sm text-blue-600 font-light">
+          Vos étoiles, filtres et liste à réviser sont enregistrés sur cet appareil (navigateur). Elles ne se synchronisent pas entre téléphone et ordinateur.
+        </p>
+        {!storageOk && (
+          <p className="mt-2 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+            Le stockage local est bloqué (navigation privée ou réglages du navigateur). Vos notes ne pourront pas être conservées après fermeture de l’onglet.
+          </p>
+        )}
 
         <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
           <div className="flex items-baseline justify-between gap-3 mb-3">
