@@ -5,6 +5,7 @@ import {
   Library,
   BookMarked,
   BarChart3,
+  Building2,
 } from 'lucide-react';
 import type { HubNavTab } from '@/lib/app-tabs';
 import { questions } from '@/data/questions';
@@ -21,6 +22,7 @@ const pages: HubPage[] = [
   { id: 'questions', label: 'Questions', icon: ListChecks, count: questions.length },
   { id: 'concepts', label: 'Notions', icon: Library, count: concepts.length },
   { id: 'guide', label: 'Guide', icon: BookMarked },
+  { id: 'secteurs', label: 'Secteurs', icon: Building2 },
   { id: 'progress', label: 'Progression', icon: BarChart3 },
 ];
 

@@ -9,8 +9,7 @@ import {
 } from '@/lib/categories';
 import { questions } from '@/data/questions';
 import { concepts } from '@/data/concepts';
-import type { AppTab, HubNavTab } from '@/lib/app-tabs';
-import { normalizeHubTab } from '@/lib/app-tabs';
+import type { AppTab } from '@/lib/app-tabs';
 import {
   clearRatings,
   loadRatings,
@@ -32,6 +31,9 @@ import { ProgressPage } from '@/components/interview/ProgressPage';
 import { FilterRadioGroup } from '@/components/interview/FilterRadioGroup';
 import { AppHubLayout } from '@/components/hub/AppHubLayout';
 import { GuideModuleLink } from '@/components/guide/guide-ui';
+import { IsometricMap } from '@/components/sectors/IsometricMap';
+import { SectorPanel } from '@/components/sectors/SectorPanel';
+import type { SectorId } from '@/lib/sectors';
 
 // =====================================================
 //  COMPOSANT PRINCIPAL
@@ -42,8 +44,6 @@ type FinanceInterviewGuideProps = {
 };
 
 const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGuideProps) => {
-  const hubTab = normalizeHubTab(activePage);
-  const setHubTab = (page: HubNavTab) => onPageChange(page);
 
   const ALLOWED_CATEGORIES = ['all', 'valuation', 'accounting', 'ma', 'ts', 'lbo', 'dcf', 'brainteaser'];
   const ALLOWED_DIFFICULTIES = ['all', 'basique', 'intermédiaire', 'avancé'];
@@ -81,7 +81,7 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   );
   const [ratingFilter, setRatingFilter] = useState(initialFilters.ratingFilter);
   const [conceptCategory, setConceptCategory] = useState(initialFilters.conceptCategory);
-  const [selectedSector, setSelectedSector] = useState(null);
+  const [selectedSector, setSelectedSector] = useState<SectorId | null>(null);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [reviewList, setReviewList] = useState<string[]>(() =>
     typeof window !== 'undefined' ? loadReviewList() : [],
@@ -182,9 +182,9 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
 
 
   return (
-    <AppHubLayout activePage={hubTab} onPageChange={setHubTab}>
+    <AppHubLayout activePage={activePage} onPageChange={onPageChange}>
       {/* PAGE: QUESTIONS */}
-      {hubTab === 'questions' && (
+      {activePage === 'questions' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight mb-6 sm:mb-8">Questions</h2>
           {/* Filtres */}
@@ -478,7 +478,7 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
 
 
       {/* PAGE: CONCEPTS */}
-      {hubTab === 'concepts' && (
+      {activePage === 'concepts' && (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
           <div className="mb-6 sm:mb-10">
             <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
@@ -586,7 +586,7 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
 
 
       {/* PAGE: GUIDE */}
-      {hubTab === 'guide' && (
+      {activePage === 'guide' && (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-3">
@@ -626,29 +626,25 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
               Fiches <span className="italic font-light text-blue-700">sectorielles</span>
             </h2>
             <p className="text-blue-700 mt-3 font-light">
-              7 secteurs couvrant ~80% des deals. Cliquez sur un secteur pour ouvrir sa fiche.
+              7 secteurs couvrant ~80% des deals. Cliquez sur un bâtiment pour ouvrir sa fiche.
             </p>
           </div>
-          <div className="bg-white/80 rounded-2xl border border-blue-100 border-dashed p-10 text-center space-y-2">
-            <p className="text-blue-950 font-medium">Bientôt disponible</p>
-            <p className="text-blue-600 text-sm font-light max-w-md mx-auto">
-              Les fiches sectorielles (tech, santé, industrie…) arrivent prochainement. En attendant, explorez les questions et notions par thème.
-            </p>
-            <button
-              type="button"
-              onClick={() => onPageChange('questions')}
-              className="mt-4 inline-flex items-center gap-2 rounded-full bg-blue-700 hover:bg-blue-800 text-white text-sm font-medium px-5 py-2.5 transition-colors"
-            >
-              Voir les questions
-            </button>
-          </div>
+
+          <IsometricMap onSectorSelect={setSelectedSector} selectedSector={selectedSector} />
+
+          {selectedSector && (
+            <SectorPanel
+              sectorId={selectedSector}
+              onClose={() => setSelectedSector(null)}
+            />
+          )}
         </div>
       )}
 
 
       {/* PAGE: PROGRESS */}
-      {hubTab === 'progress' && (
-        <ProgressPage questions={questions} ratings={ratings} categories={categories} getCategoryLabel={getCategoryLabel} onReset={resetRatings} onPageChange={setHubTab} setActiveCategory={setActiveCategory} setRatingFilter={setRatingFilter} />
+      {activePage === 'progress' && (
+        <ProgressPage questions={questions} ratings={ratings} categories={categories} getCategoryLabel={getCategoryLabel} onReset={resetRatings} onPageChange={onPageChange} setActiveCategory={setActiveCategory} setRatingFilter={setRatingFilter} />
       )}
 
     </AppHubLayout>
