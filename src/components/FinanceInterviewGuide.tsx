@@ -3977,12 +3977,12 @@ const FinanceInterviewGuide = () => {
   const VALID_PAGES = ['questions', 'concepts', 'guide', 'secteurs', 'progress'];
 
   const [activePage, setActivePage] = useState(() => {
-    if (typeof window === 'undefined') return 'questions';
+    if (typeof window === 'undefined') return 'guide';
     try {
       const saved = window.localStorage.getItem(PAGE_KEY);
       if (saved && VALID_PAGES.includes(saved)) return saved;
     } catch { /* ignore */ }
-    return 'questions';
+    return 'guide';
   }); // questions | concepts | progress | guide | secteurs
 
   useEffect(() => {
