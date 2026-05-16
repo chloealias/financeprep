@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
 import { BANK_LOGO_PATH, getBankBrand } from '@/data/bank-brand';
+import { ImageLightbox } from '@/components/ui/image-lightbox';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 const SIZE_CLASS = {
   sm: 'w-10 h-10 rounded-lg',
@@ -15,28 +17,70 @@ const PAD_CLASS = {
 
 type BankLogoProps = {
   bankId: string;
+  bankName?: string;
   size?: keyof typeof SIZE_CLASS;
   className?: string;
+  /** Sur mobile, ouvre le logo en plein écran au tap */
+  expandable?: boolean;
 };
 
-export function BankLogo ({ bankId, size = 'md', className = '' }: BankLogoProps) {
+export function BankLogo ({
+  bankId,
+  bankName,
+  size = 'md',
+  className = '',
+  expandable = false,
+}: BankLogoProps) {
   const [failed, setFailed] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const { initials, color, logoOnDark } = getBankBrand(bankId);
+  const label = bankName ?? 'Logo banque';
+  const canExpand = expandable && isMobile && !failed;
+
+  const containerClass = `flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm border border-slate-200/80 ${SIZE_CLASS[size]} ${PAD_CLASS[size]} ${logoOnDark ? '' : 'bg-white'} ${canExpand ? '' : className}`;
 
   if (!failed) {
-    return (
+    const logoContent = (
       <div
-        className={`flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm border border-slate-200/80 ${SIZE_CLASS[size]} ${PAD_CLASS[size]} ${logoOnDark ? '' : 'bg-white'} ${className}`}
+        className={containerClass}
         style={logoOnDark ? { backgroundColor: color } : undefined}
       >
         <img
           src={BANK_LOGO_PATH(bankId)}
           alt=""
-          className="max-w-full max-h-full w-full h-full object-contain"
+          className="max-w-full max-h-full w-full h-full object-contain pointer-events-none"
           onError={() => setFailed(true)}
         />
       </div>
     );
+
+    if (canExpand) {
+      return (
+        <>
+          <button
+            type="button"
+            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              setLightboxOpen(true);
+            }}
+            className={`rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 ${className}`}
+            aria-label={`Agrandir le logo ${label}`}
+          >
+            {logoContent}
+          </button>
+          <ImageLightbox
+            open={lightboxOpen}
+            onClose={() => setLightboxOpen(false)}
+            src={BANK_LOGO_PATH(bankId)}
+            alt={label}
+            subtitle={bankName}
+          />
+        </>
+      );
+    }
+
+    return logoContent;
   }
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { X } from 'lucide-react';
+import { ChevronRight, X } from 'lucide-react';
 import { BankLogo } from '@/components/banks/BankLogo';
 import type { BankProfile } from '@/data/bank-profiles';
 import { getDealsForBank } from '@/data/bank-profiles';
@@ -35,7 +35,7 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
       </button>
 
       <div className="flex items-center gap-4 mb-8 pr-10">
-        <BankLogo bankId={bank.id} size="lg" />
+        <BankLogo bankId={bank.id} bankName={bank.name} size="lg" expandable />
         <div className="min-w-0">
           <div className="text-xs uppercase tracking-[0.2em] text-blue-400 mb-1">{bank.category}</div>
           <h3 className="text-2xl sm:text-3xl font-serif text-blue-950">{bank.name}</h3>
@@ -99,10 +99,20 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
               <div className="h-px w-4 bg-blue-400" />
               Deal emblématique
             </div>
-            <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white">
-              <div className="font-serif text-sm mb-2">{bank.dealEmblematique.titre}</div>
-              <p className="text-blue-200 text-xs font-light leading-relaxed">{bank.dealEmblematique.texte}</p>
-            </div>
+            <Link
+              to="/actualite"
+              search={{ deal: bank.emblematicDealId }}
+              className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+              aria-label={`Voir le deal ${bank.dealEmblematique.titre} dans Actualité M&A`}
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <div className="font-serif text-sm mb-2">{bank.dealEmblematique.titre}</div>
+                  <p className="text-blue-200 text-xs font-light leading-relaxed">{bank.dealEmblematique.texte}</p>
+                </div>
+                <ChevronRight className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" aria-hidden />
+              </div>
+            </Link>
           </div>
 
           <div>

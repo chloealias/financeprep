@@ -40,6 +40,12 @@ export function AppHubLayout ({ activePage, onPageChange, hasProgress, children 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100 pb-24 sm:pb-0">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-white focus:text-blue-900 focus:rounded-lg focus:shadow-lg focus:ring-2 focus:ring-blue-400"
+      >
+        Aller au contenu
+      </a>
       <header
         className="relative bg-blue-900"
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
@@ -136,7 +142,7 @@ export function AppHubLayout ({ activePage, onPageChange, hasProgress, children 
         </div>
       </nav>
 
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
 
       <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 mt-8 border-t border-blue-200">
         <div className="text-center">

@@ -4,6 +4,8 @@ import { Route } from '@/routes/index';
 import { GuideChipButton } from '@/components/guide/guide-ui';
 import { BankPanel } from '@/components/banks/BankPanel';
 import { BankLogo } from '@/components/banks/BankLogo';
+import { DetailSheet } from '@/components/hub/DetailSheet';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import {
   BANK_LIST,
   getBankById,
@@ -47,6 +49,8 @@ export function BankHubPage () {
   const { bank: bankFromUrl } = Route.useSearch();
   const navigate = Route.useNavigate();
   const panelRef = useRef<HTMLDivElement>(null);
+  const lastTriggerRef = useRef<HTMLButtonElement>(null);
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   const [categoryFilter, setCategoryFilter] = useState<BankCategoryFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -87,7 +91,8 @@ export function BankHubPage () {
       .filter(s => s.banks.length > 0);
   }, [visibleCategories, filterOpts]);
 
-  const handleSelect = (id: string) => {
+  const handleSelect = (id: string, trigger?: HTMLButtonElement | null) => {
+    if (trigger) lastTriggerRef.current = trigger;
     const next = selectedBankId === id ? undefined : id;
     navigate({
       search: prev => ({
@@ -125,30 +130,27 @@ export function BankHubPage () {
   }, [selectedBankId, visibleBankIds, navigate]);
 
   useEffect(() => {
-    if (!selectedBankId || !panelRef.current) return;
-    panelRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [selectedBankId]);
+    if (!selectedBankId || isMobile || !panelRef.current) return;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    panelRef.current.scrollIntoView({
+      behavior: reducedMotion ? 'auto' : 'smooth',
+      block: 'nearest',
+    });
+  }, [selectedBankId, isMobile]);
 
   useEffect(() => {
     if (!selectedBankId) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        navigate({
-          search: prev => ({
-            tab: prev.tab ?? 'banques',
-            bank: undefined,
-          }),
-        });
-      }
+      if (e.key === 'Escape') handleClose();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [selectedBankId, navigate]);
+  }, [selectedBankId]);
 
   const showTargetsChip = targetIds.length > 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-px w-12 bg-blue-700" />
@@ -241,7 +243,7 @@ export function BankHubPage () {
                         <button
                           type="button"
                           onClick={e => handleToggleTarget(bank.id, e)}
-                          className="absolute top-2 right-2 z-10 p-1 rounded-full text-blue-300 hover:text-amber-500 hover:bg-amber-50 transition-colors"
+                          className="absolute top-1 right-1 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-blue-300 hover:text-amber-500 hover:bg-amber-50 transition-colors"
                           aria-label={isFav ? 'Retirer des banques cibles' : 'Ajouter aux banques cibles'}
                         >
                           <Star
@@ -250,10 +252,16 @@ export function BankHubPage () {
                         </button>
                         <button
                           type="button"
-                          onClick={() => handleSelect(bank.id)}
-                          className="w-full text-left px-4 py-3 pr-10 flex gap-3 items-start"
+                          onClick={e => handleSelect(bank.id, e.currentTarget)}
+                          className="w-full text-left px-4 py-3 pr-12 flex gap-3 items-start"
                         >
-                          <BankLogo bankId={bank.id} size="sm" className="mt-0.5" />
+                          <BankLogo
+                            bankId={bank.id}
+                            bankName={bank.name}
+                            size="sm"
+                            className="mt-0.5"
+                            expandable
+                          />
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center gap-2">
                               <span className="font-serif text-blue-950 text-base">{bank.name}</span>
@@ -268,7 +276,7 @@ export function BankHubPage () {
                           </div>
                         </button>
                       </div>
-                      {selectedBankId === bank.id && selectedBank && (
+                      {selectedBankId === bank.id && selectedBank && !isMobile && (
                         <div
                           ref={panelRef}
                           className="col-span-1 sm:col-span-2 lg:col-span-3"
@@ -283,6 +291,19 @@ export function BankHubPage () {
             </section>
           ))}
         </div>
+      )}
+
+      {isMobile && selectedBank && (
+        <DetailSheet
+          open
+          onOpenChange={open => {
+            if (!open) handleClose();
+          }}
+          title={`Fiche ${selectedBank.name}`}
+          returnFocusRef={lastTriggerRef}
+        >
+          <BankPanel bank={selectedBank} onClose={handleClose} />
+        </DetailSheet>
       )}
     </div>
   );

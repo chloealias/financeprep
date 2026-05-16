@@ -9,7 +9,9 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
   React.useEffect(() => {
     if (isExpanded && !wasExpanded.current && cardRef.current) {
       // Scroll the card to the top of the viewport, just under the sticky filter bar
-      const top = cardRef.current.getBoundingClientRect().top + window.scrollY - 80;
+      const stickyBar = document.getElementById('concepts-sticky-bar');
+      const offset = (stickyBar?.offsetHeight ?? 96) + 12;
+      const top = cardRef.current.getBoundingClientRect().top + window.scrollY - offset;
       window.scrollTo({ top, behavior: 'smooth' });
     }
     wasExpanded.current = isExpanded;
@@ -18,7 +20,7 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
   return (
     <div
       ref={cardRef}
-      className={`bg-white rounded-2xl shadow-sm border transition-colors duration-200 overflow-hidden scroll-mt-24 ${
+      className={`relative z-0 bg-white rounded-2xl shadow-sm border transition-colors duration-200 overflow-hidden scroll-mt-48 ${
         isExpanded ? 'border-blue-500 shadow-md' : 'border-blue-100 hover:border-blue-300'
       }`}
     >
@@ -63,7 +65,7 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <div className="h-px w-6 bg-blue-700" />
-                <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">En une phrase</h4>
+                <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">L&apos;essentiel</h4>
               </div>
               <p className="text-blue-900 leading-relaxed font-light">{concept.simple}</p>
             </div>
@@ -88,9 +90,9 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">Pour aller plus loin</h4>
+                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">Pour bien comprendre</h4>
                 </div>
-                <p className="text-blue-900 leading-relaxed font-light">{concept.deepDive}</p>
+                <p className="text-blue-900 leading-relaxed font-light whitespace-pre-line">{concept.deepDive}</p>
               </div>
             )}
 

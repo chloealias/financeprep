@@ -44,8 +44,8 @@ export function IsometricMap ({ selectedSector, onSectorSelect }: IsometricMapPr
           viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
           className="w-full h-auto max-h-[min(50vh,360px)] block"
           preserveAspectRatio="xMidYMid meet"
-          role="img"
-          aria-label="Carte isométrique des 7 secteurs"
+          role="group"
+          aria-label="Carte isométrique des 7 secteurs — utilisez Tab pour naviguer entre les bâtiments ou les boutons ci-dessous"
         >
           <MapDefs />
           <MapBackground />
@@ -59,7 +59,7 @@ export function IsometricMap ({ selectedSector, onSectorSelect }: IsometricMapPr
         </svg>
 
         <p className="text-center text-xs text-blue-400 font-light italic py-4 px-4 bg-white">
-          Cliquez sur un bâtiment pour ouvrir sa fiche
+          Cliquez sur un bâtiment ou utilisez les boutons ci-dessous pour ouvrir une fiche
         </p>
 
         <div className="px-3 pb-3 pt-2 border-t border-slate-100 bg-white">
@@ -72,6 +72,7 @@ export function IsometricMap ({ selectedSector, onSectorSelect }: IsometricMapPr
                 key={id}
                 size="sm"
                 active={selectedSector === id}
+                ariaPressed={selectedSector === id}
                 onClick={() => handleClick(id)}
               >
                 {SECTOR_META[id].shortLabel}

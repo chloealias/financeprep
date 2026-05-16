@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import { GuideChipButton, guideAlertClass, guideCardClass } from '@/components/guide/guide-ui';
@@ -9,6 +9,7 @@ import {
   dealMatchesType,
   MA_DEAL_BANKS,
   MA_DEAL_TYPES,
+  getDealById,
   MA_DEALS,
   type MaDeal,
 } from '@/data/ma-deals';
@@ -192,21 +193,55 @@ function DealDetail ({ deal }: { deal: MaDeal }) {
   );
 }
 
+function dealPassesFilters (
+  deal: MaDeal,
+  filterBanque: string,
+  filterType: string,
+): boolean {
+  return (
+    (filterBanque === 'all' || dealMatchesBank(deal, filterBanque)) &&
+    (filterType === 'all' || dealMatchesType(deal, filterType))
+  );
+}
+
 export function BlocActualite () {
   const { deal: dealFromUrl } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const [filterBanque, setFilterBanque] = useState('all');
   const [filterType, setFilterType] = useState('all');
-  const [openDeal, setOpenDeal] = useState<string | null>(dealFromUrl ?? null);
+  const openDeal = dealFromUrl ?? null;
 
   useEffect(() => {
-    if (dealFromUrl) setOpenDeal(dealFromUrl);
+    if (!dealFromUrl) return;
+    if (getDealById(dealFromUrl)) {
+      setFilterBanque('all');
+      setFilterType('all');
+    }
   }, [dealFromUrl]);
 
-  const filtered = MA_DEALS.filter(
-    d =>
-      (filterBanque === 'all' || dealMatchesBank(d, filterBanque)) &&
-      (filterType === 'all' || dealMatchesType(d, filterType)),
+  const filtered = useMemo(
+    () => MA_DEALS.filter(d => dealPassesFilters(d, filterBanque, filterType)),
+    [filterBanque, filterType],
   );
+
+  useEffect(() => {
+    if (!openDeal || !filtered.some(d => d.id === openDeal)) return;
+    const timer = window.setTimeout(() => {
+      const el = document.getElementById(`deal-card-${openDeal}`);
+      if (!el) return;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    }, 100);
+    return () => window.clearTimeout(timer);
+  }, [openDeal, filtered]);
+
+  const toggleDeal = (id: string) => {
+    if (openDeal === id) {
+      navigate({ search: { deal: undefined } });
+    } else {
+      navigate({ search: { deal: id } });
+    }
+  };
 
   return (
     <>
@@ -243,14 +278,21 @@ export function BlocActualite () {
       <div className="space-y-3">
         {filtered.map(deal => {
           const isOpen = openDeal === deal.id;
+          const isDeepLinked = dealFromUrl === deal.id;
           const visibleBanks = deal.banks.slice(0, MAX_BANK_CHIPS);
           const extraBanks = deal.banks.length - MAX_BANK_CHIPS;
 
           return (
-            <div key={deal.id} className={`${guideCardClass} overflow-hidden`}>
+            <div
+              key={deal.id}
+              id={`deal-card-${deal.id}`}
+              className={`${guideCardClass} overflow-hidden scroll-mt-24 ${
+                isOpen && isDeepLinked ? 'border-blue-400 ring-2 ring-blue-200' : ''
+              }`}
+            >
               <button
                 type="button"
-                onClick={() => setOpenDeal(isOpen ? null : deal.id)}
+                onClick={() => toggleDeal(deal.id)}
                 aria-expanded={isOpen}
                 className="w-full text-left px-5 py-4 flex items-start justify-between gap-4"
               >

@@ -72,8 +72,7 @@ export const Route = createRootRoute({
       { charSet: 'utf-8' },
       {
         name: 'viewport',
-        content:
-          'width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, minimum-scale=1, user-scalable=no',
+        content: 'width=device-width, initial-scale=1, viewport-fit=cover',
       },
       { name: 'theme-color', content: '#1e3a8a' },
       { name: 'apple-mobile-web-app-capable', content: 'yes' },

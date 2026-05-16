@@ -605,6 +605,10 @@ export function isValidDealId (id: string): boolean {
   return MA_DEALS.some(d => d.id === id);
 }
 
+export function getDealById (id: string): MaDeal | undefined {
+  return MA_DEALS.find(d => d.id === id);
+}
+
 export function dealMatchesBank (deal: MaDeal, bank: string): boolean {
   return deal.banks.includes(bank);
 }

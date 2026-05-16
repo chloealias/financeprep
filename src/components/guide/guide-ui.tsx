@@ -31,18 +31,24 @@ export function GuideChipButton ({
   onClick,
   children,
   size = 'md',
+  ariaPressed,
 }: {
   active: boolean;
   onClick: () => void;
   children: ReactNode;
   size?: 'sm' | 'md';
+  ariaPressed?: boolean;
 }) {
-  const sizeClass = size === 'sm' ? 'px-3 py-1 text-xs' : 'px-4 py-2 text-sm';
+  const sizeClass =
+    size === 'sm'
+      ? 'px-3 py-2 min-h-11 text-xs'
+      : 'px-4 py-2 min-h-11 text-sm';
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`${sizeClass} rounded-lg font-medium border transition-all ${
+      aria-pressed={ariaPressed ?? active}
+      className={`${sizeClass} rounded-lg font-medium border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
         active
           ? 'bg-blue-900 text-white border-blue-900'
           : 'bg-white text-blue-700 border-blue-200 hover:bg-blue-50'

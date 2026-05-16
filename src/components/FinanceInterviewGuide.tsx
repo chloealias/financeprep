@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from '@tanstack/react-router';
 import { Search, ChevronRight, BookOpen, Filter, X, Star, CheckCircle2, Bookmark, BookmarkCheck } from 'lucide-react';
 import {
@@ -33,8 +33,11 @@ import { AppHubLayout } from '@/components/hub/AppHubLayout';
 import { GuideModuleLink } from '@/components/guide/guide-ui';
 import { IsometricMap } from '@/components/sectors/IsometricMap';
 import { SectorPanel } from '@/components/sectors/SectorPanel';
+import { SECTOR_DATA } from '@/data/sector-data';
 import type { SectorId } from '@/lib/sectors';
 import { BankHubPage } from '@/components/banks/BankHubPage';
+import { DetailSheet } from '@/components/hub/DetailSheet';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 // =====================================================
 //  COMPOSANT PRINCIPAL
@@ -83,6 +86,8 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   const [ratingFilter, setRatingFilter] = useState(initialFilters.ratingFilter);
   const [conceptCategory, setConceptCategory] = useState(initialFilters.conceptCategory);
   const [selectedSector, setSelectedSector] = useState<SectorId | null>(null);
+  const lastSectorTriggerRef = useRef<HTMLElement | null>(null);
+  const isMobile = useMediaQuery('(max-width: 767px)');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [reviewList, setReviewList] = useState<string[]>(() =>
     typeof window !== 'undefined' ? loadReviewList() : [],
@@ -94,6 +99,22 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   useEffect(() => {
     setFiltersHydrated(true);
   }, []);
+
+  const handleSectorSelect = (id: SectorId | null) => {
+    if (id !== null && document.activeElement instanceof HTMLElement) {
+      lastSectorTriggerRef.current = document.activeElement;
+    }
+    setSelectedSector(id);
+  };
+
+  useEffect(() => {
+    if (!selectedSector) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedSector(null);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [selectedSector]);
 
   const toggleReview = (qid: string | number) => {
     const key = questionIdKey(qid);
@@ -334,17 +355,10 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
                       {inReview ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
                     </button>
                     <div className="w-full p-4 sm:p-6 pr-14 sm:pr-16 flex items-start gap-3 sm:gap-4">
-                      <div
-                        role="button"
-                        tabIndex={0}
+                      <button
+                        type="button"
                         onClick={() => setExpandedQuestion(isExpanded ? null : q.id)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            setExpandedQuestion(isExpanded ? null : q.id);
-                          }
-                        }}
-                        className="flex flex-1 min-w-0 items-start gap-3 sm:gap-4 text-left cursor-pointer rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                        className="flex flex-1 min-w-0 items-start gap-3 sm:gap-4 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                         aria-expanded={isExpanded}
                       >
                         <div className="flex-shrink-0">
@@ -397,7 +411,7 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
                         <div className={`flex-shrink-0 self-center transition-transform duration-300 ${isExpanded ? 'rotate-90' : ''}`}>
                           <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" aria-hidden="true" />
                         </div>
-                      </div>
+                      </button>
                       <div className="flex-shrink-0 self-start pt-1">
                         <StarRating value={userRating} onChange={(v) => updateRating(q.id, v)} size="sm" />
                       </div>
@@ -491,14 +505,17 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
           </div>
 
 
-          {/* Filtre concepts — barre horizontale sticky */}
-          <div className="sticky top-16 z-20 -mx-4 sm:mx-0 mb-6 sm:mb-8 bg-blue-50/95 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-0 border-b border-blue-100 sm:border-0">
-            <div className="sm:bg-white sm:rounded-2xl sm:shadow-sm sm:border sm:border-blue-100 sm:p-4">
+          {/* Filtres + mini-nav : un seul bloc sticky top-0 (fond blanc opaque) */}
+          <div
+            id="concepts-sticky-bar"
+            className="sticky top-0 z-40 -mx-4 sm:-mx-6 lg:-mx-8 mb-6 sm:mb-8 bg-white border-b border-blue-200 shadow-[0_4px_12px_-2px_rgba(30,58,138,0.12)] isolate"
+          >
+            <div className="px-4 sm:px-6 lg:px-8 pt-3 pb-3 sm:pt-4 sm:pb-4">
               <div className="hidden sm:block text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">Filtrer par thématique</div>
               <div
                 role="tablist"
                 aria-label="Filtrer les concepts par thématique"
-                className="flex gap-2 overflow-x-auto px-4 sm:px-0 py-3 sm:py-0 snap-x snap-mandatory scrollbar-hide"
+                className="flex gap-2 overflow-x-auto px-0 py-0 snap-x snap-mandatory scrollbar-hide"
                 style={{ scrollbarWidth: 'none' }}
               >
                 {categories.filter((c) => c.id !== 'brainteaser').map((cat) => {
@@ -522,50 +539,50 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
                 })}
               </div>
             </div>
+            {(() => {
+              const activeIdx = filteredConcepts.findIndex((c) => c.id === expandedConcept);
+              if (activeIdx === -1) return null;
+              const active = filteredConcepts[activeIdx];
+              const goTo = (idx: number) => {
+                if (idx < 0 || idx >= filteredConcepts.length) return;
+                setExpandedConcept(filteredConcepts[idx].id);
+              };
+              return (
+                <div className="px-4 sm:px-6 lg:px-8 pb-3">
+                  <div className="bg-blue-900 text-white rounded-xl shadow-md px-3 py-2 flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => goTo(activeIdx - 1)}
+                      disabled={activeIdx === 0}
+                      aria-label="Concept précédent"
+                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                    >
+                      <ChevronRight className="w-4 h-4 rotate-180" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setExpandedConcept(null)}
+                      className="flex-1 min-w-0 text-left flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-blue-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                      aria-label="Replier le concept ouvert"
+                      title="Replier"
+                    >
+                      <span className="tabular-nums text-blue-300 text-xs flex-shrink-0">{activeIdx + 1}/{filteredConcepts.length}</span>
+                      <span className="font-serif text-sm truncate">{active.title}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => goTo(activeIdx + 1)}
+                      disabled={activeIdx === filteredConcepts.length - 1}
+                      aria-label="Concept suivant"
+                      className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
           </div>
-
-          {/* Mini-bar de navigation : visible quand un concept est ouvert */}
-          {(() => {
-            const activeIdx = filteredConcepts.findIndex((c) => c.id === expandedConcept);
-            if (activeIdx === -1) return null;
-            const active = filteredConcepts[activeIdx];
-            const goTo = (idx) => {
-              if (idx < 0 || idx >= filteredConcepts.length) return;
-              setExpandedConcept(filteredConcepts[idx].id);
-            };
-            return (
-              <div className="sticky top-32 z-10 mb-4 bg-blue-900 text-white rounded-xl shadow-md px-3 py-2 flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => goTo(activeIdx - 1)}
-                  disabled={activeIdx === 0}
-                  aria-label="Concept précédent"
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
-                >
-                  <ChevronRight className="w-4 h-4 rotate-180" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setExpandedConcept(null)}
-                  className="flex-1 min-w-0 text-left flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-blue-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
-                  aria-label="Replier le concept ouvert"
-                  title="Replier"
-                >
-                  <span className="tabular-nums text-blue-300 text-xs flex-shrink-0">{activeIdx + 1}/{filteredConcepts.length}</span>
-                  <span className="font-serif text-sm truncate">{active.title}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => goTo(activeIdx + 1)}
-                  disabled={activeIdx === filteredConcepts.length - 1}
-                  aria-label="Concept suivant"
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            );
-          })()}
 
           <div className="space-y-3 sm:space-y-4">
             {filteredConcepts.map((c, i) => (
@@ -617,7 +634,7 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
 
       {/* PAGE: SECTEURS */}
       {activePage === 'secteurs' && (
-        <div className="max-w-7xl mx-auto px-6 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <div className="mb-10">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-px w-12 bg-blue-700" />
@@ -627,17 +644,33 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
               Fiches <span className="italic font-light text-blue-700">sectorielles</span>
             </h2>
             <p className="text-blue-700 mt-3 font-light">
-              7 secteurs couvrant ~80% des deals. Cliquez sur un bâtiment pour ouvrir sa fiche.
+              7 secteurs couvrant ~80% des deals. Cliquez sur un bâtiment ou utilisez les boutons sous la carte pour ouvrir une fiche.
             </p>
           </div>
 
-          <IsometricMap onSectorSelect={setSelectedSector} selectedSector={selectedSector} />
+          <IsometricMap onSectorSelect={handleSectorSelect} selectedSector={selectedSector} />
 
-          {selectedSector && (
+          {selectedSector && !isMobile && (
             <SectorPanel
               sectorId={selectedSector}
               onClose={() => setSelectedSector(null)}
             />
+          )}
+
+          {isMobile && selectedSector && SECTOR_DATA[selectedSector] && (
+            <DetailSheet
+              open
+              onOpenChange={open => {
+                if (!open) setSelectedSector(null);
+              }}
+              title={`Fiche ${SECTOR_DATA[selectedSector].name}`}
+              returnFocusRef={lastSectorTriggerRef}
+            >
+              <SectorPanel
+                sectorId={selectedSector}
+                onClose={() => setSelectedSector(null)}
+              />
+            </DetailSheet>
           )}
         </div>
       )}

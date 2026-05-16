@@ -111,21 +111,31 @@ export function SectorBuilding ({
         </text>
       </g>
 
-      {/* Zone cliquable — au-dessus de tout le groupe, capture les clics */}
-      <circle
-        cx={0}
-        cy={-25}
-        r={hitR}
-        fill="transparent"
-        pointerEvents="all"
+      {/* Zone cliquable — souris, tactile et clavier */}
+      <g
+        role="button"
+        tabIndex={0}
+        aria-pressed={isSelected}
+        aria-label={`Ouvrir la fiche ${label}`}
         onClick={e => {
           e.stopPropagation();
           onSelect();
         }}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            onSelect();
+          }
+        }}
         onMouseEnter={onHover}
         onMouseLeave={onLeave}
-        className="cursor-pointer"
-      />
+        onFocus={onHover}
+        onBlur={onLeave}
+        className="cursor-pointer outline-none focus-visible:[&>circle:last-child]:stroke-blue-500 focus-visible:[&>circle:last-child]:stroke-[3px]"
+      >
+        <circle cx={0} cy={-25} r={hitR} fill="transparent" pointerEvents="all" />
+      </g>
     </g>
   );
 }
