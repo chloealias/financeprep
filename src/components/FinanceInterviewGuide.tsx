@@ -3973,23 +3973,24 @@ const FinanceInterviewGuide = () => {
 
   // Démarrer avec les valeurs par défaut (évite les mismatches SSR/hydratation)
   // puis hydrater depuis localStorage côté client.
-  const [activePage, setActivePage] = useState('questions'); // questions | concepts | progress | guide | secteurs
+  const PAGE_KEY = 'finance-active-page';
+  const VALID_PAGES = ['questions', 'concepts', 'guide', 'secteurs', 'progress'];
+
+  const [activePage, setActivePage] = useState(() => {
+    if (typeof window === 'undefined') return 'questions';
+    try {
+      const saved = window.localStorage.getItem(PAGE_KEY);
+      if (saved && VALID_PAGES.includes(saved)) return saved;
+    } catch { /* ignore */ }
+    return 'questions';
+  }); // questions | concepts | progress | guide | secteurs
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const params = new URLSearchParams(window.location.search);
-    if (!params.has('tab')) return; // pas de param → comportement par défaut (Questions)
-    const tab = params.get('tab');
-    const valid = ['questions', 'concepts', 'guide', 'secteurs', 'progress'];
-    // tab présent mais invalide → fallback silencieux sur Guide + nettoyage de l'URL
-    const target = tab && valid.includes(tab) ? tab : 'guide';
-    setActivePage(target);
-    if (target !== tab) {
-      const url = new URL(window.location.href);
-      url.searchParams.set('tab', 'guide');
-      window.history.replaceState(null, '', url.toString());
-    }
-  }, []);
+    try {
+      window.localStorage.setItem(PAGE_KEY, activePage);
+    } catch { /* ignore */ }
+  }, [activePage]);
   const [openGuideId, setOpenGuideId] = useState<number | null>(null);
   const [acronymQuery, setAcronymQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
