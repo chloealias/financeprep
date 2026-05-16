@@ -9,7 +9,7 @@ export const Route = createFileRoute('/actualite')({
       {
         name: 'description',
         content:
-          'Deals récents à connaître pour montrer votre intérêt réel en entretien finance.',
+          '12 deals M&A détaillés (2025-2026) pour montrer votre intérêt réel en entretien finance.',
       },
     ],
   }),
