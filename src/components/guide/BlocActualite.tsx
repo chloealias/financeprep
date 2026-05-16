@@ -181,19 +181,11 @@ export function BlocActualite () {
 
   return (
     <>
-      <div className={`${guideAlertClass} mb-6 space-y-3`}>
+      <div className={`${guideAlertClass} mb-6`}>
         <p>
           Dernière mise à jour : 2025-2026. Citer un deal récent avec la banque cible est un signal fort
           d&apos;intérêt réel. Sources : Financial Times, Bloomberg, Mergermarket.
         </p>
-        <div className="text-sm text-blue-800 font-light border-t border-blue-200/60 pt-3">
-          <p className="font-medium text-blue-900 mb-1">Rothschild & Co vs Edmond de Rothschild</p>
-          <p>
-            <strong>Rothschild & Co</strong> = advisory M&A et restructuring (Paris/Londres).{' '}
-            <strong>Edmond de Rothschild</strong> = banque privée et asset management (Genève). Deux entités
-            totalement séparées — en contexte M&A, « Rothschild » = toujours Rothschild & Co.
-          </p>
-        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4 mb-6">

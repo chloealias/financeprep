@@ -21,8 +21,8 @@ export function BuildingSante () {
       {/* Croix médicale sur façade */}
       <rect x="6" y="-32" width="6" height="18" fill="#ef4444" rx="1" />
       <rect x="2" y="-28" width="14" height="6" fill="#ef4444" rx="1" />
-      {/* Aile latérale */}
-      {isoBlock({ x: -28, y: 4, w: 22, d: 20, h: 28, colors: ISO_NAVY_LIGHT })}
+      {/* Aile latérale — à droite pour ne pas décaler visuellement la colonne TMT / Industrie */}
+      {isoBlock({ x: 28, y: 4, w: 22, d: 20, h: 28, colors: ISO_NAVY_LIGHT })}
     </g>
   );
 }
@@ -41,10 +41,10 @@ export function BuildingEnergie () {
       <polygon points="0,-58 -28,-78 -24,-70" fill={ISO_NAVY.top} />
       <polygon points="0,-58 30,-76 26,-68" fill={ISO_NAVY.top} />
       <polygon points="0,-58 -2,-32 4,-30" fill="#172554" />
-      {/* Panneau solaire au sol */}
-      <polygon points="-18,0 -8,-6 12,-6 2,0" fill="#1e3a8a" opacity="0.9" />
-      <line x1="-14" y1="-2" x2="8" y2="-2" stroke="#60a5fa" strokeWidth="0.8" opacity="0.6" />
-      <line x1="-10" y1="-4" x2="4" y2="-4" stroke="#60a5fa" strokeWidth="0.8" opacity="0.6" />
+      {/* Panneau solaire au sol — centré sur le mât */}
+      <polygon points="-15,0 -5,-6 15,-6 5,0" fill="#1e3a8a" opacity="0.9" />
+      <line x1="-12" y1="-2" x2="12" y2="-2" stroke="#60a5fa" strokeWidth="0.8" opacity="0.6" />
+      <line x1="-8" y1="-4" x2="8" y2="-4" stroke="#60a5fa" strokeWidth="0.8" opacity="0.6" />
     </g>
   );
 }

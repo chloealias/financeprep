@@ -4,12 +4,14 @@ import {
   ListChecks,
   Library,
   BookMarked,
-  BarChart3,
   Building2,
+  Landmark,
 } from 'lucide-react';
-import type { HubNavTab } from '@/lib/app-tabs';
+import type { AppTab, HubNavTab } from '@/lib/app-tabs';
+import { isHubNavTab } from '@/lib/app-tabs';
 import { questions } from '@/data/questions';
 import { concepts } from '@/data/concepts';
+import { ProfileMenu } from '@/components/hub/ProfileMenu';
 
 type HubPage = {
   id: HubNavTab;
@@ -23,16 +25,19 @@ const pages: HubPage[] = [
   { id: 'concepts', label: 'Notions', icon: Library, count: concepts.length },
   { id: 'guide', label: 'Guide', icon: BookMarked },
   { id: 'secteurs', label: 'Secteurs', icon: Building2 },
-  { id: 'progress', label: 'Progression', icon: BarChart3 },
+  { id: 'banques', label: 'Banque', icon: Landmark },
 ];
 
 type AppHubLayoutProps = {
-  activePage: HubNavTab;
-  onPageChange: (page: HubNavTab) => void;
+  activePage: AppTab;
+  onPageChange: (page: AppTab) => void;
+  hasProgress?: boolean;
   children: ReactNode;
 };
 
-export function AppHubLayout({ activePage, onPageChange, children }: AppHubLayoutProps) {
+export function AppHubLayout ({ activePage, onPageChange, hasProgress, children }: AppHubLayoutProps) {
+  const navActivePage = isHubNavTab(activePage) ? activePage : null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100 pb-24 sm:pb-0">
       <header
@@ -40,26 +45,28 @@ export function AppHubLayout({ activePage, onPageChange, children }: AppHubLayou
         style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-12 lg:py-16">
-          <button
-            type="button"
-            onClick={() => onPageChange('questions')}
-            aria-label="Finance Interview. Retour aux questions."
-            className="sm:hidden flex items-center min-w-0 w-full text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
-          >
-            <h1 className="font-medium text-white text-xl tracking-tight whitespace-nowrap m-0">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <button
+              type="button"
+              onClick={() => onPageChange('questions')}
+              aria-label="Finance Interview. Retour aux questions."
+              className="sm:hidden flex-1 min-w-0 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+            >
+              <h1 className="font-medium text-white text-xl tracking-tight truncate m-0">
+                Finance Interview
+              </h1>
+            </button>
+            <h1 className="hidden sm:block flex-1 text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight m-0">
               Finance Interview
             </h1>
-          </button>
-
-          <h1 className="hidden sm:block text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight">
-            Finance Interview
-          </h1>
+            <ProfileMenu onPageChange={onPageChange} hasProgress={hasProgress} />
+          </div>
 
           <nav className="hidden sm:block mt-8" aria-label="Navigation principale">
             <div className="flex flex-wrap gap-2">
-              {pages.map((p) => {
+              {pages.map(p => {
                 const Icon = p.icon;
-                const isActive = activePage === p.id;
+                const isActive = navActivePage === p.id;
                 return (
                   <button
                     key={p.id}
@@ -94,9 +101,9 @@ export function AppHubLayout({ activePage, onPageChange, children }: AppHubLayou
         aria-label="Navigation mobile"
       >
         <div className="flex items-stretch justify-around">
-          {pages.map((p) => {
+          {pages.map(p => {
             const Icon = p.icon;
-            const isActive = activePage === p.id;
+            const isActive = navActivePage === p.id;
             return (
               <button
                 key={p.id}

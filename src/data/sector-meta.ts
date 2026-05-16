@@ -28,7 +28,7 @@ export const SECTOR_META: Record<SectorId, SectorMeta> = {
     label: 'Énergie',
     shortLabel: 'Énergie',
     tagline: 'Oil & gas, utilities, renouvelables',
-    mapSlot: { x: 375, y: 178 },
+    mapSlot: { x: 360, y: 178 },
     labelOffset: { x: 0, y: 38 },
   },
   retail: {
@@ -42,21 +42,21 @@ export const SECTOR_META: Record<SectorId, SectorMeta> = {
     label: 'Industrie',
     shortLabel: 'Industrie',
     tagline: 'Manufacturing, B2B, infrastructure',
-    mapSlot: { x: 165, y: 310 },
+    mapSlot: { x: 165, y: 308 },
     labelOffset: { x: 0, y: 38 },
   },
   immo: {
     label: 'Immobilier',
     shortLabel: 'Immo',
     tagline: 'Bureaux, logistique, résidentiel',
-    mapSlot: { x: 360, y: 305 },
+    mapSlot: { x: 298, y: 305 },
     labelOffset: { x: 0, y: 48 },
   },
   fi: {
     label: 'FIG',
     shortLabel: 'FIG',
     tagline: 'Banques, assurance, asset management',
-    mapSlot: { x: 555, y: 308 },
+    mapSlot: { x: 438, y: 308 },
     labelOffset: { x: 0, y: 40 },
   },
 };

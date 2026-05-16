@@ -34,6 +34,7 @@ import { GuideModuleLink } from '@/components/guide/guide-ui';
 import { IsometricMap } from '@/components/sectors/IsometricMap';
 import { SectorPanel } from '@/components/sectors/SectorPanel';
 import type { SectorId } from '@/lib/sectors';
+import { BankHubPage } from '@/components/banks/BankHubPage';
 
 // =====================================================
 //  COMPOSANT PRINCIPAL
@@ -179,10 +180,10 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
 
   const getCategoryColor = (catId) => catId === 'brainteaser' ? 'bg-amber-50 text-amber-900 border-amber-300' : 'bg-blue-50 text-blue-700 border-blue-200';
 
-
+  const hasProgress = Object.keys(ratings).some(k => ratings[k] > 0);
 
   return (
-    <AppHubLayout activePage={activePage} onPageChange={onPageChange}>
+    <AppHubLayout activePage={activePage} onPageChange={onPageChange} hasProgress={hasProgress}>
       {/* PAGE: QUESTIONS */}
       {activePage === 'questions' && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -641,6 +642,8 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
         </div>
       )}
 
+      {/* PAGE: BANQUES */}
+      {activePage === 'banques' && <BankHubPage />}
 
       {/* PAGE: PROGRESS */}
       {activePage === 'progress' && (
