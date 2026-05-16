@@ -1,7 +1,10 @@
+import type { BankCategoryId } from '@/lib/bank-categories';
+import { BANK_CATEGORY_IDS } from '@/lib/bank-categories';
 import { dealMatchesBank, MA_DEALS, type MaDeal } from '@/data/ma-deals';
 
 export type BankProfile = {
   id: string;
+  categoryId: BankCategoryId;
   name: string;
   category: string;
   hq: string;
@@ -10,11 +13,16 @@ export type BankProfile = {
   particularites: string[];
   recrutement?: string;
   pointEntretien: string;
+  dealEmblematique: { titre: string; texte: string };
+  questionPiège: string;
+  reponsePiège: string;
+  piegeAEviter?: string;
 };
 
 export const BANK_LIST: BankProfile[] = [
   {
     id: 'rothschild-co',
+    categoryId: 'elite-boutique',
     name: 'Rothschild & Co',
     category: 'Elite boutique (advisory)',
     hq: 'Paris / Londres',
@@ -23,16 +31,25 @@ export const BANK_LIST: BankProfile[] = [
     particularites: [
       'Structure partnership — culture long terme, pas de trading propriétaire',
       'Forte présence mid-cap et situations complexes (carve-outs, OPA, restructurations)',
-      'Rothschild & Co ≠ Edmond de Rothschild (banque privée / AM, Genève)',
       'Excellence sell-side France : Opella, créanciers Altice',
       'Process souvent plus qualitatif que les bulge brackets (moins de modèles massifs)',
     ],
     recrutement: 'Entretiens techniques + fit culturel. Cas M&A / restructuring. Stages très sélectifs, souvent via réseau et parcours top schools.',
     pointEntretien:
       'Toujours dire « Rothschild & Co ». Montrer l\'intérêt pour le conseil pur (pas de balance sheet) et citer un deal récent où ils sont lead (Sanofi/Opella sell-side, Altice créanciers).',
+    dealEmblematique: {
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'Sell-side M&A lead pour Sanofi sur le carve-out Opella (~16 Md€ EV). Deal emblématique du modèle conseil pur : pas de financement intégré, mais mandat stratégique sous pression politique (Doliprane).',
+    },
+    questionPiège:
+      'Pourquoi Rothschild plutôt que BNP sur Opella, alors que BNP peut aussi conseiller et financer ?',
+    reponsePiège:
+      'Rothschild = indépendance totale, pas de conflit avec une balance sheet. Sur un carve-out sensible, Sanofi veut un advisor qui maximise le prix sans pousser un financement maison. BNP intervient plutôt en coordinateur dette, pas en sell-side lead.',
+    piegeAEviter: 'Ne jamais confondre Rothschild & Co (Paris/Londres, advisory) avec Edmond de Rothschild (banque privée, Genève).',
   },
   {
     id: 'lazard',
+    categoryId: 'elite-boutique',
     name: 'Lazard',
     category: 'Elite boutique',
     hq: 'New York / Paris',
@@ -48,9 +65,18 @@ export const BANK_LIST: BankProfile[] = [
     recrutement: 'Plusieurs rounds, cas financiers et fit. Restructuring recrute des profils juridiques/finance dette en plus des généralistes.',
     pointEntretien:
       'Expliquer pourquoi Lazard vs GS : indépendance, absence de conflit avec lending. Distinguer rôle débiteur (Altice) vs buy-side selon le deal cité.',
+    dealEmblematique: {
+      titre: 'Altice France — Restructuration €24 Md',
+      texte: 'Advisor restructuring côté débiteur (Altice / Drahi). Cooperation agreement entre ~200 créanciers secured, debt-for-equity, distinction secured vs holdco — cas d\'école restructuring européen.',
+    },
+    questionPiège:
+      'Sur Altice, Lazard conseille qui exactement — et en quoi est-ce différent de Rothschild ?',
+    reponsePiège:
+      'Lazard = mandat débiteur. Rothschild & Co = créanciers secured (~19 Md€). Houlihan Lokey = créanciers holdco (~4,4 Md€). Trois camps, trois advisors — ne pas les fusionner en un seul « mandat Altice ».',
   },
   {
     id: 'goldman-sachs',
+    categoryId: 'bulge-bracket',
     name: 'Goldman Sachs',
     category: 'Bulge bracket',
     hq: 'New York',
@@ -66,9 +92,18 @@ export const BANK_LIST: BankProfile[] = [
     recrutement: 'Superday, entretiens comportementaux + techniques. Préparer DCF, comps, accretion/dilution. Stages analyst summer très compétitifs.',
     pointEntretien:
       'Montrer que GS n\'est pas qu\'un job M&A : connaître GS Alternatives / Mace. Être prêt sur un deal récent et sur « Why Goldman » avec exemple concret.',
+    dealEmblematique: {
+      titre: 'Goldman Sachs Alternatives / Mace Consult',
+      texte: 'GS Alternatives acquiert 75% de Mace Consult (carve-out consulting infra, ~$1 Md rev.). Illustre le bras PE du groupe, distinct de l\'Investment Banking classique.',
+    },
+    questionPiège:
+      'GS est-elle une banque d\'affaires ou un fonds de private equity ?',
+    reponsePiège:
+      'Les deux, via des entités distinctes : Investment Banking (conseil/financement) et Goldman Sachs Alternatives (PE, >$625 Md AUM). Mace montre la stratégie bolt-on infra — en entretien IB, citer le deal prouve la veille groupe.',
   },
   {
     id: 'morgan-stanley',
+    categoryId: 'bulge-bracket',
     name: 'Morgan Stanley',
     category: 'Bulge bracket',
     hq: 'New York',
@@ -82,9 +117,17 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Process similaire aux autres bulge : fit + technical. Questions brainteasers possibles.',
     pointEntretien: 'Citer un deal où MS est bookrunner ou advisor. Comparer MS vs GS sur culture et secteurs forts (ECM, tech).',
+    dealEmblematique: {
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'Sell-side M&A advisor + coordinateur dette sur le LBO Opella (~16 Md€). MS illustre le modèle bulge : conseil et financement sur le même mandat européen flagship.',
+    },
+    questionPiège: 'Pourquoi Morgan Stanley plutôt que Goldman Sachs ?',
+    reponsePiège:
+      'Réponse personnalisée mais structurée : MS souvent citée plus forte en ECM et culture perçue comme plus collaborative ; GS plus intense et PE (Alternatives). Citer un deal où MS a un rôle identifiable (Opella) plutôt qu\'une généralité.',
   },
   {
     id: 'jpmorgan',
+    categoryId: 'bulge-bracket',
     name: 'JPMorgan',
     category: 'Bulge bracket',
     hq: 'New York',
@@ -98,9 +141,18 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'HireVue + superday. Tests techniques standards (valuation, accounting).',
     pointEntretien: 'Comprendre le modèle universal bank : avantages (financement intégré) vs conflits potentiels. Deal récent en Europe.',
+    dealEmblematique: {
+      titre: 'Swisscom / Vodafone Italia → Fastweb',
+      texte: 'Buy-side M&A advisor avec Evercore et Deutsche Bank sur l\'acquisition Vodafone Italia (~8 Md€ EV). Consolidation telecom européenne, enjeux antitrust.',
+    },
+    questionPiège:
+      'JPMorgan peut-elle conseiller et prêter sur le même deal sans conflit ?',
+    reponsePiège:
+      'Oui, avec Chinese walls et disclosure — c\'est le cœur du modèle universal bank. L\'avantage : offre intégrée financing + advisory. Le risque : perception de conflit si le client veut un conseil 100% indépendant → d\'où l\'existence des elite boutiques.',
   },
   {
     id: 'bank-of-america',
+    categoryId: 'bulge-bracket',
     name: 'Bank of America',
     category: 'Bulge bracket',
     hq: 'Charlotte / New York',
@@ -114,9 +166,17 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Process standard bulge bracket. Attention aux questions comptables (BofA historiquement forte accounting).',
     pointEntretien: 'Ne pas confondre avec Merrill Lynch (intégré). Citer deal luxe ou healthcare récent.',
+    dealEmblematique: {
+      titre: 'Kering Beauté / Creed → L\'Oréal',
+      texte: 'Buy-side advisor pour L\'Oréal (4 Md€ cash, plus grande acquisition de l\'histoire du groupe). Sell-side = Evercore + Centerview — BofA côté acquéreur.',
+    },
+    questionPiège: 'Bank of America et Merrill Lynch, c\'est la même chose ?',
+    reponsePiège:
+      'Merrill Lynch a été intégrée à BofA en 2009. La marque Merrill subsiste sur la wealth management ; l\'investment banking opère sous Bank of America Securities. En entretien, dire « BofA » sauf si on parle explicitement du legacy Merrill.',
   },
   {
     id: 'citi',
+    categoryId: 'bulge-bracket',
     name: 'Citigroup',
     category: 'Bulge bracket',
     hq: 'New York',
@@ -130,9 +190,18 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Entretiens techniques + comportementaux. Accent sur global mindset.',
     pointEntretien: 'Mettre en avant l\'angle international si profil multilingue. Deal avec rôle financing + advisory.',
+    dealEmblematique: {
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'Buy-side M&A (avec Lazard) + coordinateur dette sur le LBO Opella. Citi illustre le double rôle bulge : conseil acquéreur CD&R et structuration du package dette €8,65 Md.',
+    },
+    questionPiège:
+      'Sur Opella, pourquoi autant de banques en coordinateurs dette ?',
+    reponsePiège:
+      'Syndication : partager le risque, élargir la distribution (club deal), relations avec différents investisseurs dette. Citi, GS, Barclays, BNP, MS, SocGen, HSBC = coordination, pas 7 duplicatas du même travail.',
   },
   {
     id: 'barclays',
+    categoryId: 'bulge-bracket',
     name: 'Barclays',
     category: 'Bulge bracket (UK/Europe)',
     hq: 'Londres',
@@ -146,9 +215,17 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Assessment centre Londres ou Paris selon desk. Technical + fit.',
     pointEntretien: 'Si entretien Paris : expliquer le lien Barclays-Londres. Connaître un deal Lev Fin ou UK-centric.',
+    dealEmblematique: {
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'Coordinateur dette sur le LBO Opella (~16 Md€ EV). Barclays = référence Lev Fin Europe, rôle financing plutôt que sell-side conseil pur.',
+    },
+    questionPiège: 'Barclays est-elle surtout une banque de financement ou de conseil M&A ?',
+    reponsePiège:
+      'Les deux, mais réputation particulièrement forte en leveraged finance et loan syndication en Europe. Sur Opella, rôle coordinateur dette — en entretien Lev Fin, c\'est un meilleur angle que de présenter Barclays comme une elite boutique M&A.',
   },
   {
     id: 'bnp-paribas',
+    categoryId: 'universal-bank',
     name: 'BNP Paribas',
     category: 'Banque française (universal)',
     hq: 'Paris',
@@ -162,13 +239,21 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Process FR : entretiens RH + techniques, parfois test logique. Stages CIB très demandés.',
     pointEntretien: 'Argument « banque de référence en France ». Deal Opella ou autre flagship FR. Comparer avec Rothschild (conseil pur).',
+    dealEmblematique: {
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'Sell-side advisor + coordinateur dette sur Opella. BNP = banque de référence sur les grands mandats français, conseil et financement intégrés.',
+    },
+    questionPiège: 'BNP ou Rothschild sur Opella — qui est le vrai leader ?',
+    reponsePiège:
+      'Rothschild = sell-side M&A lead (conseil stratégique pur). BNP = sell-side advisor ET coordinateur dette — rôle plus large mais pas « meilleur » en conseil : complémentaire. Ne pas dévaloriser Rothschild en disant que BNP « fait tout ».',
   },
   {
     id: 'societe-generale',
+    categoryId: 'universal-bank',
     name: 'Société Générale',
     category: 'Banque française (universal)',
     hq: 'Paris',
-    tagline: 'Acteur intégré CIB — équity derivatives et financement',
+    tagline: 'Acteur intégré CIB — equity derivatives et financement',
     divisions: ['Global Banking & Investor Solutions', 'Retail'],
     particularites: [
       'Réputation forte en equity derivatives et structured products',
@@ -178,9 +263,18 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Concours et entretiens type grande banque FR. Bien préparer motivation groupe + division CIB.',
     pointEntretien: 'Montrer connaissance du GBIS. Éviter de ne parler que de M&A si candidature markets/IB mixte.',
+    dealEmblematique: {
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'Coordinateur dette sur le LBO Opella. SocGen illustre la force financing du groupe, en complément des desks derivatives.',
+    },
+    questionPiège:
+      'Pourquoi postuler en M&A chez SocGen plutôt qu\'en derivatives ?',
+    reponsePiège:
+      'Réponse honnête alignée sur le poste visé. Si M&A : reconnaître que SocGen est moins iconique que BNP/Lazard en conseil pur, mais présente sur les grands deals FR en financing et M&A mid-cap. Ne pas prétendre que SocGen = leader M&A mondial.',
   },
   {
     id: 'hsbc',
+    categoryId: 'universal-bank',
     name: 'HSBC',
     category: 'Banque globale (UK/Asia)',
     hq: 'Londres / Hong Kong',
@@ -194,9 +288,17 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Entretiens structurés, fit et motivation géographique (HK, UK, FR).',
     pointEntretien: 'Si profil international : mettre en avant lien Europe-Asie. Sinon citer rôle financing sur deal européen.',
+    dealEmblematique: {
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'Coordinateur dette sur Opella. HSBC apporte son réseau global de distribution dette, même si le deal est centré France/Europe.',
+    },
+    questionPiège: 'HSBC est-elle une banque française ou britannique ?',
+    reponsePiège:
+      'Siège historique Londres, forte présence Hong Kong et Asie. En France, équipes CIB actives mais le groupe reste UK/Asia-centric. Ne pas la présenter comme concurrent direct de BNP sur le retail FR.',
   },
   {
     id: 'ubs',
+    categoryId: 'universal-bank',
     name: 'UBS',
     category: 'Banque suisse globale',
     hq: 'Zurich',
@@ -210,9 +312,18 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Entretiens techniques exigeants. Questions valuation et accounting.',
     pointEntretien: 'Post-merger CS/UBS : montrer veille sectorielle. Deal cross-border récent.',
+    dealEmblematique: {
+      titre: 'Goldman Sachs Alternatives / Mace Consult',
+      texte: 'Sell-side M&A advisor pour Mace Group (carve-out consulting infra). UBS conseille le vendeur pendant que GS Alternatives rachète 75% via le bras PE de Goldman.',
+    },
+    questionPiège:
+      'UBS a racheté Credit Suisse — quel impact sur le recrutement M&A ?',
+    reponsePiège:
+      'Consolidation : synergies, intégration des équipes, possible rationalisation à court terme, mais UBS renforce sa position en wealth et IB suisse. Montrer qu\'on suit l\'intégration CS/UBS (2023) sans dramatiser — le pipeline M&A cross-border continue (Mace, Swisscom).',
   },
   {
     id: 'deutsche-bank',
+    categoryId: 'universal-bank',
     name: 'Deutsche Bank',
     category: 'Banque allemande (universal)',
     hq: 'Francfort',
@@ -226,70 +337,13 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Process européen standard. Attention culture post-restructuration interne.',
     pointEntretien: 'Connaître la stratégie « return to profitability ». Deal telecom ou German Mittelstand angle.',
-  },
-  {
-    id: 'evercore',
-    name: 'Evercore',
-    category: 'Elite boutique (US)',
-    hq: 'New York',
-    tagline: 'Independent advisory — M&A et restructuring premium',
-    divisions: ['Advisory (M&A, restructuring)', 'Equities', 'Technology'],
-    particularites: [
-      'Sell-side Kering Beauté ; buy-side Swisscom/Vodafone',
-      'Modèle pure play advisory US, présence Paris croissante',
-      'Deals souvent haut de gamme et situationnellement complexes',
-      'Culture analytique, équipes lean',
-    ],
-    recrutement: 'Très sélectif, entretiens techniques poussés. Moins de places que bulge mais prestige élevé.',
-    pointEntretien: '« Why Evercore over bulge » : indépendance, qualité des mandates. Citer Kering/L\'Oréal ou Swisscom.',
-  },
-  {
-    id: 'centerview',
-    name: 'Centerview Partners',
-    category: 'Elite boutique (US)',
-    hq: 'New York',
-    tagline: 'Boutique M&A de référence — sell-side premium',
-    divisions: ['M&A advisory'],
-    particularites: [
-      'Sell-side Kering Beauté avec Evercore',
-      'Pas de restructuring massif — focus M&A stratégique',
-      'Réputation « trusted advisor » C-suite US',
-      'Bureaux limités en Europe vs Evercore/Lazard',
-    ],
-    recrutement: 'Extrêmement sélectif. Fit et judgment aussi importants que le technique.',
-    pointEntretien: 'Montrer compréhension sell-side stratégique (Kering cède beauté sous pression dette). Qualité > quantité de deals cités.',
-  },
-  {
-    id: 'jefferies',
-    name: 'Jefferies',
-    category: 'Independent investment bank',
-    hq: 'New York',
-    tagline: 'Mid-cap et growth — conseil et trading intégré',
-    divisions: ['Investment Banking', 'Equities', 'Fixed income'],
-    particularites: [
-      'Sole advisor Worldline MeTS ; buy-side Mace avec Lazard',
-      'Culture entrepreneuriale, moins hiérarchique que bulge',
-      'Fort sur mid-cap, healthcare, tech growth',
-      'Présence Paris active sur mandates français',
-    ],
-    recrutement: 'Process plus direct, entretiens avec seniors. Bon pour profils entrepreneurs.',
-    pointEntretien: 'Citer Worldline ou Mace. Expliquer pourquoi Jefferies vs bulge : responsabilité early, mid-cap focus.',
-  },
-  {
-    id: 'houlihan-lokey',
-    name: 'Houlihan Lokey',
-    category: 'Elite boutique (restructuring / valuation)',
-    hq: 'Los Angeles',
-    tagline: 'N°1 mondial restructuring et fairness opinions',
-    divisions: ['Financial Restructuring', 'Corporate finance (M&A)', 'Financial Advisory Services'],
-    particularites: [
-      'Créanciers holdco Altice (~4,4 Md€)',
-      'Spécialisation restructuring > M&A classique',
-      'Fairness opinions et valuation = compétences distinctives',
-      'Culture technique restructuring (crédit, intercreditor, DIP)',
-    ],
-    recrutement: 'Recrute des profils qui comprennent la dette et les process judiciaires. Cas restructuring fréquents.',
-    pointEntretien: 'Distinguer HL (holdco Altice) vs Rothschild (secured). Montrer intérêt pour restructuring, pas seulement M&A.',
+    dealEmblematique: {
+      titre: 'Swisscom / Vodafone Italia → Fastweb',
+      texte: 'Buy-side M&A advisor avec Evercore et JPM sur Vodafone Italia (~8 Md€ EV). DB = relais naturel sur les mandats telecom et cross-border Europe.',
+    },
+    questionPiège: 'Deutsche Bank est-elle encore en difficulté ?',
+    reponsePiège:
+      'Turnaround depuis 2019 (Christian Sewing) : recentrage sur l\'IB, réduction des activités risquées, retour à la rentabilité. Ne pas ressasser la crise 2008 — montrer la stratégie actuelle et un deal récent (Swisscom) comme preuve de reprise.',
   },
 ];
 
@@ -297,10 +351,30 @@ export const BANK_PROFILES: Record<string, BankProfile> = Object.fromEntries(
   BANK_LIST.map(b => [b.id, b]),
 );
 
+export const BANKS_BY_CATEGORY: Record<BankCategoryId, BankProfile[]> = Object.fromEntries(
+  BANK_CATEGORY_IDS.map(id => [id, BANK_LIST.filter(b => b.categoryId === id)]),
+) as Record<BankCategoryId, BankProfile[]>;
+
 export function getBankById (id: string): BankProfile | undefined {
   return BANK_PROFILES[id];
 }
 
+export function isValidBankId (id: string): boolean {
+  return id in BANK_PROFILES;
+}
+
+export function getBanksByCategory (id: BankCategoryId): BankProfile[] {
+  return BANKS_BY_CATEGORY[id];
+}
+
 export function getDealsForBank (name: string): MaDeal[] {
   return MA_DEALS.filter(d => dealMatchesBank(d, name));
+}
+
+const BANK_NAME_TO_ID: Record<string, string> = Object.fromEntries(
+  BANK_LIST.map(b => [b.name, b.id]),
+);
+
+export function getBankIdByName (name: string): string | undefined {
+  return BANK_NAME_TO_ID[name];
 }

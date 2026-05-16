@@ -5,12 +5,17 @@ import {
   isAppTab,
   type AppTab,
 } from '@/lib/app-tabs';
+import { isValidBankId } from '@/data/bank-profiles';
 
 export const Route = createFileRoute('/')({
   validateSearch: (search: Record<string, unknown>) => {
     const tab = typeof search.tab === 'string' ? search.tab : undefined;
     const resolved: AppTab = isAppTab(tab) ? tab : DEFAULT_APP_TAB;
-    return { tab: resolved };
+
+    const bankRaw = typeof search.bank === 'string' ? search.bank : undefined;
+    const bank = bankRaw && isValidBankId(bankRaw) ? bankRaw : undefined;
+
+    return { tab: resolved, bank };
   },
   component: HomePage,
 });
@@ -20,7 +25,12 @@ function HomePage() {
   const navigate = Route.useNavigate();
 
   const onPageChange = (page: AppTab) => {
-    navigate({ search: { tab: page } });
+    navigate({
+      search: prev => ({
+        tab: page,
+        bank: page === 'banques' ? prev.bank : undefined,
+      }),
+    });
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { BarChart3, User } from 'lucide-react';
+import { BarChart3, Landmark, User } from 'lucide-react';
+import { requestOpenTargetsFilter, getTargetBankIds } from '@/lib/target-banks-storage';
 import type { AppTab } from '@/lib/app-tabs';
 
 type ProfileMenuProps = {
@@ -34,6 +35,14 @@ export function ProfileMenu ({ onPageChange, hasProgress = false }: ProfileMenuP
     setOpen(false);
   };
 
+  const goToTargetBanks = () => {
+    requestOpenTargetsFilter();
+    onPageChange('banques');
+    setOpen(false);
+  };
+
+  const targetCount = getTargetBankIds().length;
+
   return (
     <div ref={rootRef} className="relative flex-shrink-0">
       <button
@@ -67,6 +76,17 @@ export function ProfileMenu ({ onPageChange, hasProgress = false }: ProfileMenuP
             <BarChart3 className="w-4 h-4 text-blue-600 flex-shrink-0" aria-hidden="true" />
             <span className="font-medium">Progression</span>
           </button>
+          {targetCount > 0 && (
+            <button
+              type="button"
+              role="menuitem"
+              onClick={goToTargetBanks}
+              className="w-full flex items-center gap-3 px-4 py-3 text-left text-sm text-blue-950 hover:bg-blue-50 transition-colors"
+            >
+              <Landmark className="w-4 h-4 text-blue-600 flex-shrink-0" aria-hidden="true" />
+              <span className="font-medium">Mes banques ({targetCount})</span>
+            </button>
+          )}
         </div>
       )}
     </div>

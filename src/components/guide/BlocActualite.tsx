@@ -1,6 +1,8 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
+import { Link } from '@tanstack/react-router';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import { GuideChipButton, guideAlertClass, guideCardClass } from '@/components/guide/guide-ui';
+import { getBankIdByName } from '@/data/bank-profiles';
 import {
   dealDateBadge,
   dealMatchesBank,
@@ -10,6 +12,7 @@ import {
   MA_DEALS,
   type MaDeal,
 } from '@/data/ma-deals';
+import { Route } from '@/routes/actualite';
 
 const typeColors: Record<string, string> = {
   'M&A': 'bg-blue-100 text-blue-700',
@@ -22,6 +25,27 @@ const typeColors: Record<string, string> = {
 };
 
 const MAX_BANK_CHIPS = 4;
+
+function BankDealChip ({ name }: { name: string }) {
+  const bankId = getBankIdByName(name);
+  if (!bankId) {
+    return (
+      <span className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded">
+        {name}
+      </span>
+    );
+  }
+  return (
+    <Link
+      to="/"
+      search={{ tab: 'banques', bank: bankId }}
+      className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded hover:bg-blue-100 hover:border-blue-200 transition-colors"
+      onClick={e => e.stopPropagation()}
+    >
+      {name}
+    </Link>
+  );
+}
 
 function DealSection ({
   title,
@@ -169,9 +193,14 @@ function DealDetail ({ deal }: { deal: MaDeal }) {
 }
 
 export function BlocActualite () {
+  const { deal: dealFromUrl } = Route.useSearch();
   const [filterBanque, setFilterBanque] = useState('all');
   const [filterType, setFilterType] = useState('all');
-  const [openDeal, setOpenDeal] = useState<string | null>(null);
+  const [openDeal, setOpenDeal] = useState<string | null>(dealFromUrl ?? null);
+
+  useEffect(() => {
+    if (dealFromUrl) setOpenDeal(dealFromUrl);
+  }, [dealFromUrl]);
 
   const filtered = MA_DEALS.filter(
     d =>
@@ -244,12 +273,7 @@ export function BlocActualite () {
                       <>
                         <span>·</span>
                         {visibleBanks.map(b => (
-                          <span
-                            key={b}
-                            className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded"
-                          >
-                            {b}
-                          </span>
+                          <BankDealChip key={b} name={b} />
                         ))}
                         {extraBanks > 0 && (
                           <span className="text-blue-400 text-xs">+{extraBanks}</span>

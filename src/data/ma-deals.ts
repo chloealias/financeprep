@@ -601,6 +601,10 @@ export const MA_DEAL_TYPES = [
   ...TYPE_ORDER.filter(t => MA_DEALS.some(d => d.type === t)),
 ] as const;
 
+export function isValidDealId (id: string): boolean {
+  return MA_DEALS.some(d => d.id === id);
+}
+
 export function dealMatchesBank (deal: MaDeal, bank: string): boolean {
   return deal.banks.includes(bank);
 }
