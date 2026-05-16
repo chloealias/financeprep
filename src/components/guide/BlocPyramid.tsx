@@ -30,16 +30,28 @@ export function BlocPyramid ({ openBloc, setOpenBloc }) {
           <div className="h-px w-6 bg-blue-700" />
           Pyramid Principle
         </div>
-        <svg viewBox="0 0 500 280" className="w-full h-auto max-w-lg mx-auto mb-6">
-          <polygon points="250,20 180,90 320,90" fill="#1e3a8a" />
-          <text x="250" y="58" fontSize="13" fill="white" textAnchor="middle" fontWeight="bold">CONCLUSION</text>
-          <text x="250" y="76" fontSize="10" fill="#bfdbfe" textAnchor="middle">D'abord</text>
-          <polygon points="180,100 80,180 420,180" fill="#3b82f6" />
-          <text x="250" y="148" fontSize="13" fill="white" textAnchor="middle" fontWeight="bold">ARGUMENTS CLÉS</text>
-          <text x="250" y="165" fontSize="10" fill="#dbeafe" textAnchor="middle">2-3 raisons principales</text>
-          <polygon points="80,190 20,260 480,260" fill="#93c5fd" />
-          <text x="250" y="232" fontSize="13" fill="#1e3a8a" textAnchor="middle" fontWeight="bold">PREUVES & EXEMPLES</text>
-          <text x="250" y="250" fontSize="10" fill="#1e40af" textAnchor="middle">Chiffres, cas concrets, anecdotes</text>
+        <svg
+          viewBox="0 0 500 300"
+          className="w-full h-auto max-w-lg mx-auto mb-6"
+          role="img"
+          aria-label="Pyramide : conclusion en premier, puis arguments, puis preuves"
+        >
+          <defs>
+            <clipPath id="pyramid-tier-top">
+              <polygon points="250,28 169,115 331,115" />
+            </clipPath>
+          </defs>
+          <polygon points="250,28 169,115 331,115" fill="#1e3a8a" shapeRendering="geometricPrecision" />
+          <g clipPath="url(#pyramid-tier-top)">
+            <text x="250" y="84" fontSize="8" fill="white" textAnchor="middle" dominantBaseline="middle" fontWeight="bold">CONCLUSION</text>
+            <text x="250" y="100" fontSize="7" fill="#bfdbfe" textAnchor="middle" dominantBaseline="middle">D'abord</text>
+          </g>
+          <polygon points="169,115 331,115 408,200 92,200" fill="#3b82f6" shapeRendering="geometricPrecision" />
+          <text x="250" y="162" fontSize="11" fill="white" textAnchor="middle" dominantBaseline="middle" fontWeight="bold">ARGUMENTS CLÉS</text>
+          <text x="250" y="182" fontSize="9" fill="#dbeafe" textAnchor="middle" dominantBaseline="middle">2-3 raisons principales</text>
+          <polygon points="92,200 408,200 485,285 15,285" fill="#93c5fd" shapeRendering="geometricPrecision" />
+          <text x="250" y="248" fontSize="11" fill="#1e3a8a" textAnchor="middle" dominantBaseline="middle" fontWeight="bold">PREUVES &amp; EXEMPLES</text>
+          <text x="250" y="268" fontSize="9" fill="#1e40af" textAnchor="middle" dominantBaseline="middle">Chiffres, cas concrets, anecdotes</text>
         </svg>
         <div className="bg-blue-900 text-white rounded-xl p-5 mb-6">
           <div className="text-blue-300 text-xs uppercase tracking-[0.2em] mb-2">Règle d'or</div>
@@ -52,7 +64,11 @@ export function BlocPyramid ({ openBloc, setOpenBloc }) {
           </div>
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
             <div className="text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-2">✅ Avec Pyramid</div>
-            <p className="text-emerald-800 text-sm font-light italic">"La finance me permet de comprendre comment les entreprises créent de la valeur — c'est ce qui me passionne. [Conclusion] Premièrement... [Arguments] C'est notamment ce que j'ai fait chez X où... [Preuve]"</p>
+            <p className="text-emerald-800 text-sm font-light italic space-y-2">
+              <span className="block"><span className="font-semibold not-italic text-emerald-900">Conclusion —</span> « La finance me permet de comprendre comment les entreprises créent de la valeur — c'est ce qui me passionne. »</span>
+              <span className="block"><span className="font-semibold not-italic text-emerald-900">Arguments —</span> « Premièrement… Deuxièmement… »</span>
+              <span className="block"><span className="font-semibold not-italic text-emerald-900">Preuve —</span> « C'est notamment ce que j'ai fait chez X où… »</span>
+            </p>
           </div>
         </div>
       </div>

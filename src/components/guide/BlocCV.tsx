@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Clock, ChevronRight, CheckCircle2, Award } from 'lucide-react';
+import { User, X } from 'lucide-react';
 import { BlocWrapper } from '@/components/guide/BlocWrapper';
 
 export function BlocCV ({ openBloc, setOpenBloc }) {

@@ -3,7 +3,7 @@ import { ChevronRight } from 'lucide-react';
 export function BlocWrapper ({ id, tag, titre, icon: Icon, openBloc, setOpenBloc, children }) {
   const isOpen = openBloc === id;
   return (
-    <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-sm">
       <button
         onClick={() => setOpenBloc(isOpen ? null : id)}
         className="w-full text-left px-8 py-6 flex items-center justify-between group"
@@ -20,10 +20,10 @@ export function BlocWrapper ({ id, tag, titre, icon: Icon, openBloc, setOpenBloc
         <ChevronRight className={`w-5 h-5 text-blue-400 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
       </button>
       {isOpen && (
-        <div className="px-8 pb-8 pt-2 border-t border-blue-100">
+        <div className="px-8 pb-8 pt-4 border-t border-blue-100">
           {children}
         </div>
       )}
     </div>
   );
-};
+}
