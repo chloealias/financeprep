@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as GlossaireRouteImport } from './routes/glossaire'
+import { Route as FlashcardsRouteImport } from './routes/flashcards'
 import { Route as ExcelRouteImport } from './routes/excel'
 import { Route as CvRouteImport } from './routes/cv'
 import { Route as ActualiteRouteImport } from './routes/actualite'
@@ -25,6 +26,11 @@ const PyramidRoute = PyramidRouteImport.update({
 const GlossaireRoute = GlossaireRouteImport.update({
   id: '/glossaire',
   path: '/glossaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlashcardsRoute = FlashcardsRouteImport.update({
+  id: '/flashcards',
+  path: '/flashcards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExcelRoute = ExcelRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
   '/excel': typeof ExcelRoute
+  '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/pyramid': typeof PyramidRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
   '/excel': typeof ExcelRoute
+  '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/pyramid': typeof PyramidRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
   '/excel': typeof ExcelRoute
+  '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/pyramid': typeof PyramidRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/actualite'
     | '/cv'
     | '/excel'
+    | '/flashcards'
     | '/glossaire'
     | '/pyramid'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/actualite'
     | '/cv'
     | '/excel'
+    | '/flashcards'
     | '/glossaire'
     | '/pyramid'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/actualite'
     | '/cv'
     | '/excel'
+    | '/flashcards'
     | '/glossaire'
     | '/pyramid'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ActualiteRoute: typeof ActualiteRoute
   CvRoute: typeof CvRoute
   ExcelRoute: typeof ExcelRoute
+  FlashcardsRoute: typeof FlashcardsRoute
   GlossaireRoute: typeof GlossaireRoute
   PyramidRoute: typeof PyramidRoute
 }
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/glossaire'
       fullPath: '/glossaire'
       preLoaderRoute: typeof GlossaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flashcards': {
+      id: '/flashcards'
+      path: '/flashcards'
+      fullPath: '/flashcards'
+      preLoaderRoute: typeof FlashcardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/excel': {
@@ -181,19 +201,10 @@ const rootRouteChildren: RootRouteChildren = {
   ActualiteRoute: ActualiteRoute,
   CvRoute: CvRoute,
   ExcelRoute: ExcelRoute,
+  FlashcardsRoute: FlashcardsRoute,
   GlossaireRoute: GlossaireRoute,
   PyramidRoute: PyramidRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

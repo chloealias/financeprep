@@ -1,38 +1,69 @@
-## Refonte du design des cartes de questions
+# Plan d'amélioration — FinancePrep
 
-Objectif : alléger les cartes, surtout sur mobile où les pastilles de catégorie + difficulté + étoiles + bookmark saturent la ligne du haut.
+Tu utilises l'app surtout pour **t'entraîner activement**. Je propose une roadmap en 4 vagues, de l'impact le plus fort au plus marginal. Tu pourras me dire quelles vagues lancer (et dans quel ordre).
 
-### Changements
+---
 
-**Mobile (< sm)**
-- Remplacer la pastille catégorie « Déstabilisantes / Valorisation / … » par **une petite icône ronde colorée** (icône Lucide déjà associée à chaque catégorie dans le tableau `categories` : `Brain`, `TrendingUp`, `Calculator`, `Briefcase`, `Target`, `BookOpen`). Cercle 24 px, fond clair, icône bleue ; pour `brainteaser` : fond ambre clair, icône ambre.
-- Remplacer la pastille de difficulté par **3 petits points** (●●○ pour intermédiaire, ●○○ pour basique, ●●● pour avancé) en bleu, avec `aria-label` explicite (« Difficulté : intermédiaire »).
-- Supprimer le `⚡` devant le label brainteaser (l'icône `Brain` suffit).
-- L'avatar numéroté à gauche : retirer le dégradé bleu→indigo quand la carte est ouverte, garder un bleu uni (`bg-blue-700`). Idem pour les étapes numérotées dans le contenu déplié.
-- Tooltip / `title` sur l'icône catégorie pour révéler le label complet.
+## Vague 1 — Mode entraînement actif (priorité #1)
 
-**Desktop (≥ sm)**
-- Garder les pastilles texte mais **uniformiser** : même fond `bg-blue-50`, même bordure `border-blue-100`, texte `text-blue-800`, même taille. Pas de cas spécial brainteaser (juste l'icône `Brain` à gauche du label).
-- Garder les 3 points en plus du label de difficulté (ou label seul, à choisir — par défaut on garde le label seul sur desktop).
-- Réduire le `tracking-wider` qui rend les pastilles bruyantes.
+L'app est aujourd'hui très "lecture". Pour s'entraîner réellement, il manque des boucles de pratique.
 
-**Effet recherché**
-- Sur mobile : 1 icône + 3 points + étoiles + bookmark — beaucoup plus lisible, le titre prend la vedette.
-- Sur desktop : pastilles cohérentes en bleu, plus de mélange ambre/bleu/indigo/sky.
+1. **Mode Flashcards** sur les 131 questions et 15 notions
+   - Carte recto = question, verso = réponse modèle
+   - 3 boutons après révélation : *Je sais / À revoir / Je ne sais pas*
+   - Algorithme de répétition espacée léger (SM-2 simplifié, stocké en `localStorage`)
+   - Filtres par catégorie, difficulté, banque cible
 
-### Détail technique
+2. **Mode Quiz chronométré**
+   - Tirage aléatoire de 5/10/20 questions
+   - Auto-évaluation post-réponse (étoiles 1-5 réutilisées de `StarRating`)
+   - Score final + récap des points faibles
 
-- Modifier uniquement le bloc lignes 4093–4101 de `src/components/FinanceInterviewGuide.tsx` (en-tête de chaque carte question) + l'avatar lignes 4088–4092.
-- Ajouter un petit composant local `<DifficultyDots difficulty={...} />` (3 dots SVG/divs) et `<CategoryBadge cat={...} />` (icône + bg) ou faire ça inline.
-- Réutiliser `categories.find(c => c.id === q.category)?.icon` pour récupérer le composant icône.
-- Aucune modification de données, aucun changement de logique de filtre.
-- Accessibilité : `aria-label` sur les badges icône-only mobile.
+3. **Simulateur d'entretien**
+   - Enchaînement de 5 questions tirées au sort (1 fit + 2 techniques + 1 actu + 1 sectorielle)
+   - Timer global (style "vrai entretien" 30 min)
+   - Rapport final exportable
 
-```text
-Mobile (avant)                             Mobile (après)
-┌──────────────────────────────────┐       ┌──────────────────────────────────┐
-│ 01  [⚡DÉSTABILISANTES]          │       │ 01  (🧠) ●○○  ☆☆☆☆☆      [🔖]  │
-│     [INTERMÉDIAIRE] ☆☆☆☆☆ [🔖]   │       │     Combien de balles…           │
-│     Combien de balles…           │       └──────────────────────────────────┘
-└──────────────────────────────────┘
-```
+4. **Page Progression enrichie**
+   - Heatmap d'activité (style GitHub)
+   - % maîtrise par catégorie/banque cible
+   - Liste des "à revoir aujourd'hui" (SRS)
+
+---
+
+## Vague 2 — Design & UX
+
+5. **Refonte de la nav mobile** : la barre d'onglets actuelle déborde sur petit écran → bottom-nav fixe avec icônes
+6. **Animations Motion** : transitions douces entre onglets, micro-interactions sur les cartes du Guide (déjà belles, à dynamiser)
+7. **Mode sombre** : la palette indigo s'y prête bien, un toggle dans `ProfileMenu`
+8. **Recherche globale** (Cmd+K) : un seul champ qui cherche dans questions + notions + acronymes + banques
+9. **Favoris / "À revoir"** : étoile sur chaque carte, page dédiée
+
+---
+
+## Vague 3 — Contenu & pédagogie
+
+10. **Réponses modèles enrichies** : pour chaque question, ajouter une version "junior" et "senior" + pièges classiques
+11. **Vidéos / schémas** : intégrer des SVG explicatifs sur les concepts difficiles (WACC, LBO mechanics, accretion/dilution)
+12. **Banque de "deals types"** : 10-15 deals récents avec angles d'analyse pour préparer les "walk me through a deal"
+13. **Glossaire bidirectionnel** : cliquer un acronyme dans une fiche ouvre sa définition en popover
+
+---
+
+## Vague 4 — Technique & perf
+
+14. **Refactor `FinanceInterviewGuide.tsx`** (690 lignes) : extraction des pages Questions / Notions / Progression en routes dédiées (`/questions`, `/notions`, `/progression`) → cohérent avec l'archi déjà mise en place pour les guides
+15. **Persistance Cloud** (optionnel) : login + sync de la progression entre appareils via Lovable Cloud
+16. **SEO** : meta tags + sitemap par route, JSON-LD `LearningResource` sur chaque guide
+17. **Tests** : couverture des composants critiques (Quiz, SRS)
+
+---
+
+## Ma recommandation
+
+Commencer par la **Vague 1, étape 1 (Flashcards + SRS)** : c'est l'amélioration qui transforme le plus l'usage pour ton objectif principal (s'entraîner), avec un effort raisonnable (~1 feature, ~3-4 fichiers).
+
+Dis-moi :
+- soit **"go vague 1"** (tout l'entraînement actif),
+- soit **"go flashcards"** (juste l'étape 1),
+- soit une combinaison à la carte (ex: *"flashcards + dark mode + recherche globale"*).
