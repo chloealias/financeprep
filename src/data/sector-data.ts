@@ -297,7 +297,7 @@ export const SECTOR_DATA: Record<SectorId, SectorSheetData> = {
     ],
     deal: {
       titre: 'UniCredit / Commerzbank (2024-2026)',
-      texte: 'Document d\'offre publié le 5 mai 2026 (échange 0,485 action UC/action CBK, ~31 €/action). Stake ~28-30 %, acceptation jusqu\'au 16 juin 2026. Résistance politique allemande forte — cas d\'école consolidation bancaire européenne.',
+      texte: 'Document d\'offre publié le 5 mai 2026 (échange 0,485 action UC/action CBK, ~31 €/action). Stake ~28-30 %, acceptation jusqu\'au 16 juin 2026. À citer aussi : fusion UBS/Credit Suisse 2023 (régulation, AT1).',
     },
     emblematicDealId: 'd04',
     question: "Pourquoi ne peut-on pas utiliser l'EV/EBITDA pour valoriser une banque ?",

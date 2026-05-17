@@ -464,11 +464,12 @@ export const BANK_LIST: BankProfile[] = [
     ],
     recrutement: 'Recrutement désormais via UBS. Connaître l\'historique CS reste indispensable pour les entretiens IB suisses.',
     pointEntretien:
-      'Expliquer la fusion CS/UBS (FINMA, sauvetage systémique, ~3 Md$ de pertes AT1). Distinguer Credit Suisse (IB/wealth) d\'UBS (leader consolidé). Citer UBS sur les deals récents (Mace, Swisscom).',
+      'Expliquer la fusion CS/UBS (FINMA, sauvetage systémique, CHF ~16 Md d\'AT1 annulés). Distinguer Credit Suisse (IB/wealth) d\'UBS (leader consolidé). Citer UBS sur les deals récents (Mace, Swisscom).',
     dealEmblematique: {
       titre: 'Fusion UBS / Credit Suisse (mars 2023)',
-      texte: 'Sauvetage systémique orchestré par la FINMA. Création du 1er groupe bancaire suisse (~1 500 Md$ d\'actifs). Cas incontournable risque, régulation et consolidation bancaire européenne.',
+      texte: 'Sauvetage systémique orchestré par la FINMA (CHF 3 Md, ratio 1 UBS pour 22,48 CS). Annulation totale des AT1 (~CHF 16 Md). Cas incontournable risque, régulation et consolidation bancaire.',
     },
+    emblematicDealId: 'd17',
     questionPiège:
       'Peut-on encore postuler chez Credit Suisse à Paris ?',
     reponsePiège:

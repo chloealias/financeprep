@@ -35,7 +35,7 @@ describe('bank-profiles helpers', () => {
 
   it('includes European boutiques and banks', () => {
     expect(getBankById('credit-suisse')?.name).toBe('Credit Suisse');
-    expect(getBankById('credit-suisse')?.emblematicDealId).toBeUndefined();
+    expect(getBankById('credit-suisse')?.emblematicDealId).toBe('d17');
     expect(getBankById('evercore')?.emblematicDealId).toBe('d06');
     expect(getBankById('houlihan-lokey')?.categoryId).toBe('elite-boutique');
     expect(getBankById('mediobanca')?.hq).toContain('Milan');

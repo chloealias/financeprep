@@ -674,6 +674,57 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
       'Complète Exxon/Pioneer : vague de M&A O&G 2023-24. Discuter paradoxe ESG vs rachat de réserves fossiles.',
     kind: 'deal',
   },
+  {
+    id: 'd17',
+    title: 'UBS / Credit Suisse (fusion d\'urgence)',
+    dates: 'Annonce 19 mars 2023 — Closing juin 2023',
+    type: 'M&A',
+    secteur: 'FIG — Banques',
+    headlineEv: 'CHF 3 Md (~3,2 Md$)',
+    banks: ['UBS'],
+    parties: [
+      {
+        label: 'Cible',
+        text: 'Credit Suisse AG — 2e banque suisse, en crise de confiance (fuite des dépôts, chute du cours) après la faillite de SVB.',
+      },
+      {
+        label: 'Acquéreur',
+        text: 'UBS Group AG — sauvetage orchestré par la FINMA et le gouvernement suisse.',
+      },
+      {
+        label: 'Ratio d\'échange',
+        text: '1 action UBS pour 22,48 actions Credit Suisse (~CHF 0,76/action CS, décote ~60 % vs vendredi précédent).',
+      },
+    ],
+    valorisation: [
+      { label: 'Prix', value: 'CHF 3 Md en actions UBS' },
+      { label: 'AT1', value: 'CHF ~16 Md d\'instruments AT1 entièrement annulés (sans compensation aux détenteurs)' },
+      { label: 'Soutien public', value: 'Garantie fédérale jusqu\'à CHF 9 Md sur pertes d\'actifs ; liquidité BNS jusqu\'à CHF 100 Md' },
+    ],
+    advisors: {
+      other: [
+        {
+          label: 'Transaction soutenue par',
+          banks: ['FINMA', 'Département fédéral des finances', 'Banque nationale suisse'],
+        },
+      ],
+    },
+    interests: [
+      {
+        side: 'UBS',
+        text: 'Éviter une faillite systémique en Suisse. Créer le 1er gestionnaire de fortune mondial (~5 000 Md$ d\'actifs sous gestion). Synergies de coûts massives mais risque d\'intégration et de culture.',
+      },
+      {
+        side: 'Credit Suisse / actionnaires',
+        text: 'Alternative à la liquidation. Décote historique sur la valorisation. Perte totale pour les détenteurs d\'AT1 (précédent réglementaire majeur en Europe).',
+      },
+    ],
+    contexte:
+      'Plus grande fusion bancaire en Europe depuis la crise de 2008. Cas d\'école : régulation, bail-in, instruments hybrides, sauvetage systémique. En entretien 2026 : parler au passé pour Credit Suisse, stratégie UBS pour l\'avenir.',
+    pointEntretien:
+      'Incontournable pour UBS, Credit Suisse (legacy) et FIG. Expliquer FINMA, l\'annulation des AT1, et pourquoi l\'équivalent d\'une « prime de contrôle négative » a été accepté pour la stabilité financière.',
+    kind: 'deal',
+  },
 ];
 
 export const MA_DEALS: MaDeal[] = MA_DEALS_RAW.map(d => ({

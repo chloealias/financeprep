@@ -11,7 +11,7 @@ export const Route = createFileRoute('/actualite')({
       {
         name: 'description',
         content:
-          '15 deals M&A détaillés (2025-2026), filtres par banque et secteur, pour montrer votre intérêt réel en entretien finance.',
+          '16 deals M&A détaillés (2023-2026), filtres par banque et secteur, pour montrer votre intérêt réel en entretien finance.',
       },
     ],
   }),

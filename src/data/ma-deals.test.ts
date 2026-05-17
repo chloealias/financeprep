@@ -39,7 +39,12 @@ describe('ma-deals helpers', () => {
     expect(dealMatchesSector(deal!, 'tmt')).toBe(false);
   });
 
-  it('has 15 deals', () => {
-    expect(MA_DEALS.length).toBe(15);
+  it('has 16 deals', () => {
+    expect(MA_DEALS.length).toBe(16);
+  });
+
+  it('includes UBS / Credit Suisse rescue deal', () => {
+    expect(getDealById('d17')?.title).toContain('Credit Suisse');
+    expect(dealMatchesBank(getDealById('d17')!, 'UBS')).toBe(true);
   });
 });
