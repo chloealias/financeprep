@@ -296,8 +296,8 @@ export const SECTOR_DATA: Record<SectorId, SectorSheetData> = {
       'Asset management : consolidation (Amundi, DWS, Natixis)',
     ],
     deal: {
-      titre: 'UniCredit / Commerzbank (2024-2025)',
-      texte: 'UniCredit monte à ~29% du capital de Commerzbank, menaçant une OPA hostile. Résistance politique allemande forte. Emblématique des défis de la consolidation bancaire européenne.',
+      titre: 'UniCredit / Commerzbank (2024-2026)',
+      texte: 'Document d\'offre publié le 5 mai 2026 (échange 0,485 action UC/action CBK, ~31 €/action). Stake ~28-30 %, acceptation jusqu\'au 16 juin 2026. Résistance politique allemande forte — cas d\'école consolidation bancaire européenne.',
     },
     emblematicDealId: 'd04',
     question: "Pourquoi ne peut-on pas utiliser l'EV/EBITDA pour valoriser une banque ?",

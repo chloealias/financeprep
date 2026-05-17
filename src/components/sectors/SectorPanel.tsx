@@ -59,6 +59,9 @@ export function SectorPanel ({ sectorId, onClose, highlighted = false }: SectorP
           <div className="h-px w-4 bg-blue-500" />
           Panorama — à connaître par cœur
         </div>
+        <p className="text-xs text-blue-600/90 font-light mb-4 -mt-2">
+          Ordres de grandeur indicatifs (Dealogic, rapports sectoriels) — à citer en entretien, pas comme données temps réel.
+        </p>
         <div className="grid sm:grid-cols-2 gap-4 mb-5">
           <div className="bg-white/80 rounded-xl border border-blue-100 p-4">
             <div className="text-[11px] uppercase tracking-wider text-blue-500 font-medium mb-1">Taille du marché</div>

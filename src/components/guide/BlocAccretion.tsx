@@ -36,7 +36,7 @@ export function BlocAccretion () {
         <div className="text-blue-400 text-xs uppercase tracking-[0.2em] mb-4">Formule complète</div>
         <div className="font-mono text-sm leading-loose">
           <div className="text-white">EPS pro forma =</div>
-          <div className="text-blue-300 pl-4">(Net Income acquéreur + Net Income cible − Synergies + Coût financement)</div>
+          <div className="text-blue-300 pl-4">(Net Income acquéreur + Net Income cible + Synergies après impôt − Coût financement)</div>
           <div className="text-white pl-4">÷</div>
           <div className="text-blue-300 pl-4">(Shares outstanding acquéreur + Nouvelles actions émises)</div>
           <div className="mt-3 text-emerald-400">Accretif si : EPS pro forma &gt; EPS pré-deal acquéreur</div>

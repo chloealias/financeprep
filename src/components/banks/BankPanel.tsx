@@ -12,6 +12,14 @@ type BankPanelProps = {
 
 export function BankPanel ({ bank, onClose }: BankPanelProps) {
   const [showReponse, setShowReponse] = useState(false);
+
+  const emblematicDealSearch =
+    bank.emblematicLinkType === 'bank'
+      ? ({ bank: bank.id } as const)
+      : bank.emblematicDealId
+        ? ({ deal: bank.emblematicDealId } as const)
+        : null;
+
   const deals = getDealsForBank(bank.name);
 
   useEffect(() => {
@@ -99,15 +107,12 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
               <div className="h-px w-4 bg-blue-400" />
               Deal emblématique
             </div>
-            <Link
-              to="/actualite"
-              search={
-                bank.emblematicLinkType === 'bank'
-                  ? { bank: bank.id }
-                  : { deal: bank.emblematicDealId }
-              }
-              className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-              aria-label={
+            {emblematicDealSearch ? (
+              <Link
+                to="/actualite"
+                search={emblematicDealSearch}
+                className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+                aria-label={
                 bank.emblematicLinkType === 'bank'
                   ? `Voir tous les deals de ${bank.name} dans Actualité M&A`
                   : `Voir le deal ${bank.dealEmblematique.titre} dans Actualité M&A`
@@ -121,6 +126,12 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
                 <ChevronRight className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" aria-hidden />
               </div>
             </Link>
+            ) : (
+              <div className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white">
+                <div className="font-serif text-sm mb-2">{bank.dealEmblematique.titre}</div>
+                <p className="text-blue-200 text-xs font-light leading-relaxed">{bank.dealEmblematique.texte}</p>
+              </div>
+            )}
           </div>
 
           <div>

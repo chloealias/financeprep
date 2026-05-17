@@ -14,7 +14,8 @@ export type BankProfile = {
   recrutement?: string;
   pointEntretien: string;
   dealEmblematique: { titre: string; texte: string };
-  emblematicDealId: string;
+  /** Absent si le deal emblématique n'est pas dans l'actualité M&A (ex. fusion CS/UBS) */
+  emblematicDealId?: string;
   /** deal = lien vers ?deal= ; bank = liste filtrée ?bank= (coordinateurs dette) */
   emblematicLinkType?: 'deal' | 'bank';
   questionPiège: string;
@@ -468,7 +469,6 @@ export const BANK_LIST: BankProfile[] = [
       titre: 'Fusion UBS / Credit Suisse (mars 2023)',
       texte: 'Sauvetage systémique orchestré par la FINMA. Création du 1er groupe bancaire suisse (~1 500 Md$ d\'actifs). Cas incontournable risque, régulation et consolidation bancaire européenne.',
     },
-    emblematicDealId: 'd04',
     questionPiège:
       'Peut-on encore postuler chez Credit Suisse à Paris ?',
     reponsePiège:
@@ -632,7 +632,6 @@ export const BANK_LIST: BankProfile[] = [
       titre: 'Positionnement mid-cap Europe',
       texte: 'Oddo BHF conseille les ETI et mid-cap familiales franco-allemandes — segment peu couvert par les bulge, complémentaire aux mega-deals de l\'actualité M&A.',
     },
-    emblematicDealId: 'd04',
     questionPiège:
       'Oddo BHF est-elle une boutique ou une banque universelle ?',
     reponsePiège:

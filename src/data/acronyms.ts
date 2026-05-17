@@ -64,7 +64,7 @@ export const acronymSections: AcronymSection[] = [
       { abbr: "P&L", english: "Profit & Loss", french: "Compte de résultat" },
       { abbr: "BS", english: "Balance Sheet", french: "Bilan" },
       { abbr: "CF / CFS", english: "Cash Flow Statement", french: "Tableau des flux" },
-      { abbr: "EBITDA", english: "Earnings Before Interest, Taxes, D&A", french: "EBE" },
+      { abbr: "EBITDA", english: "Earnings Before Interest, Taxes, D&A", french: "Résultat opérationnel avant amort. et dépr. (≠ EBE français)" },
       { abbr: "EBIT", english: "Earnings Before Interest & Taxes", french: "Résultat opérationnel" },
       { abbr: "D&A", english: "Depreciation & Amortization", french: "Amortissements" },
       { abbr: "NI", english: "Net Income", french: "Résultat net" },
@@ -160,7 +160,7 @@ export const acronymSections: AcronymSection[] = [
       { abbr: "IFRS", english: "International Financial Reporting Standards", french: "Normes EU" },
       { abbr: "US GAAP", english: "Generally Accepted Accounting Principles", french: "Normes US" },
       { abbr: "AMF", english: "Autorité des Marchés Financiers", french: "Régulateur français" },
-      { abbr: "DG COMP", french: "Autorité antitrust européenne" },
+      { abbr: "DG COMP", french: "Direction concurrence, Commission européenne (antitrust UE)" },
     ],
   },
   {
