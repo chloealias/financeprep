@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export function GuideSectionTitle({
   children,
@@ -22,6 +22,50 @@ export function GuideSectionTitle({
 
 export function GuideIntro({ children }: { children: ReactNode }) {
   return <p className="text-blue-700 font-light leading-relaxed mb-8">{children}</p>;
+}
+
+export function GuideSelect({
+  label,
+  value,
+  onChange,
+  options,
+  id,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+  id?: string;
+}) {
+  const selectId = id ?? `guide-select-${label.replace(/\s+/g, "-").toLowerCase()}`;
+  return (
+    <div>
+      <label
+        htmlFor={selectId}
+        className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2 block"
+      >
+        {label}
+      </label>
+      <div className="relative">
+        <select
+          id={selectId}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full appearance-none rounded-lg border border-blue-200 bg-white px-3 py-2.5 pr-10 text-sm text-blue-900 font-medium shadow-sm transition-colors hover:border-blue-300 focus:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+        >
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <ChevronDown
+          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-blue-400"
+          aria-hidden
+        />
+      </div>
+    </div>
+  );
 }
 
 export function GuideChipButton({

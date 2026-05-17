@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight, ExternalLink } from "lucide-react";
-import { GuideChipButton, guideAlertClass, guideCardClass } from "@/components/guide/guide-ui";
+import {
+  GuideChipButton,
+  GuideSelect,
+  guideAlertClass,
+  guideCardClass,
+} from "@/components/guide/guide-ui";
 import { getBankById, getBankIdByName } from "@/data/bank-profiles";
 import { getSectorIdForSecteur, getSectorLabel } from "@/lib/sector-deals";
 import type { SectorId } from "@/lib/sectors";
@@ -315,23 +320,16 @@ export function BlocActualite() {
 
       <div className="space-y-4 mb-6">
         <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">
-              Banque conseil
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {MA_DEAL_BANKS.map((b) => (
-                <GuideChipButton
-                  key={b}
-                  active={filterBanque === b}
-                  onClick={() => setBankFilter(b)}
-                  size="sm"
-                >
-                  {b === "all" ? "Toutes" : b}
-                </GuideChipButton>
-              ))}
-            </div>
-          </div>
+          <GuideSelect
+            id="actualite-filter-bank"
+            label="Banque conseil"
+            value={filterBanque}
+            onChange={setBankFilter}
+            options={MA_DEAL_BANKS.map((b) => ({
+              value: b,
+              label: b === "all" ? "Toutes les banques" : b,
+            }))}
+          />
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">
               Type de deal
