@@ -168,7 +168,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
                 <div className="flex-1 h-2 bg-blue-50 rounded-full overflow-hidden">
                   <div className={`h-full ${intensity} transition-all`} style={{ width: `${pct}%` }} />
                 </div>
-                <div className="w-8 text-right text-blue-700 font-medium text-xs tabular-nums">{d.count}</div>
+                <div className="w-8 text-right text-blue-700 font-medium text-xs tabular-nums">{d?.count ?? 0}</div>
               </div>
             );
           })}
