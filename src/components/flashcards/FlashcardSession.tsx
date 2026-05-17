@@ -26,22 +26,22 @@ type Flashcard = {
 };
 
 function buildAllCards (): Flashcard[] {
-  const qCards: Flashcard[] = questions.map(q => ({
-    id: `q-${q.id}`,
+  const qCards: Flashcard[] = (questions as Array<typeof questions[number]>).map((q) => ({
+    id: `q-${q!.id}`,
     source: 'question',
-    category: q.category,
-    difficulty: q.difficulty,
-    front: q.question,
-    back: q.steps?.[0] ?? q.explanation,
-    hint: q.tip,
+    category: q!.category,
+    difficulty: q!.difficulty,
+    front: q!.question,
+    back: q!.steps?.[0] ?? q!.explanation,
+    hint: q!.tip,
   }));
-  const cCards: Flashcard[] = concepts.map(c => ({
-    id: `c-${c.id}`,
+  const cCards: Flashcard[] = (concepts as Array<typeof concepts[number]>).map((c) => ({
+    id: `c-${c!.id}`,
     source: 'concept',
-    category: c.category,
-    front: c.title,
-    back: c.simple,
-    hint: c.formula,
+    category: c!.category,
+    front: c!.title,
+    back: c!.simple,
+    hint: c!.formula,
   }));
   return [...qCards, ...cCards];
 }
