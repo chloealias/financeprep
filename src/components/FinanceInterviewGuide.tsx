@@ -78,8 +78,8 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   const [activeCategory, setActiveCategory] = useState(initialFilters.activeCategory);
   const [activeDifficulty, setActiveDifficulty] = useState(initialFilters.activeDifficulty);
   const [searchQuery, setSearchQuery] = useState(initialFilters.searchQuery);
-  const [expandedQuestion, setExpandedQuestion] = useState(null);
-  const [expandedConcept, setExpandedConcept] = useState(null);
+  const [expandedQuestion, setExpandedQuestion] = useState<any>(null);
+  const [expandedConcept, setExpandedConcept] = useState<any>(null);
   const [ratings, setRatings] = useState<QuestionRatings>(() =>
     typeof window !== 'undefined' ? loadRatings() : {},
   );
