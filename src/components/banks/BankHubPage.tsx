@@ -104,7 +104,7 @@ export function BankHubPage () {
 
   const handleClose = () => {
     navigate({
-      search: prev => ({
+      search: (prev: any) => ({
         tab: prev.tab ?? 'banques',
         bank: undefined,
       }),
