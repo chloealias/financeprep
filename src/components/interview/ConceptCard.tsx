@@ -147,7 +147,7 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
                   <span className="text-blue-900 text-xs uppercase tracking-[0.2em] font-bold">Pièges à éviter</span>
                 </div>
                 <ul className="space-y-1.5">
-                  {concept.pitfalls.map((p, i) => (
+                  {concept.pitfalls.map((p: string, i: number) => (
                     <li key={i} className="flex gap-2 text-blue-900 text-sm leading-relaxed font-light">
                       <span className="text-blue-500 flex-shrink-0">•</span><span>{p}</span>
                     </li>
