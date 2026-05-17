@@ -59,20 +59,21 @@ export function GuideChipButton ({
   );
 }
 
-export function GuideModuleLink ({
-  to,
-  tag,
-  title,
-  icon: Icon,
-}: {
-  to: '/cv' | '/excel' | '/pyramid' | '/accretion' | '/actualite' | '/glossaire';
+type GuideModuleLinkProps = {
   tag: string;
   title: string;
   icon: LucideIcon;
-}) {
+} & (
+  | { to: '/cv' | '/excel' | '/pyramid' | '/accretion' | '/actualite' | '/glossaire'; search?: never }
+  | { to: '/'; search: { tab: 'banques' | 'secteurs' | 'guide' } }
+);
+
+export function GuideModuleLink ({ to, tag, title, icon: Icon, ...rest }: GuideModuleLinkProps) {
+  const search = 'search' in rest ? rest.search : undefined;
   return (
     <Link
       to={to}
+      search={search}
       className="block group rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
     >
       <article className="bg-white rounded-2xl border-2 border-blue-100 shadow-sm transition-all group-hover:border-blue-200 group-hover:shadow-md">

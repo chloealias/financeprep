@@ -1,3 +1,5 @@
+import type { CategoryId } from '@/lib/categories';
+
 export interface Acronym {
   abbr: string;
   english?: string;
@@ -6,12 +8,15 @@ export interface Acronym {
 
 export interface AcronymSection {
   title: string;
+  /** Lien vers l'onglet Concepts avec ce filtre */
+  hubCategory?: CategoryId;
   items: Acronym[];
 }
 
 export const acronymSections: AcronymSection[] = [
   {
     title: "Valeur & valorisation",
+    hubCategory: 'valuation',
     items: [
       { abbr: "EV", english: "Enterprise Value", french: "Valeur d'entreprise (tous financeurs)" },
       { abbr: "EqV", english: "Equity Value", french: "Valeur des fonds propres (actionnaires)" },
@@ -24,6 +29,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Multiples",
+    hubCategory: 'valuation',
     items: [
       { abbr: "EV/EBITDA", french: "Multiple universel de valorisation" },
       { abbr: "P/E", english: "Price/Earnings", french: "PER, multiple grand public" },
@@ -34,6 +40,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Coût du capital & rendement",
+    hubCategory: 'valuation',
     items: [
       { abbr: "WACC", english: "Weighted Average Cost of Capital", french: "Coût moyen pondéré du capital" },
       { abbr: "CAPM", english: "Capital Asset Pricing Model", french: "Modèle pour calculer le Ke" },
@@ -52,6 +59,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "États financiers & agrégats",
+    hubCategory: 'accounting',
     items: [
       { abbr: "P&L", english: "Profit & Loss", french: "Compte de résultat" },
       { abbr: "BS", english: "Balance Sheet", french: "Bilan" },
@@ -72,6 +80,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Cash flow & BFR",
+    hubCategory: 'accounting',
     items: [
       { abbr: "FCFF", english: "Free Cash Flow to Firm", french: "FCF pour tous les financeurs (utilisé en DCF)" },
       { abbr: "FCFE", english: "Free Cash Flow to Equity", french: "FCF pour actionnaires uniquement" },
@@ -85,6 +94,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "M&A — Process & documents",
+    hubCategory: 'ma',
     items: [
       { abbr: "M&A", english: "Mergers & Acquisitions", french: "Fusions-acquisitions" },
       { abbr: "IPO", english: "Initial Public Offering", french: "Introduction en bourse" },
@@ -112,6 +122,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Private Equity & LBO",
+    hubCategory: 'lbo',
     items: [
       { abbr: "PE", english: "Private Equity", french: "Capital-investissement" },
       { abbr: "LBO", english: "Leveraged Buy-Out", french: "Acquisition à effet de levier" },
@@ -131,6 +142,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Dette & financement",
+    hubCategory: 'lbo',
     items: [
       { abbr: "PIK", english: "Payment In Kind", french: "Intérêts payés en dette (pas en cash)" },
       { abbr: "TLA / TLB", english: "Term Loan A / B", french: "Tranches de dette senior LBO" },

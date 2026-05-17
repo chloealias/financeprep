@@ -101,9 +101,17 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
             </div>
             <Link
               to="/actualite"
-              search={{ deal: bank.emblematicDealId }}
+              search={
+                bank.emblematicLinkType === 'bank'
+                  ? { bank: bank.id }
+                  : { deal: bank.emblematicDealId }
+              }
               className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
-              aria-label={`Voir le deal ${bank.dealEmblematique.titre} dans Actualité M&A`}
+              aria-label={
+                bank.emblematicLinkType === 'bank'
+                  ? `Voir tous les deals de ${bank.name} dans Actualité M&A`
+                  : `Voir le deal ${bank.dealEmblematique.titre} dans Actualité M&A`
+              }
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
@@ -177,9 +185,10 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
             </ul>
             <Link
               to="/actualite"
+              search={{ bank: bank.id }}
               className="inline-block mt-3 text-blue-600 text-xs hover:text-blue-900 underline underline-offset-2"
             >
-              Voir tous les deals dans Actualité M&A
+              Voir tous les deals de {bank.name} dans Actualité M&A
             </Link>
           </>
         ) : (

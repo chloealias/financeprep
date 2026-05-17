@@ -11,9 +11,35 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import type { AppTab } from '@/lib/app-tabs';
-import { isStorageAvailable, questionIdKey } from '@/lib/storage';
+import { isStorageAvailable, loadSavedFilters, questionIdKey, saveSavedFilters, type SavedFilters } from '@/lib/storage';
 
-export function ProgressPage ({ questions, ratings, categories, getCategoryLabel, onReset, onPageChange, setActiveCategory, setRatingFilter }: any) {
+type ProgressPageProps = {
+  questions: { id: string | number; category: string }[];
+  ratings: Record<string, number>;
+  categories: { id: string; label: string; icon: React.ComponentType<{ className?: string }> }[];
+  getCategoryLabel: (id: string) => string;
+  onReset: () => void;
+  onPageChange: (page: AppTab) => void;
+  onQuestionsFiltersChange?: () => void;
+};
+
+const defaultFilters: SavedFilters = {
+  activeCategory: 'all',
+  activeDifficulty: 'all',
+  searchQuery: '',
+  ratingFilter: 'all',
+  conceptCategory: 'all',
+};
+
+export function ProgressPage ({
+  questions,
+  ratings,
+  categories,
+  getCategoryLabel,
+  onReset,
+  onPageChange,
+  onQuestionsFiltersChange,
+}: ProgressPageProps) {
   const storageOk = typeof window !== 'undefined' ? isStorageAvailable() : true;
   const totalQuestions = questions.length;
   const ratedCount = Object.keys(ratings).filter((k) => ratings[k] > 0).length;
@@ -47,10 +73,18 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
       return pb - pa;
     });
 
-  const goToFilter = (filter: string) => {
-    setActiveCategory('all');
-    setRatingFilter(filter);
+  const applyQuestionFilters = (patch: Partial<SavedFilters>) => {
+    const current =
+      typeof window !== 'undefined'
+        ? loadSavedFilters(raw => ({ ...defaultFilters, ...(raw as SavedFilters) }), defaultFilters)
+        : defaultFilters;
+    saveSavedFilters({ ...current, ...patch });
+    onQuestionsFiltersChange?.();
     onPageChange('questions');
+  };
+
+  const goToFilter = (filter: string) => {
+    applyQuestionFilters({ activeCategory: 'all', ratingFilter: filter });
   };
 
   return (
@@ -186,7 +220,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
               <li key={c.id}>
                 <button
                   type="button"
-                  onClick={() => { setActiveCategory(c.id); setRatingFilter('all'); onPageChange('questions'); }}
+                  onClick={() => applyQuestionFilters({ activeCategory: c.id, ratingFilter: 'all' })}
                   aria-label={`Voir les questions de ${c.label}, ${c.mastered} sur ${c.total} maîtrisées`}
                   className="w-full text-left px-5 sm:px-6 py-4 hover:bg-blue-50/60 transition-colors flex items-center gap-4 focus:outline-none focus-visible:bg-blue-50"
                 >

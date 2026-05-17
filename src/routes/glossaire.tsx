@@ -2,6 +2,8 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Search, ArrowLeft, GraduationCap, RotateCw, ChevronLeft, ChevronRight, Shuffle, Check, X } from 'lucide-react';
 import { acronymSections, acronyms, type Acronym } from '@/data/acronyms';
+import { loadSavedFilters, saveSavedFilters } from '@/lib/storage';
+import type { CategoryId } from '@/lib/categories';
 import {
   Dialog,
   DialogContent,
@@ -10,6 +12,40 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+
+function SectionConceptLink ({ category }: { category: CategoryId }) {
+  const persistAndGo = () => {
+    const defaults = {
+      activeCategory: 'all',
+      activeDifficulty: 'all',
+      searchQuery: '',
+      ratingFilter: 'all',
+      conceptCategory: 'all',
+    };
+    const current = loadSavedFilters(
+      raw => {
+        const o = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
+        return {
+          ...defaults,
+          conceptCategory: typeof o.conceptCategory === 'string' ? o.conceptCategory : 'all',
+        };
+      },
+      defaults,
+    );
+    saveSavedFilters({ ...current, conceptCategory: category });
+  };
+
+  return (
+    <Link
+      to="/"
+      search={{ tab: 'concepts' }}
+      onClick={persistAndGo}
+      className="text-xs text-blue-600 hover:text-blue-900 underline underline-offset-2"
+    >
+      Voir les concepts
+    </Link>
+  );
+}
 
 export const Route = createFileRoute('/glossaire')({
   head: () => ({
@@ -98,9 +134,14 @@ function GlossairePage() {
           ) : (
             filtered.map((section) => (
               <div key={section.title} className="space-y-2">
-                <h2 className="text-xs uppercase tracking-[0.18em] text-blue-700 font-medium">
-                  {section.title}
-                </h2>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h2 className="text-xs uppercase tracking-[0.18em] text-blue-700 font-medium">
+                    {section.title}
+                  </h2>
+                  {section.hubCategory && (
+                    <SectionConceptLink category={section.hubCategory} />
+                  )}
+                </div>
                 <ul className="divide-y divide-blue-50">
                   {section.items.map((a) => (
                     <li

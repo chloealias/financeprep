@@ -2,12 +2,16 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link } from '@tanstack/react-router';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import { GuideChipButton, guideAlertClass, guideCardClass } from '@/components/guide/guide-ui';
-import { getBankIdByName } from '@/data/bank-profiles';
+import { getBankById, getBankIdByName } from '@/data/bank-profiles';
+import { getSectorIdForSecteur, getSectorLabel } from '@/lib/sector-deals';
+import type { SectorId } from '@/lib/sectors';
 import {
   dealDateBadge,
   dealMatchesBank,
+  dealMatchesSector,
   dealMatchesType,
   MA_DEAL_BANKS,
+  MA_DEAL_SECTOR_IDS,
   MA_DEAL_TYPES,
   getDealById,
   MA_DEALS,
@@ -26,6 +30,25 @@ const typeColors: Record<string, string> = {
 };
 
 const MAX_BANK_CHIPS = 4;
+
+function SectorDealChip ({ secteur }: { secteur: string }) {
+  const sectorId = getSectorIdForSecteur(secteur);
+  if (!sectorId) {
+    return (
+      <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded">{secteur}</span>
+    );
+  }
+  return (
+    <Link
+      to="/actualite"
+      search={{ sector: sectorId }}
+      className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded hover:bg-slate-200 transition-colors"
+      onClick={e => e.stopPropagation()}
+    >
+      {secteur}
+    </Link>
+  );
+}
 
 function BankDealChip ({ name }: { name: string }) {
   const bankId = getBankIdByName(name);
@@ -197,31 +220,73 @@ function dealPassesFilters (
   deal: MaDeal,
   filterBanque: string,
   filterType: string,
+  filterSector: string,
 ): boolean {
   return (
     (filterBanque === 'all' || dealMatchesBank(deal, filterBanque)) &&
-    (filterType === 'all' || dealMatchesType(deal, filterType))
+    (filterType === 'all' || dealMatchesType(deal, filterType)) &&
+    (filterSector === 'all' || (deal.sectorId && dealMatchesSector(deal, filterSector as SectorId)))
   );
 }
 
 export function BlocActualite () {
-  const { deal: dealFromUrl } = Route.useSearch();
+  const { deal: dealFromUrl, bank: bankFromUrl, sector: sectorFromUrl } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const [filterBanque, setFilterBanque] = useState('all');
+  const bankFromUrlProfile = bankFromUrl ? getBankById(bankFromUrl) : undefined;
+  const [filterBanque, setFilterBanque] = useState(
+    () => bankFromUrlProfile?.name ?? 'all',
+  );
   const [filterType, setFilterType] = useState('all');
+  const [filterSector, setFilterSector] = useState(() => sectorFromUrl ?? 'all');
   const openDeal = dealFromUrl ?? null;
+
+  useEffect(() => {
+    if (bankFromUrlProfile) {
+      setFilterBanque(bankFromUrlProfile.name);
+    }
+  }, [bankFromUrl, bankFromUrlProfile?.name]);
+
+  useEffect(() => {
+    if (sectorFromUrl) {
+      setFilterSector(sectorFromUrl);
+    }
+  }, [sectorFromUrl]);
 
   useEffect(() => {
     if (!dealFromUrl) return;
     if (getDealById(dealFromUrl)) {
-      setFilterBanque('all');
       setFilterType('all');
+      if (!bankFromUrl) setFilterBanque('all');
+      if (!sectorFromUrl) setFilterSector('all');
     }
-  }, [dealFromUrl]);
+  }, [dealFromUrl, bankFromUrl, sectorFromUrl]);
+
+  const setBankFilter = (bankName: string) => {
+    const bankId = bankName === 'all' ? undefined : getBankIdByName(bankName);
+    setFilterBanque(bankName);
+    navigate({
+      search: prev => ({
+        deal: prev.deal,
+        bank: bankId,
+        sector: prev.sector,
+      }),
+    });
+  };
+
+  const setSectorFilter = (sectorId: string) => {
+    setFilterSector(sectorId);
+    navigate({
+      search: prev => ({
+        deal: prev.deal,
+        bank: prev.bank,
+        sector: sectorId === 'all' ? undefined : (sectorId as SectorId),
+      }),
+    });
+  };
 
   const filtered = useMemo(
-    () => MA_DEALS.filter(d => dealPassesFilters(d, filterBanque, filterType)),
-    [filterBanque, filterType],
+    () => MA_DEALS.filter(d => dealPassesFilters(d, filterBanque, filterType, filterSector)),
+    [filterBanque, filterType, filterSector],
   );
 
   useEffect(() => {
@@ -237,9 +302,9 @@ export function BlocActualite () {
 
   const toggleDeal = (id: string) => {
     if (openDeal === id) {
-      navigate({ search: { deal: undefined } });
+      navigate({ search: prev => ({ deal: undefined, bank: prev.bank, sector: prev.sector }) });
     } else {
-      navigate({ search: { deal: id } });
+      navigate({ search: prev => ({ deal: id, bank: prev.bank, sector: prev.sector }) });
     }
   };
 
@@ -252,23 +317,40 @@ export function BlocActualite () {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-4 mb-6">
-        <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Banque conseil</p>
-          <div className="flex flex-wrap gap-1.5">
-            {MA_DEAL_BANKS.map(b => (
-              <GuideChipButton key={b} active={filterBanque === b} onClick={() => setFilterBanque(b)} size="sm">
-                {b === 'all' ? 'Toutes' : b}
-              </GuideChipButton>
-            ))}
+      <div className="space-y-4 mb-6">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Banque conseil</p>
+            <div className="flex flex-wrap gap-1.5">
+              {MA_DEAL_BANKS.map(b => (
+                <GuideChipButton key={b} active={filterBanque === b} onClick={() => setBankFilter(b)} size="sm">
+                  {b === 'all' ? 'Toutes' : b}
+                </GuideChipButton>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Type de deal</p>
+            <div className="flex flex-wrap gap-1.5">
+              {MA_DEAL_TYPES.map(t => (
+                <GuideChipButton key={t} active={filterType === t} onClick={() => setFilterType(t)} size="sm">
+                  {t === 'all' ? 'Tous' : t}
+                </GuideChipButton>
+              ))}
+            </div>
           </div>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Type de deal</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Secteur</p>
           <div className="flex flex-wrap gap-1.5">
-            {MA_DEAL_TYPES.map(t => (
-              <GuideChipButton key={t} active={filterType === t} onClick={() => setFilterType(t)} size="sm">
-                {t === 'all' ? 'Tous' : t}
+            {MA_DEAL_SECTOR_IDS.map(s => (
+              <GuideChipButton
+                key={s}
+                active={filterSector === s}
+                onClick={() => setSectorFilter(s)}
+                size="sm"
+              >
+                {s === 'all' ? 'Tous' : getSectorLabel(s)}
               </GuideChipButton>
             ))}
           </div>
@@ -306,7 +388,7 @@ export function BlocActualite () {
                     >
                       {deal.type}
                     </span>
-                    <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded">{deal.secteur}</span>
+                    <SectorDealChip secteur={deal.secteur} />
                   </div>
                   <div className="font-serif text-blue-950 text-base">{deal.title}</div>
                   <div className="text-blue-400 text-xs mt-1 flex flex-wrap items-center gap-1">

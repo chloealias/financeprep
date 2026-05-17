@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
+import { ChevronRight, X } from 'lucide-react';
 import type { SectorId } from '@/lib/sectors';
 import { SECTOR_DATA } from '@/data/sector-data';
 
 type SectorPanelProps = {
   sectorId: SectorId;
   onClose: () => void;
+  highlighted?: boolean;
 };
 
-export function SectorPanel ({ sectorId, onClose }: SectorPanelProps) {
+export function SectorPanel ({ sectorId, onClose, highlighted = false }: SectorPanelProps) {
   const [showReponse, setShowReponse] = useState(false);
   const data = SECTOR_DATA[sectorId];
 
@@ -23,9 +25,12 @@ export function SectorPanel ({ sectorId, onClose }: SectorPanelProps) {
   return (
     <div
       key={sectorId}
-      className="mt-6 bg-white rounded-2xl border-2 border-blue-300 shadow-xl p-4 sm:p-8 relative animate-in fade-in slide-in-from-bottom-2 duration-300"
+      className={`mt-6 bg-white rounded-2xl border-2 shadow-xl p-4 sm:p-8 relative animate-in fade-in slide-in-from-bottom-2 duration-300 ${
+        highlighted ? 'border-blue-400 ring-2 ring-blue-200' : 'border-blue-300'
+      }`}
       role="region"
       aria-label={`Fiche sectorielle ${data.name}`}
+      aria-live="polite"
     >
       <button
         type="button"
@@ -45,6 +50,52 @@ export function SectorPanel ({ sectorId, onClose }: SectorPanelProps) {
           <h3 className="text-3xl font-serif text-blue-950">{data.name}</h3>
         </div>
       </div>
+
+      <section
+        aria-label="Panorama du secteur"
+        className="mb-8 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50/80 p-5 sm:p-6"
+      >
+        <div className="text-xs uppercase tracking-wider text-blue-600 font-medium mb-4 flex items-center gap-2">
+          <div className="h-px w-4 bg-blue-500" />
+          Panorama — à connaître par cœur
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4 mb-5">
+          <div className="bg-white/80 rounded-xl border border-blue-100 p-4">
+            <div className="text-[11px] uppercase tracking-wider text-blue-500 font-medium mb-1">Taille du marché</div>
+            <p className="text-blue-950 text-sm font-light leading-relaxed">{data.panorama.tailleMarche}</p>
+          </div>
+          <div className="bg-white/80 rounded-xl border border-blue-100 p-4">
+            <div className="text-[11px] uppercase tracking-wider text-blue-500 font-medium mb-1">Volume M&A</div>
+            <p className="text-blue-950 text-sm font-light leading-relaxed">{data.panorama.volumeMa}</p>
+          </div>
+        </div>
+        <div className="mb-4">
+          <div className="text-[11px] uppercase tracking-wider text-blue-500 font-medium mb-2">Acteurs majeurs</div>
+          <div className="flex flex-wrap gap-2">
+            {data.panorama.acteursMajeurs.map((acteur, i) => (
+              <span
+                key={i}
+                className="text-xs text-blue-900 bg-white border border-blue-200 rounded-full px-3 py-1.5 font-light"
+              >
+                {acteur}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div>
+          <div className="text-[11px] uppercase tracking-wider text-blue-500 font-medium mb-2">Segments clés</div>
+          <div className="flex flex-wrap gap-2">
+            {data.panorama.segmentsCles.map((seg, i) => (
+              <span
+                key={i}
+                className="text-xs text-indigo-900 bg-indigo-50 border border-indigo-200 rounded-md px-2.5 py-1 font-medium"
+              >
+                {seg}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <div className="grid md:grid-cols-3 gap-6 mb-6">
         <div className="space-y-5">
@@ -103,10 +154,34 @@ export function SectorPanel ({ sectorId, onClose }: SectorPanelProps) {
               <div className="h-px w-4 bg-blue-400" />
               Deal emblématique
             </div>
-            <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white">
-              <div className="font-serif text-sm mb-2">{data.deal.titre}</div>
-              <p className="text-blue-200 text-xs font-light leading-relaxed">{data.deal.texte}</p>
-            </div>
+            {data.emblematicDealId ? (
+              <Link
+                to="/actualite"
+                search={{ deal: data.emblematicDealId }}
+                className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+                aria-label={`Voir le deal ${data.deal.titre} dans Actualité M&A`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-serif text-sm mb-2">{data.deal.titre}</div>
+                    <p className="text-blue-200 text-xs font-light leading-relaxed">{data.deal.texte}</p>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" aria-hidden />
+                </div>
+              </Link>
+            ) : (
+              <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white">
+                <div className="font-serif text-sm mb-2">{data.deal.titre}</div>
+                <p className="text-blue-200 text-xs font-light leading-relaxed">{data.deal.texte}</p>
+              </div>
+            )}
+            <Link
+              to="/actualite"
+              search={{ sector: sectorId }}
+              className="inline-block mt-3 text-blue-600 text-xs hover:text-blue-900 underline underline-offset-2"
+            >
+              Voir tous les deals {data.name} dans Actualité M&A
+            </Link>
           </div>
 
           <div>

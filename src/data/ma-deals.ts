@@ -1,3 +1,6 @@
+import { SECTOR_IDS, type SectorId } from '@/lib/sectors';
+import { getSectorIdForSecteur } from '@/lib/sector-deals';
+
 export type MaDealType =
   | 'M&A'
   | 'LBO'
@@ -13,6 +16,7 @@ export type MaDeal = {
   dates: string;
   type: MaDealType;
   secteur: string;
+  sectorId?: SectorId;
   headlineEv: string;
   banks: string[];
   parties: { label: string; text: string }[];
@@ -30,7 +34,7 @@ export type MaDeal = {
   kind: 'deal' | 'trend';
 };
 
-export const MA_DEALS: MaDeal[] = [
+const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
   {
     id: 'd01',
     title: 'Sanofi / Opella → CD&R',
@@ -587,13 +591,132 @@ export const MA_DEALS: MaDeal[] = [
     ftUrl: 'https://www.ft.com/content/exxonmobil-pioneer-resources',
     kind: 'deal',
   },
+  {
+    id: 'd13',
+    title: 'Lineage Logistics — IPO (2024)',
+    dates: 'IPO juil. 2024',
+    type: 'M&A',
+    secteur: 'Immobilier / REIT logistique',
+    headlineEv: '~18 Md$ valorisation',
+    banks: ['Morgan Stanley', 'Goldman Sachs', 'JPMorgan'],
+    parties: [
+      {
+        label: 'Entité',
+        text: 'Lineage Logistics — REIT spécialisé entrepôts frigorifiques (cold storage). Leader US.',
+      },
+    ],
+    valorisation: [
+      { label: 'Valorisation IPO', value: '~18 Md$' },
+      { label: 'Contexte', value: 'Plus grande IPO mondiale 2024' },
+    ],
+    interests: [
+      {
+        side: 'Investisseurs',
+        text: 'Exposition à la logistique e-commerce et chaîne du froid. Rendements liés aux loyers long terme et occupation.',
+      },
+    ],
+    pointEntretien:
+      'Illustrer la différence REIT vs promoteur : FFO, NAV, cap rates. Citer MS/GS/JPM comme bookrunners sur une IPO infra/logistique.',
+    kind: 'deal',
+  },
+  {
+    id: 'd14',
+    title: 'Microsoft / Activision Blizzard',
+    dates: 'Annonce jan. 2022 — Closing oct. 2023',
+    type: 'M&A',
+    secteur: 'TMT / Gaming',
+    headlineEv: '~69 Md$',
+    banks: [],
+    parties: [
+      {
+        label: 'Cible',
+        text: 'Activision Blizzard (Call of Duty, World of Warcraft, Candy Crush).',
+      },
+      { label: 'Acquéreur', text: 'Microsoft.' },
+    ],
+    valorisation: [
+      { label: 'Prix', value: '~95$/action, ~69 Md$' },
+      { label: 'Multiple', value: '~10x revenue' },
+    ],
+    interests: [
+      {
+        side: 'Microsoft',
+        text: 'Gaming + cloud (Game Pass). Bataille réglementaire FTC/UE 2 ans — cas d\'école antitrust tech.',
+      },
+    ],
+    pointEntretien:
+      'Plus grand deal gaming de l\'histoire. Montrer que la valeur stratégique (écosystème) peut justifier un multiple revenue élevé malgré la lenteur réglementaire.',
+    kind: 'deal',
+  },
+  {
+    id: 'd15',
+    title: 'Brenntag / Gaea Investment (carve-out Asia)',
+    dates: 'Annonce 2025 — Closing attendu 2026',
+    type: 'Carve-out',
+    secteur: 'Industrie / Distribution chimique',
+    headlineEv: '~1,5 Md$',
+    banks: ['Barclays', 'Citigroup'],
+    parties: [
+      {
+        label: 'Actif',
+        text: 'Division distribution chimique Asie de Brenntag (carve-out).',
+      },
+      { label: 'Acquéreur', text: 'Fonds Gaea / consortium.' },
+    ],
+    valorisation: [{ label: 'EV', value: '~1,5 Md$ (estimé)' }],
+    interests: [
+      {
+        side: 'Brenntag',
+        text: 'Monétiser un actif géographique non-core, réduire la dette et se recentrer sur l\'Europe/Amériques.',
+      },
+    ],
+    pointEntretien:
+      'Exemple carve-out industriel mid-cap. Barclays et Citi en rôles financing/advisory distincts — utile pour banques autres qu\'Opella.',
+    kind: 'deal',
+  },
+  {
+    id: 'd16',
+    title: 'Chevron / Hess Corporation',
+    dates: 'Annonce oct. 2023 — Closing juil. 2024',
+    type: 'M&A',
+    secteur: 'Énergie / Oil & Gas',
+    headlineEv: '~53 Md$',
+    banks: ['Morgan Stanley', 'Citigroup'],
+    parties: [
+      { label: 'Cible', text: 'Hess Corporation (Guyana, Bakken).' },
+      { label: 'Acquéreur', text: 'Chevron.' },
+    ],
+    valorisation: [
+      { label: 'Structure', value: 'All-stock' },
+      { label: 'Multiple', value: '~10x EBITDA' },
+    ],
+    interests: [
+      {
+        side: 'Chevron',
+        text: 'Accès au pétrole guyanais (Stabroek) — actif parmi les plus convoités au monde. Consolidation shale US.',
+      },
+    ],
+    pointEntretien:
+      'Complète Exxon/Pioneer : vague de M&A O&G 2023-24. Discuter paradoxe ESG vs rachat de réserves fossiles.',
+    kind: 'deal',
+  },
 ];
+
+export const MA_DEALS: MaDeal[] = MA_DEALS_RAW.map(d => ({
+  ...d,
+  sectorId: getSectorIdForSecteur(d.secteur),
+}));
 
 const uniqueBanks = [...new Set(MA_DEALS.flatMap(d => d.banks))].sort((a, b) =>
   a.localeCompare(b, 'fr'),
 );
 
 export const MA_DEAL_BANKS = ['all', ...uniqueBanks] as const;
+
+export const MA_DEAL_SECTOR_IDS = [
+  'all',
+  ...SECTOR_IDS.filter(id => MA_DEALS.some(d => d.sectorId === id)),
+] as const;
 
 const TYPE_ORDER: MaDealType[] = ['M&A', 'LBO', 'Carve-out', 'Restructuring', 'OPA', 'Cessions', 'Tendance'];
 
@@ -610,12 +733,20 @@ export function getDealById (id: string): MaDeal | undefined {
   return MA_DEALS.find(d => d.id === id);
 }
 
+export function getDealsForSector (sectorId: SectorId): MaDeal[] {
+  return MA_DEALS.filter(d => d.sectorId === sectorId);
+}
+
 export function dealMatchesBank (deal: MaDeal, bank: string): boolean {
   return deal.banks.includes(bank);
 }
 
 export function dealMatchesType (deal: MaDeal, type: string): boolean {
   return deal.type === type;
+}
+
+export function dealMatchesSector (deal: MaDeal, sectorId: SectorId): boolean {
+  return deal.sectorId === sectorId;
 }
 
 /** Badge date court pour l'en-tête de carte */

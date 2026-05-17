@@ -1,22 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import FinanceInterviewGuide from '@/components/FinanceInterviewGuide';
-import {
-  DEFAULT_APP_TAB,
-  isAppTab,
-  type AppTab,
-} from '@/lib/app-tabs';
-import { isValidBankId } from '@/data/bank-profiles';
+import type { AppTab } from '@/lib/app-tabs';
+import { validateHomeSearch } from '@/lib/route-search';
 
 export const Route = createFileRoute('/')({
-  validateSearch: (search: Record<string, unknown>) => {
-    const tab = typeof search.tab === 'string' ? search.tab : undefined;
-    const resolved: AppTab = isAppTab(tab) ? tab : DEFAULT_APP_TAB;
-
-    const bankRaw = typeof search.bank === 'string' ? search.bank : undefined;
-    const bank = bankRaw && isValidBankId(bankRaw) ? bankRaw : undefined;
-
-    return { tab: resolved, bank };
-  },
+  validateSearch: validateHomeSearch,
   component: HomePage,
 });
 
@@ -29,6 +17,7 @@ function HomePage() {
       search: prev => ({
         tab: page,
         bank: page === 'banques' ? prev.bank : undefined,
+        sector: page === 'secteurs' ? prev.sector : undefined,
       }),
     });
     if (typeof window !== 'undefined') {

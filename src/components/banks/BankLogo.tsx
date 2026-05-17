@@ -34,11 +34,14 @@ export function BankLogo ({
   const [failed, setFailed] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 767px)');
-  const { initials, color, logoOnDark } = getBankBrand(bankId);
+  const { initials, color, logoOnDark, logoScale = 1 } = getBankBrand(bankId);
+  const padClass = logoScale > 1
+    ? { sm: 'p-0.5', md: 'p-1', lg: 'p-1' }[size]
+    : PAD_CLASS[size];
   const label = bankName ?? 'Logo banque';
   const canExpand = expandable && isMobile && !failed;
 
-  const containerClass = `flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm border border-slate-200/80 ${SIZE_CLASS[size]} ${PAD_CLASS[size]} ${logoOnDark ? '' : 'bg-white'} ${canExpand ? '' : className}`;
+  const containerClass = `flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm border border-slate-200/80 ${SIZE_CLASS[size]} ${padClass} ${logoOnDark ? '' : 'bg-white'} ${canExpand ? '' : className}`;
 
   if (!failed) {
     const logoContent = (
@@ -50,6 +53,7 @@ export function BankLogo ({
           src={BANK_LOGO_PATH(bankId)}
           alt=""
           className="max-w-full max-h-full w-full h-full object-contain pointer-events-none"
+          style={logoScale !== 1 ? { transform: `scale(${logoScale})` } : undefined}
           onError={() => setFailed(true)}
         />
       </div>

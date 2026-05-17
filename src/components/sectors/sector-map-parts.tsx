@@ -54,7 +54,7 @@ export function SectorBuilding ({
 }: SectorBuildingProps) {
   const { mapSlot, labelOffset, label } = meta;
   const lift = isSelected ? -6 : 0;
-  const opacity = isDimmed ? 0.4 : isHovered ? 0.92 : 1;
+  const opacity = isDimmed ? 0.55 : isHovered ? 0.92 : 1;
   const labelWidth = label.length > 8 ? 88 : 48;
   const hitR = 42;
 
@@ -62,7 +62,10 @@ export function SectorBuilding ({
     <g
       transform={`translate(${mapSlot.x}, ${mapSlot.y + lift})`}
       opacity={opacity}
-      style={{ transition: 'opacity 0.2s' }}
+      style={{
+        transition: 'opacity 0.2s, filter 0.2s',
+        filter: isDimmed ? 'grayscale(0.35)' : 'none',
+      }}
       className="cursor-pointer"
     >
       {/* Anneau de sélection — sous le bâtiment */}

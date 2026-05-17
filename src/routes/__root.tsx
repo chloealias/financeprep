@@ -82,14 +82,14 @@ export const Route = createRootRoute({
       {
         name: 'description',
         content:
-          'Préparez vos entretiens en finance : questions, notions, guides CV et glossaire des acronymes.',
+          'Préparez vos entretiens en finance : questions, notions, fiches banques et secteurs, actualité M&A et guides CV.',
       },
       { name: 'author', content: 'FinancePrep' },
       { property: 'og:title', content: 'FinancePrep' },
       {
         property: 'og:description',
         content:
-          'Préparez vos entretiens en finance : questions, notions, guides CV et glossaire des acronymes.',
+          'Préparez vos entretiens en finance : questions, notions, fiches banques et secteurs, actualité M&A et guides CV.',
       },
       { property: 'og:type', content: 'website' },
       { name: 'twitter:card', content: 'summary' },
@@ -97,7 +97,7 @@ export const Route = createRootRoute({
       {
         name: 'twitter:description',
         content:
-          'Préparez vos entretiens en finance : questions, notions, guides CV et glossaire des acronymes.',
+          'Préparez vos entretiens en finance : questions, notions, fiches banques et secteurs, actualité M&A et guides CV.',
       },
       {
         property: 'og:image',
