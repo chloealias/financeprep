@@ -1,6 +1,6 @@
 import { Star } from 'lucide-react';
 
-export function StarRating ({ value, onChange, size = 'md' }) {
+export function StarRating ({ value, onChange, size = 'md' }: { value: number; onChange: (v: number) => void; size?: 'sm' | 'md' | 'lg' }) {
   const sizeClass = size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-7 h-7' : 'w-5 h-5';
   return (
     <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
