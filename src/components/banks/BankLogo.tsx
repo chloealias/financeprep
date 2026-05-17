@@ -1,18 +1,18 @@
-import { useState, type MouseEvent } from 'react';
-import { BANK_LOGO_PATH, getBankBrand } from '@/data/bank-brand';
-import { ImageLightbox } from '@/components/ui/image-lightbox';
-import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { useState, type MouseEvent } from "react";
+import { BANK_LOGO_PATH, getBankBrand } from "@/data/bank-brand";
+import { ImageLightbox } from "@/components/ui/image-lightbox";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 
 const SIZE_CLASS = {
-  sm: 'w-10 h-10 rounded-lg',
-  md: 'w-14 h-14 rounded-xl',
-  lg: 'w-16 h-16 rounded-xl',
+  sm: "w-10 h-10 rounded-lg",
+  md: "w-14 h-14 rounded-xl",
+  lg: "w-16 h-16 rounded-xl",
 } as const;
 
 const PAD_CLASS = {
-  sm: 'p-1.5',
-  md: 'p-2',
-  lg: 'p-2.5',
+  sm: "p-1.5",
+  md: "p-2",
+  lg: "p-2.5",
 } as const;
 
 type BankLogoProps = {
@@ -24,31 +24,26 @@ type BankLogoProps = {
   expandable?: boolean;
 };
 
-export function BankLogo ({
+export function BankLogo({
   bankId,
   bankName,
-  size = 'md',
-  className = '',
+  size = "md",
+  className = "",
   expandable = false,
 }: BankLogoProps) {
   const [failed, setFailed] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const isMobile = useMediaQuery('(max-width: 767px)');
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const { initials, color, logoOnDark, logoScale = 1 } = getBankBrand(bankId);
-  const padClass = logoScale > 1
-    ? { sm: 'p-0.5', md: 'p-1', lg: 'p-1' }[size]
-    : PAD_CLASS[size];
-  const label = bankName ?? 'Logo banque';
+  const padClass = logoScale > 1 ? { sm: "p-0.5", md: "p-1", lg: "p-1" }[size] : PAD_CLASS[size];
+  const label = bankName ?? "Logo banque";
   const canExpand = expandable && isMobile && !failed;
 
-  const containerClass = `flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm border border-slate-200/80 ${SIZE_CLASS[size]} ${padClass} ${logoOnDark ? '' : 'bg-white'} ${canExpand ? '' : className}`;
+  const containerClass = `flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm border border-slate-200/80 ${SIZE_CLASS[size]} ${padClass} ${logoOnDark ? "" : "bg-white"} ${canExpand ? "" : className}`;
 
   if (!failed) {
     const logoContent = (
-      <div
-        className={containerClass}
-        style={logoOnDark ? { backgroundColor: color } : undefined}
-      >
+      <div className={containerClass} style={logoOnDark ? { backgroundColor: color } : undefined}>
         <img
           src={BANK_LOGO_PATH(bankId)}
           alt=""

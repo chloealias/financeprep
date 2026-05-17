@@ -1,44 +1,51 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { useState } from 'react';
-import { Search, ArrowLeft, GraduationCap, RotateCw, ChevronLeft, ChevronRight, Shuffle, Check, X } from 'lucide-react';
-import { acronymSections, acronyms, type Acronym } from '@/data/acronyms';
-import { loadSavedFilters, saveSavedFilters } from '@/lib/storage';
-import type { CategoryId } from '@/lib/categories';
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import {
+  Search,
+  ArrowLeft,
+  GraduationCap,
+  RotateCw,
+  ChevronLeft,
+  ChevronRight,
+  Shuffle,
+  Check,
+  X,
+} from "lucide-react";
+import { acronymSections, acronyms, type Acronym } from "@/data/acronyms";
+import { loadSavedFilters, saveSavedFilters } from "@/lib/storage";
+import type { CategoryId } from "@/lib/categories";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/dialog';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+} from "@/components/ui/dialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-function SectionConceptLink ({ category }: { category: CategoryId }) {
+function SectionConceptLink({ category }: { category: CategoryId }) {
   const persistAndGo = () => {
     const defaults = {
-      activeCategory: 'all',
-      activeDifficulty: 'all',
-      searchQuery: '',
-      ratingFilter: 'all',
-      conceptCategory: 'all',
+      activeCategory: "all",
+      activeDifficulty: "all",
+      searchQuery: "",
+      ratingFilter: "all",
+      conceptCategory: "all",
     };
-    const current = loadSavedFilters(
-      raw => {
-        const o = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
-        return {
-          ...defaults,
-          conceptCategory: typeof o.conceptCategory === 'string' ? o.conceptCategory : 'all',
-        };
-      },
-      defaults,
-    );
+    const current = loadSavedFilters((raw) => {
+      const o = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+      return {
+        ...defaults,
+        conceptCategory: typeof o.conceptCategory === "string" ? o.conceptCategory : "all",
+      };
+    }, defaults);
     saveSavedFilters({ ...current, conceptCategory: category });
   };
 
   return (
     <Link
       to="/"
-      search={{ tab: 'concepts' }}
+      search={{ tab: "concepts" }}
       onClick={persistAndGo}
       className="text-xs text-blue-600 hover:text-blue-900 underline underline-offset-2"
     >
@@ -47,18 +54,18 @@ function SectionConceptLink ({ category }: { category: CategoryId }) {
   );
 }
 
-export const Route = createFileRoute('/glossaire')({
+export const Route = createFileRoute("/glossaire")({
   head: () => ({
     meta: [
-      { title: 'Glossaire des acronymes — FinancePrep' },
+      { title: "Glossaire des acronymes — FinancePrep" },
       {
-        name: 'description',
+        name: "description",
         content:
           "Tous les acronymes indispensables en TS, IB et PE, avec leur traduction française.",
       },
-      { property: 'og:title', content: 'Glossaire des acronymes — FinancePrep' },
+      { property: "og:title", content: "Glossaire des acronymes — FinancePrep" },
       {
-        property: 'og:description',
+        property: "og:description",
         content:
           "Tous les acronymes indispensables en TS, IB et PE, avec leur traduction française.",
       },
@@ -68,7 +75,7 @@ export const Route = createFileRoute('/glossaire')({
 });
 
 function GlossairePage() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [learnOpen, setLearnOpen] = useState(false);
   const q = query.trim().toLowerCase();
 
@@ -77,9 +84,7 @@ function GlossairePage() {
       ...s,
       items: q
         ? s.items.filter((a) =>
-            [a.abbr, a.english ?? '', a.french].some((v) =>
-              v.toLowerCase().includes(q),
-            ),
+            [a.abbr, a.english ?? "", a.french].some((v) => v.toLowerCase().includes(q)),
           )
         : s.items,
     }))
@@ -90,7 +95,7 @@ function GlossairePage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-6">
         <Link
           to="/"
-          search={{ tab: 'guide' }}
+          search={{ tab: "guide" }}
           className="inline-flex items-center gap-1.5 text-sm text-blue-700 hover:text-blue-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
@@ -138,9 +143,7 @@ function GlossairePage() {
                   <h2 className="text-xs uppercase tracking-[0.18em] text-blue-700 font-medium">
                     {section.title}
                   </h2>
-                  {section.hubCategory && (
-                    <SectionConceptLink category={section.hubCategory} />
-                  )}
+                  {section.hubCategory && <SectionConceptLink category={section.hubCategory} />}
                 </div>
                 <ul className="divide-y divide-blue-50">
                   {section.items.map((a) => (
@@ -237,7 +240,9 @@ function FlashcardMode() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between text-xs text-slate-500">
-        <span>{idx + 1} / {deck.length}</span>
+        <span>
+          {idx + 1} / {deck.length}
+        </span>
         <button
           type="button"
           onClick={reshuffle}
@@ -320,10 +325,10 @@ function formatDuration(ms: number): string {
   return `${sec} s`;
 }
 
-const QCM_OPTIONS = [5, 10, 15, 20, 'all'] as const;
+const QCM_OPTIONS = [5, 10, 15, 20, "all"] as const;
 
 function QcmMode() {
-  const [qCount, setQCount] = useState<number | 'all'>(10);
+  const [qCount, setQCount] = useState<number | "all">(10);
   const [quiz, setQuiz] = useState<QcmQuestion[]>(() => buildQuiz(10));
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
@@ -349,8 +354,8 @@ function QcmMode() {
     setPicked(null);
   };
 
-  const startQuiz = (count: number | 'all') => {
-    const n = count === 'all' ? acronyms.length : count;
+  const startQuiz = (count: number | "all") => {
+    const n = count === "all" ? acronyms.length : count;
     setQCount(count);
     setQuiz(buildQuiz(n));
     setIdx(0);
@@ -378,7 +383,9 @@ function QcmMode() {
 
         <div className="flex items-center justify-center gap-6">
           <div className="space-y-1">
-            <div className="text-3xl font-semibold text-blue-950">{score} / {total}</div>
+            <div className="text-3xl font-semibold text-blue-950">
+              {score} / {total}
+            </div>
             <div className="text-xs text-slate-500">bonnes réponses</div>
           </div>
           <div className="w-px h-10 bg-blue-100" />
@@ -394,7 +401,11 @@ function QcmMode() {
         </div>
 
         <p className="text-sm text-slate-600">
-          {score === total ? 'Sans faute, bravo !' : score >= total * 0.7 ? 'Bon score, continue.' : 'À retravailler.'}
+          {score === total
+            ? "Sans faute, bravo !"
+            : score >= total * 0.7
+              ? "Bon score, continue."
+              : "À retravailler."}
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
@@ -420,7 +431,9 @@ function QcmMode() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between text-xs text-slate-500">
-        <span>Question {idx + 1} / {total}</span>
+        <span>
+          Question {idx + 1} / {total}
+        </span>
         <span>Score : {score}</span>
       </div>
 
@@ -428,7 +441,7 @@ function QcmMode() {
         <span className="text-xs text-slate-500">Questions :</span>
         {QCM_OPTIONS.map((opt) => {
           const active = qCount === opt;
-          const label = opt === 'all' ? 'Toutes' : `${opt}`;
+          const label = opt === "all" ? "Toutes" : `${opt}`;
           return (
             <button
               key={label}
@@ -436,8 +449,8 @@ function QcmMode() {
               onClick={() => startQuiz(opt)}
               className={`text-xs rounded-full px-2.5 py-1 transition border ${
                 active
-                  ? 'bg-blue-700 text-white border-blue-700'
-                  : 'bg-white text-slate-600 border-blue-100 hover:border-blue-300'
+                  ? "bg-blue-700 text-white border-blue-700"
+                  : "bg-white text-slate-600 border-blue-100 hover:border-blue-300"
               }`}
             >
               {label}
@@ -455,11 +468,11 @@ function QcmMode() {
         {q.choices.map((c) => {
           const isCorrect = c === q.correct;
           const isPicked = picked === c;
-          let cls = 'border-blue-100 hover:bg-blue-50';
+          let cls = "border-blue-100 hover:bg-blue-50";
           if (picked) {
-            if (isCorrect) cls = 'border-green-300 bg-green-50';
-            else if (isPicked) cls = 'border-red-300 bg-red-50';
-            else cls = 'border-blue-100 opacity-60';
+            if (isCorrect) cls = "border-green-300 bg-green-50";
+            else if (isPicked) cls = "border-red-300 bg-red-50";
+            else cls = "border-blue-100 opacity-60";
           }
           return (
             <button
@@ -471,7 +484,9 @@ function QcmMode() {
             >
               <span className="text-slate-800">{c}</span>
               {picked && isCorrect && <Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />}
-              {picked && isPicked && !isCorrect && <X className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />}
+              {picked && isPicked && !isCorrect && (
+                <X className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+              )}
             </button>
           );
         })}
@@ -484,7 +499,7 @@ function QcmMode() {
           disabled={!picked}
           className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-1.5 text-sm"
         >
-          {idx + 1 >= total ? 'Voir le résultat' : 'Suivant'} <ChevronRight className="w-4 h-4" />
+          {idx + 1 >= total ? "Voir le résultat" : "Suivant"} <ChevronRight className="w-4 h-4" />
         </button>
       </div>
     </div>

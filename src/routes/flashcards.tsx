@@ -1,38 +1,38 @@
-import { useState } from 'react';
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowLeft, Sparkles, Clock } from 'lucide-react';
-import { FlashcardSession } from '@/components/flashcards/FlashcardSession';
-import { QuizSession } from '@/components/flashcards/QuizSession';
+import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowLeft, Sparkles, Clock } from "lucide-react";
+import { FlashcardSession } from "@/components/flashcards/FlashcardSession";
+import { QuizSession } from "@/components/flashcards/QuizSession";
 
-export const Route = createFileRoute('/flashcards')({
+export const Route = createFileRoute("/flashcards")({
   head: () => ({
     meta: [
-      { title: 'Flashcards & Quiz — FinancePrep' },
+      { title: "Flashcards & Quiz — FinancePrep" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Révisez vos questions de finance en flashcards (répétition espacée) ou en quiz chronométré avec score.',
+          "Révisez vos questions de finance en flashcards (répétition espacée) ou en quiz chronométré avec score.",
       },
     ],
   }),
   component: FlashcardsPage,
 });
 
-type Tool = 'menu' | 'flashcards' | 'quiz';
+type Tool = "menu" | "flashcards" | "quiz";
 
-function FlashcardsPage () {
-  const [tool, setTool] = useState<Tool>('menu');
+function FlashcardsPage() {
+  const [tool, setTool] = useState<Tool>("menu");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100">
-      {tool === 'menu' && <ToolPicker onPick={setTool} />}
-      {tool === 'flashcards' && <FlashcardSession />}
-      {tool === 'quiz' && <QuizSession onBack={() => setTool('menu')} />}
+      {tool === "menu" && <ToolPicker onPick={setTool} />}
+      {tool === "flashcards" && <FlashcardSession />}
+      {tool === "quiz" && <QuizSession onBack={() => setTool("menu")} />}
     </div>
   );
 }
 
-function ToolPicker ({ onPick }: { onPick: (t: Tool) => void }) {
+function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
       <Link
@@ -51,13 +51,14 @@ function ToolPicker ({ onPick }: { onPick: (t: Tool) => void }) {
           </span>
         </div>
         <h1 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
-          Comment veux-tu <span className="italic font-light text-blue-700">t&apos;entraîner</span> ?
+          Comment veux-tu <span className="italic font-light text-blue-700">t&apos;entraîner</span>{" "}
+          ?
         </h1>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-5">
         <ToolCard
-          onClick={() => onPick('flashcards')}
+          onClick={() => onPick("flashcards")}
           icon={<Sparkles className="w-7 h-7" />}
           tag="Mémoire long terme"
           title="Flashcards SRS"
@@ -65,7 +66,7 @@ function ToolPicker ({ onPick }: { onPick: (t: Tool) => void }) {
           accent="from-blue-700 to-indigo-800"
         />
         <ToolCard
-          onClick={() => onPick('quiz')}
+          onClick={() => onPick("quiz")}
           icon={<Clock className="w-7 h-7" />}
           tag="Simulation entretien"
           title="Quiz chronométré"
@@ -77,8 +78,13 @@ function ToolPicker ({ onPick }: { onPick: (t: Tool) => void }) {
   );
 }
 
-function ToolCard ({
-  onClick, icon, tag, title, description, accent,
+function ToolCard({
+  onClick,
+  icon,
+  tag,
+  title,
+  description,
+  accent,
 }: {
   onClick: () => void;
   icon: React.ReactNode;

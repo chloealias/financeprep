@@ -1,4 +1,4 @@
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight } from "lucide-react";
 
 interface Guide {
   id: number;
@@ -18,7 +18,7 @@ export function GuideCard({ guide }: GuideCardProps) {
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-semibold flex-shrink-0">
-            {String(guide.id).padStart(2, '0')}
+            {String(guide.id).padStart(2, "0")}
           </div>
 
           <div className="flex gap-2 flex-wrap">

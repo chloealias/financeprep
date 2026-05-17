@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { QUESTION_CATEGORIES, getCategoryLabel } from '@/lib/categories';
-import { questions } from '@/data/questions';
-import type { AppTab } from '@/lib/app-tabs';
+import { useState, useEffect } from "react";
+import { QUESTION_CATEGORIES, getCategoryLabel } from "@/lib/categories";
+import { questions } from "@/data/questions";
+import type { AppTab } from "@/lib/app-tabs";
 import {
   clearRatings,
   loadRatings,
@@ -11,14 +11,14 @@ import {
   saveRatings,
   saveReviewList,
   type QuestionRatings,
-} from '@/lib/storage';
-import { ProgressPage } from '@/components/interview/ProgressPage';
-import { AppHubLayout } from '@/components/hub/AppHubLayout';
-import { BankHubPage } from '@/components/banks/BankHubPage';
-import { SectorsTab } from '@/components/sectors/SectorsTab';
-import { GuideTab } from '@/components/hub/GuideTab';
-import { ConceptsTab } from '@/components/hub/ConceptsTab';
-import { QuestionsTab } from '@/components/hub/QuestionsTab';
+} from "@/lib/storage";
+import { ProgressPage } from "@/components/interview/ProgressPage";
+import { AppHubLayout } from "@/components/hub/AppHubLayout";
+import { BankHubPage } from "@/components/banks/BankHubPage";
+import { SectorsTab } from "@/components/sectors/SectorsTab";
+import { GuideTab } from "@/components/hub/GuideTab";
+import { ConceptsTab } from "@/components/hub/ConceptsTab";
+import { QuestionsTab } from "@/components/hub/QuestionsTab";
 
 type FinanceInterviewGuideProps = {
   activePage: AppTab;
@@ -27,23 +27,23 @@ type FinanceInterviewGuideProps = {
 
 const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGuideProps) => {
   const [ratings, setRatings] = useState<QuestionRatings>(() =>
-    typeof window !== 'undefined' ? loadRatings() : {},
+    typeof window !== "undefined" ? loadRatings() : {},
   );
   const [reviewList, setReviewList] = useState<string[]>(() =>
-    typeof window !== 'undefined' ? loadReviewList() : [],
+    typeof window !== "undefined" ? loadReviewList() : [],
   );
   const [questionsFiltersKey, setQuestionsFiltersKey] = useState(0);
 
   useEffect(() => {
-    void loadRatingsWithLegacyMigration().then(migrated => {
+    void loadRatingsWithLegacyMigration().then((migrated) => {
       if (Object.keys(migrated).length > 0) setRatings(migrated);
     });
   }, []);
 
   const toggleReview = (qid: string | number) => {
     const key = questionIdKey(qid);
-    setReviewList(prev => {
-      const next = prev.includes(key) ? prev.filter(x => x !== key) : [...prev, key];
+    setReviewList((prev) => {
+      const next = prev.includes(key) ? prev.filter((x) => x !== key) : [...prev, key];
       saveReviewList(next);
       return next;
     });
@@ -63,11 +63,11 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   };
 
   const categories = QUESTION_CATEGORIES;
-  const hasProgress = Object.keys(ratings).some(k => ratings[k] > 0);
+  const hasProgress = Object.keys(ratings).some((k) => ratings[k] > 0);
 
   return (
     <AppHubLayout activePage={activePage} onPageChange={onPageChange} hasProgress={hasProgress}>
-      {activePage === 'questions' && (
+      {activePage === "questions" && (
         <QuestionsTab
           ratings={ratings}
           onUpdateRating={updateRating}
@@ -77,15 +77,15 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
         />
       )}
 
-      {activePage === 'concepts' && <ConceptsTab />}
+      {activePage === "concepts" && <ConceptsTab />}
 
-      {activePage === 'guide' && <GuideTab />}
+      {activePage === "guide" && <GuideTab />}
 
-      {activePage === 'secteurs' && <SectorsTab />}
+      {activePage === "secteurs" && <SectorsTab />}
 
-      {activePage === 'banques' && <BankHubPage />}
+      {activePage === "banques" && <BankHubPage />}
 
-      {activePage === 'progress' && (
+      {activePage === "progress" && (
         <ProgressPage
           questions={questions}
           ratings={ratings}
@@ -93,7 +93,7 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
           getCategoryLabel={getCategoryLabel}
           onReset={resetRatings}
           onPageChange={onPageChange}
-          onQuestionsFiltersChange={() => setQuestionsFiltersKey(k => k + 1)}
+          onQuestionsFiltersChange={() => setQuestionsFiltersKey((k) => k + 1)}
         />
       )}
     </AppHubLayout>

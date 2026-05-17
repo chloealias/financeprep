@@ -1,27 +1,57 @@
-import { GuideIntro, GuideSectionTitle } from '@/components/guide/guide-ui';
+import { GuideIntro, GuideSectionTitle } from "@/components/guide/guide-ui";
 
-export function BlocPyramid () {
+export function BlocPyramid() {
   const starCards = [
-    { letter: 'S', label: 'Situation', quoi: 'Le contexte en 1-2 phrases maximum', erreur: 'Trop long — 30 sec max', exemple: "J'étais en stage M&A chez X, durant la phase de due diligence d'une acquisition dans le retail" },
-    { letter: 'T', label: 'Tâche', quoi: 'Votre rôle et objectif spécifique', erreur: "Confondre Tâche et Action — la tâche c'est CE QUE vous deviez faire, pas comment", exemple: "J'étais responsable de la revue du BFR historique et de la normalisation des EBITDA" },
-    { letter: 'A', label: 'Action', quoi: "CE QUE VOUS avez fait — toujours 'je', pas 'nous'", erreur: "Utiliser 'nous' — l'interviewer veut savoir VOTRE contribution personnelle", exemple: "J'ai construit un modèle de BFR mensuel sur 3 ans, identifié 2 ajustements non récurrents représentant 800k€ d'EBITDA normalisé" },
-    { letter: 'R', label: 'Résultat', quoi: 'Impact mesurable. Toujours chiffrer si possible.', erreur: "Terminer sans résultat — 'j'ai fait X' sans dire ce que ça a produit", exemple: "L'analyse a été intégrée au mémo d'acquisition. Le client a réduit son offre de 5% en conséquence." },
+    {
+      letter: "S",
+      label: "Situation",
+      quoi: "Le contexte en 1-2 phrases maximum",
+      erreur: "Trop long — 30 sec max",
+      exemple:
+        "J'étais en stage M&A chez X, durant la phase de due diligence d'une acquisition dans le retail",
+    },
+    {
+      letter: "T",
+      label: "Tâche",
+      quoi: "Votre rôle et objectif spécifique",
+      erreur: "Confondre Tâche et Action — la tâche c'est CE QUE vous deviez faire, pas comment",
+      exemple:
+        "J'étais responsable de la revue du BFR historique et de la normalisation des EBITDA",
+    },
+    {
+      letter: "A",
+      label: "Action",
+      quoi: "CE QUE VOUS avez fait — toujours 'je', pas 'nous'",
+      erreur: "Utiliser 'nous' — l'interviewer veut savoir VOTRE contribution personnelle",
+      exemple:
+        "J'ai construit un modèle de BFR mensuel sur 3 ans, identifié 2 ajustements non récurrents représentant 800k€ d'EBITDA normalisé",
+    },
+    {
+      letter: "R",
+      label: "Résultat",
+      quoi: "Impact mesurable. Toujours chiffrer si possible.",
+      erreur: "Terminer sans résultat — 'j'ai fait X' sans dire ce que ça a produit",
+      exemple:
+        "L'analyse a été intégrée au mémo d'acquisition. Le client a réduit son offre de 5% en conséquence.",
+    },
   ];
 
   const matrix = [
-    { q: "Pourquoi la finance ?",         pyramid: true,  star: false },
-    { q: "Parlez d'une difficulté",        pyramid: false, star: true  },
+    { q: "Pourquoi la finance ?", pyramid: true, star: false },
+    { q: "Parlez d'une difficulté", pyramid: false, star: true },
     { q: "Quelle est votre valeur ajoutée ?", pyramid: true, star: false },
-    { q: "Travail en équipe — exemple ?",  pyramid: false, star: true  },
-    { q: "Expliquez-moi un concept",       pyramid: true,  star: false },
-    { q: "Une décision difficile ?",        pyramid: false, star: true  },
-    { q: "Pourquoi notre banque ?",        pyramid: true,  star: false },
+    { q: "Travail en équipe — exemple ?", pyramid: false, star: true },
+    { q: "Expliquez-moi un concept", pyramid: true, star: false },
+    { q: "Une décision difficile ?", pyramid: false, star: true },
+    { q: "Pourquoi notre banque ?", pyramid: true, star: false },
   ];
 
   return (
     <>
       <GuideIntro>
-        Ces deux frameworks structurent toutes vos réponses — techniques ET comportementales. Les maîtriser, c&apos;est paraître deux fois plus clair que les autres candidats, à niveau de connaissance égal.
+        Ces deux frameworks structurent toutes vos réponses — techniques ET comportementales. Les
+        maîtriser, c&apos;est paraître deux fois plus clair que les autres candidats, à niveau de
+        connaissance égal.
       </GuideIntro>
 
       <div className="mb-8">
@@ -37,33 +67,122 @@ export function BlocPyramid () {
               <polygon points="250,28 169,115 331,115" />
             </clipPath>
           </defs>
-          <polygon points="250,28 169,115 331,115" fill="#1e3a8a" shapeRendering="geometricPrecision" />
+          <polygon
+            points="250,28 169,115 331,115"
+            fill="#1e3a8a"
+            shapeRendering="geometricPrecision"
+          />
           <g clipPath="url(#pyramid-tier-top)">
-            <text x="250" y="84" fontSize="8" fill="white" textAnchor="middle" dominantBaseline="middle" fontWeight="bold">CONCLUSION</text>
-            <text x="250" y="100" fontSize="7" fill="#bfdbfe" textAnchor="middle" dominantBaseline="middle">D'abord</text>
+            <text
+              x="250"
+              y="84"
+              fontSize="8"
+              fill="white"
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontWeight="bold"
+            >
+              CONCLUSION
+            </text>
+            <text
+              x="250"
+              y="100"
+              fontSize="7"
+              fill="#bfdbfe"
+              textAnchor="middle"
+              dominantBaseline="middle"
+            >
+              D'abord
+            </text>
           </g>
-          <polygon points="169,115 331,115 408,200 92,200" fill="#3b82f6" shapeRendering="geometricPrecision" />
-          <text x="250" y="162" fontSize="11" fill="white" textAnchor="middle" dominantBaseline="middle" fontWeight="bold">ARGUMENTS CLÉS</text>
-          <text x="250" y="182" fontSize="9" fill="#dbeafe" textAnchor="middle" dominantBaseline="middle">2-3 raisons principales</text>
-          <polygon points="92,200 408,200 485,285 15,285" fill="#93c5fd" shapeRendering="geometricPrecision" />
-          <text x="250" y="248" fontSize="11" fill="#1e3a8a" textAnchor="middle" dominantBaseline="middle" fontWeight="bold">PREUVES &amp; EXEMPLES</text>
-          <text x="250" y="268" fontSize="9" fill="#1e40af" textAnchor="middle" dominantBaseline="middle">Chiffres, cas concrets, anecdotes</text>
+          <polygon
+            points="169,115 331,115 408,200 92,200"
+            fill="#3b82f6"
+            shapeRendering="geometricPrecision"
+          />
+          <text
+            x="250"
+            y="162"
+            fontSize="11"
+            fill="white"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontWeight="bold"
+          >
+            ARGUMENTS CLÉS
+          </text>
+          <text
+            x="250"
+            y="182"
+            fontSize="9"
+            fill="#dbeafe"
+            textAnchor="middle"
+            dominantBaseline="middle"
+          >
+            2-3 raisons principales
+          </text>
+          <polygon
+            points="92,200 408,200 485,285 15,285"
+            fill="#93c5fd"
+            shapeRendering="geometricPrecision"
+          />
+          <text
+            x="250"
+            y="248"
+            fontSize="11"
+            fill="#1e3a8a"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fontWeight="bold"
+          >
+            PREUVES &amp; EXEMPLES
+          </text>
+          <text
+            x="250"
+            y="268"
+            fontSize="9"
+            fill="#1e40af"
+            textAnchor="middle"
+            dominantBaseline="middle"
+          >
+            Chiffres, cas concrets, anecdotes
+          </text>
         </svg>
         <div className="bg-blue-900 text-white rounded-xl p-5 mb-6">
           <div className="text-blue-300 text-xs uppercase tracking-[0.2em] mb-2">Règle d'or</div>
-          <p className="font-light">Ne jamais commencer par le contexte. Commencer par la réponse. Le contexte vient ensuite pour justifier.</p>
+          <p className="font-light">
+            Ne jamais commencer par le contexte. Commencer par la réponse. Le contexte vient ensuite
+            pour justifier.
+          </p>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-            <div className="text-red-700 text-xs font-semibold uppercase tracking-wider mb-2">❌ Sans Pyramid</div>
-            <p className="text-red-800 text-sm font-light italic">"J'ai toujours été intéressé par les chiffres... Au lycée j'aimais les maths... En L3 j'ai fait un cours de compta..."</p>
+            <div className="text-red-700 text-xs font-semibold uppercase tracking-wider mb-2">
+              ❌ Sans Pyramid
+            </div>
+            <p className="text-red-800 text-sm font-light italic">
+              "J'ai toujours été intéressé par les chiffres... Au lycée j'aimais les maths... En L3
+              j'ai fait un cours de compta..."
+            </p>
           </div>
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-            <div className="text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-2">✅ Avec Pyramid</div>
+            <div className="text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-2">
+              ✅ Avec Pyramid
+            </div>
             <p className="text-emerald-800 text-sm font-light italic space-y-2">
-              <span className="block"><span className="font-semibold not-italic text-emerald-900">Conclusion —</span> « La finance me permet de comprendre comment les entreprises créent de la valeur — c'est ce qui me passionne. »</span>
-              <span className="block"><span className="font-semibold not-italic text-emerald-900">Arguments —</span> « Premièrement… Deuxièmement… »</span>
-              <span className="block"><span className="font-semibold not-italic text-emerald-900">Preuve —</span> « C'est notamment ce que j'ai fait chez X où… »</span>
+              <span className="block">
+                <span className="font-semibold not-italic text-emerald-900">Conclusion —</span> « La
+                finance me permet de comprendre comment les entreprises créent de la valeur — c'est
+                ce qui me passionne. »
+              </span>
+              <span className="block">
+                <span className="font-semibold not-italic text-emerald-900">Arguments —</span> «
+                Premièrement… Deuxièmement… »
+              </span>
+              <span className="block">
+                <span className="font-semibold not-italic text-emerald-900">Preuve —</span> « C'est
+                notamment ce que j'ai fait chez X où… »
+              </span>
             </p>
           </div>
         </div>
@@ -72,15 +191,21 @@ export function BlocPyramid () {
       <div className="mb-8">
         <GuideSectionTitle>Framework STAR</GuideSectionTitle>
         <div className="grid md:grid-cols-2 gap-4">
-          {starCards.map(card => (
+          {starCards.map((card) => (
             <div key={card.letter} className="bg-white border-2 border-blue-100 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white font-serif text-xl flex items-center justify-center">{card.letter}</div>
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white font-serif text-xl flex items-center justify-center">
+                  {card.letter}
+                </div>
                 <span className="font-serif text-blue-950 text-lg">{card.label}</span>
               </div>
               <div className="text-blue-900 text-sm mb-2">{card.quoi}</div>
-              <div className="bg-red-50 rounded-lg px-3 py-2 mb-2 text-red-700 text-xs">⚠ {card.erreur}</div>
-              <div className="bg-blue-50 rounded-lg px-3 py-2 text-blue-700 text-xs italic">"{card.exemple}"</div>
+              <div className="bg-red-50 rounded-lg px-3 py-2 mb-2 text-red-700 text-xs">
+                ⚠ {card.erreur}
+              </div>
+              <div className="bg-blue-50 rounded-lg px-3 py-2 text-blue-700 text-xs italic">
+                "{card.exemple}"
+              </div>
             </div>
           ))}
         </div>
@@ -99,10 +224,30 @@ export function BlocPyramid () {
             </thead>
             <tbody>
               {matrix.map((row, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-blue-50' : 'bg-white'}>
+                <tr key={i} className={i % 2 === 0 ? "bg-blue-50" : "bg-white"}>
                   <td className="px-4 py-3 text-blue-900">{row.q}</td>
-                  <td className="px-4 py-3 text-center">{row.pyramid ? <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">✓ Oui</span> : <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">—</span>}</td>
-                  <td className="px-4 py-3 text-center">{row.star ? <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">✓ Oui</span> : <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">—</span>}</td>
+                  <td className="px-4 py-3 text-center">
+                    {row.pyramid ? (
+                      <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">
+                        ✓ Oui
+                      </span>
+                    ) : (
+                      <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">
+                        —
+                      </span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    {row.star ? (
+                      <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">
+                        ✓ Oui
+                      </span>
+                    ) : (
+                      <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">
+                        —
+                      </span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -111,6 +256,6 @@ export function BlocPyramid () {
       </div>
     </>
   );
-};
+}
 
 // =====================================================

@@ -1,11 +1,6 @@
-import { useEffect, useRef, type ReactNode } from 'react';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerTitle,
-} from '@/components/ui/drawer';
-import { ClientOnly } from '@/components/hub/ClientOnly';
+import { useEffect, useRef, type ReactNode } from "react";
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "@/components/ui/drawer";
+import { ClientOnly } from "@/components/hub/ClientOnly";
 
 type DetailSheetProps = {
   open: boolean;
@@ -15,7 +10,7 @@ type DetailSheetProps = {
   returnFocusRef?: React.RefObject<HTMLElement | null>;
 };
 
-export function DetailSheet ({
+export function DetailSheet({
   open,
   onOpenChange,
   title,

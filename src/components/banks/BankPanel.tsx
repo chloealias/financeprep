@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import { Link } from '@tanstack/react-router';
-import { ChevronRight, X } from 'lucide-react';
-import { BankLogo } from '@/components/banks/BankLogo';
-import type { BankProfile } from '@/data/bank-profiles';
-import { getDealsForBank } from '@/data/bank-profiles';
+import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { ChevronRight, X } from "lucide-react";
+import { BankLogo } from "@/components/banks/BankLogo";
+import type { BankProfile } from "@/data/bank-profiles";
+import { getDealsForBank } from "@/data/bank-profiles";
 
 type BankPanelProps = {
   bank: BankProfile;
   onClose: () => void;
 };
 
-export function BankPanel ({ bank, onClose }: BankPanelProps) {
+export function BankPanel({ bank, onClose }: BankPanelProps) {
   const [showReponse, setShowReponse] = useState(false);
 
   const emblematicDealSearch =
-    bank.emblematicLinkType === 'bank'
+    bank.emblematicLinkType === "bank"
       ? ({ bank: bank.id } as const)
       : bank.emblematicDealId
         ? ({ deal: bank.emblematicDealId } as const)
@@ -45,7 +45,9 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
       <div className="flex items-center gap-4 mb-8 pr-10">
         <BankLogo bankId={bank.id} bankName={bank.name} size="lg" expandable />
         <div className="min-w-0">
-          <div className="text-xs uppercase tracking-[0.2em] text-blue-400 mb-1">{bank.category}</div>
+          <div className="text-xs uppercase tracking-[0.2em] text-blue-400 mb-1">
+            {bank.category}
+          </div>
           <h3 className="text-2xl sm:text-3xl font-serif text-blue-950">{bank.name}</h3>
           <p className="text-blue-600 text-sm font-light mt-1">{bank.hq}</p>
           <p className="text-blue-800 text-sm mt-1">{bank.tagline}</p>
@@ -73,7 +75,9 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
               <div className="text-rose-700 text-xs font-semibold uppercase tracking-wider mb-1">
                 Piège à éviter
               </div>
-              <p className="text-rose-900 text-sm font-light leading-relaxed">{bank.piegeAEviter}</p>
+              <p className="text-rose-900 text-sm font-light leading-relaxed">
+                {bank.piegeAEviter}
+              </p>
             </div>
           )}
         </div>
@@ -87,7 +91,7 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
             {bank.particularites.map((p, i) => (
               <div key={i} className="flex gap-3 bg-blue-50 rounded-lg px-3 py-2.5">
                 <div className="text-blue-400 text-xs font-mono mt-0.5 flex-shrink-0">
-                  {String(i + 1).padStart(2, '0')}
+                  {String(i + 1).padStart(2, "0")}
                 </div>
                 <span className="text-blue-800 text-sm font-light leading-relaxed">{p}</span>
               </div>
@@ -95,7 +99,9 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
           </div>
           {bank.recrutement && (
             <div>
-              <div className="text-xs uppercase tracking-wider text-blue-500 font-medium mb-2">Recrutement</div>
+              <div className="text-xs uppercase tracking-wider text-blue-500 font-medium mb-2">
+                Recrutement
+              </div>
               <p className="text-blue-700 text-sm font-light leading-relaxed">{bank.recrutement}</p>
             </div>
           )}
@@ -113,23 +119,30 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
                 search={emblematicDealSearch}
                 className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
                 aria-label={
-                bank.emblematicLinkType === 'bank'
-                  ? `Voir tous les deals de ${bank.name} dans Actualité M&A`
-                  : `Voir le deal ${bank.dealEmblematique.titre} dans Actualité M&A`
-              }
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0 flex-1">
-                  <div className="font-serif text-sm mb-2">{bank.dealEmblematique.titre}</div>
-                  <p className="text-blue-200 text-xs font-light leading-relaxed">{bank.dealEmblematique.texte}</p>
+                  bank.emblematicLinkType === "bank"
+                    ? `Voir tous les deals de ${bank.name} dans Actualité M&A`
+                    : `Voir le deal ${bank.dealEmblematique.titre} dans Actualité M&A`
+                }
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="font-serif text-sm mb-2">{bank.dealEmblematique.titre}</div>
+                    <p className="text-blue-200 text-xs font-light leading-relaxed">
+                      {bank.dealEmblematique.texte}
+                    </p>
+                  </div>
+                  <ChevronRight
+                    className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5"
+                    aria-hidden
+                  />
                 </div>
-                <ChevronRight className="w-4 h-4 text-blue-300 flex-shrink-0 mt-0.5" aria-hidden />
-              </div>
-            </Link>
+              </Link>
             ) : (
               <div className="block bg-gradient-to-br from-blue-900 to-indigo-900 rounded-xl p-4 text-white">
                 <div className="font-serif text-sm mb-2">{bank.dealEmblematique.titre}</div>
-                <p className="text-blue-200 text-xs font-light leading-relaxed">{bank.dealEmblematique.texte}</p>
+                <p className="text-blue-200 text-xs font-light leading-relaxed">
+                  {bank.dealEmblematique.texte}
+                </p>
               </div>
             )}
           </div>
@@ -140,7 +153,9 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
               Question piège
             </div>
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-2">
-              <p className="text-amber-900 text-sm font-light italic">&ldquo;{bank.questionPiège}&rdquo;</p>
+              <p className="text-amber-900 text-sm font-light italic">
+                &ldquo;{bank.questionPiège}&rdquo;
+              </p>
             </div>
             {!showReponse ? (
               <button
@@ -152,8 +167,12 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
               </button>
             ) : (
               <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-                <div className="text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-1">Réponse</div>
-                <p className="text-emerald-900 text-sm font-light leading-relaxed">{bank.reponsePiège}</p>
+                <div className="text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-1">
+                  Réponse
+                </div>
+                <p className="text-emerald-900 text-sm font-light leading-relaxed">
+                  {bank.reponsePiège}
+                </p>
                 <button
                   type="button"
                   onClick={() => setShowReponse(false)}
@@ -174,22 +193,22 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
         {deals.length > 0 ? (
           <>
             <ul className="space-y-3">
-              {deals.map(d => (
+              {deals.map((d) => (
                 <li key={d.id}>
                   <Link
                     to="/actualite"
                     search={{ deal: d.id }}
                     className="block bg-blue-50 rounded-lg px-3 py-3 text-sm hover:bg-blue-100/80 transition-colors"
                   >
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
-                    <span className="text-blue-900 font-medium">{d.title}</span>
-                    <span className="text-blue-500 text-xs">
-                      {d.type} · {d.headlineEv}
-                    </span>
-                  </div>
-                  <p className="text-blue-700 text-xs font-light leading-relaxed line-clamp-2">
-                    {d.pointEntretien}
-                  </p>
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                      <span className="text-blue-900 font-medium">{d.title}</span>
+                      <span className="text-blue-500 text-xs">
+                        {d.type} · {d.headlineEv}
+                      </span>
+                    </div>
+                    <p className="text-blue-700 text-xs font-light leading-relaxed line-clamp-2">
+                      {d.pointEntretien}
+                    </p>
                   </Link>
                 </li>
               ))}
@@ -204,7 +223,8 @@ export function BankPanel ({ bank, onClose }: BankPanelProps) {
           </>
         ) : (
           <p className="text-blue-400 text-sm font-light italic">
-            Aucun deal récent référencé pour cette banque dans l&apos;actualité M&A — privilégier le deal emblématique ci-dessus.
+            Aucun deal récent référencé pour cette banque dans l&apos;actualité M&A — privilégier le
+            deal emblématique ci-dessus.
           </p>
         )}
       </div>

@@ -1,22 +1,22 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { BlocPyramid } from '@/components/guide/BlocPyramid';
-import { GuidePageShell } from '@/components/GuidePageShell';
+import { createFileRoute } from "@tanstack/react-router";
+import { BlocPyramid } from "@/components/guide/BlocPyramid";
+import { GuidePageShell } from "@/components/GuidePageShell";
 
-export const Route = createFileRoute('/pyramid')({
+export const Route = createFileRoute("/pyramid")({
   head: () => ({
     meta: [
-      { title: 'Pyramid Principle + STAR — FinancePrep' },
+      { title: "Pyramid Principle + STAR — FinancePrep" },
       {
-        name: 'description',
+        name: "description",
         content:
-          'Frameworks pour structurer vos réponses techniques et comportementales en entretien.',
+          "Frameworks pour structurer vos réponses techniques et comportementales en entretien.",
       },
     ],
   }),
   component: PyramidPage,
 });
 
-function PyramidPage () {
+function PyramidPage() {
   return (
     <GuidePageShell
       tag="Méta-framework"

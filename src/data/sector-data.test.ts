@@ -1,9 +1,9 @@
-import { describe, expect, it } from 'vitest';
-import { SECTOR_DATA } from '@/data/sector-data';
-import { SECTOR_IDS } from '@/lib/sectors';
+import { describe, expect, it } from "vitest";
+import { SECTOR_DATA } from "@/data/sector-data";
+import { SECTOR_IDS } from "@/lib/sectors";
 
-describe('sector-data panorama', () => {
-  it('every sector has complete panorama', () => {
+describe("sector-data panorama", () => {
+  it("every sector has complete panorama", () => {
     for (const id of SECTOR_IDS) {
       const sector = SECTOR_DATA[id];
       expect(sector.panorama.tailleMarche.length).toBeGreaterThan(10);

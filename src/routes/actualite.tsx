@@ -1,29 +1,26 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { BlocActualite } from '@/components/guide/BlocActualite';
-import { GuidePageShell } from '@/components/GuidePageShell';
-import { validateActualiteSearch } from '@/lib/route-search';
+import { createFileRoute } from "@tanstack/react-router";
+import { BlocActualite } from "@/components/guide/BlocActualite";
+import { GuidePageShell } from "@/components/GuidePageShell";
+import { validateActualiteSearch } from "@/lib/route-search";
 
-export const Route = createFileRoute('/actualite')({
+export const Route = createFileRoute("/actualite")({
   validateSearch: validateActualiteSearch,
   head: () => ({
     meta: [
-      { title: 'Actualité M&A 2025-2026 — FinancePrep' },
+      { title: "Actualité M&A 2025-2026 — FinancePrep" },
       {
-        name: 'description',
+        name: "description",
         content:
-          '16 deals M&A détaillés (2023-2026), filtres par banque et secteur, pour montrer votre intérêt réel en entretien finance.',
+          "16 deals M&A détaillés (2023-2026), filtres par banque et secteur, pour montrer votre intérêt réel en entretien finance.",
       },
     ],
   }),
   component: ActualitePage,
 });
 
-function ActualitePage () {
+function ActualitePage() {
   return (
-    <GuidePageShell
-      tag="Preuve d'intérêt réel"
-      title="Actualité M&A 2025-2026"
-    >
+    <GuidePageShell tag="Preuve d'intérêt réel" title="Actualité M&A 2025-2026">
       <BlocActualite />
     </GuidePageShell>
   );

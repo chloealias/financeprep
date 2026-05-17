@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { BarChart3, Landmark, User } from 'lucide-react';
-import { requestOpenTargetsFilter, getTargetBankIds } from '@/lib/target-banks-storage';
-import type { AppTab } from '@/lib/app-tabs';
+import { useEffect, useRef, useState } from "react";
+import { BarChart3, Landmark, User } from "lucide-react";
+import { requestOpenTargetsFilter, getTargetBankIds } from "@/lib/target-banks-storage";
+import type { AppTab } from "@/lib/app-tabs";
 
 type ProfileMenuProps = {
   onPageChange: (page: AppTab) => void;
   hasProgress?: boolean;
 };
 
-export function ProfileMenu ({ onPageChange, hasProgress = false }: ProfileMenuProps) {
+export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -20,24 +20,24 @@ export function ProfileMenu ({ onPageChange, hasProgress = false }: ProfileMenuP
       }
     };
     const onEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === "Escape") setOpen(false);
     };
-    document.addEventListener('mousedown', onPointerDown);
-    document.addEventListener('keydown', onEscape);
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onEscape);
     return () => {
-      document.removeEventListener('mousedown', onPointerDown);
-      document.removeEventListener('keydown', onEscape);
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onEscape);
     };
   }, [open]);
 
   const goToProgress = () => {
-    onPageChange('progress');
+    onPageChange("progress");
     setOpen(false);
   };
 
   const goToTargetBanks = () => {
     requestOpenTargetsFilter();
-    onPageChange('banques');
+    onPageChange("banques");
     setOpen(false);
   };
 
@@ -47,7 +47,7 @@ export function ProfileMenu ({ onPageChange, hasProgress = false }: ProfileMenuP
     <div ref={rootRef} className="relative flex-shrink-0">
       <button
         type="button"
-        onClick={() => setOpen(v => !v)}
+        onClick={() => setOpen((v) => !v)}
         aria-label="Mon profil"
         aria-expanded={open}
         aria-haspopup="menu"

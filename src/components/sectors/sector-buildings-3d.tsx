@@ -1,8 +1,8 @@
-import { isoBlock, ISO_NAVY, ISO_NAVY_LIGHT } from '@/components/sectors/iso-primitives';
+import { isoBlock, ISO_NAVY, ISO_NAVY_LIGHT } from "@/components/sectors/iso-primitives";
 
 /** Modèles 3D isométriques par secteur — dessinés autour de (0, 0) au sol */
 
-export function BuildingTMT () {
+export function BuildingTMT() {
   return (
     <g>
       {isoBlock({ x: 0, y: 0, w: 44, d: 36, h: 52, colors: ISO_NAVY })}
@@ -14,7 +14,7 @@ export function BuildingTMT () {
   );
 }
 
-export function BuildingSante () {
+export function BuildingSante() {
   return (
     <g>
       {isoBlock({ x: 0, y: 0, w: 48, d: 38, h: 48, colors: ISO_NAVY })}
@@ -27,7 +27,7 @@ export function BuildingSante () {
   );
 }
 
-export function BuildingEnergie () {
+export function BuildingEnergie() {
   return (
     <g>
       {/* Base */}
@@ -49,7 +49,7 @@ export function BuildingEnergie () {
   );
 }
 
-export function BuildingRetail () {
+export function BuildingRetail() {
   return (
     <g>
       {isoBlock({ x: 0, y: 0, w: 56, d: 32, h: 36, colors: ISO_NAVY })}
@@ -60,12 +60,17 @@ export function BuildingRetail () {
       <rect x="4" y="-8" width="10" height="14" fill="#172554" rx="1" />
       {/* Panier (symbole retail) */}
       <ellipse cx="22" cy="-20" rx="6" ry="4" fill="none" stroke="#bfdbfe" strokeWidth="1.5" />
-      <path d="M 18 -16 L 20 -10 L 26 -10 L 28 -16" fill="none" stroke="#bfdbfe" strokeWidth="1.5" />
+      <path
+        d="M 18 -16 L 20 -10 L 26 -10 L 28 -16"
+        fill="none"
+        stroke="#bfdbfe"
+        strokeWidth="1.5"
+      />
     </g>
   );
 }
 
-export function BuildingIndustrie () {
+export function BuildingIndustrie() {
   return (
     <g>
       {isoBlock({ x: 0, y: 0, w: 52, d: 40, h: 40, colors: ISO_NAVY })}
@@ -75,7 +80,7 @@ export function BuildingIndustrie () {
       {/* Engrenage */}
       <circle cx="14" cy="-22" r="7" fill="none" stroke="#60a5fa" strokeWidth="1.5" opacity="0.8" />
       <circle cx="14" cy="-22" r="3" fill="#60a5fa" opacity="0.5" />
-      {[0, 1, 2, 3].map(i => (
+      {[0, 1, 2, 3].map((i) => (
         <rect
           key={i}
           x={12}
@@ -91,12 +96,12 @@ export function BuildingIndustrie () {
   );
 }
 
-export function BuildingImmo () {
+export function BuildingImmo() {
   return (
     <g>
       {isoBlock({ x: 0, y: 0, w: 36, d: 32, h: 64, colors: ISO_NAVY })}
       {/* Balcons */}
-      {[0, 1, 2, 3].map(row => (
+      {[0, 1, 2, 3].map((row) => (
         <polygon
           key={row}
           points={`${-14},${-18 - row * 14} ${14},${-18 - row * 14} ${12},${-14 - row * 14} ${-12},${-14 - row * 14}`}
@@ -108,19 +113,27 @@ export function BuildingImmo () {
   );
 }
 
-export function BuildingFIG () {
+export function BuildingFIG() {
   return (
     <g>
       {isoBlock({ x: 0, y: 0, w: 50, d: 38, h: 44, colors: ISO_NAVY })}
       {/* Fronton / colonnes banque */}
       <polygon points="-26,-44 0,-58 26,-44" fill={ISO_NAVY.top} stroke="#3b82f6" strokeWidth="1" />
-      {[0, 1, 2, 3].map(i => (
+      {[0, 1, 2, 3].map((i) => (
         <rect key={i} x={-18 + i * 12} y={-42} width="4" height="28" fill="#172554" rx="0.5" />
       ))}
       {/* Marches */}
       <polygon points="-20,0 20,0 18,6 -18,6" fill="#172554" />
       {/* Symbole $ stylisé */}
-      <text x="0" y="-48" fontSize="14" fill="#bfdbfe" textAnchor="middle" fontWeight="bold" opacity="0.9">
+      <text
+        x="0"
+        y="-48"
+        fontSize="14"
+        fill="#bfdbfe"
+        textAnchor="middle"
+        fontWeight="bold"
+        opacity="0.9"
+      >
         $
       </text>
     </g>

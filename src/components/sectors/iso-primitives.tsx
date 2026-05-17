@@ -6,7 +6,7 @@ type FaceColors = {
   top: string;
 };
 
-export function isoBlock ({
+export function isoBlock({
   x,
   y,
   w,
@@ -45,13 +45,13 @@ export function isoBlock ({
 }
 
 export const ISO_NAVY = {
-  left: '#172554',
-  right: '#1e40af',
-  top: '#1e3a8a',
+  left: "#172554",
+  right: "#1e40af",
+  top: "#1e3a8a",
 } as const;
 
 export const ISO_NAVY_LIGHT = {
-  left: '#1e3a8a',
-  right: '#2563eb',
-  top: '#3b82f6',
+  left: "#1e3a8a",
+  right: "#2563eb",
+  top: "#3b82f6",
 } as const;

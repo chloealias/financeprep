@@ -1,6 +1,6 @@
-import { Link } from '@tanstack/react-router';
-import { ArrowLeft } from 'lucide-react';
-import type { ReactNode } from 'react';
+import { Link } from "@tanstack/react-router";
+import { ArrowLeft } from "lucide-react";
+import type { ReactNode } from "react";
 
 export function GuideSubLayout({ children }: { children: ReactNode }) {
   return (
@@ -8,7 +8,7 @@ export function GuideSubLayout({ children }: { children: ReactNode }) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <Link
           to="/"
-          search={{ tab: 'guide' }}
+          search={{ tab: "guide" }}
           className="inline-flex items-center gap-2 text-blue-700 text-sm mb-6 hover:text-blue-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />

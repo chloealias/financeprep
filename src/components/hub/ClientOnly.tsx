@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from "react";
 
 type ClientOnlyProps = {
   children: ReactNode;
@@ -6,7 +6,7 @@ type ClientOnlyProps = {
 };
 
 /** Renders children only after mount — avoids SSR issues with portals (drawer, etc.). */
-export function ClientOnly ({ children, fallback = null }: ClientOnlyProps) {
+export function ClientOnly({ children, fallback = null }: ClientOnlyProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

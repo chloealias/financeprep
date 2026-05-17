@@ -1,4 +1,4 @@
-import type { SectorId } from '@/lib/sectors';
+import type { SectorId } from "@/lib/sectors";
 
 export type SectorMeta = {
   label: string;
@@ -11,51 +11,51 @@ export type SectorMeta = {
 
 export const SECTOR_META: Record<SectorId, SectorMeta> = {
   tmt: {
-    label: 'TMT',
-    shortLabel: 'TMT',
-    tagline: 'Tech, média, télécoms',
+    label: "TMT",
+    shortLabel: "TMT",
+    tagline: "Tech, média, télécoms",
     mapSlot: { x: 95, y: 175 },
     labelOffset: { x: 0, y: 42 },
   },
   sante: {
-    label: 'Santé',
-    shortLabel: 'Santé',
-    tagline: 'Pharma, medtech, services de santé',
+    label: "Santé",
+    shortLabel: "Santé",
+    tagline: "Pharma, medtech, services de santé",
     mapSlot: { x: 235, y: 172 },
     labelOffset: { x: 0, y: 42 },
   },
   energie: {
-    label: 'Énergie',
-    shortLabel: 'Énergie',
-    tagline: 'Oil & gas, utilities, renouvelables',
+    label: "Énergie",
+    shortLabel: "Énergie",
+    tagline: "Oil & gas, utilities, renouvelables",
     mapSlot: { x: 360, y: 178 },
     labelOffset: { x: 0, y: 38 },
   },
   retail: {
-    label: 'Retail / FMCG',
-    shortLabel: 'Retail',
-    tagline: 'Distribution, consommation, e-commerce',
+    label: "Retail / FMCG",
+    shortLabel: "Retail",
+    tagline: "Distribution, consommation, e-commerce",
     mapSlot: { x: 515, y: 175 },
     labelOffset: { x: 0, y: 40 },
   },
   industrie: {
-    label: 'Industrie',
-    shortLabel: 'Industrie',
-    tagline: 'Manufacturing, B2B, infrastructure',
+    label: "Industrie",
+    shortLabel: "Industrie",
+    tagline: "Manufacturing, B2B, infrastructure",
     mapSlot: { x: 165, y: 308 },
     labelOffset: { x: 0, y: 38 },
   },
   immo: {
-    label: 'Immobilier',
-    shortLabel: 'Immo',
-    tagline: 'Bureaux, logistique, résidentiel',
+    label: "Immobilier",
+    shortLabel: "Immo",
+    tagline: "Bureaux, logistique, résidentiel",
     mapSlot: { x: 298, y: 305 },
     labelOffset: { x: 0, y: 48 },
   },
   fi: {
-    label: 'FIG',
-    shortLabel: 'FIG',
-    tagline: 'Banques, assurance, asset management',
+    label: "FIG",
+    shortLabel: "FIG",
+    tagline: "Banques, assurance, asset management",
     mapSlot: { x: 438, y: 308 },
     labelOffset: { x: 0, y: 40 },
   },

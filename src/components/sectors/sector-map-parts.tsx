@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react';
-import type { SectorId } from '@/lib/sectors';
-import type { SectorMeta } from '@/data/sector-meta';
+import type { ReactNode } from "react";
+import type { SectorId } from "@/lib/sectors";
+import type { SectorMeta } from "@/data/sector-meta";
 
 const MAP_WIDTH = 640;
 const MAP_HEIGHT = 360;
 
-export function MapDefs () {
+export function MapDefs() {
   return (
     <defs>
       <linearGradient id="roofGradient" x1="0" y1="0" x2="0" y2="1">
@@ -23,7 +23,7 @@ export function MapDefs () {
 }
 
 /** Fond blanc uni */
-export function MapBackground () {
+export function MapBackground() {
   return (
     <rect x="0" y="0" width={MAP_WIDTH} height={MAP_HEIGHT} fill="#ffffff" pointerEvents="none" />
   );
@@ -42,7 +42,7 @@ type SectorBuildingProps = {
   children: ReactNode;
 };
 
-export function SectorBuilding ({
+export function SectorBuilding({
   meta,
   isSelected,
   isHovered,
@@ -63,8 +63,8 @@ export function SectorBuilding ({
       transform={`translate(${mapSlot.x}, ${mapSlot.y + lift})`}
       opacity={opacity}
       style={{
-        transition: 'opacity 0.2s, filter 0.2s',
-        filter: isDimmed ? 'grayscale(0.35)' : 'none',
+        transition: "opacity 0.2s, filter 0.2s",
+        filter: isDimmed ? "grayscale(0.35)" : "none",
       }}
       className="cursor-pointer"
     >
@@ -99,14 +99,14 @@ export function SectorBuilding ({
           rx="4"
           fill="white"
           fillOpacity={isSelected ? 0.96 : 0.9}
-          stroke={isSelected ? '#fbbf24' : '#bfdbfe'}
+          stroke={isSelected ? "#fbbf24" : "#bfdbfe"}
           strokeWidth="1"
         />
         <text
           x={0}
           y={-1}
           fontSize="11"
-          fill={isSelected ? '#b45309' : '#1e3a8a'}
+          fill={isSelected ? "#b45309" : "#1e3a8a"}
           textAnchor="middle"
           fontWeight="600"
         >
@@ -120,12 +120,12 @@ export function SectorBuilding ({
         tabIndex={0}
         aria-pressed={isSelected}
         aria-label={`Ouvrir la fiche ${label}`}
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
           onSelect();
         }}
-        onKeyDown={e => {
-          if (e.key === 'Enter' || e.key === ' ') {
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             e.stopPropagation();
             onSelect();

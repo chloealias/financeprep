@@ -10,7 +10,7 @@ L'app est aujourd'hui très "lecture". Pour s'entraîner réellement, il manque 
 
 1. **Mode Flashcards** sur les 131 questions et 15 notions
    - Carte recto = question, verso = réponse modèle
-   - 3 boutons après révélation : *Je sais / À revoir / Je ne sais pas*
+   - 3 boutons après révélation : _Je sais / À revoir / Je ne sais pas_
    - Algorithme de répétition espacée léger (SM-2 simplifié, stocké en `localStorage`)
    - Filtres par catégorie, difficulté, banque cible
 
@@ -64,6 +64,7 @@ L'app est aujourd'hui très "lecture". Pour s'entraîner réellement, il manque 
 Commencer par la **Vague 1, étape 1 (Flashcards + SRS)** : c'est l'amélioration qui transforme le plus l'usage pour ton objectif principal (s'entraîner), avec un effort raisonnable (~1 feature, ~3-4 fichiers).
 
 Dis-moi :
+
 - soit **"go vague 1"** (tout l'entraînement actif),
 - soit **"go flashcards"** (juste l'étape 1),
-- soit une combinaison à la carte (ex: *"flashcards + dark mode + recherche globale"*).
+- soit une combinaison à la carte (ex: _"flashcards + dark mode + recherche globale"_).

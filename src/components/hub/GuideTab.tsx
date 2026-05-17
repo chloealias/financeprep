@@ -1,15 +1,17 @@
-import { Link } from '@tanstack/react-router';
-import { ChevronRight, Sparkles } from 'lucide-react';
-import { guideModules } from '@/data/guide-modules';
-import { GuideModuleLink } from '@/components/guide/guide-ui';
+import { Link } from "@tanstack/react-router";
+import { ChevronRight, Sparkles } from "lucide-react";
+import { guideModules } from "@/data/guide-modules";
+import { GuideModuleLink } from "@/components/guide/guide-ui";
 
-export function GuideTab () {
+export function GuideTab() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-px w-12 bg-blue-700" />
-          <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">Méthodologie</span>
+          <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">
+            Méthodologie
+          </span>
         </div>
         <h2 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
           Le <span className="italic font-light text-blue-700">guide complet</span>
@@ -36,15 +38,19 @@ export function GuideTab () {
               Flashcards avec répétition espacée
             </h3>
             <p className="text-blue-200 text-sm font-light mt-1 hidden sm:block">
-              Sessions de 20 cartes. L&apos;algorithme SM-2 fait revenir les cartes ratées plus souvent.
+              Sessions de 20 cartes. L&apos;algorithme SM-2 fait revenir les cartes ratées plus
+              souvent.
             </p>
           </div>
-          <ChevronRight className="w-6 h-6 text-blue-300 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+          <ChevronRight
+            className="w-6 h-6 text-blue-300 group-hover:translate-x-1 transition-transform"
+            aria-hidden="true"
+          />
         </div>
       </Link>
 
       <div className="space-y-6">
-        {guideModules.map(module => (
+        {guideModules.map((module) => (
           <GuideModuleLink
             key={module.href}
             to={module.href}

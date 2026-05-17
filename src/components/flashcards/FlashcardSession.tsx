@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from '@tanstack/react-router';
-import { ArrowLeft, RotateCcw, CheckCircle2, AlertTriangle, Sparkles, Eye } from 'lucide-react';
-import { questions } from '@/data/questions';
-import { concepts } from '@/data/concepts';
-import { getCategoryLabel } from '@/lib/categories';
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { ArrowLeft, RotateCcw, CheckCircle2, AlertTriangle, Sparkles, Eye } from "lucide-react";
+import { questions } from "@/data/questions";
+import { concepts } from "@/data/concepts";
+import { getCategoryLabel } from "@/lib/categories";
 import {
   buildQueue,
   countBuckets,
@@ -11,9 +11,9 @@ import {
   recordGrade,
   type SrsGrade,
   type SrsStore,
-} from '@/lib/srs';
+} from "@/lib/srs";
 
-type CardSource = 'question' | 'concept';
+type CardSource = "question" | "concept";
 
 type Flashcard = {
   id: string;
@@ -25,19 +25,19 @@ type Flashcard = {
   hint?: string;
 };
 
-function buildAllCards (): Flashcard[] {
-  const qCards: Flashcard[] = (questions as Array<typeof questions[number]>).map((q) => ({
+function buildAllCards(): Flashcard[] {
+  const qCards: Flashcard[] = (questions as Array<(typeof questions)[number]>).map((q) => ({
     id: `q-${q!.id}`,
-    source: 'question',
+    source: "question",
     category: q!.category,
     difficulty: q!.difficulty,
     front: q!.question,
     back: q!.steps?.[0] ?? q!.explanation,
     hint: q!.tip,
   }));
-  const cCards: Flashcard[] = (concepts as Array<typeof concepts[number]>).map((c) => ({
+  const cCards: Flashcard[] = (concepts as Array<(typeof concepts)[number]>).map((c) => ({
     id: `c-${c!.id}`,
-    source: 'concept',
+    source: "concept",
     category: c!.category,
     front: c!.title,
     back: c!.simple,
@@ -46,26 +46,26 @@ function buildAllCards (): Flashcard[] {
   return [...qCards, ...cCards];
 }
 
-type Mode = 'menu' | 'session' | 'done';
+type Mode = "menu" | "session" | "done";
 
-export function FlashcardSession () {
+export function FlashcardSession() {
   const allCards = useMemo(() => buildAllCards(), []);
 
   const [store, setStore] = useState<SrsStore>({});
-  const [mode, setMode] = useState<Mode>('menu');
+  const [mode, setMode] = useState<Mode>("menu");
   const [queue, setQueue] = useState<Flashcard[]>([]);
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [sessionStats, setSessionStats] = useState({ again: 0, good: 0, easy: 0 });
-  const [scope, setScope] = useState<'all' | 'questions' | 'concepts'>('all');
+  const [scope, setScope] = useState<"all" | "questions" | "concepts">("all");
 
   useEffect(() => {
     setStore(loadSrsStore());
   }, []);
 
   const scopedCards = useMemo(() => {
-    if (scope === 'questions') return allCards.filter(c => c.source === 'question');
-    if (scope === 'concepts') return allCards.filter(c => c.source === 'concept');
+    if (scope === "questions") return allCards.filter((c) => c.source === "question");
+    if (scope === "concepts") return allCards.filter((c) => c.source === "concept");
     return allCards;
   }, [allCards, scope]);
 
@@ -78,25 +78,25 @@ export function FlashcardSession () {
     setIndex(0);
     setRevealed(false);
     setSessionStats({ again: 0, good: 0, easy: 0 });
-    setMode('session');
+    setMode("session");
   };
 
   const handleGrade = (g: SrsGrade) => {
     const card = queue[index];
     if (!card) return;
     const nextState = recordGrade(card.id, g);
-    setStore(prev => ({ ...prev, [card.id]: nextState }));
-    setSessionStats(prev => ({ ...prev, [g]: prev[g] + 1 }));
+    setStore((prev) => ({ ...prev, [card.id]: nextState }));
+    setSessionStats((prev) => ({ ...prev, [g]: prev[g] + 1 }));
 
     if (index + 1 >= queue.length) {
-      setMode('done');
+      setMode("done");
     } else {
       setIndex(index + 1);
       setRevealed(false);
     }
   };
 
-  if (mode === 'menu') {
+  if (mode === "menu") {
     return (
       <FlashcardMenu
         counts={counts}
@@ -108,13 +108,13 @@ export function FlashcardSession () {
     );
   }
 
-  if (mode === 'done') {
+  if (mode === "done") {
     return (
       <SessionDone
         stats={sessionStats}
         total={queue.length}
         onRestart={startSession}
-        onBackToMenu={() => setMode('menu')}
+        onBackToMenu={() => setMode("menu")}
       />
     );
   }
@@ -130,7 +130,7 @@ export function FlashcardSession () {
       revealed={revealed}
       onReveal={() => setRevealed(true)}
       onGrade={handleGrade}
-      onAbort={() => setMode('menu')}
+      onAbort={() => setMode("menu")}
     />
   );
 }
@@ -139,20 +139,24 @@ export function FlashcardSession () {
 
 type CountsType = ReturnType<typeof countBuckets>;
 
-function FlashcardMenu ({
-  counts, scope, onScopeChange, onStart, totalCards,
+function FlashcardMenu({
+  counts,
+  scope,
+  onScopeChange,
+  onStart,
+  totalCards,
 }: {
   counts: CountsType;
-  scope: 'all' | 'questions' | 'concepts';
-  onScopeChange: (s: 'all' | 'questions' | 'concepts') => void;
+  scope: "all" | "questions" | "concepts";
+  onScopeChange: (s: "all" | "questions" | "concepts") => void;
   onStart: () => void;
   totalCards: number;
 }) {
   const reviewable = counts.due + counts.fresh;
-  const scopes: { id: 'all' | 'questions' | 'concepts'; label: string }[] = [
-    { id: 'all', label: 'Tout mélanger' },
-    { id: 'questions', label: 'Questions uniquement' },
-    { id: 'concepts', label: 'Notions uniquement' },
+  const scopes: { id: "all" | "questions" | "concepts"; label: string }[] = [
+    { id: "all", label: "Tout mélanger" },
+    { id: "questions", label: "Questions uniquement" },
+    { id: "concepts", label: "Notions uniquement" },
   ];
 
   return (
@@ -176,8 +180,8 @@ function FlashcardMenu ({
           Flashcards <span className="italic font-light text-blue-700">spaced repetition</span>
         </h1>
         <p className="text-blue-700 mt-3 font-light max-w-2xl">
-          Algorithme SM-2 : les cartes ratées reviennent vite, celles que vous maîtrisez s&apos;espacent
-          dans le temps. 20 cartes par session, 5 minutes.
+          Algorithme SM-2 : les cartes ratées reviennent vite, celles que vous maîtrisez
+          s&apos;espacent dans le temps. 20 cartes par session, 5 minutes.
         </p>
       </div>
 
@@ -195,15 +199,15 @@ function FlashcardMenu ({
           Périmètre
         </div>
         <div className="flex flex-wrap gap-2">
-          {scopes.map(s => (
+          {scopes.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={() => onScopeChange(s.id)}
               className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
                 scope === s.id
-                  ? 'bg-blue-900 text-white border-blue-900'
-                  : 'bg-white text-blue-700 border-blue-200 hover:border-blue-400'
+                  ? "bg-blue-900 text-white border-blue-900"
+                  : "bg-white text-blue-700 border-blue-200 hover:border-blue-400"
               }`}
             >
               {s.label}
@@ -222,25 +226,34 @@ function FlashcardMenu ({
       >
         <Sparkles className="w-5 h-5" />
         {reviewable === 0
-          ? 'Aucune carte à réviser maintenant'
+          ? "Aucune carte à réviser maintenant"
           : `Démarrer la session (${Math.min(20, reviewable)} cartes)`}
       </button>
 
       {reviewable === 0 && counts.later > 0 && (
         <p className="text-blue-600 text-sm mt-4 font-light">
-          Toutes les cartes sont déjà programmées pour plus tard. Revenez demain ou changez de périmètre.
+          Toutes les cartes sont déjà programmées pour plus tard. Revenez demain ou changez de
+          périmètre.
         </p>
       )}
     </div>
   );
 }
 
-function StatCard ({ label, value, tone }: { label: string; value: number; tone: 'alert' | 'primary' | 'neutral' | 'success' }) {
+function StatCard({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: number;
+  tone: "alert" | "primary" | "neutral" | "success";
+}) {
   const tones = {
-    alert: 'bg-amber-50 border-amber-200 text-amber-900',
-    primary: 'bg-blue-50 border-blue-200 text-blue-900',
-    neutral: 'bg-slate-50 border-slate-200 text-slate-700',
-    success: 'bg-emerald-50 border-emerald-200 text-emerald-900',
+    alert: "bg-amber-50 border-amber-200 text-amber-900",
+    primary: "bg-blue-50 border-blue-200 text-blue-900",
+    neutral: "bg-slate-50 border-slate-200 text-slate-700",
+    success: "bg-emerald-50 border-emerald-200 text-emerald-900",
   } as const;
   return (
     <div className={`rounded-xl border-2 px-4 py-3 ${tones[tone]}`}>
@@ -252,8 +265,14 @@ function StatCard ({ label, value, tone }: { label: string; value: number; tone:
 
 // ============================================================================
 
-function CardView ({
-  card, index, total, revealed, onReveal, onGrade, onAbort,
+function CardView({
+  card,
+  index,
+  total,
+  revealed,
+  onReveal,
+  onGrade,
+  onAbort,
 }: {
   card: Flashcard;
   index: number;
@@ -263,7 +282,7 @@ function CardView ({
   onGrade: (g: SrsGrade) => void;
   onAbort: () => void;
 }) {
-  const progress = ((index) / total) * 100;
+  const progress = (index / total) * 100;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
@@ -294,7 +313,7 @@ function CardView ({
       <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-lg overflow-hidden min-h-[400px] flex flex-col">
         <div className="px-6 py-4 border-b border-blue-100 bg-blue-50/50 flex items-center justify-between">
           <span className="text-xs uppercase tracking-wider text-blue-700 font-semibold">
-            {card.source === 'question' ? 'Question' : 'Notion'} · {getCategoryLabel(card.category)}
+            {card.source === "question" ? "Question" : "Notion"} · {getCategoryLabel(card.category)}
           </span>
           {card.difficulty && (
             <span className="text-xs px-2 py-0.5 rounded bg-white border border-blue-200 text-blue-700 capitalize">
@@ -323,7 +342,7 @@ function CardView ({
               {card.hint && (
                 <div className="mt-5 rounded-lg bg-gradient-to-r from-indigo-900 to-blue-900 text-white px-4 py-3">
                   <div className="text-blue-200 text-xs uppercase tracking-[0.2em] font-medium mb-1">
-                    💡 {card.source === 'concept' ? 'Formule' : 'Conseil'}
+                    💡 {card.source === "concept" ? "Formule" : "Conseil"}
                   </div>
                   <p className="text-sm font-light leading-relaxed">{card.hint}</p>
                 </div>
@@ -351,21 +370,21 @@ function CardView ({
               icon={<AlertTriangle className="w-5 h-5" />}
               label="À revoir"
               sub="10 min"
-              onClick={() => onGrade('again')}
+              onClick={() => onGrade("again")}
             />
             <GradeButton
               tone="blue"
               icon={<RotateCcw className="w-5 h-5" />}
               label="Correct"
               sub="bientôt"
-              onClick={() => onGrade('good')}
+              onClick={() => onGrade("good")}
             />
             <GradeButton
               tone="emerald"
               icon={<CheckCircle2 className="w-5 h-5" />}
               label="Maîtrisé"
               sub="plus tard"
-              onClick={() => onGrade('easy')}
+              onClick={() => onGrade("easy")}
             />
           </div>
         )}
@@ -374,17 +393,24 @@ function CardView ({
   );
 }
 
-function GradeButton ({ tone, icon, label, sub, onClick }: {
-  tone: 'red' | 'blue' | 'emerald';
+function GradeButton({
+  tone,
+  icon,
+  label,
+  sub,
+  onClick,
+}: {
+  tone: "red" | "blue" | "emerald";
   icon: React.ReactNode;
   label: string;
   sub: string;
   onClick: () => void;
 }) {
   const tones = {
-    red: 'bg-red-50 border-red-200 text-red-900 hover:bg-red-100 hover:border-red-300',
-    blue: 'bg-blue-50 border-blue-200 text-blue-900 hover:bg-blue-100 hover:border-blue-300',
-    emerald: 'bg-emerald-50 border-emerald-200 text-emerald-900 hover:bg-emerald-100 hover:border-emerald-300',
+    red: "bg-red-50 border-red-200 text-red-900 hover:bg-red-100 hover:border-red-300",
+    blue: "bg-blue-50 border-blue-200 text-blue-900 hover:bg-blue-100 hover:border-blue-300",
+    emerald:
+      "bg-emerald-50 border-emerald-200 text-emerald-900 hover:bg-emerald-100 hover:border-emerald-300",
   } as const;
   return (
     <button
@@ -401,8 +427,11 @@ function GradeButton ({ tone, icon, label, sub, onClick }: {
 
 // ============================================================================
 
-function SessionDone ({
-  stats, total, onRestart, onBackToMenu,
+function SessionDone({
+  stats,
+  total,
+  onRestart,
+  onBackToMenu,
 }: {
   stats: { again: number; good: number; easy: number };
   total: number;

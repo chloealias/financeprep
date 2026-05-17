@@ -1,18 +1,18 @@
-import type { ReactNode } from 'react';
-import type { LucideIcon } from 'lucide-react';
-import { Link } from '@tanstack/react-router';
-import { ChevronRight } from 'lucide-react';
+import type { ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
 
-export function GuideSectionTitle ({
+export function GuideSectionTitle({
   children,
-  className = '',
+  className = "",
 }: {
   children: ReactNode;
   className?: string;
 }) {
   return (
     <div
-      className={`text-sm font-semibold text-blue-900 uppercase tracking-wider flex items-center gap-2 flex-wrap ${className || 'mb-4'}`}
+      className={`text-sm font-semibold text-blue-900 uppercase tracking-wider flex items-center gap-2 flex-wrap ${className || "mb-4"}`}
     >
       <span className="h-px w-6 bg-blue-700 shrink-0" aria-hidden="true" />
       {children}
@@ -20,29 +20,24 @@ export function GuideSectionTitle ({
   );
 }
 
-export function GuideIntro ({ children }: { children: ReactNode }) {
-  return (
-    <p className="text-blue-700 font-light leading-relaxed mb-8">{children}</p>
-  );
+export function GuideIntro({ children }: { children: ReactNode }) {
+  return <p className="text-blue-700 font-light leading-relaxed mb-8">{children}</p>;
 }
 
-export function GuideChipButton ({
+export function GuideChipButton({
   active,
   onClick,
   children,
-  size = 'md',
+  size = "md",
   ariaPressed,
 }: {
   active: boolean;
   onClick: () => void;
   children: ReactNode;
-  size?: 'sm' | 'md';
+  size?: "sm" | "md";
   ariaPressed?: boolean;
 }) {
-  const sizeClass =
-    size === 'sm'
-      ? 'px-3 py-2 min-h-11 text-xs'
-      : 'px-4 py-2 min-h-11 text-sm';
+  const sizeClass = size === "sm" ? "px-3 py-2 min-h-11 text-xs" : "px-4 py-2 min-h-11 text-sm";
   return (
     <button
       type="button"
@@ -50,8 +45,8 @@ export function GuideChipButton ({
       aria-pressed={ariaPressed ?? active}
       className={`${sizeClass} rounded-lg font-medium border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
         active
-          ? 'bg-blue-900 text-white border-blue-900'
-          : 'bg-white text-blue-700 border-blue-200 hover:bg-blue-50'
+          ? "bg-blue-900 text-white border-blue-900"
+          : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50"
       }`}
     >
       {children}
@@ -64,12 +59,15 @@ type GuideModuleLinkProps = {
   title: string;
   icon: LucideIcon;
 } & (
-  | { to: '/cv' | '/excel' | '/pyramid' | '/accretion' | '/actualite' | '/glossaire'; search?: never }
-  | { to: '/'; search: { tab: 'banques' | 'secteurs' | 'guide' } }
+  | {
+      to: "/cv" | "/excel" | "/pyramid" | "/accretion" | "/actualite" | "/glossaire";
+      search?: never;
+    }
+  | { to: "/"; search: { tab: "banques" | "secteurs" | "guide" } }
 );
 
-export function GuideModuleLink ({ to, tag, title, icon: Icon, ...rest }: GuideModuleLinkProps) {
-  const search = 'search' in rest ? rest.search : undefined;
+export function GuideModuleLink({ to, tag, title, icon: Icon, ...rest }: GuideModuleLinkProps) {
+  const search = "search" in rest ? rest.search : undefined;
   return (
     <Link
       to={to}
@@ -83,7 +81,9 @@ export function GuideModuleLink ({ to, tag, title, icon: Icon, ...rest }: GuideM
               <Icon className="w-6 h-6 text-white" aria-hidden="true" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-0.5">{tag}</div>
+              <div className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-0.5">
+                {tag}
+              </div>
               <h3 className="text-xl font-serif text-blue-950">{title}</h3>
             </div>
           </div>
@@ -98,7 +98,8 @@ export function GuideModuleLink ({ to, tag, title, icon: Icon, ...rest }: GuideM
 }
 
 /** Carte interne standard des blocs guide */
-export const guideCardClass = 'bg-white border-2 border-blue-100 rounded-xl';
+export const guideCardClass = "bg-white border-2 border-blue-100 rounded-xl";
 
 /** Encadré d'avertissement (actualité, tips) */
-export const guideAlertClass = 'bg-amber-50 border border-amber-200 rounded-xl p-4 text-amber-800 text-sm';
+export const guideAlertClass =
+  "bg-amber-50 border border-amber-200 rounded-xl p-4 text-amber-800 text-sm";

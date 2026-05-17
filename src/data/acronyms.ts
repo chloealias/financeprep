@@ -1,4 +1,4 @@
-import type { CategoryId } from '@/lib/categories';
+import type { CategoryId } from "@/lib/categories";
 
 export interface Acronym {
   abbr: string;
@@ -16,61 +16,117 @@ export interface AcronymSection {
 export const acronymSections: AcronymSection[] = [
   {
     title: "Valeur & valorisation",
-    hubCategory: 'valuation',
+    hubCategory: "valuation",
     items: [
       { abbr: "EV", english: "Enterprise Value", french: "Valeur d'entreprise (tous financeurs)" },
       { abbr: "EqV", english: "Equity Value", french: "Valeur des fonds propres (actionnaires)" },
       { abbr: "DCF", english: "Discounted Cash Flow", french: "Valorisation par flux actualisés" },
       { abbr: "TV", english: "Terminal Value", french: "Valeur terminale" },
-      { abbr: "APV", english: "Adjusted Present Value", french: "DCF alternatif (FCFF + tax shield séparé)" },
+      {
+        abbr: "APV",
+        english: "Adjusted Present Value",
+        french: "DCF alternatif (FCFF + tax shield séparé)",
+      },
       { abbr: "DDM", english: "Dividend Discount Model", french: "Valorisation par dividendes" },
       { abbr: "GW", english: "Goodwill", french: "Écart d'acquisition" },
     ],
   },
   {
     title: "Multiples",
-    hubCategory: 'valuation',
+    hubCategory: "valuation",
     items: [
       { abbr: "EV/EBITDA", french: "Multiple universel de valorisation" },
       { abbr: "P/E", english: "Price/Earnings", french: "PER, multiple grand public" },
       { abbr: "EV/Sales", french: "Multiple pour entreprises non-rentables" },
-      { abbr: "LTM", english: "Last Twelve Months", french: "12 derniers mois (multiples trailing)" },
-      { abbr: "NTM", english: "Next Twelve Months", french: "12 prochains mois (multiples forward)" },
+      {
+        abbr: "LTM",
+        english: "Last Twelve Months",
+        french: "12 derniers mois (multiples trailing)",
+      },
+      {
+        abbr: "NTM",
+        english: "Next Twelve Months",
+        french: "12 prochains mois (multiples forward)",
+      },
     ],
   },
   {
     title: "Coût du capital & rendement",
-    hubCategory: 'valuation',
+    hubCategory: "valuation",
     items: [
-      { abbr: "WACC", english: "Weighted Average Cost of Capital", french: "Coût moyen pondéré du capital" },
-      { abbr: "CAPM", english: "Capital Asset Pricing Model", french: "Modèle pour calculer le Ke" },
+      {
+        abbr: "WACC",
+        english: "Weighted Average Cost of Capital",
+        french: "Coût moyen pondéré du capital",
+      },
+      {
+        abbr: "CAPM",
+        english: "Capital Asset Pricing Model",
+        french: "Modèle pour calculer le Ke",
+      },
       { abbr: "Ke", english: "Cost of Equity", french: "Coût des fonds propres" },
       { abbr: "Kd", english: "Cost of Debt", french: "Coût de la dette" },
       { abbr: "β / Beta", english: "Beta", french: "Sensibilité au marché" },
       { abbr: "Rf", english: "Risk-Free Rate", french: "Taux sans risque" },
-      { abbr: "ERP / MRP", english: "Equity / Market Risk Premium", french: "Prime de risque action" },
+      {
+        abbr: "ERP / MRP",
+        english: "Equity / Market Risk Premium",
+        french: "Prime de risque action",
+      },
       { abbr: "ROE", english: "Return on Equity", french: "Rentabilité des fonds propres" },
-      { abbr: "ROIC", english: "Return on Invested Capital", french: "Rentabilité du capital investi" },
-      { abbr: "ROCE", english: "Return on Capital Employed", french: "Rentabilité capitaux employés" },
-      { abbr: "TRI / IRR", english: "Internal Rate of Return", french: "Taux de rendement interne" },
-      { abbr: "MOIC", english: "Multiple On Invested Capital", french: "Multiple sur capital investi" },
-      { abbr: "CAGR", english: "Compound Annual Growth Rate", french: "Taux de croissance annuel composé" },
+      {
+        abbr: "ROIC",
+        english: "Return on Invested Capital",
+        french: "Rentabilité du capital investi",
+      },
+      {
+        abbr: "ROCE",
+        english: "Return on Capital Employed",
+        french: "Rentabilité capitaux employés",
+      },
+      {
+        abbr: "TRI / IRR",
+        english: "Internal Rate of Return",
+        french: "Taux de rendement interne",
+      },
+      {
+        abbr: "MOIC",
+        english: "Multiple On Invested Capital",
+        french: "Multiple sur capital investi",
+      },
+      {
+        abbr: "CAGR",
+        english: "Compound Annual Growth Rate",
+        french: "Taux de croissance annuel composé",
+      },
     ],
   },
   {
     title: "États financiers & agrégats",
-    hubCategory: 'accounting',
+    hubCategory: "accounting",
     items: [
       { abbr: "P&L", english: "Profit & Loss", french: "Compte de résultat" },
       { abbr: "BS", english: "Balance Sheet", french: "Bilan" },
       { abbr: "CF / CFS", english: "Cash Flow Statement", french: "Tableau des flux" },
-      { abbr: "EBITDA", english: "Earnings Before Interest, Taxes, D&A", french: "Résultat opérationnel avant amort. et dépr. (≠ EBE français)" },
-      { abbr: "EBIT", english: "Earnings Before Interest & Taxes", french: "Résultat opérationnel" },
+      {
+        abbr: "EBITDA",
+        english: "Earnings Before Interest, Taxes, D&A",
+        french: "Résultat opérationnel avant amort. et dépr. (≠ EBE français)",
+      },
+      {
+        abbr: "EBIT",
+        english: "Earnings Before Interest & Taxes",
+        french: "Résultat opérationnel",
+      },
       { abbr: "D&A", english: "Depreciation & Amortization", french: "Amortissements" },
       { abbr: "NI", english: "Net Income", french: "Résultat net" },
       { abbr: "EPS", english: "Earnings Per Share", french: "Bénéfice par action" },
       { abbr: "COGS", english: "Cost of Goods Sold", french: "Coût des marchandises vendues" },
-      { abbr: "SG&A", english: "Selling, General & Administrative Expenses", french: "Frais commerciaux et admin" },
+      {
+        abbr: "SG&A",
+        english: "Selling, General & Administrative Expenses",
+        french: "Frais commerciaux et admin",
+      },
       { abbr: "SBC", english: "Stock-Based Compensation", french: "Rémunération en actions" },
       { abbr: "AR", english: "Accounts Receivable", french: "Créances clients" },
       { abbr: "AP", english: "Accounts Payable", french: "Dettes fournisseurs" },
@@ -80,11 +136,23 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Cash flow & BFR",
-    hubCategory: 'accounting',
+    hubCategory: "accounting",
     items: [
-      { abbr: "FCFF", english: "Free Cash Flow to Firm", french: "FCF pour tous les financeurs (utilisé en DCF)" },
-      { abbr: "FCFE", english: "Free Cash Flow to Equity", french: "FCF pour actionnaires uniquement" },
-      { abbr: "OCF / CFO", english: "Operating Cash Flow", french: "Flux de trésorerie opérationnel" },
+      {
+        abbr: "FCFF",
+        english: "Free Cash Flow to Firm",
+        french: "FCF pour tous les financeurs (utilisé en DCF)",
+      },
+      {
+        abbr: "FCFE",
+        english: "Free Cash Flow to Equity",
+        french: "FCF pour actionnaires uniquement",
+      },
+      {
+        abbr: "OCF / CFO",
+        english: "Operating Cash Flow",
+        french: "Flux de trésorerie opérationnel",
+      },
       { abbr: "CAPEX", english: "Capital Expenditures", french: "Investissements" },
       { abbr: "NWC / WC", english: "(Net) Working Capital", french: "BFR" },
       { abbr: "DSO", english: "Days Sales Outstanding", french: "Délai d'encaissement clients" },
@@ -94,26 +162,42 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "M&A — Process & documents",
-    hubCategory: 'ma',
+    hubCategory: "ma",
     items: [
       { abbr: "M&A", english: "Mergers & Acquisitions", french: "Fusions-acquisitions" },
       { abbr: "IPO", english: "Initial Public Offering", french: "Introduction en bourse" },
       { abbr: "NDA", english: "Non-Disclosure Agreement", french: "Accord de confidentialité" },
       { abbr: "LOI", english: "Letter of Intent", french: "Lettre d'intention" },
-      { abbr: "IM / CIM", english: "(Confidential) Information Memorandum", french: "« Bible » du deal" },
+      {
+        abbr: "IM / CIM",
+        english: "(Confidential) Information Memorandum",
+        french: "« Bible » du deal",
+      },
       { abbr: "NBO", english: "Non-Binding Offer", french: "Offre indicative (1er tour)" },
       { abbr: "BBO", english: "Binding Bid Offer", french: "Offre ferme (2e tour)" },
       { abbr: "DD", english: "Due Diligence", french: "Audit d'acquisition" },
       { abbr: "VDD", english: "Vendor Due Diligence", french: "DD faite par le vendeur" },
       { abbr: "QoE", english: "Quality of Earnings", french: "Analyse qualité de l'EBITDA" },
       { abbr: "SPA", english: "Share Purchase Agreement", french: "Contrat de cession d'actions" },
-      { abbr: "PPA", english: "Purchase Price Allocation", french: "Allocation du prix d'acquisition" },
-      { abbr: "MAC", english: "Material Adverse Change", french: "Clause d'évènement adverse majeur" },
+      {
+        abbr: "PPA",
+        english: "Purchase Price Allocation",
+        french: "Allocation du prix d'acquisition",
+      },
+      {
+        abbr: "MAC",
+        english: "Material Adverse Change",
+        french: "Clause d'évènement adverse majeur",
+      },
       { abbr: "CFDF", english: "Cash-Free Debt-Free", french: "Base de calcul du prix en M&A" },
       { abbr: "R&W", english: "Representations & Warranties", french: "Garanties du vendeur" },
       { abbr: "CP", english: "Conditions Precedent", french: "Conditions suspensives au closing" },
       { abbr: "W&I", english: "Warranty & Indemnity Insurance", french: "Assurance garanties" },
-      { abbr: "TSA", english: "Transition Services Agreement", french: "Services transitoires post-deal" },
+      {
+        abbr: "TSA",
+        english: "Transition Services Agreement",
+        french: "Services transitoires post-deal",
+      },
       { abbr: "Locked Box", french: "Mécanisme de prix fixe à date passée" },
       { abbr: "Earn-Out", french: "Complément de prix sur performance future" },
       { abbr: "Vendor Loan", french: "Crédit-vendeur" },
@@ -122,7 +206,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Private Equity & LBO",
-    hubCategory: 'lbo',
+    hubCategory: "lbo",
     items: [
       { abbr: "PE", english: "Private Equity", french: "Capital-investissement" },
       { abbr: "LBO", english: "Leveraged Buy-Out", french: "Acquisition à effet de levier" },
@@ -142,7 +226,7 @@ export const acronymSections: AcronymSection[] = [
   },
   {
     title: "Dette & financement",
-    hubCategory: 'lbo',
+    hubCategory: "lbo",
     items: [
       { abbr: "PIK", english: "Payment In Kind", french: "Intérêts payés en dette (pas en cash)" },
       { abbr: "TLA / TLB", english: "Term Loan A / B", french: "Tranches de dette senior LBO" },
@@ -166,10 +250,18 @@ export const acronymSections: AcronymSection[] = [
   {
     title: "SaaS & ESG",
     items: [
-      { abbr: "ARR / MRR", english: "Annual / Monthly Recurring Revenue", french: "Métriques SaaS" },
+      {
+        abbr: "ARR / MRR",
+        english: "Annual / Monthly Recurring Revenue",
+        french: "Métriques SaaS",
+      },
       { abbr: "LTV / CAC", french: "Lifetime Value / Customer Acquisition Cost (SaaS)" },
       { abbr: "NRR", english: "Net Revenue Retention", french: "Rétention nette (SaaS)" },
-      { abbr: "ESG", english: "Environmental, Social, Governance", french: "Critères extra-financiers" },
+      {
+        abbr: "ESG",
+        english: "Environmental, Social, Governance",
+        french: "Critères extra-financiers",
+      },
     ],
   },
 ];

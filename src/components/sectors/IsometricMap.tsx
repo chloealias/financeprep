@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import type { SectorId } from '@/lib/sectors';
-import { SECTOR_META, SECTOR_LIST } from '@/data/sector-meta';
-import { GuideChipButton } from '@/components/guide/guide-ui';
+import { useState } from "react";
+import type { SectorId } from "@/lib/sectors";
+import { SECTOR_META, SECTOR_LIST } from "@/data/sector-meta";
+import { GuideChipButton } from "@/components/guide/guide-ui";
 import {
   MAP_HEIGHT,
   MAP_WIDTH,
   MapBackground,
   MapDefs,
   SectorBuilding,
-} from '@/components/sectors/sector-map-parts';
-import { SECTOR_BUILDING_COMPONENTS } from '@/components/sectors/sector-buildings-3d';
+} from "@/components/sectors/sector-map-parts";
+import { SECTOR_BUILDING_COMPONENTS } from "@/components/sectors/sector-buildings-3d";
 
 type IsometricMapProps = {
   selectedSector: SectorId | null;
   onSectorSelect: (id: SectorId | null) => void;
 };
 
-export function IsometricMap ({ selectedSector, onSectorSelect }: IsometricMapProps) {
+export function IsometricMap({ selectedSector, onSectorSelect }: IsometricMapProps) {
   const [hovered, setHovered] = useState<SectorId | null>(null);
 
   const handleClick = (id: SectorId) => {
@@ -51,11 +51,10 @@ export function IsometricMap ({ selectedSector, onSectorSelect }: IsometricMapPr
           <MapBackground />
 
           <g id="map-buildings">
-            {SECTOR_LIST.map(id => (
+            {SECTOR_LIST.map((id) => (
               <SectorBuilding key={id} {...buildingProps(id)} />
             ))}
           </g>
-
         </svg>
 
         <p className="text-center text-xs text-blue-400 font-light italic py-4 px-4 bg-white">
@@ -67,7 +66,7 @@ export function IsometricMap ({ selectedSector, onSectorSelect }: IsometricMapPr
             Accès rapide
           </p>
           <div className="flex flex-wrap justify-center gap-1.5">
-            {SECTOR_LIST.map(id => (
+            {SECTOR_LIST.map((id) => (
               <GuideChipButton
                 key={id}
                 size="sm"

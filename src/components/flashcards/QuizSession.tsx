@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, CheckCircle2, XCircle, Eye, Clock, Trophy, RotateCcw } from 'lucide-react';
-import { questions } from '@/data/questions';
-import { getCategoryLabel } from '@/lib/categories';
-import { shuffle } from '@/lib/srs';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, CheckCircle2, XCircle, Eye, Clock, Trophy, RotateCcw } from "lucide-react";
+import { questions } from "@/data/questions";
+import { getCategoryLabel } from "@/lib/categories";
+import { shuffle } from "@/lib/srs";
 
 type QuizQuestion = {
   id: string;
@@ -13,8 +13,8 @@ type QuizQuestion = {
   tip?: string;
 };
 
-function buildPool (): QuizQuestion[] {
-  return (questions as Array<typeof questions[number]>).map(q => ({
+function buildPool(): QuizQuestion[] {
+  return (questions as Array<(typeof questions)[number]>).map((q) => ({
     id: String(q!.id),
     category: q!.category,
     difficulty: q!.difficulty,
@@ -24,7 +24,7 @@ function buildPool (): QuizQuestion[] {
   }));
 }
 
-type Mode = 'setup' | 'playing' | 'done';
+type Mode = "setup" | "playing" | "done";
 
 type Answer = {
   question: QuizQuestion;
@@ -34,10 +34,10 @@ type Answer = {
 
 const SECONDS_PER_Q = 60;
 
-export function QuizSession ({ onBack }: { onBack: () => void }) {
+export function QuizSession({ onBack }: { onBack: () => void }) {
   const pool = useMemo(() => buildPool(), []);
 
-  const [mode, setMode] = useState<Mode>('setup');
+  const [mode, setMode] = useState<Mode>("setup");
   const [size, setSize] = useState<5 | 10 | 20>(10);
   const [queue, setQueue] = useState<QuizQuestion[]>([]);
   const [index, setIndex] = useState(0);
@@ -49,7 +49,7 @@ export function QuizSession ({ onBack }: { onBack: () => void }) {
 
   // Timer
   useEffect(() => {
-    if (mode !== 'playing') return;
+    if (mode !== "playing") return;
     const tick = () => {
       const total = queue.length * SECONDS_PER_Q * 1000;
       const elapsed = Date.now() - startedAtRef.current;
@@ -71,7 +71,7 @@ export function QuizSession ({ onBack }: { onBack: () => void }) {
     setAnswers([]);
     startedAtRef.current = Date.now();
     questionStartRef.current = Date.now();
-    setMode('playing');
+    setMode("playing");
   };
 
   const recordAndNext = (correct: boolean) => {
@@ -92,19 +92,27 @@ export function QuizSession ({ onBack }: { onBack: () => void }) {
   const finish = () => finishWith(answers);
   const finishWith = (final: Answer[]) => {
     setAnswers(final);
-    setMode('done');
+    setMode("done");
   };
 
-  if (mode === 'setup') {
-    return <QuizSetup size={size} onSizeChange={setSize} onStart={start} onBack={onBack} poolSize={pool.length} />;
+  if (mode === "setup") {
+    return (
+      <QuizSetup
+        size={size}
+        onSizeChange={setSize}
+        onStart={start}
+        onBack={onBack}
+        poolSize={pool.length}
+      />
+    );
   }
 
-  if (mode === 'done') {
+  if (mode === "done") {
     return (
       <QuizResults
         answers={answers}
         total={queue.length}
-        onRestart={() => setMode('setup')}
+        onRestart={() => setMode("setup")}
         onBack={onBack}
       />
     );
@@ -122,15 +130,19 @@ export function QuizSession ({ onBack }: { onBack: () => void }) {
       onReveal={() => setRevealed(true)}
       onAnswer={recordAndNext}
       remainingMs={remaining}
-      onAbort={() => setMode('setup')}
+      onAbort={() => setMode("setup")}
     />
   );
 }
 
 // ============================================================================
 
-function QuizSetup ({
-  size, onSizeChange, onStart, onBack, poolSize,
+function QuizSetup({
+  size,
+  onSizeChange,
+  onStart,
+  onBack,
+  poolSize,
 }: {
   size: 5 | 10 | 20;
   onSizeChange: (s: 5 | 10 | 20) => void;
@@ -163,8 +175,8 @@ function QuizSetup ({
           Quiz <span className="italic font-light text-blue-700">chronométré</span>
         </h1>
         <p className="text-blue-700 mt-3 font-light max-w-2xl">
-          {poolSize} questions au hasard, {SECONDS_PER_Q}s par question. Auto-évaluation après chaque
-          réponse, score final et liste des questions ratées.
+          {poolSize} questions au hasard, {SECONDS_PER_Q}s par question. Auto-évaluation après
+          chaque réponse, score final et liste des questions ratées.
         </p>
       </div>
 
@@ -173,15 +185,15 @@ function QuizSetup ({
           Nombre de questions
         </div>
         <div className="grid grid-cols-3 gap-3">
-          {sizes.map(s => (
+          {sizes.map((s) => (
             <button
               key={s}
               type="button"
               onClick={() => onSizeChange(s)}
               className={`px-4 py-5 rounded-xl border-2 font-medium transition-colors ${
                 size === s
-                  ? 'bg-blue-900 text-white border-blue-900'
-                  : 'bg-white text-blue-900 border-blue-200 hover:border-blue-400'
+                  ? "bg-blue-900 text-white border-blue-900"
+                  : "bg-white text-blue-900 border-blue-200 hover:border-blue-400"
               }`}
             >
               <div className="text-3xl font-serif">{s}</div>
@@ -207,15 +219,22 @@ function QuizSetup ({
 
 // ============================================================================
 
-function formatTime (ms: number): string {
+function formatTime(ms: number): string {
   const totalSec = Math.ceil(ms / 1000);
   const m = Math.floor(totalSec / 60);
   const s = totalSec % 60;
-  return `${m}:${String(s).padStart(2, '0')}`;
+  return `${m}:${String(s).padStart(2, "0")}`;
 }
 
-function QuizPlay ({
-  q, index, total, revealed, onReveal, onAnswer, remainingMs, onAbort,
+function QuizPlay({
+  q,
+  index,
+  total,
+  revealed,
+  onReveal,
+  onAnswer,
+  remainingMs,
+  onAbort,
 }: {
   q: QuizQuestion;
   index: number;
@@ -242,7 +261,7 @@ function QuizPlay ({
         </button>
         <div
           className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-mono text-sm font-semibold tabular-nums ${
-            danger ? 'bg-red-100 text-red-800 animate-pulse' : 'bg-blue-100 text-blue-900'
+            danger ? "bg-red-100 text-red-800 animate-pulse" : "bg-blue-100 text-blue-900"
           }`}
         >
           <Clock className="w-4 h-4" />
@@ -341,40 +360,46 @@ function QuizPlay ({
 
 // ============================================================================
 
-function QuizResults ({
-  answers, total, onRestart, onBack,
+function QuizResults({
+  answers,
+  total,
+  onRestart,
+  onBack,
 }: {
   answers: Answer[];
   total: number;
   onRestart: () => void;
   onBack: () => void;
 }) {
-  const correct = answers.filter(a => a.correct).length;
+  const correct = answers.filter((a) => a.correct).length;
   const score = total > 0 ? Math.round((correct / total) * 100) : 0;
-  const missed = answers.filter(a => !a.correct);
+  const missed = answers.filter((a) => !a.correct);
 
   // Weak categories
   const byCat: Record<string, { ok: number; ko: number }> = {};
   for (const a of answers) {
     const k = a.question.category;
     byCat[k] = byCat[k] ?? { ok: 0, ko: 0 };
-    if (a.correct) byCat[k]!.ok++; else byCat[k]!.ko++;
+    if (a.correct) byCat[k]!.ok++;
+    else byCat[k]!.ko++;
   }
   const weakCategories = Object.entries(byCat)
     .filter(([, v]) => v.ko > v.ok)
     .map(([k, v]) => ({ cat: k, ko: v.ko, ok: v.ok }));
 
-  const tone = score >= 80 ? 'emerald' : score >= 50 ? 'amber' : 'red';
+  const tone = score >= 80 ? "emerald" : score >= 50 ? "amber" : "red";
   const toneClasses = {
-    emerald: 'from-emerald-700 to-emerald-900',
-    amber: 'from-amber-600 to-amber-800',
-    red: 'from-red-700 to-red-900',
+    emerald: "from-emerald-700 to-emerald-900",
+    amber: "from-amber-600 to-amber-800",
+    red: "from-red-700 to-red-900",
   } as const;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       <div className="text-center mb-10">
-        <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br ${toneClasses[tone]} text-white mb-6 shadow-xl`}>
+        <div
+          className={`inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br ${toneClasses[tone]} text-white mb-6 shadow-xl`}
+        >
           <Trophy className="w-10 h-10" />
         </div>
         <div className="text-7xl font-serif text-blue-950 mb-2 tabular-nums">{score}%</div>
@@ -389,7 +414,7 @@ function QuizResults ({
             Points faibles à retravailler
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
-            {weakCategories.map(w => (
+            {weakCategories.map((w) => (
               <span
                 key={w.cat}
                 className="px-3 py-1 rounded-full bg-white border border-amber-300 text-amber-900 text-sm font-medium"

@@ -1,9 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router';
-import FinanceInterviewGuide from '@/components/FinanceInterviewGuide';
-import type { AppTab } from '@/lib/app-tabs';
-import { validateHomeSearch } from '@/lib/route-search';
+import { createFileRoute } from "@tanstack/react-router";
+import FinanceInterviewGuide from "@/components/FinanceInterviewGuide";
+import type { AppTab } from "@/lib/app-tabs";
+import { validateHomeSearch } from "@/lib/route-search";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   validateSearch: validateHomeSearch,
   component: HomePage,
 });
@@ -14,14 +14,14 @@ function HomePage() {
 
   const onPageChange = (page: AppTab) => {
     navigate({
-      search: prev => ({
+      search: (prev) => ({
         tab: page,
-        bank: page === 'banques' ? prev.bank : undefined,
-        sector: page === 'secteurs' ? prev.sector : undefined,
+        bank: page === "banques" ? prev.bank : undefined,
+        sector: page === "secteurs" ? prev.sector : undefined,
       }),
     });
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 

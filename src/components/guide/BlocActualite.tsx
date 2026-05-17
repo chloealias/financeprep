@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { Link } from '@tanstack/react-router';
-import { ChevronRight, ExternalLink } from 'lucide-react';
-import { GuideChipButton, guideAlertClass, guideCardClass } from '@/components/guide/guide-ui';
-import { getBankById, getBankIdByName } from '@/data/bank-profiles';
-import { getSectorIdForSecteur, getSectorLabel } from '@/lib/sector-deals';
-import type { SectorId } from '@/lib/sectors';
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Link } from "@tanstack/react-router";
+import { ChevronRight, ExternalLink } from "lucide-react";
+import { GuideChipButton, guideAlertClass, guideCardClass } from "@/components/guide/guide-ui";
+import { getBankById, getBankIdByName } from "@/data/bank-profiles";
+import { getSectorIdForSecteur, getSectorLabel } from "@/lib/sector-deals";
+import type { SectorId } from "@/lib/sectors";
 import {
   dealDateBadge,
   dealMatchesBank,
@@ -16,22 +16,22 @@ import {
   getDealById,
   MA_DEALS,
   type MaDeal,
-} from '@/data/ma-deals';
-import { Route } from '@/routes/actualite';
+} from "@/data/ma-deals";
+import { Route } from "@/routes/actualite";
 
 const typeColors: Record<string, string> = {
-  'M&A': 'bg-blue-100 text-blue-700',
-  LBO: 'bg-indigo-100 text-indigo-700',
-  'Carve-out': 'bg-violet-100 text-violet-700',
-  Restructuring: 'bg-orange-100 text-orange-700',
-  OPA: 'bg-rose-100 text-rose-700',
-  Cessions: 'bg-amber-100 text-amber-700',
-  Tendance: 'bg-slate-200 text-slate-700',
+  "M&A": "bg-blue-100 text-blue-700",
+  LBO: "bg-indigo-100 text-indigo-700",
+  "Carve-out": "bg-violet-100 text-violet-700",
+  Restructuring: "bg-orange-100 text-orange-700",
+  OPA: "bg-rose-100 text-rose-700",
+  Cessions: "bg-amber-100 text-amber-700",
+  Tendance: "bg-slate-200 text-slate-700",
 };
 
 const MAX_BANK_CHIPS = 4;
 
-function SectorDealChip ({ secteur }: { secteur: string }) {
+function SectorDealChip({ secteur }: { secteur: string }) {
   const sectorId = getSectorIdForSecteur(secteur);
   if (!sectorId) {
     return (
@@ -43,14 +43,14 @@ function SectorDealChip ({ secteur }: { secteur: string }) {
       to="/actualite"
       search={{ sector: sectorId }}
       className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded hover:bg-slate-200 transition-colors"
-      onClick={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       {secteur}
     </Link>
   );
 }
 
-function BankDealChip ({ name }: { name: string }) {
+function BankDealChip({ name }: { name: string }) {
   const bankId = getBankIdByName(name);
   if (!bankId) {
     return (
@@ -62,22 +62,16 @@ function BankDealChip ({ name }: { name: string }) {
   return (
     <Link
       to="/"
-      search={{ tab: 'banques', bank: bankId }}
+      search={{ tab: "banques", bank: bankId }}
       className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded hover:bg-blue-100 hover:border-blue-200 transition-colors"
-      onClick={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
     >
       {name}
     </Link>
   );
 }
 
-function DealSection ({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
+function DealSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
       <div className="text-xs text-blue-400 uppercase tracking-wider font-medium mb-2">{title}</div>
@@ -86,7 +80,7 @@ function DealSection ({
   );
 }
 
-function AdvisorBlock ({ deal }: { deal: MaDeal }) {
+function AdvisorBlock({ deal }: { deal: MaDeal }) {
   const { advisors } = deal;
   const hasAdvisors =
     (advisors.sellSide?.length ?? 0) > 0 ||
@@ -95,7 +89,9 @@ function AdvisorBlock ({ deal }: { deal: MaDeal }) {
 
   if (!hasAdvisors) {
     return (
-      <p className="text-blue-500 text-sm font-light italic">Advisors non confirmés publiquement.</p>
+      <p className="text-blue-500 text-sm font-light italic">
+        Advisors non confirmés publiquement.
+      </p>
     );
   }
 
@@ -135,8 +131,8 @@ function AdvisorBlock ({ deal }: { deal: MaDeal }) {
   );
 }
 
-function DealDetail ({ deal }: { deal: MaDeal }) {
-  const isTrend = deal.kind === 'trend';
+function DealDetail({ deal }: { deal: MaDeal }) {
+  const isTrend = deal.kind === "trend";
 
   return (
     <div className="mt-4 space-y-5">
@@ -160,11 +156,13 @@ function DealDetail ({ deal }: { deal: MaDeal }) {
         </DealSection>
       )}
 
-      <DealSection title={isTrend ? 'Panorama' : 'Parties'}>
+      <DealSection title={isTrend ? "Panorama" : "Parties"}>
         <div className="space-y-3">
           {deal.parties.map((p, i) => (
             <div key={i}>
-              <span className="text-blue-600 text-xs font-semibold uppercase tracking-wider">{p.label}</span>
+              <span className="text-blue-600 text-xs font-semibold uppercase tracking-wider">
+                {p.label}
+              </span>
               <p className="text-blue-800 text-sm font-light mt-0.5 leading-relaxed">{p.text}</p>
             </div>
           ))}
@@ -216,28 +214,26 @@ function DealDetail ({ deal }: { deal: MaDeal }) {
   );
 }
 
-function dealPassesFilters (
+function dealPassesFilters(
   deal: MaDeal,
   filterBanque: string,
   filterType: string,
   filterSector: string,
 ): boolean {
   return (
-    (filterBanque === 'all' || dealMatchesBank(deal, filterBanque)) &&
-    (filterType === 'all' || dealMatchesType(deal, filterType)) &&
-    (filterSector === 'all' || (deal.sectorId && dealMatchesSector(deal, filterSector as SectorId)))
+    (filterBanque === "all" || dealMatchesBank(deal, filterBanque)) &&
+    (filterType === "all" || dealMatchesType(deal, filterType)) &&
+    (filterSector === "all" || (deal.sectorId && dealMatchesSector(deal, filterSector as SectorId)))
   );
 }
 
-export function BlocActualite () {
+export function BlocActualite() {
   const { deal: dealFromUrl, bank: bankFromUrl, sector: sectorFromUrl } = Route.useSearch();
   const navigate = Route.useNavigate();
   const bankFromUrlProfile = bankFromUrl ? getBankById(bankFromUrl) : undefined;
-  const [filterBanque, setFilterBanque] = useState(
-    () => bankFromUrlProfile?.name ?? 'all',
-  );
-  const [filterType, setFilterType] = useState('all');
-  const [filterSector, setFilterSector] = useState(() => sectorFromUrl ?? 'all');
+  const [filterBanque, setFilterBanque] = useState(() => bankFromUrlProfile?.name ?? "all");
+  const [filterType, setFilterType] = useState("all");
+  const [filterSector, setFilterSector] = useState(() => sectorFromUrl ?? "all");
   const openDeal = dealFromUrl ?? null;
 
   useEffect(() => {
@@ -255,17 +251,17 @@ export function BlocActualite () {
   useEffect(() => {
     if (!dealFromUrl) return;
     if (getDealById(dealFromUrl)) {
-      setFilterType('all');
-      if (!bankFromUrl) setFilterBanque('all');
-      if (!sectorFromUrl) setFilterSector('all');
+      setFilterType("all");
+      if (!bankFromUrl) setFilterBanque("all");
+      if (!sectorFromUrl) setFilterSector("all");
     }
   }, [dealFromUrl, bankFromUrl, sectorFromUrl]);
 
   const setBankFilter = (bankName: string) => {
-    const bankId = bankName === 'all' ? undefined : getBankIdByName(bankName);
+    const bankId = bankName === "all" ? undefined : getBankIdByName(bankName);
     setFilterBanque(bankName);
     navigate({
-      search: prev => ({
+      search: (prev) => ({
         deal: prev.deal,
         bank: bankId,
         sector: prev.sector,
@@ -276,35 +272,35 @@ export function BlocActualite () {
   const setSectorFilter = (sectorId: string) => {
     setFilterSector(sectorId);
     navigate({
-      search: prev => ({
+      search: (prev) => ({
         deal: prev.deal,
         bank: prev.bank,
-        sector: sectorId === 'all' ? undefined : (sectorId as SectorId),
+        sector: sectorId === "all" ? undefined : (sectorId as SectorId),
       }),
     });
   };
 
   const filtered = useMemo(
-    () => MA_DEALS.filter(d => dealPassesFilters(d, filterBanque, filterType, filterSector)),
+    () => MA_DEALS.filter((d) => dealPassesFilters(d, filterBanque, filterType, filterSector)),
     [filterBanque, filterType, filterSector],
   );
 
   useEffect(() => {
-    if (!openDeal || !filtered.some(d => d.id === openDeal)) return;
+    if (!openDeal || !filtered.some((d) => d.id === openDeal)) return;
     const timer = window.setTimeout(() => {
       const el = document.getElementById(`deal-card-${openDeal}`);
       if (!el) return;
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      el.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
     }, 100);
     return () => window.clearTimeout(timer);
   }, [openDeal, filtered]);
 
   const toggleDeal = (id: string) => {
     if (openDeal === id) {
-      navigate({ search: prev => ({ deal: undefined, bank: prev.bank, sector: prev.sector }) });
+      navigate({ search: (prev) => ({ deal: undefined, bank: prev.bank, sector: prev.sector }) });
     } else {
-      navigate({ search: prev => ({ deal: id, bank: prev.bank, sector: prev.sector }) });
+      navigate({ search: (prev) => ({ deal: id, bank: prev.bank, sector: prev.sector }) });
     }
   };
 
@@ -312,45 +308,61 @@ export function BlocActualite () {
     <>
       <div className={`${guideAlertClass} mb-6`}>
         <p>
-          Dernière mise à jour : 2025-2026. Citer un deal récent avec la banque cible est un signal fort
-          d&apos;intérêt réel. Sources : Financial Times, Bloomberg, Mergermarket.
+          Dernière mise à jour : 2025-2026. Citer un deal récent avec la banque cible est un signal
+          fort d&apos;intérêt réel. Sources : Financial Times, Bloomberg, Mergermarket.
         </p>
       </div>
 
       <div className="space-y-4 mb-6">
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Banque conseil</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">
+              Banque conseil
+            </p>
             <div className="flex flex-wrap gap-1.5">
-              {MA_DEAL_BANKS.map(b => (
-                <GuideChipButton key={b} active={filterBanque === b} onClick={() => setBankFilter(b)} size="sm">
-                  {b === 'all' ? 'Toutes' : b}
+              {MA_DEAL_BANKS.map((b) => (
+                <GuideChipButton
+                  key={b}
+                  active={filterBanque === b}
+                  onClick={() => setBankFilter(b)}
+                  size="sm"
+                >
+                  {b === "all" ? "Toutes" : b}
                 </GuideChipButton>
               ))}
             </div>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Type de deal</p>
+            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">
+              Type de deal
+            </p>
             <div className="flex flex-wrap gap-1.5">
-              {MA_DEAL_TYPES.map(t => (
-                <GuideChipButton key={t} active={filterType === t} onClick={() => setFilterType(t)} size="sm">
-                  {t === 'all' ? 'Tous' : t}
+              {MA_DEAL_TYPES.map((t) => (
+                <GuideChipButton
+                  key={t}
+                  active={filterType === t}
+                  onClick={() => setFilterType(t)}
+                  size="sm"
+                >
+                  {t === "all" ? "Tous" : t}
                 </GuideChipButton>
               ))}
             </div>
           </div>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">Secteur</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">
+            Secteur
+          </p>
           <div className="flex flex-wrap gap-1.5">
-            {MA_DEAL_SECTOR_IDS.map(s => (
+            {MA_DEAL_SECTOR_IDS.map((s) => (
               <GuideChipButton
                 key={s}
                 active={filterSector === s}
                 onClick={() => setSectorFilter(s)}
                 size="sm"
               >
-                {s === 'all' ? 'Tous' : getSectorLabel(s)}
+                {s === "all" ? "Tous" : getSectorLabel(s)}
               </GuideChipButton>
             ))}
           </div>
@@ -358,7 +370,7 @@ export function BlocActualite () {
       </div>
 
       <div className="space-y-3">
-        {filtered.map(deal => {
+        {filtered.map((deal) => {
           const isOpen = openDeal === deal.id;
           const isDeepLinked = dealFromUrl === deal.id;
           const visibleBanks = deal.banks.slice(0, MAX_BANK_CHIPS);
@@ -369,7 +381,7 @@ export function BlocActualite () {
               key={deal.id}
               id={`deal-card-${deal.id}`}
               className={`${guideCardClass} overflow-hidden scroll-mt-24 ${
-                isOpen && isDeepLinked ? 'border-blue-400 ring-2 ring-blue-200' : ''
+                isOpen && isDeepLinked ? "border-blue-400 ring-2 ring-blue-200" : ""
               }`}
             >
               <button
@@ -384,7 +396,7 @@ export function BlocActualite () {
                       {dealDateBadge(deal.dates)}
                     </span>
                     <span
-                      className={`text-xs px-2 py-0.5 rounded font-medium ${typeColors[deal.type] || 'bg-slate-100 text-slate-600'}`}
+                      className={`text-xs px-2 py-0.5 rounded font-medium ${typeColors[deal.type] || "bg-slate-100 text-slate-600"}`}
                     >
                       {deal.type}
                     </span>
@@ -396,7 +408,7 @@ export function BlocActualite () {
                     {visibleBanks.length > 0 && (
                       <>
                         <span>·</span>
-                        {visibleBanks.map(b => (
+                        {visibleBanks.map((b) => (
                           <BankDealChip key={b} name={b} />
                         ))}
                         {extraBanks > 0 && (
@@ -407,7 +419,7 @@ export function BlocActualite () {
                   </div>
                 </div>
                 <ChevronRight
-                  className={`w-4 h-4 text-blue-300 flex-shrink-0 mt-1 transition-transform ${isOpen ? 'rotate-90' : ''}`}
+                  className={`w-4 h-4 text-blue-300 flex-shrink-0 mt-1 transition-transform ${isOpen ? "rotate-90" : ""}`}
                 />
               </button>
               {isOpen && (
@@ -419,7 +431,9 @@ export function BlocActualite () {
           );
         })}
         {filtered.length === 0 && (
-          <div className="text-center py-8 text-blue-300 italic text-sm">Aucun deal pour ces filtres.</div>
+          <div className="text-center py-8 text-blue-300 italic text-sm">
+            Aucun deal pour ces filtres.
+          </div>
         )}
       </div>
     </>
