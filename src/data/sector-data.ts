@@ -106,7 +106,7 @@ export const SECTOR_DATA: Record<SectorId, SectorSheetData> = {
     ],
     deal: {
       titre: 'Sanofi / Opella — cession à CD&R (2025)',
-      texte: '15,6 Md€ pour la division consumer healthcare (Doliprane, Fervex). Sanofi se recentre sur biotech. Multiple ~14x EBITDA. Controversé politiquement.',
+      texte: '~16 Md€ EV pour la division consumer healthcare (Doliprane, Fervex). Sanofi se recentre sur biotech. Multiple ~14x EBITDA. Controversé politiquement.',
     },
     emblematicDealId: 'd01',
     question: 'Comment valorise-t-on une biotech sans revenus ni EBITDA ?',

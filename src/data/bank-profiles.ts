@@ -200,10 +200,10 @@ export const BANK_LIST: BankProfile[] = [
     recrutement: 'Entretiens techniques + comportementaux. Accent sur global mindset.',
     pointEntretien: 'Mettre en avant l\'angle international si profil multilingue. Deal avec rôle financing + advisory.',
     dealEmblematique: {
-      titre: 'Brenntag / Gaea — carve-out Asie',
-      texte: 'Carve-out industriel ~1,5 Md$ avec Citi en advisory/financing. Illustre le rôle bulge hors LBO flagship Opella.',
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'LBO ~16 Md€ : Citi buy-side M&A lead + coordinateur dette (club avec GS, Barclays, BNP, MS, SocGen, HSBC). Modèle integrated advisory + financing.',
     },
-    emblematicDealId: 'd15',
+    emblematicDealId: 'd01',
     questionPiège:
       'Sur Opella, pourquoi autant de banques en coordinateurs dette ?',
     reponsePiège:
@@ -226,10 +226,10 @@ export const BANK_LIST: BankProfile[] = [
     recrutement: 'Assessment centre Londres ou Paris selon desk. Technical + fit.',
     pointEntretien: 'Si entretien Paris : expliquer le lien Barclays-Londres. Connaître un deal Lev Fin ou UK-centric.',
     dealEmblematique: {
-      titre: 'Brenntag / Gaea — carve-out Asie',
-      texte: 'Carve-out chimie ~1,5 Md$ : Barclays en Lev Fin / advisory. Référence pour un angle financing européen distinct d\'Opella.',
+      titre: 'Sanofi / Opella → CD&R',
+      texte: 'LBO ~16 Md€ : Barclays coordinateur dette (Term Loan B, bridge HY). Angle Lev Fin européen sur un carve-out flagship.',
     },
-    emblematicDealId: 'd15',
+    emblematicDealId: 'd01',
     questionPiège: 'Barclays est-elle surtout une banque de financement ou de conseil M&A ?',
     reponsePiège:
       'Les deux, mais réputation particulièrement forte en leveraged finance et loan syndication en Europe. Sur Opella, rôle coordinateur dette — en entretien Lev Fin, c\'est un meilleur angle que de présenter Barclays comme une elite boutique M&A.',

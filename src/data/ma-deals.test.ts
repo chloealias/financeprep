@@ -39,7 +39,7 @@ describe('ma-deals helpers', () => {
     expect(dealMatchesSector(deal!, 'tmt')).toBe(false);
   });
 
-  it('has 16 deals', () => {
-    expect(MA_DEALS.length).toBe(16);
+  it('has 15 deals', () => {
+    expect(MA_DEALS.length).toBe(15);
   });
 });

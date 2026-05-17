@@ -210,7 +210,7 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
   {
     id: 'd04',
     title: 'UniCredit / Commerzbank',
-    dates: 'Prise 9% sept. 2024 — OPA mars 2026 — En cours (mai 2026)',
+    dates: 'Prise 9% sept. 2024 — Document d\'offre 5 mai 2026 — Acceptation jusqu\'au 16 juin 2026',
     type: 'OPA',
     secteur: 'FIG — Banques',
     headlineEv: '~43 Md€ (capitalisation CBK)',
@@ -230,7 +230,7 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
       },
       {
         label: 'Calendrier',
-        text: 'AGM Commerzbank : 20 mai 2026. Ex-date dividende (€1,10) : 21 mai. Deadline OPA : 3 juillet 2026.',
+        text: 'AGM Commerzbank : 20 mai 2026. Ex-date dividende (€1,10) : 21 mai. Période d\'acceptation : 5 mai — 16 juin 2026.',
       },
     ],
     valorisation: [
@@ -395,7 +395,7 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
   {
     id: 'd08',
     title: 'Altice France — Cession SFR métropolitain',
-    dates: 'Exclusivité avr. 2026 (deadline 15 mai 2026) — En cours',
+    dates: 'Offre conjointe 17 avr. 2026 — Exclusivité prolongée jusqu\'au 5 juin 2026',
     type: 'Cessions',
     secteur: 'TMT / Telecom',
     headlineEv: '20,35 Md€',
@@ -406,8 +406,8 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
         text: 'Activités telecom d\'Altice France en France métropolitaine (SFR, réseau fibre, 5G).',
       },
       {
-        label: 'Acquéreur',
-        text: 'Consortium (non divulgué — en exclusivité).',
+        label: 'Acquéreurs',
+        text: 'Consortium Bouygues Telecom (~42 %), Free–Groupe iliad (~31 %) et Orange (~27 %) — offre conjointe en exclusivité.',
       },
     ],
     valorisation: [
@@ -423,7 +423,7 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
       },
       {
         side: 'Acquéreur',
-        text: 'Exclusivité accordée jusqu\'au 15 mai 2026 pour acquérir les actifs SFR métropolitains.',
+        text: 'Consortium en négociations exclusives pour les actifs SFR métropolitains (prolongation d\'exclusivité au 5 juin 2026). Répartition indicative : B2B majoritairement Bouygues ; B2C et infra partagés entre les trois opérateurs.',
       },
     ],
     contexte:
@@ -439,7 +439,7 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
     dates: 'Annonce juin 2025 — OPA juil. 2025 — Closing en cours',
     type: 'OPA',
     secteur: 'Santé / Biopharma',
-    headlineEv: '~$8-9 Md',
+    headlineEv: '~$9,1-9,5 Md (equity value)',
     banks: [],
     parties: [
       {
@@ -453,7 +453,7 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
     ],
     valorisation: [
       { label: 'Prix', value: '$129/action cash + CVR jusqu\'à $6/action additionnel (milestones)' },
-      { label: 'EV totale', value: '~$8-9 Md (estimé, selon nombre d\'actions tender)' },
+      { label: 'Equity value', value: '~$9,1 Md upfront ; jusqu\'à ~$9,5 Md avec CVR (milestones BLU-808)' },
     ],
     advisors: {},
     interests: [
@@ -646,32 +646,6 @@ const MA_DEALS_RAW: Omit<MaDeal, 'sectorId'>[] = [
     ],
     pointEntretien:
       'Plus grand deal gaming de l\'histoire. Montrer que la valeur stratégique (écosystème) peut justifier un multiple revenue élevé malgré la lenteur réglementaire.',
-    kind: 'deal',
-  },
-  {
-    id: 'd15',
-    title: 'Brenntag / Gaea Investment (carve-out Asia)',
-    dates: 'Annonce 2025 — Closing attendu 2026',
-    type: 'Carve-out',
-    secteur: 'Industrie / Distribution chimique',
-    headlineEv: '~1,5 Md$',
-    banks: ['Barclays', 'Citigroup'],
-    parties: [
-      {
-        label: 'Actif',
-        text: 'Division distribution chimique Asie de Brenntag (carve-out).',
-      },
-      { label: 'Acquéreur', text: 'Fonds Gaea / consortium.' },
-    ],
-    valorisation: [{ label: 'EV', value: '~1,5 Md$ (estimé)' }],
-    interests: [
-      {
-        side: 'Brenntag',
-        text: 'Monétiser un actif géographique non-core, réduire la dette et se recentrer sur l\'Europe/Amériques.',
-      },
-    ],
-    pointEntretien:
-      'Exemple carve-out industriel mid-cap. Barclays et Citi en rôles financing/advisory distincts — utile pour banques autres qu\'Opella.',
     kind: 'deal',
   },
   {
