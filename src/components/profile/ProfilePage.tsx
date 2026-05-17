@@ -6,7 +6,9 @@ import {
   Calendar,
   ChevronRight,
   Clock,
+  ExternalLink,
   Mic,
+  Newspaper,
   Sparkles,
 } from "lucide-react";
 import { SECTOR_DATA } from "@/data/sector-data";
@@ -183,22 +185,40 @@ export function ProfilePage() {
             {(Object.keys(SECTOR_DATA) as SectorId[]).map((id) => {
               const selected = (profile.sectorIds ?? []).includes(id);
               return (
-                <button
+                <div
                   key={id}
-                  type="button"
-                  onClick={() =>
-                    update({
-                      sectorIds: toggleProfileSector(profile.sectorIds ?? [], id),
-                    })
-                  }
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+                  className={`inline-flex items-center rounded-lg border text-sm font-medium transition-colors ${
                     selected
                       ? "bg-indigo-900 text-white border-indigo-900"
                       : "bg-white text-blue-800 border-blue-200 hover:border-blue-400"
                   }`}
                 >
-                  {SECTOR_DATA[id].name}
-                </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      update({
+                        sectorIds: toggleProfileSector(profile.sectorIds ?? [], id),
+                      })
+                    }
+                    className="px-3 py-1.5"
+                    aria-pressed={selected}
+                  >
+                    {SECTOR_DATA[id].name}
+                  </button>
+                  <Link
+                    to="/"
+                    search={{ tab: "secteurs", sector: id }}
+                    className={`p-1.5 rounded-r-lg ${
+                      selected
+                        ? "text-white/80 hover:text-white hover:bg-indigo-800"
+                        : "text-blue-500 hover:text-blue-900 hover:bg-blue-50"
+                    }`}
+                    aria-label={`Fiche ${SECTOR_DATA[id].name}`}
+                    title="Voir la fiche secteur"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               );
             })}
           </div>
@@ -248,6 +268,24 @@ export function ProfilePage() {
             search={{ mode: "quiz" }}
             icon={<Clock className="w-5 h-5" />}
             highlight={dashboard.todayHighlights.has("quiz")}
+          />
+          <TodayCard
+            title="Actualité M&A"
+            stat={dashboard.suggestedDealTitle ? "Deal suggéré" : "Fiches deals"}
+            desc={
+              dashboard.suggestedDealTitle
+                ? dashboard.suggestedDealTitle.slice(0, 42) +
+                  (dashboard.suggestedDealTitle.length > 42 ? "…" : "")
+                : "Derniers deals et tendances"
+            }
+            href="/actualite"
+            search={
+              dashboard.suggestedDealId
+                ? { deal: dashboard.suggestedDealId }
+                : undefined
+            }
+            icon={<Newspaper className="w-5 h-5" />}
+            highlight={Boolean(dashboard.suggestedDealId)}
           />
           <TodayCard
             title="Simulation 30 min"
@@ -392,7 +430,7 @@ function TodayCard({
   stat: string;
   desc: string;
   href?: string;
-  search?: { mode: "flashcards" | "quiz" };
+  search?: { mode?: "flashcards" | "quiz"; deal?: string };
   onClick?: () => void;
   icon: React.ReactNode;
   highlight?: boolean;

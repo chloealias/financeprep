@@ -6,9 +6,11 @@ import {
   getTodayHighlightKeys,
   type TodayHighlightKey,
 } from "@/lib/profile-personalization";
+import { pickDealForPack } from "@/lib/interview-pack";
 import {
   CV_CHECKLIST_TOTAL,
   daysUntilInterview,
+  getTargetBankNames,
   loadProfile,
   type UserProfile,
 } from "@/lib/profile-storage";
@@ -41,6 +43,9 @@ export type ProfileDashboard = {
   interviewPlan: string | null;
   todayHighlights: Set<TodayHighlightKey>;
   targetBankCount: number;
+  /** Deal M&A suggéré selon banques cibles (pour deep link profil). */
+  suggestedDealId: string | null;
+  suggestedDealTitle: string | null;
 };
 
 export function getProfileDashboard(): ProfileDashboard {
@@ -78,6 +83,8 @@ export function getProfileDashboard(): ProfileDashboard {
 
   const daysUntil = daysUntilInterview(profile.interviewDate);
 
+  const suggestedDeal = pickDealForPack(getTargetBankNames());
+
   return {
     profile,
     daysUntil,
@@ -96,6 +103,8 @@ export function getProfileDashboard(): ProfileDashboard {
     interviewPlan: getInterviewPlanMessage(daysUntil, { srsDue, weakCount, suggestSimulation }),
     todayHighlights: getTodayHighlightKeys(profile),
     targetBankCount: getTargetBankIds().length,
+    suggestedDealId: suggestedDeal?.id ?? null,
+    suggestedDealTitle: suggestedDeal?.title ?? null,
   };
 }
 

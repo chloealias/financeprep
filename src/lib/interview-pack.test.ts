@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildInterviewPack,
   FIT_QUESTION_IDS,
+  getPackItemGuideLinks,
   inferInterviewSlot,
   packTotalSeconds,
 } from "@/lib/interview-pack";
@@ -80,6 +81,33 @@ describe("buildInterviewPack", () => {
     expect(sector?.kind).toBe("sector");
     if (sector?.kind === "sector") {
       expect(sector.sectorId).toBe("sante");
+    }
+  });
+
+  it("exposes deal deep link in guide links", () => {
+    const pack = buildInterviewPack({ size: 5 });
+    const deal = pack.find((p) => p.kind === "deal");
+    expect(deal?.kind).toBe("deal");
+    if (deal?.kind === "deal") {
+      const links = getPackItemGuideLinks(deal);
+      expect(links[0]?.to).toBe("/actualite");
+      expect(links[0]?.search?.deal).toBe(deal.dealId);
+    }
+  });
+
+  it("exposes sector and emblematic deal guide links", () => {
+    const pack = buildInterviewPack({
+      size: 5,
+      preferredSectorIds: ["sante"],
+    });
+    const sector = pack.find((p) => p.kind === "sector");
+    expect(sector?.kind).toBe("sector");
+    if (sector?.kind === "sector") {
+      const links = getPackItemGuideLinks(sector);
+      expect(links.some((l) => l.search?.tab === "secteurs" && l.search.sector === "sante")).toBe(
+        true,
+      );
+      expect(links.some((l) => l.search?.deal === "d01")).toBe(true);
     }
   });
 

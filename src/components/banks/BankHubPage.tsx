@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import { Link } from "@tanstack/react-router";
 import { Search, Star } from "lucide-react";
 import { Route } from "@/routes/index";
 import { GuideChipButton } from "@/components/guide/guide-ui";
@@ -272,9 +273,14 @@ export function BankHubPage() {
                                 {bank.name}
                               </span>
                               {dealCount > 0 && (
-                                <span className="text-[10px] font-medium uppercase tracking-wide text-blue-500 bg-blue-100 px-1.5 py-0.5 rounded">
+                                <Link
+                                  to="/actualite"
+                                  search={{ bank: bank.id }}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="text-[10px] font-medium uppercase tracking-wide text-blue-600 bg-blue-100 hover:bg-blue-200 px-1.5 py-0.5 rounded transition-colors"
+                                >
                                   {dealCount} deal{dealCount > 1 ? "s" : ""}
-                                </span>
+                                </Link>
                               )}
                             </div>
                             <div className="text-blue-500 text-xs mt-0.5">{bank.category}</div>

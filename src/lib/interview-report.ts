@@ -1,5 +1,26 @@
 import type { InterviewSessionAnswer, InterviewSessionRecord } from "@/lib/storage";
 import { getCategoryLabel } from "@/lib/categories";
+import { SECTOR_DATA } from "@/data/sector-data";
+import type { SectorId } from "@/lib/sectors";
+
+function answerResourceLink(a: InterviewSessionAnswer): string | null {
+  if (a.itemKind === "deal") {
+    return `[Fiche deal — ${a.label}](/actualite?deal=${encodeURIComponent(a.itemId)})`;
+  }
+  if (a.itemKind === "sector") {
+    const sectorId = a.itemId as SectorId;
+    const emblematic = SECTOR_DATA[sectorId]?.emblematicDealId;
+    const sectorLink = `[Fiche secteur — ${a.label}](/?tab=secteurs&sector=${encodeURIComponent(a.itemId)})`;
+    if (emblematic) {
+      return `${sectorLink} · [Deal emblématique](/actualite?deal=${encodeURIComponent(emblematic)})`;
+    }
+    return sectorLink;
+  }
+  if (a.itemKind === "opening") {
+    return "[Guide CV](/cv)";
+  }
+  return null;
+}
 
 export function buildInterviewMarkdown(
   session: InterviewSessionRecord,
@@ -21,6 +42,7 @@ export function buildInterviewMarkdown(
   for (const a of session.answers) {
     const struct = a.structureOk ? "oui" : "non";
     const nums = a.numbersOk ? "oui" : "non";
+    const resource = answerResourceLink(a);
     lines.push(
       `### ${a.label}`,
       "",
@@ -30,8 +52,11 @@ export function buildInterviewMarkdown(
       `- Structure (Pyramid/STAR) : ${struct}`,
       `- Chiffres / précision : ${nums}`,
       `- Temps : ${Math.round(a.timeMs / 1000)}s`,
-      "",
     );
+    if (resource) {
+      lines.push(`- Ressource : ${resource}`);
+    }
+    lines.push("");
   }
 
   if (weakCategories.length > 0) {
@@ -42,14 +67,22 @@ export function buildInterviewMarkdown(
     lines.push("");
   }
 
-  lines.push(
-    "## Ressources",
-    "",
-    "- [Guide CV — Walk me through your CV](/cv)",
-    "- [Pyramid Principle + STAR](/pyramid)",
-    "- [Actualité M&A](/actualite)",
-    "",
-  );
+  const dealLinks = session.answers
+    .filter((a) => a.itemKind === "deal")
+    .map((a) => answerResourceLink(a))
+    .filter(Boolean);
+
+  lines.push("## Ressources", "", "- [Guide CV — Walk me through your CV](/cv)", "- [Pyramid Principle + STAR](/pyramid)");
+
+  if (dealLinks.length > 0) {
+    for (const link of dealLinks) {
+      lines.push(`- ${link}`);
+    }
+  } else {
+    lines.push("- [Actualité M&A](/actualite)");
+  }
+
+  lines.push("");
 
   return lines.join("\n");
 }

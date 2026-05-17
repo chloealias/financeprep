@@ -7,8 +7,10 @@ import {
   guideAlertClass,
   guideCardClass,
 } from "@/components/guide/guide-ui";
-import { getBankById, getBankIdByName } from "@/data/bank-profiles";
-import { getSectorIdForSecteur, getSectorLabel } from "@/lib/sector-deals";
+import { BankDealChip, SectorDealChip, AdvisorBankName } from "@/components/deals/DealEntityChips";
+import { getBankById } from "@/data/bank-profiles";
+import { getSectorLabel } from "@/lib/sector-deals";
+import { DealRefText } from "@/lib/linkify-deal-refs";
 import type { SectorId } from "@/lib/sectors";
 import {
   dealDateBadge,
@@ -35,46 +37,6 @@ const typeColors: Record<string, string> = {
 };
 
 const MAX_BANK_CHIPS = 4;
-
-function SectorDealChip({ secteur }: { secteur: string }) {
-  const sectorId = getSectorIdForSecteur(secteur);
-  if (!sectorId) {
-    return (
-      <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded">{secteur}</span>
-    );
-  }
-  return (
-    <Link
-      to="/actualite"
-      search={{ sector: sectorId }}
-      className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded hover:bg-slate-200 transition-colors"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {secteur}
-    </Link>
-  );
-}
-
-function BankDealChip({ name }: { name: string }) {
-  const bankId = getBankIdByName(name);
-  if (!bankId) {
-    return (
-      <span className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded">
-        {name}
-      </span>
-    );
-  }
-  return (
-    <Link
-      to="/"
-      search={{ tab: "banques", bank: bankId }}
-      className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded hover:bg-blue-100 hover:border-blue-200 transition-colors"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {name}
-    </Link>
-  );
-}
 
 function DealSection({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -107,7 +69,9 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
           <span className="text-blue-500 text-xs uppercase tracking-wider">Vendeur / débiteur</span>
           <ul className="mt-1 space-y-0.5 text-blue-800 font-light">
             {advisors.sellSide.map((a, i) => (
-              <li key={i}>· {a}</li>
+              <li key={i}>
+                · <AdvisorBankName name={a} />
+              </li>
             ))}
           </ul>
         </div>
@@ -117,7 +81,9 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
           <span className="text-blue-500 text-xs uppercase tracking-wider">Acquéreur</span>
           <ul className="mt-1 space-y-0.5 text-blue-800 font-light">
             {advisors.buySide.map((a, i) => (
-              <li key={i}>· {a}</li>
+              <li key={i}>
+                · <AdvisorBankName name={a} />
+              </li>
             ))}
           </ul>
         </div>
@@ -127,7 +93,9 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
           <span className="text-blue-500 text-xs uppercase tracking-wider">{group.label}</span>
           <ul className="mt-1 space-y-0.5 text-blue-800 font-light">
             {group.banks.map((b, j) => (
-              <li key={j}>· {b}</li>
+              <li key={j}>
+                · <AdvisorBankName name={b} />
+              </li>
             ))}
           </ul>
         </div>
@@ -193,7 +161,9 @@ function DealDetail({ deal }: { deal: MaDeal }) {
 
       {deal.contexte && (
         <DealSection title="Contexte">
-          <p className="text-blue-700 text-sm font-light leading-relaxed">{deal.contexte}</p>
+          <p className="text-blue-700 text-sm font-light leading-relaxed">
+            <DealRefText text={deal.contexte} />
+          </p>
         </DealSection>
       )}
 
@@ -201,7 +171,9 @@ function DealDetail({ deal }: { deal: MaDeal }) {
         <div className="text-amber-700 text-xs font-semibold uppercase tracking-wider mb-1">
           Point clé pour l&apos;entretien
         </div>
-        <p className="text-amber-900 text-sm font-light leading-relaxed">{deal.pointEntretien}</p>
+        <p className="text-amber-900 text-sm font-light leading-relaxed">
+          <DealRefText text={deal.pointEntretien} />
+        </p>
       </div>
 
       {deal.ftUrl && (

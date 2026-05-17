@@ -63,7 +63,6 @@ export type DealPackItem = {
   question: string;
   steps: string[];
   tip?: string;
-  guideHref: "/actualite";
 };
 
 export type SectorPackItem = {
@@ -72,9 +71,16 @@ export type SectorPackItem = {
   secondsLimit: number;
   sectorId: SectorId;
   sectorName: string;
+  emblematicDealId?: string;
   question: string;
   steps: string[];
   tip?: string;
+};
+
+export type PackGuideLink = {
+  label: string;
+  to: "/actualite" | "/cv" | "/pyramid" | "/";
+  search?: Record<string, string | undefined>;
 };
 
 export type InterviewPackItem = OpeningPackItem | QuestionPackItem | DealPackItem | SectorPackItem;
@@ -236,7 +242,6 @@ function buildDealItem(deal: MaDeal): DealPackItem {
       deal.contexte ?? "",
     ].filter(Boolean),
     tip: "Structure : contexte → logique stratégique → valorisation → ce que vous en retiendriez pour un client.",
-    guideHref: "/actualite",
   };
 }
 
@@ -248,10 +253,44 @@ function buildSectorItem(sectorId: SectorId): SectorPackItem {
     secondsLimit: SLOT_SECONDS.sector,
     sectorId,
     sectorName: s.name,
+    emblematicDealId: s.emblematicDealId,
     question: s.question,
     steps: [s.reponse, `Secteur : ${s.tag} — ${s.panorama.tailleMarche}`],
     tip: "Relier la réponse à un deal récent du secteur si possible.",
   };
+}
+
+export function getPackItemGuideLinks(item: InterviewPackItem): PackGuideLink[] {
+  if (item.kind === "opening") {
+    return [{ label: "Ouvrir le guide CV →", to: item.guideHref }];
+  }
+  if (item.kind === "deal") {
+    return [
+      {
+        label: "Voir la fiche deal dans Actualité M&A →",
+        to: "/actualite",
+        search: { deal: item.dealId },
+      },
+    ];
+  }
+  if (item.kind === "sector") {
+    const links: PackGuideLink[] = [
+      {
+        label: "Fiche secteur →",
+        to: "/",
+        search: { tab: "secteurs", sector: item.sectorId },
+      },
+    ];
+    if (item.emblematicDealId) {
+      links.push({
+        label: "Deal emblématique du secteur →",
+        to: "/actualite",
+        search: { deal: item.emblematicDealId },
+      });
+    }
+    return links;
+  }
+  return [];
 }
 
 export type BuildInterviewPackOptions = {
@@ -264,7 +303,7 @@ export type BuildInterviewPackOptions = {
   targetBankNames?: string[];
 };
 
-function pickDealForPack(bankNames: string[]): MaDeal | undefined {
+export function pickDealForPack(bankNames: string[]): MaDeal | undefined {
   const base = MA_DEALS.filter((d) => d.kind === "deal" && d.pointEntretien.length > 20);
   if (bankNames.length > 0) {
     const matched = base.filter((d) => bankNames.some((name) => dealMatchesBank(d, name)));

@@ -14,6 +14,7 @@ import { StarRating } from "@/components/interview/StarRating";
 import { getCategoryLabel } from "@/lib/categories";
 import {
   buildInterviewPack,
+  getPackItemGuideLinks,
   packItemCategory,
   packItemLabel,
   packItemSrsId,
@@ -61,12 +62,6 @@ function itemSteps(item: InterviewPackItem): string[] {
 
 function itemTip(item: InterviewPackItem): string | undefined {
   if ("tip" in item && item.tip) return item.tip;
-  return undefined;
-}
-
-function itemGuideHref(item: InterviewPackItem): string | undefined {
-  if (item.kind === "opening") return item.guideHref;
-  if (item.kind === "deal") return item.guideHref;
   return undefined;
 }
 
@@ -210,7 +205,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
 
   const progress = (index / total) * 100;
   const danger = remainingQ < 30_000;
-  const guideHref = itemGuideHref(current);
+  const guideLinks = getPackItemGuideLinks(current);
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
@@ -296,13 +291,19 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                   <p className="text-sm font-light leading-relaxed">{itemTip(current)}</p>
                 </div>
               )}
-              {guideHref && (
-                <Link
-                  to={guideHref}
-                  className="inline-block mt-4 text-sm text-blue-700 hover:text-blue-900 font-medium underline"
-                >
-                  Ouvrir le guide associé →
-                </Link>
+              {guideLinks.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                  {guideLinks.map((link) => (
+                    <Link
+                      key={`${link.to}-${link.label}`}
+                      to={link.to}
+                      search={link.search}
+                      className="text-sm text-blue-700 hover:text-blue-900 font-medium underline"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
               )}
             </>
           )}
