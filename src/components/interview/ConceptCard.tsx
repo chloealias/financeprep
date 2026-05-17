@@ -2,8 +2,8 @@ import React from 'react';
 import { ChevronRight, Library } from 'lucide-react';
 import { Visual } from '@/components/interview/Visual';
 
-export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, index, total, onPrev, onNext }) {
-  const cardRef = React.useRef(null);
+export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, index, total, onPrev, onNext }: any) {
+  const cardRef = React.useRef<HTMLDivElement | null>(null);
   const wasExpanded = React.useRef(isExpanded);
 
   React.useEffect(() => {
