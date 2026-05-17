@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Search, ChevronRight, BookOpen, Filter, X, Star, CheckCircle2, Bookmark, BookmarkCheck } from 'lucide-react';
+import { Search, ChevronRight, BookOpen, Filter, X, Star, CheckCircle2, Bookmark, BookmarkCheck, Sparkles } from 'lucide-react';
 import {
   DIFFICULTY_OPTIONS,
   QUESTION_CATEGORIES,
