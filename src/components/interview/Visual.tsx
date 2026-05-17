@@ -159,7 +159,7 @@ export function Visual ({ type }: { type: string }) {
       { name: 'LBO', low: 75, high: 100, color: '#93c5fd' },
       { name: 'ANR', low: 60, high: 85, color: '#bfdbfe' },
     ];
-    const scale = (v) => 80 + ((v - 50) / 110) * 480;
+    const scale = (v: number) => 80 + ((v - 50) / 110) * 480;
     return (
       <div className={wrapper}>
         <div className={title}>{titleBar}<span>Football Field — fourchettes de valorisation (M€)</span></div>
