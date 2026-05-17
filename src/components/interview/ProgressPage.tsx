@@ -156,7 +156,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
           <div className="text-xs uppercase tracking-wider text-blue-600 font-light mb-2">Répartition des notes</div>
           {[5, 4, 3, 2, 1].map((r) => {
             const d = ratingDist.find((x) => x.rating === r);
-            const pct = (d.count / distMax) * 100;
+            const pct = ((d?.count ?? 0) / distMax) * 100;
             const intensity = r >= 4 ? 'bg-blue-800' : r === 3 ? 'bg-blue-500' : 'bg-blue-300';
             return (
               <div key={r} className="flex items-center gap-3">
