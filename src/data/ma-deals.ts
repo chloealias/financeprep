@@ -544,6 +544,7 @@ export const MA_DEALS: MaDeal[] = [
     pointEntretien:
       'Thème macro incontournable. Comprendre pourquoi les multiples défense montent (visibilité du carnet de commandes sur 10 ans). PE actif dans les fournisseurs et sous-traitants (carve-outs, mid-market). Mentionner si on vous demande les tendances M&A 2026.',
     ftUrl: 'https://www.ft.com/content/european-defence-ma-2025',
+    advisors: {},
     kind: 'trend',
   },
   {
