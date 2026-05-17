@@ -114,9 +114,9 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
                       </tr>
                     </thead>
                     <tbody>
-                      {concept.table.rows.map((row, ri) => (
+                      {concept.table.rows.map((row: any[], ri: number) => (
                         <tr key={ri} className={ri % 2 === 0 ? 'bg-blue-50/40' : 'bg-white'}>
-                          {row.map((cell, ci) => (
+                          {row.map((cell: any, ci: number) => (
                             <td key={ci} className={`px-3 py-2.5 ${ci === 0 ? 'font-semibold text-blue-950' : 'text-blue-800'}`}>{cell}</td>
                           ))}
                         </tr>
