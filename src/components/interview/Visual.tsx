@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Visual ({ type }) {
+export function Visual ({ type }: { type: string }) {
   const wrapper = "bg-white rounded-xl border-2 border-blue-200 p-5 my-4";
   const title = "text-xs uppercase tracking-[0.2em] text-blue-700 font-semibold mb-4 flex items-center gap-2";
   const titleBar = <div className="h-px w-6 bg-blue-700" />;
