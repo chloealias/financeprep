@@ -95,7 +95,7 @@ export function BankHubPage () {
     if (trigger) lastTriggerRef.current = trigger;
     const next = selectedBankId === id ? undefined : id;
     navigate({
-      search: prev => ({
+      search: (prev: any) => ({
         tab: 'banques',
         bank: next,
       }),
