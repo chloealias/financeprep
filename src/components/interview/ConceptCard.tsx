@@ -108,7 +108,7 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
                   <table className="w-full text-sm min-w-[480px]">
                     <thead className="bg-blue-900 text-white">
                       <tr>
-                        {concept.table.headers.map((h, i) => (
+                        {concept.table.headers.map((h: any, i: number) => (
                           <th key={i} className="px-3 py-2.5 text-left text-xs uppercase tracking-wider font-semibold">{h}</th>
                         ))}
                       </tr>
