@@ -18,7 +18,7 @@ export type MaDeal = {
   parties: { label: string; text: string }[];
   valorisation?: { label: string; value: string }[];
   financing?: string;
-  advisors?: {
+  advisors: {
     sellSide?: string[];
     buySide?: string[];
     other?: { label: string; banks: string[] }[];
