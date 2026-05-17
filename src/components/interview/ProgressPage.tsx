@@ -18,36 +18,36 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
   const totalQuestions = questions.length;
   const ratedCount = Object.keys(ratings).filter((k) => ratings[k] > 0).length;
   const masteredCount = Object.keys(ratings).filter((k) => ratings[k] >= 4).length;
-  const weakCount = Object.values(ratings).filter((v) => v > 0 && v <= 2).length;
+  const weakCount = (Object.values(ratings) as number[]).filter((v) => v > 0 && v <= 2).length;
   const unratedCount = totalQuestions - ratedCount;
   const avgRating = ratedCount > 0
-    ? (Object.values(ratings).reduce((a, b) => a + b, 0) / ratedCount).toFixed(1)
+    ? ((Object.values(ratings) as number[]).reduce((a, b) => a + b, 0) / ratedCount).toFixed(1)
     : '—';
   const masteredPct = totalQuestions > 0 ? Math.round((masteredCount / totalQuestions) * 100) : 0;
 
   const ratingDist = [1, 2, 3, 4, 5].map((r) => ({
     rating: r,
-    count: Object.values(ratings).filter((v) => v === r).length,
+    count: (Object.values(ratings) as number[]).filter((v) => v === r).length,
   }));
   const distMax = Math.max(...ratingDist.map((x) => x.count), 1);
 
   const byCategory = categories
-    .filter((c) => c.id !== 'all')
-    .map((cat) => {
-      const catQuestions = questions.filter((q) => q.category === cat.id);
-      const catRatings = catQuestions.map((q) => ratings[questionIdKey(q.id)] || 0);
-      const rated = catRatings.filter((r) => r > 0).length;
-      const mastered = catRatings.filter((r) => r >= 4).length;
-      const avg = rated > 0 ? (catRatings.reduce((a, b) => a + b, 0) / rated) : 0;
+    .filter((c: any) => c.id !== 'all')
+    .map((cat: any) => {
+      const catQuestions = questions.filter((q: any) => q.category === cat.id);
+      const catRatings = catQuestions.map((q: any) => ratings[questionIdKey(q.id)] || 0);
+      const rated = catRatings.filter((r: number) => r > 0).length;
+      const mastered = catRatings.filter((r: number) => r >= 4).length;
+      const avg = rated > 0 ? (catRatings.reduce((a: number, b: number) => a + b, 0) / rated) : 0;
       return { ...cat, total: catQuestions.length, rated, mastered, avg };
     })
-    .sort((a, b) => {
+    .sort((a: any, b: any) => {
       const pa = a.total > 0 ? a.mastered / a.total : 0;
       const pb = b.total > 0 ? b.mastered / b.total : 0;
       return pb - pa;
     });
 
-  const goToFilter = (filter) => {
+  const goToFilter = (filter: string) => {
     setActiveCategory('all');
     setRatingFilter(filter);
     onPageChange('questions');
