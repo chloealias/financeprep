@@ -13,7 +13,7 @@ import {
 import type { AppTab } from '@/lib/app-tabs';
 import { isStorageAvailable, questionIdKey } from '@/lib/storage';
 
-export function ProgressPage ({ questions, ratings, categories, getCategoryLabel, onReset, onPageChange, setActiveCategory, setRatingFilter }) {
+export function ProgressPage ({ questions, ratings, categories, getCategoryLabel, onReset, onPageChange, setActiveCategory, setRatingFilter }: any) {
   const storageOk = typeof window !== 'undefined' ? isStorageAvailable() : true;
   const totalQuestions = questions.length;
   const ratedCount = Object.keys(ratings).filter((k) => ratings[k] > 0).length;
