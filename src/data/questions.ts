@@ -698,11 +698,11 @@ export const questions = [
       question: "Quelles sont les méthodes de consolidation comptable ?",
       explanation: "Question fondamentale en M&A et TS. À maîtriser pour comprendre les comptes consolidés.",
       steps: [
-        "Trois méthodes selon le pourcentage de contrôle et l'influence : intégration globale, mise en équivalence, intégration proportionnelle (rare en IFRS).",
-        "Intégration globale (>50% de contrôle) : consolidation à 100% des actifs/passifs et P&L de la filiale. Apparition d'intérêts minoritaires si détention < 100%.",
-        "Mise en équivalence (20-50%, influence notable) : la participation est valorisée au bilan à la quote-part de capitaux propres. Au P&L : quote-part du résultat net en une ligne ('Quote-part dans les sociétés mises en équivalence').",
+        "En IFRS 10, le critère est le contrôle (pouvoir de diriger les activités), pas un seuil fixe de %. En entretien, on résume souvent : intégration globale, mise en équivalence, intégration proportionnelle (supprimée en IFRS 11).",
+        "Intégration globale (contrôle — souvent >50% des droits de vote) : consolidation à 100% des actifs/passifs et P&L de la filiale. Intérêts minoritaires au passif si détention < 100%.",
+        "Mise en équivalence (influence notable — souvent 20-50%) : participation au bilan à la quote-part de capitaux propres. Au P&L : quote-part du résultat net en une ligne.",
         "Intégration proportionnelle (anciennement utilisée pour JV) : consolidation au prorata de la détention. Supprimée en IFRS 11 (2014), remplacée par la mise en équivalence pour les JV.",
-        "Goodwill : créé lors de l'acquisition à plus de 50%, calculé comme (Prix payé) − (Quote-part de la juste valeur de l'actif net) à la date d'acquisition.",
+        "Goodwill (IFRS 3) : créé lors d'une acquisition avec contrôle, calculé comme (Prix payé) − (Quote-part de la juste valeur de l'actif net) à la date d'acquisition.",
         "Intérêts minoritaires (NCI) : inscrits au passif du bilan consolidé, représentent la part des actionnaires minoritaires dans les filiales sous contrôle.",
         "Impact en M&A : pour calculer l'Equity Value, on retire les intérêts minoritaires de l'EV. Et on ajoute la valeur des participations mises en équivalence (associates)."
       ],
@@ -968,7 +968,7 @@ export const questions = [
       question: "Quel est le chiffre d'affaires du rayon cyclisme de Decathlon en France ?",
       explanation: "Market sizing type ENPC / Polytechnique. Sizing B2C avec plusieurs étapes de raisonnement.",
       steps: [
-        "Étape 1 — Population française : ~67M habitants. Taux de cyclistes (vélo régulier) : ~30%, soit ~20M.",
+        "Étape 1 — Population française : ~68M habitants. Taux de cyclistes (vélo régulier) : ~30%, soit ~20M.",
         "Étape 2 — Fréquence d'achat : on change de vélo tous les ~7-10 ans, donc 10% renouvellent par an = 2M acheteurs/an.",
         "Étape 3 — Panier moyen vélo : ~400-500€ chez Decathlon (entrée/milieu de gamme). Total marché vélo neuf : ~2M × 450€ = 900M€/an.",
         "Étape 4 — Part de marché Decathlon en cyclisme : leader national, ~25-30% des ventes vélos = ~250M€ pour les vélos seuls.",
@@ -1473,7 +1473,7 @@ export const questions = [
         "Paramètre 5 — Cost of debt : moins sensible mais important. +200 bps de spread = -100-150 bps de TRI.",
         "Paramètre 6 — Hypothèses opérationnelles : marge EBITDA, CAPEX, BFR. Une dégradation de 100 bps de marge sur 5 ans = -150-200 bps de TRI.",
         "Paramètre 7 — Horizon de détention : sortir en 4 ans vs 6 ans peut booster le TRI de 200-300 bps (effet temps).",
-        "Synthèse : les modèles LBO sont LE PLUS sensibles au multiple d'entrée/sortie (≈50% du TRI) et à l'EBITDA growth. Le levier compte mais moins qu'on ne pense. Toujours faire des tableaux de sensibilité 2D."
+        "Synthèse : en analyse de sensibilité, le TRI varie le plus avec le multiple d'entrée/sortie et la croissance d'EBITDA (souvent la moitié de l'écart de TRI entre scénarios). À ne pas confondre avec la décomposition de création de valeur ex post (~50% EBITDA, ~30% deleveraging, ~20% multiple)."
       ],
       tip: "L'analyse de sensibilité bidimensionnelle (entry multiple × EBITDA growth) est LE livrable clé d'un comité d'investissement PE."
     },

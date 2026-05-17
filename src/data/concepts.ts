@@ -61,7 +61,7 @@ export const concepts = [
     table: {
       headers: ["Composant", "Source", "Niveau typique (2026)"],
       rows: [
-        ["Rf (taux sans risque)", "OAT 10 ans", "~3,0%"],
+        ["Rf (taux sans risque)", "OAT 10 ans", "~3,5-3,9% (2026)"],
         ["ERP (prime de risque)", "Damodaran, Fernandez", "5-7%"],
         ["β unlevered", "Comparables délévérés", "0,6 à 1,5"],
         ["Ke (CAPM)", "Rf + β × ERP", "8-14%"],
@@ -92,7 +92,7 @@ export const concepts = [
         ["Augmentation BFR 50€", "Aucun direct", "BFR +50, Cash −50", "CFO −50"],
         ["Emprunt 200€", "−10€ intérêts (an1)", "Cash +200, Dette +200", "CFF +200"],
         ["Dividendes 30€", "Aucun (sortie equity)", "Cash −30, Equity −30", "CFF −30"],
-        ["Provision 40€", "Charge −40€", "Provision +40, Equity −30", "CFO non-cash (+40)"],
+        ["Provision 40€", "Charge −40€ (NI −30 après IS 25%)", "Provision +40, Equity −30", "CFO non-cash (+40)"],
       ]
     },
     visual: '3-statements',
