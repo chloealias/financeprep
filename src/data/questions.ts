@@ -1404,7 +1404,7 @@ export const questions = [
         "Twist : pour avoir une preuve écrasante (Z > 3), il faudrait observer ≥65 piles sur 100. À ce niveau, p < 0,1%."
       ],
       tip: "Cette question révèle la maîtrise des intervalles de confiance. Réponse 'oui/non' est faux — la bonne réponse est probabiliste."
-    },,
+    },
     {
       id: 80,
       category: 'lbo',
