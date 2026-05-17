@@ -1,11 +1,11 @@
 import React from 'react';
 
-export function FilterRadioGroup ({ label, value, onChange, options, activeClass, inactiveClass, labelIcon: LabelIcon }) {
-  const refs = React.useRef([]);
+export function FilterRadioGroup ({ label, value, onChange, options, activeClass, inactiveClass, labelIcon: LabelIcon }: any) {
+  const refs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const groupId = React.useId();
   const labelId = `${groupId}-label`;
 
-  const handleKeyDown = (e, idx) => {
+  const handleKeyDown = (e: React.KeyboardEvent, idx: number) => {
     const last = options.length - 1;
     let next = idx;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = idx === last ? 0 : idx + 1;
@@ -18,7 +18,7 @@ export function FilterRadioGroup ({ label, value, onChange, options, activeClass
     refs.current[next]?.focus();
   };
 
-  const focusedIndex = Math.max(0, options.findIndex((o) => o.id === value));
+  const focusedIndex = Math.max(0, options.findIndex((o: any) => o.id === value));
 
   return (
     <div className="mb-5">
@@ -27,13 +27,13 @@ export function FilterRadioGroup ({ label, value, onChange, options, activeClass
         {label}
       </div>
       <div role="radiogroup" aria-labelledby={labelId} className="flex flex-wrap gap-2">
-        {options.map((opt, idx) => {
+        {options.map((opt: any, idx: number) => {
           const Icon = opt.icon;
           const isActive = value === opt.id;
           return (
             <button
               key={opt.id}
-              ref={(el) => (refs.current[idx] = el)}
+              ref={(el) => { refs.current[idx] = el; }}
               type="button"
               role="radio"
               aria-checked={isActive}
@@ -51,6 +51,3 @@ export function FilterRadioGroup ({ label, value, onChange, options, activeClass
     </div>
   );
 };
-
-// =====================================================
-//  COMPOSANTS BLOCS — Guide
