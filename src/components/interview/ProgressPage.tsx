@@ -179,7 +179,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
       <section aria-label="Progression par catégorie" className="mb-10 bg-white rounded-2xl border border-blue-100 shadow-sm overflow-hidden">
         <h3 className="text-blue-950 font-serif text-xl px-5 sm:px-6 pt-5 sm:pt-6 mb-3">Par catégorie</h3>
         <ul className="divide-y divide-blue-100">
-          {byCategory.map((c) => {
+          {byCategory.map((c: any) => {
             const Icon = c.icon;
             const pct = c.total > 0 ? (c.mastered / c.total) * 100 : 0;
             return (
