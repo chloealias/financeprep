@@ -13,41 +13,41 @@ import {
 import type { AppTab } from '@/lib/app-tabs';
 import { isStorageAvailable, questionIdKey } from '@/lib/storage';
 
-export function ProgressPage ({ questions, ratings, categories, getCategoryLabel, onReset, onPageChange, setActiveCategory, setRatingFilter }) {
+export function ProgressPage ({ questions, ratings, categories, getCategoryLabel, onReset, onPageChange, setActiveCategory, setRatingFilter }: any) {
   const storageOk = typeof window !== 'undefined' ? isStorageAvailable() : true;
   const totalQuestions = questions.length;
   const ratedCount = Object.keys(ratings).filter((k) => ratings[k] > 0).length;
   const masteredCount = Object.keys(ratings).filter((k) => ratings[k] >= 4).length;
-  const weakCount = Object.values(ratings).filter((v) => v > 0 && v <= 2).length;
+  const weakCount = (Object.values(ratings) as number[]).filter((v) => v > 0 && v <= 2).length;
   const unratedCount = totalQuestions - ratedCount;
   const avgRating = ratedCount > 0
-    ? (Object.values(ratings).reduce((a, b) => a + b, 0) / ratedCount).toFixed(1)
+    ? ((Object.values(ratings) as number[]).reduce((a, b) => a + b, 0) / ratedCount).toFixed(1)
     : '—';
   const masteredPct = totalQuestions > 0 ? Math.round((masteredCount / totalQuestions) * 100) : 0;
 
   const ratingDist = [1, 2, 3, 4, 5].map((r) => ({
     rating: r,
-    count: Object.values(ratings).filter((v) => v === r).length,
+    count: (Object.values(ratings) as number[]).filter((v) => v === r).length,
   }));
   const distMax = Math.max(...ratingDist.map((x) => x.count), 1);
 
   const byCategory = categories
-    .filter((c) => c.id !== 'all')
-    .map((cat) => {
-      const catQuestions = questions.filter((q) => q.category === cat.id);
-      const catRatings = catQuestions.map((q) => ratings[questionIdKey(q.id)] || 0);
-      const rated = catRatings.filter((r) => r > 0).length;
-      const mastered = catRatings.filter((r) => r >= 4).length;
-      const avg = rated > 0 ? (catRatings.reduce((a, b) => a + b, 0) / rated) : 0;
+    .filter((c: any) => c.id !== 'all')
+    .map((cat: any) => {
+      const catQuestions = questions.filter((q: any) => q.category === cat.id);
+      const catRatings = catQuestions.map((q: any) => ratings[questionIdKey(q.id)] || 0);
+      const rated = catRatings.filter((r: number) => r > 0).length;
+      const mastered = catRatings.filter((r: number) => r >= 4).length;
+      const avg = rated > 0 ? (catRatings.reduce((a: number, b: number) => a + b, 0) / rated) : 0;
       return { ...cat, total: catQuestions.length, rated, mastered, avg };
     })
-    .sort((a, b) => {
+    .sort((a: any, b: any) => {
       const pa = a.total > 0 ? a.mastered / a.total : 0;
       const pb = b.total > 0 ? b.mastered / b.total : 0;
       return pb - pa;
     });
 
-  const goToFilter = (filter) => {
+  const goToFilter = (filter: string) => {
     setActiveCategory('all');
     setRatingFilter(filter);
     onPageChange('questions');
@@ -156,7 +156,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
           <div className="text-xs uppercase tracking-wider text-blue-600 font-light mb-2">Répartition des notes</div>
           {[5, 4, 3, 2, 1].map((r) => {
             const d = ratingDist.find((x) => x.rating === r);
-            const pct = (d.count / distMax) * 100;
+            const pct = ((d?.count ?? 0) / distMax) * 100;
             const intensity = r >= 4 ? 'bg-blue-800' : r === 3 ? 'bg-blue-500' : 'bg-blue-300';
             return (
               <div key={r} className="flex items-center gap-3">
@@ -168,7 +168,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
                 <div className="flex-1 h-2 bg-blue-50 rounded-full overflow-hidden">
                   <div className={`h-full ${intensity} transition-all`} style={{ width: `${pct}%` }} />
                 </div>
-                <div className="w-8 text-right text-blue-700 font-medium text-xs tabular-nums">{d.count}</div>
+                <div className="w-8 text-right text-blue-700 font-medium text-xs tabular-nums">{d?.count ?? 0}</div>
               </div>
             );
           })}
@@ -179,7 +179,7 @@ export function ProgressPage ({ questions, ratings, categories, getCategoryLabel
       <section aria-label="Progression par catégorie" className="mb-10 bg-white rounded-2xl border border-blue-100 shadow-sm overflow-hidden">
         <h3 className="text-blue-950 font-serif text-xl px-5 sm:px-6 pt-5 sm:pt-6 mb-3">Par catégorie</h3>
         <ul className="divide-y divide-blue-100">
-          {byCategory.map((c) => {
+          {byCategory.map((c: any) => {
             const Icon = c.icon;
             const pct = c.total > 0 ? (c.mastered / c.total) * 100 : 0;
             return (

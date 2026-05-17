@@ -78,8 +78,8 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   const [activeCategory, setActiveCategory] = useState(initialFilters.activeCategory);
   const [activeDifficulty, setActiveDifficulty] = useState(initialFilters.activeDifficulty);
   const [searchQuery, setSearchQuery] = useState(initialFilters.searchQuery);
-  const [expandedQuestion, setExpandedQuestion] = useState(null);
-  const [expandedConcept, setExpandedConcept] = useState(null);
+  const [expandedQuestion, setExpandedQuestion] = useState<any>(null);
+  const [expandedConcept, setExpandedConcept] = useState<any>(null);
   const [ratings, setRatings] = useState<QuestionRatings>(() =>
     typeof window !== 'undefined' ? loadRatings() : {},
   );
@@ -192,14 +192,14 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
   }), [filteredQuestions]);
 
 
-  const getDifficultyColor = (diff) => {
+  const getDifficultyColor = (diff: string) => {
     if (diff === 'basique') return 'bg-sky-100 text-sky-800 border-sky-300';
     if (diff === 'intermédiaire') return 'bg-blue-100 text-blue-800 border-blue-400';
     return 'bg-indigo-100 text-indigo-900 border-indigo-500';
   };
 
 
-  const getCategoryColor = (catId) => catId === 'brainteaser' ? 'bg-amber-50 text-amber-900 border-amber-300' : 'bg-blue-50 text-blue-700 border-blue-200';
+  const getCategoryColor = (catId: string) => catId === 'brainteaser' ? 'bg-amber-50 text-amber-900 border-amber-300' : 'bg-blue-50 text-blue-700 border-blue-200';
 
   const hasProgress = Object.keys(ratings).some(k => ratings[k] > 0);
 

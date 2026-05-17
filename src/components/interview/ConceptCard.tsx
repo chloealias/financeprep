@@ -2,8 +2,8 @@ import React from 'react';
 import { ChevronRight, Library } from 'lucide-react';
 import { Visual } from '@/components/interview/Visual';
 
-export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, index, total, onPrev, onNext }) {
-  const cardRef = React.useRef(null);
+export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, index, total, onPrev, onNext }: any) {
+  const cardRef = React.useRef<HTMLDivElement | null>(null);
   const wasExpanded = React.useRef(isExpanded);
 
   React.useEffect(() => {
@@ -108,15 +108,15 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
                   <table className="w-full text-sm min-w-[480px]">
                     <thead className="bg-blue-900 text-white">
                       <tr>
-                        {concept.table.headers.map((h, i) => (
+                        {concept.table.headers.map((h: any, i: number) => (
                           <th key={i} className="px-3 py-2.5 text-left text-xs uppercase tracking-wider font-semibold">{h}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
-                      {concept.table.rows.map((row, ri) => (
+                      {concept.table.rows.map((row: any[], ri: number) => (
                         <tr key={ri} className={ri % 2 === 0 ? 'bg-blue-50/40' : 'bg-white'}>
-                          {row.map((cell, ci) => (
+                          {row.map((cell: any, ci: number) => (
                             <td key={ci} className={`px-3 py-2.5 ${ci === 0 ? 'font-semibold text-blue-950' : 'text-blue-800'}`}>{cell}</td>
                           ))}
                         </tr>
@@ -147,7 +147,7 @@ export function ConceptCard ({ concept, isExpanded, onToggle, getCategoryLabel, 
                   <span className="text-blue-900 text-xs uppercase tracking-[0.2em] font-bold">Pièges à éviter</span>
                 </div>
                 <ul className="space-y-1.5">
-                  {concept.pitfalls.map((p, i) => (
+                  {concept.pitfalls.map((p: string, i: number) => (
                     <li key={i} className="flex gap-2 text-blue-900 text-sm leading-relaxed font-light">
                       <span className="text-blue-500 flex-shrink-0">•</span><span>{p}</span>
                     </li>
