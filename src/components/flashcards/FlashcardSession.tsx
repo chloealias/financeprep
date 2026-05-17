@@ -22,19 +22,39 @@ type Flashcard = {
   difficulty?: string;
   front: string;
   back: string;
+  backSteps?: string[];
   hint?: string;
+  hubQuestionId?: string;
 };
 
+function summarizeSteps(steps: string[], max = 3): { preview: string; rest: number } {
+  const slice = steps.slice(0, max);
+  const preview = slice
+    .map((s, i) => `${i + 1}. ${s}`)
+    .join("\n\n")
+    .slice(0, 900);
+  return { preview, rest: Math.max(0, steps.length - max) };
+}
+
 function buildAllCards(): Flashcard[] {
-  const qCards: Flashcard[] = (questions as Array<(typeof questions)[number]>).map((q) => ({
-    id: `q-${q!.id}`,
-    source: "question",
-    category: q!.category,
-    difficulty: q!.difficulty,
-    front: q!.question,
-    back: q!.steps?.[0] ?? q!.explanation,
-    hint: q!.tip,
-  }));
+  const qCards: Flashcard[] = (questions as Array<(typeof questions)[number]>).map((q) => {
+    const steps = (q!.steps ?? []) as string[];
+    const { preview, rest } = summarizeSteps(steps);
+    const back =
+      preview +
+      (rest > 0 ? `\n\n… +${rest} étape${rest > 1 ? "s" : ""} (voir fiche complète)` : "");
+    return {
+      id: `q-${q!.id}`,
+      source: "question",
+      category: q!.category,
+      difficulty: q!.difficulty,
+      front: q!.question,
+      back: back || (q!.explanation ?? ""),
+      backSteps: steps,
+      hint: q!.tip,
+      hubQuestionId: String(q!.id),
+    };
+  });
   const cCards: Flashcard[] = (concepts as Array<(typeof concepts)[number]>).map((c) => ({
     id: `c-${c!.id}`,
     source: "concept",
@@ -336,9 +356,18 @@ function CardView({
               <div className="text-blue-700 text-xs uppercase tracking-wider font-medium mb-3">
                 Verso
               </div>
-              <p className="text-blue-900 leading-relaxed font-light text-base sm:text-lg">
+              <p className="text-blue-900 leading-relaxed font-light text-base sm:text-lg whitespace-pre-line">
                 {card.back}
               </p>
+              {card.hubQuestionId && (
+                <Link
+                  to="/"
+                  search={{ tab: "questions" }}
+                  className="inline-block mt-4 text-sm text-blue-700 hover:text-blue-900 font-medium underline"
+                >
+                  Réponse modèle complète dans Questions →
+                </Link>
+              )}
               {card.hint && (
                 <div className="mt-5 rounded-lg bg-gradient-to-r from-indigo-900 to-blue-900 text-white px-4 py-3">
                   <div className="text-blue-200 text-xs uppercase tracking-[0.2em] font-medium mb-1">

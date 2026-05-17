@@ -6,6 +6,8 @@ import { isHubNavTab } from "@/lib/app-tabs";
 import { questions } from "@/data/questions";
 import { concepts } from "@/data/concepts";
 import { ProfileMenu } from "@/components/hub/ProfileMenu";
+import { ProfileBanner } from "@/components/profile/ProfileBanner";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 type HubPage = {
   id: HubNavTab;
@@ -36,6 +38,7 @@ export function AppHubLayout({
   children,
 }: AppHubLayoutProps) {
   const navActivePage = isHubNavTab(activePage) ? activePage : null;
+  const { profile } = useUserProfile();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100 pb-24 sm:pb-0">
@@ -45,20 +48,24 @@ export function AppHubLayout({
       >
         Aller au contenu
       </a>
-      <header className="relative bg-blue-900" style={{ paddingTop: "env(safe-area-inset-top)" }}>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-12 lg:py-16">
+      <ProfileBanner
+        bannerId={profile.bannerId}
+        className="relative"
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
+        <header className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-12 lg:py-16">
           <div className="flex items-center gap-3 sm:gap-4">
             <button
               type="button"
               onClick={() => onPageChange("questions")}
               aria-label="Finance Interview. Retour aux questions."
-              className="sm:hidden flex-1 min-w-0 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+              className="sm:hidden flex-1 min-w-0 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
             >
-              <h1 className="font-medium text-white text-xl tracking-tight truncate m-0">
+              <h1 className="font-medium text-white text-xl tracking-tight truncate m-0 drop-shadow-sm">
                 Finance Interview
               </h1>
             </button>
-            <h1 className="hidden sm:block flex-1 text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight m-0">
+            <h1 className="hidden sm:block flex-1 text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight m-0 drop-shadow-sm">
               Finance Interview
             </h1>
             <ProfileMenu onPageChange={onPageChange} hasProgress={hasProgress} />
@@ -77,14 +84,14 @@ export function AppHubLayout({
                     className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-all border-2 whitespace-nowrap ${
                       isActive
                         ? "bg-white text-blue-950 border-white shadow-lg"
-                        : "bg-white/10 text-blue-100 border-blue-400/30 hover:bg-white/20"
+                        : "bg-white/10 text-blue-100 border-white/30 hover:bg-white/20"
                     }`}
                   >
                     <Icon className="w-4 h-4" aria-hidden="true" />
                     <span>{p.label}</span>
                     {p.count != null && (
                       <span
-                        className={`text-xs px-2 py-0.5 rounded-full ${isActive ? "bg-blue-100 text-blue-800" : "bg-blue-400/20 text-blue-200"}`}
+                        className={`text-xs px-2 py-0.5 rounded-full ${isActive ? "bg-blue-100 text-blue-800" : "bg-white/20 text-blue-100"}`}
                       >
                         {p.count}
                       </span>
@@ -94,8 +101,8 @@ export function AppHubLayout({
               })}
             </div>
           </nav>
-        </div>
-      </header>
+        </header>
+      </ProfileBanner>
 
       <nav
         className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-lg border-t border-blue-200 shadow-[0_-4px_20px_-4px_rgba(30,58,138,0.15)]"

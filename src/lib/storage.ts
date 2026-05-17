@@ -4,6 +4,30 @@ const FILTERS_KEY = "finance-filters-v1";
 const REVIEW_KEY = "finance-review-v1";
 const CV_CHECKLIST_KEY = "finance-cv-checklist-v1";
 const GUIDE_OPEN_BLOC_KEY = "finance-guide-open-bloc-v1";
+const INTERVIEW_SESSIONS_KEY = "finance-interview-sessions-v1";
+const MAX_INTERVIEW_SESSIONS = 10;
+
+export type InterviewSessionAnswer = {
+  itemKind: "opening" | "question" | "deal" | "sector";
+  itemId: string;
+  label: string;
+  category: string;
+  question: string;
+  stars: number;
+  structureOk: boolean;
+  numbersOk: boolean;
+  timeMs: number;
+};
+
+export type InterviewSessionRecord = {
+  id: string;
+  mode: "mini" | "full";
+  startedAt: number;
+  durationMs: number;
+  packSize: number;
+  answers: InterviewSessionAnswer[];
+  avgStars: number;
+};
 
 export type QuestionRatings = Record<string, number>;
 export type CvChecklist = Record<string, boolean>;
@@ -155,4 +179,32 @@ export function isStorageAvailable(): boolean {
   } catch {
     return false;
   }
+}
+
+
+export function loadInterviewSessions(): InterviewSessionRecord[] {
+  const list = readJson<unknown>(INTERVIEW_SESSIONS_KEY, []);
+  if (!Array.isArray(list)) return [];
+  return list.filter(
+    (s): s is InterviewSessionRecord =>
+      !!s &&
+      typeof s === "object" &&
+      typeof (s as InterviewSessionRecord).id === "string" &&
+      Array.isArray((s as InterviewSessionRecord).answers),
+  );
+}
+
+export function saveInterviewSession(session: InterviewSessionRecord): void {
+  const prev = loadInterviewSessions();
+  const next = [session, ...prev.filter((s) => s.id !== session.id)].slice(0, MAX_INTERVIEW_SESSIONS);
+  writeJson(INTERVIEW_SESSIONS_KEY, next);
+}
+
+export function mergeRatingFromInterview(questionId: string, stars: number): QuestionRatings {
+  const ratings = loadRatings();
+  if (stars >= 1 && stars <= 5) {
+    ratings[questionIdKey(questionId)] = stars;
+    saveRatings(ratings);
+  }
+  return ratings;
 }

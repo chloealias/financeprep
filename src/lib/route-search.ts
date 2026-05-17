@@ -40,3 +40,13 @@ export function validateActualiteSearch(search: Record<string, unknown>): Actual
 
   return { deal, bank, sector };
 }
+
+export type FlashcardsSearch = {
+  mode?: "flashcards" | "quiz";
+};
+
+export function validateFlashcardsSearch(search: Record<string, unknown>): FlashcardsSearch {
+  const mode = typeof search.mode === "string" ? search.mode : undefined;
+  if (mode === "flashcards" || mode === "quiz") return { mode };
+  return {};
+}

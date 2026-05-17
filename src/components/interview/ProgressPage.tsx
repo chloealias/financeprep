@@ -1,4 +1,9 @@
-import { ChevronRight, RotateCcw, Star } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ChevronRight, Clock, Mic, RotateCcw, Sparkles, Star } from "lucide-react";
+import { questions } from "@/data/questions";
+import { concepts } from "@/data/concepts";
+import { countBuckets, loadSrsStore } from "@/lib/srs";
+import { loadInterviewSessions } from "@/lib/storage";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -110,7 +115,20 @@ export function ProgressPage({
     applyQuestionFilters({ activeCategory: "all", ratingFilter: filter });
   };
 
-  return (
+  const srsStore = typeof window !== "undefined" ? loadSrsStore() : {};
+  const srsCards = [
+    ...(questions as { id: string | number }[]).map((q) => ({ id: `q-${questionIdKey(q.id)}` })),
+    ...(concepts as { id: string | number }[]).map((c) => ({ id: `c-${questionIdKey(c.id)}` })),
+  ];
+  const srsBuckets =
+    typeof window !== "undefined" ? countBuckets(srsCards, srsStore) : { due: 0, fresh: 0, later: 0, mastered: 0 };
+  const sessions = typeof window !== "undefined" ? loadInterviewSessions() : [];
+  const lastSession = sessions[0];
+  const recentAvg =
+    sessions.length > 0
+      ? sessions.slice(0, 5).reduce((s, x) => s + x.avgStars, 0) / Math.min(5, sessions.length)
+      : null;
+    return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
@@ -205,6 +223,70 @@ export function ProgressPage({
             </div>
           </button>
         </div>
+      </section>
+
+      <section
+        aria-label="Entraînement actif"
+        className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm"
+      >
+        <h3 className="text-blue-950 font-serif text-xl mb-4">Entraînement actif</h3>
+        <div className="grid sm:grid-cols-3 gap-4 mb-4">
+          <div className="rounded-xl bg-indigo-50 border border-indigo-100 p-4">
+            <div className="text-2xl font-serif text-indigo-950 tabular-nums">{srsBuckets.due}</div>
+            <div className="text-xs uppercase tracking-wider text-indigo-700 mt-1">Cartes SRS dues</div>
+          </div>
+          <div className="rounded-xl bg-violet-50 border border-violet-100 p-4">
+            <div className="text-2xl font-serif text-violet-950 tabular-nums">
+              {recentAvg !== null ? recentAvg.toFixed(1) : "—"}
+            </div>
+            <div className="text-xs uppercase tracking-wider text-violet-700 mt-1">
+              Moy. 5 dernières simulations
+            </div>
+          </div>
+          <div className="rounded-xl bg-blue-50 border border-blue-100 p-4">
+            <div className="text-sm font-medium text-blue-950 truncate">
+              {lastSession
+                ? new Date(lastSession.startedAt).toLocaleDateString("fr-FR")
+                : "Aucune session"}
+            </div>
+            <div className="text-xs uppercase tracking-wider text-blue-700 mt-1">Dernière simulation</div>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Link
+            to="/flashcards"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-900 text-white text-sm font-medium hover:bg-blue-950"
+          >
+            <Clock className="w-4 h-4" />
+            Mini-entretien
+          </Link>
+          <Link
+            to="/interview"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-violet-800 text-white text-sm font-medium hover:bg-violet-900"
+          >
+            <Mic className="w-4 h-4" />
+            Simulation 30 min
+          </Link>
+          <Link
+            to="/flashcards"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-blue-200 text-blue-900 text-sm font-medium hover:bg-blue-50"
+          >
+            <Sparkles className="w-4 h-4" />
+            Flashcards SRS
+          </Link>
+        </div>
+        {sessions.length > 0 && (
+          <ul className="mt-5 space-y-2 border-t border-blue-100 pt-4">
+            {sessions.slice(0, 3).map((s) => (
+              <li key={s.id} className="text-sm text-blue-800 flex justify-between gap-2">
+                <span>
+                  {s.mode === "full" ? "Simulation" : "Mini-entretien"} · {s.packSize} questions
+                </span>
+                <span className="tabular-nums text-blue-600">{s.avgStars.toFixed(1)}★</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {/* Vue d'ensemble compacte */}

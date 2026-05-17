@@ -1068,6 +1068,7 @@ export const questions = [
   },
   {
     id: 58,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "intermédiaire",
     question: "Quels sont vos défauts ? (question fit déstabilisante)",
@@ -1086,6 +1087,7 @@ export const questions = [
   },
   {
     id: 59,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "avancé",
     question: "Pourquoi devrions-nous vous embaucher plutôt qu'un autre candidat ?",
@@ -1237,6 +1239,7 @@ export const questions = [
   },
   {
     id: 67,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "intermédiaire",
     question: "Pourquoi voulez-vous travailler chez nous ?",
@@ -1615,6 +1618,7 @@ export const questions = [
   },
   {
     id: 87,
+    interviewSlot: "fit",
     category: "ma",
     difficulty: "intermédiaire",
     question: "Pourquoi voulez-vous travailler chez nous spécifiquement ?",
@@ -1653,6 +1657,7 @@ export const questions = [
   },
   {
     id: 89,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "intermédiaire",
     question: "Quelle est votre plus grande faiblesse ?",
@@ -2316,6 +2321,7 @@ export const questions = [
   // ===== NOUVELLES QUESTIONS — FIT & BRAINTEASERS (Q123-Q130) =====
   {
     id: 123,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "basique",
     question: "Où vous voyez-vous dans 5 ans ?",
@@ -2336,6 +2342,7 @@ export const questions = [
   },
   {
     id: 124,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "intermédiaire",
     question: "Racontez-moi un échec.",
@@ -2356,6 +2363,7 @@ export const questions = [
   },
   {
     id: 125,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "basique",
     question: "Comment gérez-vous le stress et la pression ?",
@@ -2434,6 +2442,7 @@ export const questions = [
   },
   {
     id: 129,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "intermédiaire",
     question: "Pourquoi nous et pas le concurrent direct ?",
@@ -2454,6 +2463,7 @@ export const questions = [
   },
   {
     id: 130,
+    interviewSlot: "fit",
     category: "brainteaser",
     difficulty: "avancé",
     question: "Si vous étiez CEO d'une entreprise pendant 1 an, que feriez-vous ?",

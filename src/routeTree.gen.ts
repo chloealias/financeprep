@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PyramidRouteImport } from './routes/pyramid'
+import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as InterviewRouteImport } from './routes/interview'
 import { Route as GlossaireRouteImport } from './routes/glossaire'
 import { Route as FlashcardsRouteImport } from './routes/flashcards'
 import { Route as ExcelRouteImport } from './routes/excel'
@@ -21,6 +23,16 @@ import { Route as IndexRouteImport } from './routes/index'
 const PyramidRoute = PyramidRouteImport.update({
   id: '/pyramid',
   path: '/pyramid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InterviewRoute = InterviewRouteImport.update({
+  id: '/interview',
+  path: '/interview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlossaireRoute = GlossaireRouteImport.update({
@@ -67,6 +79,8 @@ export interface FileRoutesByFullPath {
   '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
+  '/interview': typeof InterviewRoute
+  '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +91,8 @@ export interface FileRoutesByTo {
   '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
+  '/interview': typeof InterviewRoute
+  '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
 }
 export interface FileRoutesById {
@@ -88,6 +104,8 @@ export interface FileRoutesById {
   '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
+  '/interview': typeof InterviewRoute
+  '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +118,8 @@ export interface FileRouteTypes {
     | '/excel'
     | '/flashcards'
     | '/glossaire'
+    | '/interview'
+    | '/profil'
     | '/pyramid'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +130,8 @@ export interface FileRouteTypes {
     | '/excel'
     | '/flashcards'
     | '/glossaire'
+    | '/interview'
+    | '/profil'
     | '/pyramid'
   id:
     | '__root__'
@@ -120,6 +142,8 @@ export interface FileRouteTypes {
     | '/excel'
     | '/flashcards'
     | '/glossaire'
+    | '/interview'
+    | '/profil'
     | '/pyramid'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +155,8 @@ export interface RootRouteChildren {
   ExcelRoute: typeof ExcelRoute
   FlashcardsRoute: typeof FlashcardsRoute
   GlossaireRoute: typeof GlossaireRoute
+  InterviewRoute: typeof InterviewRoute
+  ProfilRoute: typeof ProfilRoute
   PyramidRoute: typeof PyramidRoute
 }
 
@@ -141,6 +167,20 @@ declare module '@tanstack/react-router' {
       path: '/pyramid'
       fullPath: '/pyramid'
       preLoaderRoute: typeof PyramidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/interview': {
+      id: '/interview'
+      path: '/interview'
+      fullPath: '/interview'
+      preLoaderRoute: typeof InterviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/glossaire': {
@@ -203,6 +243,8 @@ const rootRouteChildren: RootRouteChildren = {
   ExcelRoute: ExcelRoute,
   FlashcardsRoute: FlashcardsRoute,
   GlossaireRoute: GlossaireRoute,
+  InterviewRoute: InterviewRoute,
+  ProfilRoute: ProfilRoute,
   PyramidRoute: PyramidRoute,
 }
 export const routeTree = rootRouteImport

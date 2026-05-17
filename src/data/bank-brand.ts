@@ -25,7 +25,7 @@ export const BANK_BRAND: Record<string, BankBrand> = {
   evercore: { initials: "EVR", color: "#1A3A5C" },
   centerview: { initials: "CV", color: "#0F2B46", logoScale: 1.5 },
   "houlihan-lokey": { initials: "HL", color: "#003366", logoScale: 1.5 },
-  "credit-suisse": { initials: "CS", color: "#003087", logoScale: 1.45 },
+  "credit-suisse": { initials: "CS", color: "#003087", logoOnDark: true, logoScale: 1.15 },
   mediobanca: { initials: "MB", color: "#1B365D", logoScale: 1.5 },
   natixis: { initials: "NAT", color: "#002d62", logoScale: 1.35 },
   "credit-agricole-cib": { initials: "CACIB", color: "#006F4C", logoScale: 1.35 },
