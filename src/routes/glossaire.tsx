@@ -96,7 +96,7 @@ function GlossairePage() {
         <Link
           to="/"
           search={{ tab: "guide" }}
-          className="inline-flex items-center gap-1.5 text-sm text-blue-700 hover:text-blue-900 transition-colors"
+          className="touch-target-bar gap-1.5 text-sm text-blue-700 hover:text-blue-900 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           Retour au guide
@@ -112,14 +112,14 @@ function GlossairePage() {
           <button
             type="button"
             onClick={() => setLearnOpen(true)}
-            className="inline-flex items-center gap-2 rounded-full bg-blue-700 hover:bg-blue-800 transition-colors text-white text-sm font-medium px-4 py-2 shadow-sm"
+            className="touch-target-bar gap-2 rounded-full bg-blue-700 hover:bg-blue-800 transition-colors text-white text-sm font-medium px-4 shadow-sm"
           >
             <GraduationCap className="w-4 h-4" aria-hidden="true" />
             Mode apprentissage
           </button>
         </header>
 
-        <div className="bg-white rounded-3xl border border-blue-100 shadow-sm p-5 sm:p-6 space-y-5">
+        <div className="bg-white rounded-3xl border border-blue-100 shadow-card p-5 sm:p-6 space-y-5">
           <div className="relative">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400"
@@ -246,7 +246,7 @@ function FlashcardMode() {
         <button
           type="button"
           onClick={reshuffle}
-          className="inline-flex items-center gap-1 text-blue-700 hover:text-blue-900"
+          className="touch-target-bar gap-1 text-blue-700 hover:text-blue-900"
         >
           <Shuffle className="w-3.5 h-3.5" /> Mélanger
         </button>
@@ -255,7 +255,7 @@ function FlashcardMode() {
       <button
         type="button"
         onClick={() => setFlipped((f) => !f)}
-        className="w-full min-h-[220px] rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white shadow-sm flex flex-col items-center justify-center gap-3 p-6 text-center transition hover:shadow-md"
+        className="w-full min-h-[220px] rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white shadow-card flex flex-col items-center justify-center gap-3 p-6 text-center transition hover:shadow-card-hover"
       >
         {!flipped ? (
           <>
@@ -280,14 +280,14 @@ function FlashcardMode() {
         <button
           type="button"
           onClick={prev}
-          className="inline-flex items-center gap-1 rounded-full border border-blue-100 px-3 py-1.5 text-sm text-blue-800 hover:bg-blue-50"
+          className="touch-target-bar gap-1 rounded-full border border-blue-100 px-3 text-sm text-blue-800 hover:bg-blue-50"
         >
           <ChevronLeft className="w-4 h-4" /> Précédent
         </button>
         <button
           type="button"
           onClick={next}
-          className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 py-1.5 text-sm"
+          className="touch-target-bar gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 text-sm"
         >
           Suivant <ChevronRight className="w-4 h-4" />
         </button>
@@ -412,14 +412,14 @@ function QcmMode() {
           <button
             type="button"
             onClick={restartSame}
-            className="inline-flex items-center gap-1 rounded-full border border-blue-100 bg-white hover:bg-blue-50 text-blue-800 px-4 py-2 text-sm"
+            className="touch-target-bar gap-1 rounded-full border border-blue-100 bg-white hover:bg-blue-50 text-blue-800 px-4 text-sm"
           >
             <RotateCw className="w-4 h-4" /> Recommencer la même session
           </button>
           <button
             type="button"
             onClick={restart}
-            className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 text-sm"
+            className="touch-target-bar gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 text-sm"
           >
             <Shuffle className="w-4 h-4" /> Nouveau quiz
           </button>
@@ -447,7 +447,7 @@ function QcmMode() {
               key={label}
               type="button"
               onClick={() => startQuiz(opt)}
-              className={`text-xs rounded-full px-2.5 py-1 transition border ${
+              className={`touch-target-bar text-xs rounded-full px-2.5 transition border ${
                 active
                   ? "bg-blue-700 text-white border-blue-700"
                   : "bg-white text-slate-600 border-blue-100 hover:border-blue-300"
@@ -480,7 +480,7 @@ function QcmMode() {
               type="button"
               onClick={() => choose(c)}
               disabled={!!picked}
-              className={`w-full text-left px-4 py-2.5 rounded-xl border text-sm transition flex items-start justify-between gap-2 ${cls}`}
+              className={`w-full touch-target-bar text-left px-4 rounded-xl border text-sm transition justify-between gap-2 ${cls}`}
             >
               <span className="text-slate-800">{c}</span>
               {picked && isCorrect && <Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />}
@@ -497,7 +497,7 @@ function QcmMode() {
           type="button"
           onClick={next}
           disabled={!picked}
-          className="inline-flex items-center gap-1 rounded-full bg-blue-700 hover:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-1.5 text-sm"
+          className="touch-target-bar gap-1 rounded-full bg-blue-700 hover:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 text-sm"
         >
           {idx + 1 >= total ? "Voir le résultat" : "Suivant"} <ChevronRight className="w-4 h-4" />
         </button>

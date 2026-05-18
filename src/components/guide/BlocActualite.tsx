@@ -132,7 +132,7 @@ function DealDetail({ deal }: { deal: MaDeal }) {
       )}
 
       <DealSection title={isTrend ? "Panorama" : "Parties"}>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {deal.parties.map((p, i) => (
             <div key={i}>
               <span className="text-blue-600 text-xs font-semibold uppercase tracking-wider">
@@ -183,7 +183,7 @@ function DealDetail({ deal }: { deal: MaDeal }) {
           href={deal.ftUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-blue-600 text-xs hover:text-blue-900 transition-colors"
+          className="touch-target-bar gap-1.5 text-blue-600 text-xs hover:text-blue-900 transition-colors"
         >
           <ExternalLink className="w-3.5 h-3.5" />
           Lire dans le Financial Times
@@ -339,7 +339,7 @@ export function BlocActualite() {
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {filtered.map((deal) => {
           const isOpen = openDeal === deal.id;
           const isDeepLinked = dealFromUrl === deal.id;

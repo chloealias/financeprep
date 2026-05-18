@@ -11,6 +11,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { StarRating } from "@/components/interview/StarRating";
+import { hubBadgeClass } from "@/components/guide/guide-ui";
 import { getCategoryLabel } from "@/lib/categories";
 import {
   buildInterviewPack,
@@ -212,7 +213,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium"
+          className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           Quitter
@@ -244,23 +245,21 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
         />
       </div>
 
-      <div className="mb-4 flex items-center gap-2 flex-wrap">
-        <span className="text-xs uppercase tracking-wider text-indigo-800 font-semibold bg-indigo-50 px-2 py-1 rounded">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <span className="text-xs font-medium uppercase tracking-wider text-indigo-800 bg-indigo-50 py-1 px-2.5 rounded border border-indigo-200">
           {packItemLabel(current)}
         </span>
         {current.kind === "question" && (
           <>
-            <span className="text-xs uppercase tracking-wider text-blue-700">
+            <span className={`${hubBadgeClass} uppercase tracking-wider`}>
               {getCategoryLabel(current.category)}
             </span>
-            <span className="text-xs px-2 py-0.5 rounded bg-white border border-blue-200 text-blue-700 capitalize">
-              {current.difficulty}
-            </span>
+            <span className={`${hubBadgeClass} capitalize`}>{current.difficulty}</span>
           </>
         )}
       </div>
 
-      <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-lg overflow-hidden">
+      <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-card overflow-hidden">
         <div className="px-6 py-8">
           <h2 className="text-2xl sm:text-3xl font-serif text-blue-950 leading-snug mb-6">
             {itemQuestion(current)}
@@ -474,7 +473,7 @@ function InterviewResults({
             type="button"
             onClick={addWeakToSrs}
             disabled={srsAdded || weak.every((a) => !a.srsId)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-900 text-white text-sm font-medium disabled:opacity-50"
+            className="touch-target-bar gap-2 px-4 rounded-lg bg-indigo-900 text-white text-sm font-medium disabled:opacity-50"
           >
             <Sparkles className="w-4 h-4" />
             {srsAdded ? "Ajouté au SRS" : "Ajouter les ratées au SRS"}
@@ -553,7 +552,7 @@ export function InterviewSessionSetup({
       <button
         type="button"
         onClick={onBack}
-        className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+        className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Retour

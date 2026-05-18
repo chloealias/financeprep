@@ -19,7 +19,7 @@ export function StarRating({
             e.stopPropagation();
             onChange(star === value ? 0 : star);
           }}
-          className="transition-transform hover:scale-110"
+          className="touch-target transition-transform hover:scale-110"
           aria-label={`Noter ${star} étoiles`}
         >
           <Star

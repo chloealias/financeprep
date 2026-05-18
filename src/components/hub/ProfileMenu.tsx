@@ -115,7 +115,7 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
         to="/profil"
         role="menuitem"
         onClick={() => setOpen(false)}
-        className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm text-blue-950 hover:bg-blue-50"
+        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-blue-950 hover:bg-blue-50"
       >
         <ProfileAvatar profile={profile} size="sm" />
         <span className="font-medium truncate">{profile.firstName?.trim() || "Profil"}</span>
@@ -127,7 +127,7 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
           onPageChange("progress");
           setOpen(false);
         }}
-        className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm text-blue-950 hover:bg-blue-50"
+        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-blue-950 hover:bg-blue-50"
       >
         <BarChart3 className="w-4 h-4 text-blue-600" />
         Progression
@@ -140,7 +140,7 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
           onPageChange("banques");
           setOpen(false);
         }}
-        className="w-full flex items-center gap-3 px-3 py-2.5 text-left text-sm text-blue-950 hover:bg-blue-50"
+        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-blue-950 hover:bg-blue-50"
       >
         <Landmark className="w-4 h-4 text-blue-600" />
         {targetCount > 0 ? `Banques (${targetCount})` : "Banques"}
@@ -177,7 +177,7 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
         aria-label="Profil"
         aria-expanded={open}
         aria-haspopup="menu"
-        className="relative rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+        className="touch-target rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
       >
         <ProfileAvatar profile={profile} size="sm" className="border-2 border-white/40" />
         {showCountdownBadge && (

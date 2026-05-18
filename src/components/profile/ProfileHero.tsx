@@ -19,7 +19,7 @@ export function ProfileHero({
   onOpenAppearance,
 }: ProfileHeroProps) {
   return (
-    <section className="mb-4 rounded-2xl overflow-hidden border border-blue-100 shadow-sm">
+    <section className="mb-4 rounded-2xl overflow-hidden border border-blue-100 shadow-card">
       <ProfileBanner bannerId={profile.bannerId} className="relative">
         <div
           className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/30 pointer-events-none"

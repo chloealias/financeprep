@@ -50,7 +50,7 @@ function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
       <Link
         to="/"
-        className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+        className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Retour au guide
@@ -88,7 +88,7 @@ function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
         />
         <Link
           to="/interview"
-          className="group text-left rounded-2xl bg-white border-2 border-blue-100 hover:border-blue-300 shadow-md hover:shadow-xl transition-all overflow-hidden"
+          className="group text-left rounded-2xl bg-white border-2 border-blue-100 hover:border-blue-300 shadow-card hover:shadow-card-elevated transition-all overflow-hidden"
         >
           <div className="px-6 py-5 bg-gradient-to-br from-violet-700 to-indigo-900 text-white">
             <div className="flex items-center gap-3">
@@ -136,7 +136,7 @@ function ToolCard({
     <button
       type="button"
       onClick={onClick}
-      className="group text-left rounded-2xl bg-white border-2 border-blue-100 hover:border-blue-300 shadow-md hover:shadow-xl transition-all overflow-hidden"
+      className="group text-left rounded-2xl bg-white border-2 border-blue-100 hover:border-blue-300 shadow-card hover:shadow-card-elevated transition-all overflow-hidden"
     >
       <div className={`px-6 py-5 bg-gradient-to-br ${accent} text-white`}>
         <div className="flex items-center gap-3">

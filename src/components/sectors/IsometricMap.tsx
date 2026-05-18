@@ -35,7 +35,7 @@ export function IsometricMap({ onSectorSelect, selectedSectorId = null }: Isomet
 
   return (
     <div className="mb-8">
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-card overflow-hidden">
         <svg
           viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
           className="w-full h-auto max-h-[min(50vh,360px)] block"

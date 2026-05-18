@@ -81,7 +81,8 @@ export function GuideChipButton({
   size?: "sm" | "md";
   ariaPressed?: boolean;
 }) {
-  const sizeClass = size === "sm" ? "px-3 py-2 min-h-11 text-xs" : "px-4 py-2 min-h-11 text-sm";
+  const sizeClass =
+    size === "sm" ? "px-3 min-h-11 min-w-11 text-xs" : "px-4 min-h-11 text-sm";
   return (
     <button
       type="button"
@@ -118,7 +119,7 @@ export function GuideModuleLink({ to, tag, title, icon: Icon, ...rest }: GuideMo
       search={search}
       className="block group rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
     >
-      <article className="bg-white rounded-2xl border-2 border-blue-100 shadow-sm transition-all group-hover:border-blue-200 group-hover:shadow-md">
+      <article className="bg-white rounded-2xl border-2 border-blue-100 shadow-card transition-all group-hover:border-blue-200 group-hover:shadow-card-hover">
         <div className="px-6 sm:px-8 py-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 min-w-0">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center shrink-0">
@@ -142,7 +143,14 @@ export function GuideModuleLink({ to, tag, title, icon: Icon, ...rest }: GuideMo
 }
 
 /** Carte interne standard des blocs guide */
-export const guideCardClass = "bg-white border-2 border-blue-100 rounded-xl";
+export const guideCardClass = "bg-white border-2 border-blue-100 rounded-xl shadow-card";
+
+/** Groupe de badges/chips (gap 8px) */
+export const hubBadgeGroupClass = "flex flex-wrap items-center gap-2";
+
+/** Badge hub — padding 4px 10px */
+export const hubBadgeClass =
+  "inline-flex items-center gap-1.5 text-xs font-medium py-1 px-2.5 rounded border bg-blue-50 text-blue-800 border-blue-100";
 
 /** Encadré d'avertissement (actualité, tips) */
 export const guideAlertClass =

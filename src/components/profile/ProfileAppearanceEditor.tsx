@@ -70,7 +70,7 @@ export function ProfileAppearanceEditor({
           <button
             type="button"
             onClick={() => setAvatarTab("icon")}
-            className={`flex-1 py-1.5 text-xs font-medium rounded-md ${
+            className={`flex-1 touch-target-bar justify-center text-xs font-medium rounded-md ${
               avatarTab === "icon" ? "bg-white shadow-sm text-blue-950" : "text-slate-600"
             }`}
           >
@@ -82,7 +82,7 @@ export function ProfileAppearanceEditor({
               setAvatarTab("pattern");
               if (profile.avatarKind !== "pattern") selectPattern();
             }}
-            className={`flex-1 py-1.5 text-xs font-medium rounded-md flex items-center justify-center gap-1 ${
+            className={`flex-1 touch-target-bar justify-center text-xs font-medium rounded-md gap-1 ${
               avatarTab === "pattern" ? "bg-white shadow-sm text-blue-950" : "text-slate-600"
             }`}
           >
@@ -103,7 +103,7 @@ export function ProfileAppearanceEditor({
                   type="button"
                   title={label}
                   onClick={() => selectIcon(id)}
-                  className={`aspect-square rounded-xl flex items-center justify-center transition-all ${
+                  className={`aspect-square min-h-11 min-w-11 rounded-xl flex items-center justify-center transition-all ${
                     selected
                       ? "ring-2 ring-blue-500 ring-offset-2 scale-105"
                       : "opacity-85 hover:opacity-100 hover:scale-105"
@@ -122,7 +122,7 @@ export function ProfileAppearanceEditor({
             <button
               type="button"
               onClick={() => selectPattern()}
-              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-blue-200 text-sm text-blue-900 hover:bg-blue-50"
+              className="touch-target-bar gap-2 px-3 rounded-lg border border-blue-200 text-sm text-blue-900 hover:bg-blue-50"
             >
               <RefreshCw className="w-4 h-4" />
               Nouveau motif

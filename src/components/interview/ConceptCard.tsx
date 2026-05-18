@@ -2,6 +2,7 @@ import React from "react";
 import { ChevronRight, Library } from "lucide-react";
 import { Visual } from "@/components/interview/Visual";
 import { concepts } from "@/data/concepts";
+import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 
 type Concept = (typeof concepts)[number];
@@ -42,14 +43,14 @@ export function ConceptCard({
   return (
     <div
       ref={cardRef}
-      className={`relative z-0 bg-white rounded-2xl shadow-sm border transition-colors duration-200 overflow-hidden scroll-mt-48 ${
-        isExpanded ? "border-blue-500 shadow-md" : "border-blue-100 hover:border-blue-300"
+      className={`relative z-0 bg-white rounded-2xl shadow-card border transition-colors duration-200 overflow-hidden scroll-mt-48 ${
+        isExpanded ? "border-blue-500 shadow-card-elevated" : "border-blue-100 hover:border-blue-300 hover:shadow-card-hover"
       }`}
     >
       <button
         onClick={onToggle}
         aria-expanded={isExpanded}
-        className="w-full text-left p-4 sm:p-5 flex items-start gap-3 sm:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-2xl"
+        className="w-full min-h-11 text-left p-4 sm:p-5 flex items-start gap-3 sm:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-2xl"
       >
         <div className="flex-shrink-0">
           <div
@@ -61,11 +62,11 @@ export function ConceptCard({
           </div>
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-500 tabular-nums">
+          <div className={`${hubBadgeGroupClass} mb-2`}>
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-500 tabular-nums py-1 px-2.5">
               {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
-            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+            <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold ${hubBadgeClass}`}>
               {getCategoryLabel(concept.category)}
             </span>
           </div>
@@ -215,7 +216,7 @@ export function ConceptCard({
                 onClick={onPrev}
                 disabled={index === 0}
                 aria-label="Concept précédent"
-                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 py-2 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                className="touch-target-bar gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
               >
                 <ChevronRight className="w-4 h-4 rotate-180" />
                 <span className="hidden sm:inline">Précédent</span>
@@ -223,7 +224,7 @@ export function ConceptCard({
               <button
                 type="button"
                 onClick={onToggle}
-                className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-light px-4 py-2 rounded-lg border border-blue-200 hover:border-blue-400 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-light px-4 rounded-lg border border-blue-200 hover:border-blue-400 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
               >
                 <span className="tabular-nums text-blue-500 text-xs">
                   {index + 1}/{total}
@@ -235,7 +236,7 @@ export function ConceptCard({
                 onClick={onNext}
                 disabled={index === total - 1}
                 aria-label="Concept suivant"
-                className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 py-2 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                className="touch-target-bar gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
               >
                 <span className="hidden sm:inline">Suivant</span>
                 <ChevronRight className="w-4 h-4" />

@@ -63,7 +63,7 @@ export function BankLogo({
               e.stopPropagation();
               setLightboxOpen(true);
             }}
-            className={`rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 ${className}`}
+            className={`touch-target rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 ${className}`}
             aria-label={`Agrandir le logo ${label}`}
           >
             {logoContent}

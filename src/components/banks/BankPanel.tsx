@@ -29,14 +29,14 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
   return (
     <div
       key={bank.id}
-      className="mt-3 bg-white rounded-2xl border-2 border-blue-300 shadow-xl p-4 sm:p-8 relative animate-in fade-in slide-in-from-bottom-2 duration-300"
+      className="mt-3 bg-white rounded-2xl border-2 border-blue-300 shadow-card-elevated p-4 sm:p-8 relative animate-in fade-in slide-in-from-bottom-2 duration-300"
       role="region"
       aria-label={`Fiche ${bank.name}`}
     >
       <button
         type="button"
         onClick={onClose}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 rounded-full border border-blue-200 text-blue-400 hover:text-blue-700 hover:bg-blue-50 flex items-center justify-center transition-all"
+        className="absolute top-4 right-4 sm:top-6 sm:right-6 touch-target rounded-full border border-blue-200 text-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all"
         aria-label="Fermer la fiche"
       >
         <X className="w-4 h-4" />

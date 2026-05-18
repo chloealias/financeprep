@@ -21,7 +21,7 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+          className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Retour

@@ -243,7 +243,7 @@ export function BankHubPage() {
                   {BANK_CATEGORY_META[categoryId].description}
                 </p>
               </div>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {banks.map((bank) => {
                   const dealCount = getDealsForBank(bank.name).length;
                   const isFav = isTargetBank(bank.id);
@@ -259,7 +259,7 @@ export function BankHubPage() {
                         <button
                           type="button"
                           onClick={(e) => handleToggleTarget(bank.id, e)}
-                          className="absolute top-1 right-1 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full text-blue-300 hover:text-amber-500 hover:bg-amber-50 transition-colors"
+                          className="absolute top-1 right-1 z-10 touch-target rounded-full text-blue-300 hover:text-amber-500 hover:bg-amber-50 transition-colors"
                           aria-label={
                             isFav ? "Retirer des banques cibles" : "Ajouter aux banques cibles"
                           }

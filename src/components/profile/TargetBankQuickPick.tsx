@@ -43,7 +43,7 @@ export function TargetBankQuickPick({ targetIds, onChange, onViewAll }: TargetBa
               <Link
                 to="/"
                 search={{ tab: "banques", bank: id }}
-                className="p-1.5 mr-0.5 rounded-full text-blue-500 hover:text-blue-900 hover:bg-blue-50"
+                className="touch-target mr-0.5 rounded-full text-blue-500 hover:text-blue-900 hover:bg-blue-50"
                 aria-label={`Fiche ${bank.name}`}
                 title="Voir la fiche banque"
               >

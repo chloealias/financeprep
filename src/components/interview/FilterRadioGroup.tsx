@@ -73,7 +73,7 @@ export function FilterRadioGroup({
               tabIndex={idx === focusedIndex ? 0 : -1}
               onClick={() => onChange(opt.id)}
               onKeyDown={(e) => handleKeyDown(e, idx)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-blue-500 ${isActive ? activeClass : inactiveClass}`}
+              className={`touch-target-bar gap-2 px-4 rounded-lg text-sm font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-blue-500 ${isActive ? activeClass : inactiveClass}`}
             >
               {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
               {opt.label}

@@ -14,18 +14,18 @@ interface GuideCardProps {
 
 export function GuideCard({ guide }: GuideCardProps) {
   return (
-    <div className="bg-white rounded-3xl border border-blue-100 shadow-sm p-5 space-y-4 transition-shadow hover:shadow-md hover:border-blue-200">
+    <div className="bg-white rounded-3xl border border-blue-100 shadow-card p-5 space-y-4 transition-shadow hover:shadow-card-hover hover:border-blue-200">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 font-semibold flex-shrink-0">
             {String(guide.id).padStart(2, "0")}
           </div>
 
-          <div className="flex gap-2 flex-wrap">
-            <span className="px-3 py-1 text-xs rounded-md border border-yellow-300 text-yellow-700 bg-yellow-50">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-medium py-1 px-2.5 rounded-md border border-yellow-300 text-yellow-700 bg-yellow-50">
               {guide.category}
             </span>
-            <span className="px-3 py-1 text-xs rounded-md border border-blue-300 text-blue-700 bg-blue-50">
+            <span className="text-xs font-medium py-1 px-2.5 rounded-md border border-blue-300 text-blue-700 bg-blue-50">
               {guide.level}
             </span>
           </div>

@@ -35,7 +35,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
   const [dangerOpen, setDangerOpen] = useState(false);
 
   return (
-    <section className="mb-10 rounded-2xl border border-blue-100 bg-white overflow-hidden shadow-sm">
+    <section className="mb-10 rounded-2xl border border-blue-100 bg-white overflow-hidden shadow-card">
       <div className="px-5 py-4 border-b border-blue-50">
         <h2 className="text-blue-950 font-serif text-lg">Données</h2>
         <p className="text-xs text-blue-500 mt-0.5">
@@ -102,7 +102,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
           <div className="flex gap-2">
             <button
               type="button"
-              className="px-3 py-1.5 rounded-lg bg-blue-900 text-white text-xs font-medium"
+              className="touch-target-bar px-3 rounded-lg bg-blue-900 text-white text-xs font-medium"
               onClick={() => {
                 const result = importBackup(pendingImport.json);
                 if (result.ok) {
@@ -116,7 +116,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
             </button>
             <button
               type="button"
-              className="px-3 py-1.5 rounded-lg border border-amber-300 text-xs"
+              className="touch-target-bar px-3 rounded-lg border border-amber-300 text-xs"
               onClick={() => setPendingImport(null)}
             >
               Annuler

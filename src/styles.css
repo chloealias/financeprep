@@ -59,6 +59,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Ombres cards — teinte navy (blue-900), style Stripe */
+  --shadow-card: 0 2px 8px -2px rgb(30 58 138 / 0.08), 0 4px 16px -4px rgb(30 58 138 / 0.05);
+  --shadow-card-hover:
+    0 4px 12px -2px rgb(30 58 138 / 0.1), 0 8px 24px -6px rgb(30 58 138 / 0.07);
+  --shadow-card-elevated:
+    0 8px 24px -4px rgb(30 58 138 / 0.12), 0 16px 40px -8px rgb(30 58 138 / 0.06);
 }
 
 :root {
@@ -151,6 +157,21 @@
   html {
     scroll-behavior: auto;
   }
+}
+
+/* Zones tactiles — Apple HIG min. 44×44px */
+@utility touch-target {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+}
+
+@utility touch-target-bar {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

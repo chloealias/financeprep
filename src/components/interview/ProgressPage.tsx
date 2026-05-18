@@ -148,7 +148,7 @@ export function ProgressPage({
           </p>
         )}
 
-        <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
+        <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card">
           <div className="flex items-baseline justify-between gap-3 mb-3">
             <span className="text-blue-700 text-sm font-light">Questions maîtrisées (≥ 4★)</span>
             <span className="text-blue-950 font-serif text-lg">
@@ -206,7 +206,7 @@ export function ProgressPage({
             onClick={() => goToFilter("unrated")}
             disabled={unratedCount === 0}
             aria-label={`Découvrir les ${unratedCount} questions non notées`}
-            className="group text-left bg-white hover:bg-blue-50 disabled:opacity-60 disabled:cursor-not-allowed text-blue-950 rounded-2xl p-5 border border-blue-200 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+            className="group text-left bg-white hover:bg-blue-50 disabled:opacity-60 disabled:cursor-not-allowed text-blue-950 rounded-2xl p-5 border border-blue-200 transition-colors shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
           >
             <div className="text-xs uppercase tracking-[0.2em] text-blue-600 font-light mb-2">
               À découvrir
@@ -229,7 +229,7 @@ export function ProgressPage({
 
       <section
         aria-label="Entraînement actif"
-        className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm"
+        className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card"
       >
         <h3 className="text-blue-950 font-serif text-xl mb-4">Entraînement actif</h3>
         <div className="grid sm:grid-cols-3 gap-4 mb-4">
@@ -261,21 +261,21 @@ export function ProgressPage({
         <div className="flex flex-wrap gap-3">
           <Link
             to="/flashcards"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-900 text-white text-sm font-medium hover:bg-blue-950"
+            className="touch-target-bar gap-2 px-4 rounded-xl bg-blue-900 text-white text-sm font-medium hover:bg-blue-950"
           >
             <Clock className="w-4 h-4" />
             Mini-entretien
           </Link>
           <Link
             to="/interview"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-violet-800 text-white text-sm font-medium hover:bg-violet-900"
+            className="touch-target-bar gap-2 px-4 rounded-xl bg-violet-800 text-white text-sm font-medium hover:bg-violet-900"
           >
             <Mic className="w-4 h-4" />
             Simulation 30 min
           </Link>
           <Link
             to="/flashcards"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-blue-200 text-blue-900 text-sm font-medium hover:bg-blue-50"
+            className="touch-target-bar gap-2 px-4 rounded-xl border border-blue-200 text-blue-900 text-sm font-medium hover:bg-blue-50"
           >
             <Sparkles className="w-4 h-4" />
             Flashcards SRS
@@ -298,7 +298,7 @@ export function ProgressPage({
       {/* Vue d'ensemble compacte */}
       <section
         aria-label="Vue d'ensemble"
-        className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm"
+        className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card"
       >
         <h3 className="text-blue-950 font-serif text-xl mb-5">Vue d'ensemble</h3>
         <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-6">
@@ -362,7 +362,7 @@ export function ProgressPage({
       {/* Par catégorie */}
       <section
         aria-label="Progression par catégorie"
-        className="mb-10 bg-white rounded-2xl border border-blue-100 shadow-sm overflow-hidden"
+        className="mb-10 bg-white rounded-2xl border border-blue-100 shadow-card overflow-hidden"
       >
         <h3 className="text-blue-950 font-serif text-xl px-5 sm:px-6 pt-5 sm:pt-6 mb-3">
           Par catégorie
@@ -417,7 +417,7 @@ export function ProgressPage({
       <div className="text-center">
         <button
           onClick={onReset}
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-900 text-sm font-light underline underline-offset-4"
+          className="touch-target-bar gap-2 text-blue-600 hover:text-blue-900 text-sm font-light underline underline-offset-4"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           Réinitialiser toutes mes notes

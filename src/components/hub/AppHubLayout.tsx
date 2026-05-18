@@ -41,7 +41,7 @@ export function AppHubLayout({
   const { profile } = useUserProfile();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100 pb-24 sm:pb-0">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100 pb-[calc(6rem+env(safe-area-inset-bottom))] sm:pb-0">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-white focus:text-blue-900 focus:rounded-lg focus:shadow-lg focus:ring-2 focus:ring-blue-400"
@@ -81,7 +81,7 @@ export function AppHubLayout({
                     key={p.id}
                     type="button"
                     onClick={() => onPageChange(p.id)}
-                    className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-all border-2 whitespace-nowrap ${
+                    className={`touch-target-bar gap-2.5 px-5 rounded-xl text-sm font-medium transition-all border-2 whitespace-nowrap ${
                       isActive
                         ? "bg-white text-blue-950 border-white shadow-lg"
                         : "bg-white/10 text-blue-100 border-white/30 hover:bg-white/20"
@@ -105,8 +105,7 @@ export function AppHubLayout({
       </ProfileBanner>
 
       <nav
-        className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-lg border-t border-blue-200 shadow-[0_-4px_20px_-4px_rgba(30,58,138,0.15)]"
-        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-lg border-t border-blue-200 shadow-[0_-4px_20px_-4px_rgba(30,58,138,0.15)] pb-[env(safe-area-inset-bottom)]"
         aria-label="Navigation mobile"
       >
         <div className="flex items-stretch justify-around">

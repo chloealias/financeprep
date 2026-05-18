@@ -43,7 +43,7 @@ export function ImageLightbox({ open, onClose, src, alt, subtitle }: ImageLightb
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          className="absolute top-4 right-4 z-10 touch-target rounded-full bg-white/15 text-white hover:bg-white/25 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           style={{
             top: "max(1rem, env(safe-area-inset-top))",
             right: "max(1rem, env(safe-area-inset-right))",

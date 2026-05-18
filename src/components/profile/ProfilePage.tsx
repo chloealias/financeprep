@@ -110,7 +110,7 @@ export function ProfilePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="h-10 w-32 rounded-lg bg-blue-100 animate-pulse mb-8" />
         <div className="h-48 rounded-2xl bg-blue-100/80 animate-pulse mb-8" />
-        <div className="grid sm:grid-cols-3 gap-3 mb-8">
+        <div className="grid sm:grid-cols-3 gap-4 mb-8">
           <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
           <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
           <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
@@ -123,7 +123,7 @@ export function ProfilePage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <Link
         to="/"
-        className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+        className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Retour au guide
@@ -144,7 +144,7 @@ export function ProfilePage() {
         onChange={update}
       />
 
-      <section className="mb-8 grid sm:grid-cols-3 gap-3">
+      <section className="mb-8 grid sm:grid-cols-3 gap-4">
         <label className="block">
           <span className="text-[10px] uppercase tracking-wider text-blue-500 mb-1 block">
             Entretien
@@ -191,7 +191,7 @@ export function ProfilePage() {
       </section>
 
       {/* Objectif entretien */}
-      <section className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
+      <section className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card">
         <h2 className="text-blue-950 font-serif text-lg mb-3">Objectifs</h2>
 
         <p className="mb-5 text-xs text-blue-600">
@@ -235,7 +235,7 @@ export function ProfilePage() {
                         sectorIds: toggleProfileSector(profile.sectorIds ?? [], id),
                       })
                     }
-                    className="px-3 py-1.5"
+                    className="touch-target-bar px-3"
                     aria-pressed={selected}
                   >
                     {SECTOR_DATA[id].name}
@@ -243,7 +243,7 @@ export function ProfilePage() {
                   <Link
                     to="/"
                     search={{ tab: "secteurs", sector: id }}
-                    className={`p-1.5 rounded-r-lg ${
+                    className={`touch-target rounded-r-lg ${
                       selected
                         ? "text-white/80 hover:text-white hover:bg-indigo-800"
                         : "text-blue-500 hover:text-blue-900 hover:bg-blue-50"
@@ -269,7 +269,7 @@ export function ProfilePage() {
                 key={s}
                 type="button"
                 onClick={() => update({ defaultPackSize: s })}
-                className={`px-4 py-2 rounded-lg border-2 text-sm font-medium ${
+                className={`touch-target-bar px-4 rounded-lg border-2 text-sm font-medium ${
                   profile.defaultPackSize === s
                     ? "bg-blue-900 text-white border-blue-900"
                     : "border-blue-200 text-blue-900"
@@ -359,7 +359,7 @@ export function ProfilePage() {
       </section>
 
       {/* Activité */}
-      <section className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
+      <section className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-blue-950 font-serif text-xl">Activité</h2>
           <Link
@@ -429,14 +429,14 @@ function SessionRow({ session }: { session: InterviewSessionRecord }) {
         <button
           type="button"
           onClick={() => downloadSessionReport(session)}
-          className="text-blue-700 hover:text-blue-900 font-medium text-xs"
+          className="touch-target-bar text-blue-700 hover:text-blue-900 font-medium text-xs"
         >
           Rapport
         </button>
         <Link
           to={session.mode === "full" ? "/interview" : "/flashcards"}
           search={session.mode === "full" ? undefined : { mode: "quiz" }}
-          className="text-blue-700 hover:text-blue-900 font-medium text-xs"
+          className="touch-target-bar text-blue-700 hover:text-blue-900 font-medium text-xs"
         >
           Refaire
         </Link>
@@ -470,8 +470,8 @@ function TodayCard({
     disabled
       ? "opacity-50 cursor-not-allowed border-blue-100 bg-white"
       : highlight
-        ? "border-violet-300 bg-violet-50 hover:border-violet-400 shadow-sm"
-        : "border-blue-100 bg-white hover:border-blue-300 shadow-sm"
+        ? "border-violet-300 bg-violet-50 hover:border-violet-400 shadow-card"
+        : "border-blue-100 bg-white hover:border-blue-300 shadow-card"
   }`;
 
   const inner = (

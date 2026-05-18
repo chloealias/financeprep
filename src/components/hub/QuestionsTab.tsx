@@ -27,6 +27,7 @@ import {
 import { Visual } from "@/components/interview/Visual";
 import { StarRating } from "@/components/interview/StarRating";
 import { FilterRadioGroup } from "@/components/interview/FilterRadioGroup";
+import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 
@@ -198,7 +199,7 @@ export function QuestionsTab({
         Questions
       </h2>
       {/* Filtres */}
-      <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-4 sm:p-6 mb-6 sm:mb-8">
+      <div className="bg-white rounded-2xl shadow-card border border-blue-100 p-4 sm:p-6 mb-6 sm:mb-8">
         <div className="hidden sm:flex items-center gap-2 mb-5">
           <Filter className="w-4 h-4 text-blue-700" />
           <h2 className="text-blue-950 font-serif text-lg">Filtres & recherche</h2>
@@ -310,7 +311,7 @@ export function QuestionsTab({
               type="button"
               onClick={() => setShowReviewOnly((v) => !v)}
               disabled={reviewList.length === 0 && !showReviewOnly}
-              className={`px-3 py-2 rounded-lg border text-sm font-medium transition-all flex items-center gap-2 ${
+              className={`touch-target-bar px-3 rounded-lg border text-sm font-medium transition-all gap-2 ${
                 showReviewOnly
                   ? "bg-rose-600 text-white border-rose-600 shadow-md"
                   : "bg-white text-rose-700 border-rose-200 hover:border-rose-400 hover:bg-rose-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -349,7 +350,7 @@ export function QuestionsTab({
                 setRatingFilter("all");
                 setShowReviewOnly(false);
               }}
-              className="text-blue-700 hover:text-blue-900 underline underline-offset-2"
+              className="touch-target-bar text-blue-700 hover:text-blue-900 underline underline-offset-2"
             >
               Réinitialiser
             </button>
@@ -375,7 +376,7 @@ export function QuestionsTab({
                 setRatingFilter("all");
                 setShowReviewOnly(false);
               }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="touch-target-bar px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
               Réinitialiser les filtres
             </button>
@@ -390,7 +391,7 @@ export function QuestionsTab({
               <div
                 key={q.id}
                 id={`question-card-${q.id}`}
-                className={`relative bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden scroll-mt-24 ${isExpanded ? "border-blue-500 shadow-xl shadow-blue-100" : inReview ? "border-rose-300 hover:border-rose-400" : userRating >= 4 ? "border-emerald-300 hover:border-emerald-400" : userRating > 0 && userRating <= 2 ? "border-red-200 hover:border-red-300" : "border-blue-100 hover:border-blue-300 hover:shadow-md"}`}
+                className={`relative bg-white rounded-2xl shadow-card border-2 transition-all duration-300 overflow-hidden scroll-mt-24 ${isExpanded ? "border-blue-500 shadow-card-elevated" : inReview ? "border-rose-300 hover:border-rose-400" : userRating >= 4 ? "border-emerald-300 hover:border-emerald-400" : userRating > 0 && userRating <= 2 ? "border-red-200 hover:border-red-300" : "border-blue-100 hover:border-blue-300 hover:shadow-card-hover"}`}
               >
                 <button
                   type="button"
@@ -402,7 +403,7 @@ export function QuestionsTab({
                     inReview ? "Retirer de la liste à réviser" : "Marquer comme à réviser"
                   }
                   aria-pressed={inReview}
-                  className={`absolute top-3 right-3 z-10 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${inReview ? "bg-rose-600 text-white border-rose-600 shadow-md" : "bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-400"}`}
+                  className={`absolute top-3 right-3 z-10 touch-target rounded-full border transition-all ${inReview ? "bg-rose-600 text-white border-rose-600 shadow-md" : "bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-400"}`}
                 >
                   {inReview ? (
                     <BookmarkCheck className="w-4 h-4" />
@@ -410,14 +411,14 @@ export function QuestionsTab({
                     <Bookmark className="w-4 h-4" />
                   )}
                 </button>
-                <div className="w-full p-4 sm:p-6 pr-14 sm:pr-16 flex items-start gap-3 sm:gap-4">
+                <div className="w-full p-4 sm:p-6 pr-14 sm:pr-16 flex items-stretch gap-3 sm:gap-4">
                   <button
                     type="button"
                     onClick={() => {
                       if (!isExpanded) captureScroll();
                       setExpandedQuestion(isExpanded ? null : q.id);
                     }}
-                    className="flex flex-1 min-w-0 items-start gap-3 sm:gap-4 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    className="flex flex-1 min-w-0 min-h-11 items-start gap-3 sm:gap-4 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     aria-expanded={isExpanded}
                   >
                     <div className="flex-shrink-0">
@@ -432,7 +433,7 @@ export function QuestionsTab({
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-3 flex-wrap">
+                      <div className={`${hubBadgeGroupClass} mb-3`}>
                         {(() => {
                           const cat = categories.find((c) => c.id === q.category);
                           const CatIcon = cat?.icon ?? BookOpen;
@@ -447,8 +448,8 @@ export function QuestionsTab({
                               >
                                 <CatIcon className="w-3.5 h-3.5" />
                               </span>
-                              <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded border bg-blue-50 text-blue-800 border-blue-100">
-                                <CatIcon className="w-3.5 h-3.5" />
+                              <span className={`hidden sm:inline-flex ${hubBadgeClass}`}>
+                                <CatIcon className="w-3.5 h-3.5 shrink-0" />
                                 {catLabel}
                               </span>
                             </>
@@ -476,7 +477,7 @@ export function QuestionsTab({
                                   />
                                 ))}
                               </span>
-                              <span className="hidden sm:inline-flex items-center text-xs font-medium px-2.5 py-1 rounded border bg-blue-50 text-blue-800 border-blue-100 capitalize">
+                              <span className={`hidden sm:inline-flex capitalize ${hubBadgeClass}`}>
                                 {q.difficulty}
                               </span>
                             </>

@@ -183,7 +183,7 @@ function FlashcardMenu({
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       <Link
         to="/"
-        className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+        className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Retour
@@ -224,7 +224,7 @@ function FlashcardMenu({
               key={s.id}
               type="button"
               onClick={() => onScopeChange(s.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${
+              className={`touch-target-bar px-4 rounded-full text-sm font-medium border transition-colors ${
                 scope === s.id
                   ? "bg-blue-900 text-white border-blue-900"
                   : "bg-white text-blue-700 border-blue-200 hover:border-blue-400"
@@ -311,7 +311,7 @@ function CardView({
         <button
           type="button"
           onClick={onAbort}
-          className="inline-flex items-center gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium"
+          className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           Quitter
@@ -330,13 +330,13 @@ function CardView({
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-lg overflow-hidden min-h-[400px] flex flex-col">
+      <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-card overflow-hidden min-h-[400px] flex flex-col">
         <div className="px-6 py-4 border-b border-blue-100 bg-blue-50/50 flex items-center justify-between">
           <span className="text-xs uppercase tracking-wider text-blue-700 font-semibold">
             {card.source === "question" ? "Question" : "Notion"} · {getCategoryLabel(card.category)}
           </span>
           {card.difficulty && (
-            <span className="text-xs px-2 py-0.5 rounded bg-white border border-blue-200 text-blue-700 capitalize">
+            <span className="text-xs font-medium py-1 px-2.5 rounded bg-white border border-blue-200 text-blue-700 capitalize">
               {card.difficulty}
             </span>
           )}
@@ -445,7 +445,7 @@ function GradeButton({
     <button
       type="button"
       onClick={onClick}
-      className={`flex flex-col items-center justify-center gap-1 px-3 py-4 rounded-xl border-2 transition-colors ${tones[tone]}`}
+      className={`flex min-h-11 flex-col items-center justify-center gap-1 px-3 py-4 rounded-xl border-2 transition-colors ${tones[tone]}`}
     >
       {icon}
       <span className="text-sm font-semibold mt-1">{label}</span>

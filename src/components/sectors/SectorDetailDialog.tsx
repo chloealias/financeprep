@@ -26,7 +26,7 @@ function SectorDetailCloseButton({ onClose }: { onClose: () => void }) {
     <button
       type="button"
       onClick={onClose}
-      className="absolute top-0 right-0 z-10 w-9 h-9 rounded-full border border-blue-200 bg-white text-blue-400 hover:text-blue-700 hover:bg-blue-50 flex items-center justify-center transition-all shadow-sm"
+      className="absolute top-0 right-0 z-10 touch-target rounded-full border border-blue-200 bg-white text-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all shadow-sm"
       aria-label="Fermer la fiche"
     >
       <X className="w-4 h-4" />

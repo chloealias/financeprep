@@ -33,7 +33,7 @@ export function SectorPanelContent({
       className={`relative ${
         embedded
           ? `${highlightFlash ? "sector-focus-flash rounded-xl" : ""}`
-          : `bg-white rounded-2xl border-2 border-blue-300 shadow-xl p-4 sm:p-8 ${
+          : `bg-white rounded-2xl border-2 border-blue-300 shadow-card-elevated p-4 sm:p-8 ${
               highlightFlash ? "sector-focus-flash" : ""
             }`
       }`}

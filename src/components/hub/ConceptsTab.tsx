@@ -121,7 +121,7 @@ export function ConceptsTab() {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => persistCategory(cat.id)}
-                    className={`flex-shrink-0 snap-start flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors border focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${isActive ? "bg-blue-900 text-white border-blue-900" : "bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50"}`}
+                    className={`flex-shrink-0 snap-start touch-target-bar gap-1.5 px-3 rounded-full text-sm font-medium transition-colors border focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${isActive ? "bg-blue-900 text-white border-blue-900" : "bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50"}`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     <span className="whitespace-nowrap">{cat.label}</span>
@@ -145,20 +145,20 @@ export function ConceptsTab() {
           };
           return (
             <div className="px-4 sm:px-6 lg:px-8 pb-3">
-              <div className="bg-blue-900 text-white rounded-xl shadow-md px-3 py-2 flex items-center gap-2">
+              <div className="bg-blue-900 text-white rounded-xl shadow-card px-3 py-2 flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => goTo(activeIdx - 1)}
                   disabled={activeIdx === 0}
                   aria-label="Concept précédent"
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                  className="flex-shrink-0 touch-target rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
                 </button>
                 <button
                   type="button"
                   onClick={() => setExpandedConcept(null)}
-                  className="flex-1 min-w-0 text-left flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-blue-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                  className="flex-1 min-w-0 touch-target-bar text-left gap-2 px-2 rounded-lg hover:bg-blue-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                   aria-label="Replier le concept ouvert"
                   title="Replier"
                 >
@@ -172,7 +172,7 @@ export function ConceptsTab() {
                   onClick={() => goTo(activeIdx + 1)}
                   disabled={activeIdx === filteredConcepts.length - 1}
                   aria-label="Concept suivant"
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                  className="flex-shrink-0 touch-target rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -182,7 +182,7 @@ export function ConceptsTab() {
         })()}
       </div>
 
-      <div className="space-y-3 sm:space-y-4">
+      <div className="space-y-4">
         {filteredConcepts.map((c, i) => (
           <ConceptCard
             key={c.id}
