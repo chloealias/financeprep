@@ -38,3 +38,40 @@ export function smoothScrollIntoViewAfterLayout(
   }, delayMs);
   return () => window.clearTimeout(timer);
 }
+
+export function getWindowScrollY(): number {
+  if (typeof window === "undefined") return 0;
+  return window.scrollY;
+}
+
+/**
+ * Restaure le scroll fenêtre après fermeture d’un overlay (dialog / drawer).
+ * Reporté après layout pour laisser le body se déverrouiller.
+ */
+export function restoreWindowScrollPosition(top: number, delayMs = 0): () => void {
+  if (typeof window === "undefined") return () => {};
+
+  let cancelled = false;
+  const apply = () => {
+    if (cancelled) return;
+    window.scrollTo({ top, left: 0, behavior: "auto" });
+  };
+
+  const schedule = () => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(apply);
+    });
+  };
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  if (delayMs > 0) {
+    timer = window.setTimeout(schedule, delayMs);
+  } else {
+    schedule();
+  }
+
+  return () => {
+    cancelled = true;
+    if (timer !== undefined) window.clearTimeout(timer);
+  };
+}

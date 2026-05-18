@@ -1,4 +1,12 @@
-import { Fragment, useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import { Link } from "@tanstack/react-router";
 import { Search, Star } from "lucide-react";
 import { Route } from "@/routes/index";
@@ -27,6 +35,7 @@ import {
   toggleTargetBank,
 } from "@/lib/target-banks-storage";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
+import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import type { HomeSearch } from "@/lib/route-search";
 
 function matchesSearch(bank: BankProfile, query: string): boolean {
@@ -69,6 +78,7 @@ export function BankHubPage() {
 
   const selectedBankId = bankFromUrl && getBankById(bankFromUrl) ? bankFromUrl : null;
   const selectedBank = selectedBankId ? getBankById(selectedBankId) : null;
+  const captureScroll = usePreserveScrollOnDetailClose(selectedBankId !== null);
 
   const visibleCategories = useMemo(() => {
     if (categoryFilter !== "all") return [categoryFilter];
@@ -102,6 +112,7 @@ export function BankHubPage() {
   const handleSelect = (id: string, trigger?: HTMLButtonElement | null) => {
     if (trigger) lastTriggerRef.current = trigger;
     const next = selectedBankId === id ? undefined : id;
+    if (next && !selectedBankId) captureScroll();
     navigate({
       search: (prev: HomeSearch): HomeSearch => ({
         ...prev,
@@ -111,7 +122,7 @@ export function BankHubPage() {
     });
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     navigate({
       search: (prev: HomeSearch): HomeSearch => ({
         ...prev,
@@ -119,7 +130,7 @@ export function BankHubPage() {
         bank: undefined,
       }),
     });
-  };
+  }, [navigate]);
 
   const handleToggleTarget = (id: string, e: MouseEvent) => {
     e.stopPropagation();
@@ -151,7 +162,7 @@ export function BankHubPage() {
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [selectedBankId]);
+  }, [selectedBankId, handleClose]);
 
   const showTargetsChip = targetIds.length > 0;
 

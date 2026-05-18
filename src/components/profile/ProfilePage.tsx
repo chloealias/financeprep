@@ -64,10 +64,22 @@ export function ProfilePage() {
     setMounted(true);
   }, []);
 
-  const dashboard = useMemo(() => (mounted ? getProfileDashboard() : null), [mounted, refreshKey]);
-  const packSummary = useMemo(() => describePackPersonalization(profile), [profile, refreshKey]);
-  const sessions = useMemo(() => (mounted ? loadInterviewSessions() : []), [mounted, refreshKey]);
-  const targetIds = useMemo(() => (mounted ? getTargetBankIds() : []), [mounted, refreshKey]);
+  const dashboard = useMemo(() => {
+    if (!mounted) return null;
+    void refreshKey;
+    return getProfileDashboard();
+  }, [mounted, refreshKey]);
+  const packSummary = useMemo(() => describePackPersonalization(profile), [profile]);
+  const sessions = useMemo(() => {
+    if (!mounted) return [];
+    void refreshKey;
+    return loadInterviewSessions();
+  }, [mounted, refreshKey]);
+  const targetIds = useMemo(() => {
+    if (!mounted) return [];
+    void refreshKey;
+    return getTargetBankIds();
+  }, [mounted, refreshKey]);
   const countdown = formatInterviewCountdown(dashboard?.daysUntil ?? null);
 
   const persist = useCallback((next: UserProfile) => {

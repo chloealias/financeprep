@@ -47,7 +47,10 @@ function SectorDetailHeader({
     <header className="relative pr-12 mb-6 pb-5 border-b border-blue-100">
       <SectorDetailCloseButton onClose={onClose} />
       <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-1.5">{tag}</p>
-      <h2 id="sector-detail-title" className="text-2xl sm:text-3xl font-serif text-blue-950 leading-tight">
+      <h2
+        id="sector-detail-title"
+        className="text-2xl sm:text-3xl font-serif text-blue-950 leading-tight"
+      >
         {name}
       </h2>
     </header>

@@ -3,6 +3,7 @@ import { Route } from "@/routes/index";
 import { SECTOR_DATA } from "@/data/sector-data";
 import type { SectorId } from "@/lib/sectors";
 import { SectorDetailDialog } from "@/components/sectors/SectorDetailDialog";
+import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 
 const IsometricMap = lazy(() =>
   import("@/components/sectors/IsometricMap").then((m) => ({ default: m.IsometricMap })),
@@ -13,15 +14,23 @@ export function SectorsTab() {
   const navigate = Route.useNavigate();
   const lastTriggerRef = useRef<HTMLElement | null>(null);
 
-  const selectedSectorId =
-    sectorFromUrl && SECTOR_DATA[sectorFromUrl] ? sectorFromUrl : null;
+  const selectedSectorId = sectorFromUrl && SECTOR_DATA[sectorFromUrl] ? sectorFromUrl : null;
+
+  const captureScroll = usePreserveScrollOnDetailClose(selectedSectorId !== null);
 
   const handleSectorSelect = (id: SectorId) => {
+    if (selectedSectorId === id) {
+      handleClose();
+      return;
+    }
+    if (!selectedSectorId) {
+      captureScroll();
+    }
     navigate({
       search: (prev) => ({
         ...prev,
         tab: "secteurs",
-        sector: selectedSectorId === id ? undefined : id,
+        sector: id,
       }),
     });
   };

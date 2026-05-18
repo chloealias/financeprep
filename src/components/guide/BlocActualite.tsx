@@ -12,6 +12,7 @@ import { getBankById, getBankIdByName } from "@/data/bank-profiles";
 import { getSectorLabel } from "@/lib/sector-deals";
 import { DealRefText } from "@/lib/linkify-deal-refs";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
+import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import type { SectorId } from "@/lib/sectors";
 import {
   dealDateBadge,
@@ -214,12 +215,13 @@ export function BlocActualite() {
   const [filterType, setFilterType] = useState("all");
   const [filterSector, setFilterSector] = useState(() => sectorFromUrl ?? "all");
   const openDeal = dealFromUrl ?? null;
+  const captureScroll = usePreserveScrollOnDetailClose(openDeal !== null);
 
   useEffect(() => {
     if (bankFromUrlProfile) {
       setFilterBanque(bankFromUrlProfile.name);
     }
-  }, [bankFromUrl, bankFromUrlProfile?.name]);
+  }, [bankFromUrlProfile]);
 
   useEffect(() => {
     if (sectorFromUrl) {
@@ -274,6 +276,7 @@ export function BlocActualite() {
     if (openDeal === id) {
       navigate({ search: (prev) => ({ deal: undefined, bank: prev.bank, sector: prev.sector }) });
     } else {
+      if (!openDeal) captureScroll();
       navigate({ search: (prev) => ({ deal: id, bank: prev.bank, sector: prev.sector }) });
     }
   };

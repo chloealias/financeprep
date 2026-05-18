@@ -28,6 +28,7 @@ import { Visual } from "@/components/interview/Visual";
 import { StarRating } from "@/components/interview/StarRating";
 import { FilterRadioGroup } from "@/components/interview/FilterRadioGroup";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
+import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 
 const ALLOWED_CATEGORIES = [
   "all",
@@ -41,6 +42,31 @@ const ALLOWED_CATEGORIES = [
 ];
 const ALLOWED_DIFFICULTIES = ["all", "basique", "intermédiaire", "avancé"];
 const ALLOWED_RATING_FILTERS = ["all", "unrated", "weak", "mastered"];
+
+const DEFAULT_QUESTION_FILTERS: SavedFilters = {
+  activeCategory: "all",
+  activeDifficulty: "all",
+  searchQuery: "",
+  ratingFilter: "all",
+  conceptCategory: "all",
+};
+
+function sanitizeQuestionFilters(raw: unknown): SavedFilters {
+  const o = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+  return {
+    activeCategory: ALLOWED_CATEGORIES.includes(o.activeCategory as string)
+      ? (o.activeCategory as string)
+      : "all",
+    activeDifficulty: ALLOWED_DIFFICULTIES.includes(o.activeDifficulty as string)
+      ? (o.activeDifficulty as string)
+      : "all",
+    searchQuery: typeof o.searchQuery === "string" ? o.searchQuery : "",
+    ratingFilter: ALLOWED_RATING_FILTERS.includes(o.ratingFilter as string)
+      ? (o.ratingFilter as string)
+      : "all",
+    conceptCategory: "all",
+  };
+}
 
 type QuestionsTabProps = {
   ratings: QuestionRatings;
@@ -57,43 +83,21 @@ export function QuestionsTab({
   onToggleReview,
   filtersKey = 0,
 }: QuestionsTabProps) {
-  const defaultFilters: SavedFilters = {
-    activeCategory: "all",
-    activeDifficulty: "all",
-    searchQuery: "",
-    ratingFilter: "all",
-    conceptCategory: "all",
-  };
-
-  const sanitizeFilters = (raw: unknown): SavedFilters => {
-    const o = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
-    return {
-      activeCategory: ALLOWED_CATEGORIES.includes(o.activeCategory as string)
-        ? (o.activeCategory as string)
-        : "all",
-      activeDifficulty: ALLOWED_DIFFICULTIES.includes(o.activeDifficulty as string)
-        ? (o.activeDifficulty as string)
-        : "all",
-      searchQuery: typeof o.searchQuery === "string" ? o.searchQuery : "",
-      ratingFilter: ALLOWED_RATING_FILTERS.includes(o.ratingFilter as string)
-        ? (o.ratingFilter as string)
-        : "all",
-      conceptCategory: "all",
-    };
-  };
-
-  const [activeCategory, setActiveCategory] = useState(defaultFilters.activeCategory);
-  const [activeDifficulty, setActiveDifficulty] = useState(defaultFilters.activeDifficulty);
-  const [searchQuery, setSearchQuery] = useState(defaultFilters.searchQuery);
+  const [activeCategory, setActiveCategory] = useState(DEFAULT_QUESTION_FILTERS.activeCategory);
+  const [activeDifficulty, setActiveDifficulty] = useState(
+    DEFAULT_QUESTION_FILTERS.activeDifficulty,
+  );
+  const [searchQuery, setSearchQuery] = useState(DEFAULT_QUESTION_FILTERS.searchQuery);
   const [expandedQuestion, setExpandedQuestion] = useState<string | number | null>(null);
   const wasExpandedQuestion = useRef<string | number | null>(null);
-  const [ratingFilter, setRatingFilter] = useState(defaultFilters.ratingFilter);
+  const captureScroll = usePreserveScrollOnDetailClose(expandedQuestion !== null);
+  const [ratingFilter, setRatingFilter] = useState(DEFAULT_QUESTION_FILTERS.ratingFilter);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [showReviewOnly, setShowReviewOnly] = useState(false);
   const [filtersHydrated, setFiltersHydrated] = useState(false);
 
   useEffect(() => {
-    const saved = loadSavedFilters(sanitizeFilters, defaultFilters);
+    const saved = loadSavedFilters(sanitizeQuestionFilters, DEFAULT_QUESTION_FILTERS);
     setActiveCategory(saved.activeCategory);
     setActiveDifficulty(saved.activeDifficulty);
     setSearchQuery(saved.searchQuery);
@@ -103,7 +107,7 @@ export function QuestionsTab({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const saved = loadSavedFilters(sanitizeFilters, defaultFilters);
+    const saved = loadSavedFilters(sanitizeQuestionFilters, DEFAULT_QUESTION_FILTERS);
     setActiveCategory(saved.activeCategory);
     setActiveDifficulty(saved.activeDifficulty);
     setSearchQuery(saved.searchQuery);
@@ -409,7 +413,10 @@ export function QuestionsTab({
                 <div className="w-full p-4 sm:p-6 pr-14 sm:pr-16 flex items-start gap-3 sm:gap-4">
                   <button
                     type="button"
-                    onClick={() => setExpandedQuestion(isExpanded ? null : q.id)}
+                    onClick={() => {
+                      if (!isExpanded) captureScroll();
+                      setExpandedQuestion(isExpanded ? null : q.id);
+                    }}
                     className="flex flex-1 min-w-0 items-start gap-3 sm:gap-4 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                     aria-expanded={isExpanded}
                   >

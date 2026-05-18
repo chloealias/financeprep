@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { ChevronRight } from "lucide-react";
 import { concepts } from "@/data/concepts";
 import { QUESTION_CATEGORIES, getCategoryLabel } from "@/lib/categories";
 import { ConceptCard } from "@/components/interview/ConceptCard";
+import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import { loadSavedFilters, saveSavedFilters, type SavedFilters } from "@/lib/storage";
 
 const ALLOWED_CATEGORIES = [
@@ -44,6 +45,19 @@ export function ConceptsTab() {
     setConceptCategory(saved.conceptCategory);
   }, []);
   const [expandedConcept, setExpandedConcept] = useState<string | number | null>(null);
+  const captureScroll = usePreserveScrollOnDetailClose(expandedConcept !== null);
+
+  const toggleConcept = useCallback(
+    (id: string | number) => {
+      if (expandedConcept === id) {
+        setExpandedConcept(null);
+        return;
+      }
+      if (expandedConcept === null) captureScroll();
+      setExpandedConcept(id);
+    },
+    [expandedConcept, captureScroll],
+  );
 
   const categories = QUESTION_CATEGORIES;
 
@@ -176,7 +190,7 @@ export function ConceptsTab() {
             index={i}
             total={filteredConcepts.length}
             isExpanded={expandedConcept === c.id}
-            onToggle={() => setExpandedConcept(expandedConcept === c.id ? null : c.id)}
+            onToggle={() => toggleConcept(c.id)}
             onPrev={() => i > 0 && setExpandedConcept(filteredConcepts[i - 1].id)}
             onNext={() =>
               i < filteredConcepts.length - 1 && setExpandedConcept(filteredConcepts[i + 1].id)

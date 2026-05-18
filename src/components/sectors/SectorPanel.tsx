@@ -42,13 +42,13 @@ export function SectorPanelContent({
     >
       {!embedded && (
         <div className="flex items-center gap-4 mb-8">
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center flex-shrink-0">
-          <Icon className="w-7 h-7 text-white" />
-        </div>
-        <div>
-          <div className="text-xs uppercase tracking-[0.2em] text-blue-400 mb-1">{data.tag}</div>
-          <h2 className="text-3xl font-serif text-blue-950">{data.name}</h2>
-        </div>
+          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center flex-shrink-0">
+            <Icon className="w-7 h-7 text-white" />
+          </div>
+          <div>
+            <div className="text-xs uppercase tracking-[0.2em] text-blue-400 mb-1">{data.tag}</div>
+            <h2 className="text-3xl font-serif text-blue-950">{data.name}</h2>
+          </div>
         </div>
       )}
 
