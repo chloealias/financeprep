@@ -132,7 +132,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
       {dangerOpen && (
         <div className="px-5 pb-5 pt-2 space-y-2">
           {RESET_SCOPES.map((opt) => (
-            <ResetRow key={opt.scope} scope={opt.scope} {...opt} onDone={onImportDone} />
+            <ResetRow key={opt.scope} {...opt} onDone={onImportDone} />
           ))}
           <ResetRow
             title="Tout effacer"

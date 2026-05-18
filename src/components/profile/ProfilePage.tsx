@@ -3,6 +3,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
   BarChart3,
+  Bookmark,
   Calendar,
   ChevronRight,
   Clock,
@@ -322,6 +323,7 @@ export function ProfilePage() {
               saveSavedFilters({ ...defaultFilters, ratingFilter: "all" });
               navigate({ to: "/", search: { tab: "questions" } });
             }}
+            icon={<Bookmark className="w-5 h-5" />}
             disabled={dashboard.reviewCount === 0}
             highlight={dashboard.todayHighlights.has("review")}
           />

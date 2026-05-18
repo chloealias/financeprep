@@ -8,7 +8,7 @@ import {
   guideCardClass,
 } from "@/components/guide/guide-ui";
 import { BankDealChip, SectorDealChip, AdvisorBankName } from "@/components/deals/DealEntityChips";
-import { getBankById } from "@/data/bank-profiles";
+import { getBankById, getBankIdByName } from "@/data/bank-profiles";
 import { getSectorLabel } from "@/lib/sector-deals";
 import { DealRefText } from "@/lib/linkify-deal-refs";
 import type { SectorId } from "@/lib/sectors";
@@ -200,7 +200,8 @@ function dealPassesFilters(
   return (
     (filterBanque === "all" || dealMatchesBank(deal, filterBanque)) &&
     (filterType === "all" || dealMatchesType(deal, filterType)) &&
-    (filterSector === "all" || (deal.sectorId && dealMatchesSector(deal, filterSector as SectorId)))
+    (filterSector === "all" ||
+      (!!deal.sectorId && dealMatchesSector(deal, filterSector as SectorId)))
   );
 }
 

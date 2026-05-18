@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   Bookmark,
   BookmarkCheck,
+  BookOpen,
 } from "lucide-react";
 import {
   DIFFICULTY_OPTIONS,
