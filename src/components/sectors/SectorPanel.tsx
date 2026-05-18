@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import type { SectorId } from "@/lib/sectors";
 import { SECTOR_DATA } from "@/data/sector-data";
 
-type SectorPanelProps = {
+type SectorPanelContentProps = {
   sectorId: SectorId;
-  onClose: () => void;
-  highlighted?: boolean;
+  highlightFlash?: boolean;
+  /** Dans une modale : pas de bordure/ombre dupliquée, titre masqué si fourni par le shell. */
+  embedded?: boolean;
 };
 
-export function SectorPanel({ sectorId, onClose, highlighted = false }: SectorPanelProps) {
+export function SectorPanelContent({
+  sectorId,
+  highlightFlash = false,
+  embedded = false,
+}: SectorPanelContentProps) {
   const [showReponse, setShowReponse] = useState(false);
   const data = SECTOR_DATA[sectorId];
 
@@ -25,31 +30,27 @@ export function SectorPanel({ sectorId, onClose, highlighted = false }: SectorPa
   return (
     <div
       key={sectorId}
-      className={`mt-6 bg-white rounded-2xl border-2 shadow-xl p-4 sm:p-8 relative animate-in fade-in slide-in-from-bottom-2 duration-300 ${
-        highlighted ? "border-blue-400 ring-2 ring-blue-200" : "border-blue-300"
+      className={`relative ${
+        embedded
+          ? `${highlightFlash ? "sector-focus-flash rounded-xl" : ""}`
+          : `bg-white rounded-2xl border-2 border-blue-300 shadow-xl p-4 sm:p-8 ${
+              highlightFlash ? "sector-focus-flash" : ""
+            }`
       }`}
       role="region"
       aria-label={`Fiche sectorielle ${data.name}`}
-      aria-live="polite"
     >
-      <button
-        type="button"
-        onClick={onClose}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 rounded-full border border-blue-200 text-blue-400 hover:text-blue-700 hover:bg-blue-50 flex items-center justify-center transition-all"
-        aria-label="Fermer la fiche"
-      >
-        <X className="w-4 h-4" />
-      </button>
-
-      <div className="flex items-center gap-4 mb-8 pr-10">
+      {!embedded && (
+        <div className="flex items-center gap-4 mb-8">
         <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center flex-shrink-0">
           <Icon className="w-7 h-7 text-white" />
         </div>
         <div>
           <div className="text-xs uppercase tracking-[0.2em] text-blue-400 mb-1">{data.tag}</div>
-          <h3 className="text-3xl font-serif text-blue-950">{data.name}</h3>
+          <h2 className="text-3xl font-serif text-blue-950">{data.name}</h2>
         </div>
-      </div>
+        </div>
+      )}
 
       <section
         aria-label="Panorama du secteur"

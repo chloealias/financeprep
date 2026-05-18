@@ -11,6 +11,7 @@ import { BankDealChip, SectorDealChip, AdvisorBankName } from "@/components/deal
 import { getBankById, getBankIdByName } from "@/data/bank-profiles";
 import { getSectorLabel } from "@/lib/sector-deals";
 import { DealRefText } from "@/lib/linkify-deal-refs";
+import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import type { SectorId } from "@/lib/sectors";
 import {
   dealDateBadge,
@@ -265,13 +266,8 @@ export function BlocActualite() {
 
   useEffect(() => {
     if (!openDeal || !filtered.some((d) => d.id === openDeal)) return;
-    const timer = window.setTimeout(() => {
-      const el = document.getElementById(`deal-card-${openDeal}`);
-      if (!el) return;
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      el.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
-    }, 100);
-    return () => window.clearTimeout(timer);
+    const el = document.getElementById(`deal-card-${openDeal}`);
+    return smoothScrollIntoViewAfterLayout(el, { block: "start" });
   }, [openDeal, filtered]);
 
   const toggleDeal = (id: string) => {

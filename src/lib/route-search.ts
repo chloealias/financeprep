@@ -11,13 +11,15 @@ export type HomeSearch = {
 
 export function validateHomeSearch(search: Record<string, unknown>): HomeSearch {
   const tab = typeof search.tab === "string" ? search.tab : undefined;
-  const resolved: AppTab = isAppTab(tab) ? tab : DEFAULT_APP_TAB;
+  const tabResolved: AppTab = isAppTab(tab) ? tab : DEFAULT_APP_TAB;
 
   const bankRaw = typeof search.bank === "string" ? search.bank : undefined;
   const bank = bankRaw && isValidBankId(bankRaw) ? bankRaw : undefined;
 
   const sectorRaw = typeof search.sector === "string" ? search.sector : undefined;
   const sector = sectorRaw && isValidSectorId(sectorRaw) ? sectorRaw : undefined;
+
+  const resolved: AppTab = sector && tabResolved !== "secteurs" ? "secteurs" : tabResolved;
 
   return { tab: resolved, bank, sector };
 }

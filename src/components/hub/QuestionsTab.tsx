@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import {
   Search,
   ChevronRight,
@@ -27,6 +27,7 @@ import {
 import { Visual } from "@/components/interview/Visual";
 import { StarRating } from "@/components/interview/StarRating";
 import { FilterRadioGroup } from "@/components/interview/FilterRadioGroup";
+import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 
 const ALLOWED_CATEGORIES = [
   "all",
@@ -81,21 +82,22 @@ export function QuestionsTab({
     };
   };
 
-  const initialFilters =
-    typeof window !== "undefined"
-      ? loadSavedFilters(sanitizeFilters, defaultFilters)
-      : defaultFilters;
-
-  const [activeCategory, setActiveCategory] = useState(initialFilters.activeCategory);
-  const [activeDifficulty, setActiveDifficulty] = useState(initialFilters.activeDifficulty);
-  const [searchQuery, setSearchQuery] = useState(initialFilters.searchQuery);
+  const [activeCategory, setActiveCategory] = useState(defaultFilters.activeCategory);
+  const [activeDifficulty, setActiveDifficulty] = useState(defaultFilters.activeDifficulty);
+  const [searchQuery, setSearchQuery] = useState(defaultFilters.searchQuery);
   const [expandedQuestion, setExpandedQuestion] = useState<string | number | null>(null);
-  const [ratingFilter, setRatingFilter] = useState(initialFilters.ratingFilter);
+  const wasExpandedQuestion = useRef<string | number | null>(null);
+  const [ratingFilter, setRatingFilter] = useState(defaultFilters.ratingFilter);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [showReviewOnly, setShowReviewOnly] = useState(false);
-  const [filtersHydrated, setFiltersHydrated] = useState(typeof window !== "undefined");
+  const [filtersHydrated, setFiltersHydrated] = useState(false);
 
   useEffect(() => {
+    const saved = loadSavedFilters(sanitizeFilters, defaultFilters);
+    setActiveCategory(saved.activeCategory);
+    setActiveDifficulty(saved.activeDifficulty);
+    setSearchQuery(saved.searchQuery);
+    setRatingFilter(saved.ratingFilter);
     setFiltersHydrated(true);
   }, []);
 
@@ -107,6 +109,18 @@ export function QuestionsTab({
     setSearchQuery(saved.searchQuery);
     setRatingFilter(saved.ratingFilter);
   }, [filtersKey]);
+
+  useEffect(() => {
+    if (expandedQuestion !== null && expandedQuestion !== wasExpandedQuestion.current) {
+      const el = document.getElementById(`question-card-${expandedQuestion}`);
+      const cleanup = smoothScrollIntoViewAfterLayout(el, { block: "start" });
+      wasExpandedQuestion.current = expandedQuestion;
+      return cleanup;
+    }
+    if (expandedQuestion === null) {
+      wasExpandedQuestion.current = null;
+    }
+  }, [expandedQuestion]);
 
   useEffect(() => {
     if (!filtersHydrated) return;
@@ -371,7 +385,8 @@ export function QuestionsTab({
             return (
               <div
                 key={q.id}
-                className={`relative bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${isExpanded ? "border-blue-500 shadow-xl shadow-blue-100" : inReview ? "border-rose-300 hover:border-rose-400" : userRating >= 4 ? "border-emerald-300 hover:border-emerald-400" : userRating > 0 && userRating <= 2 ? "border-red-200 hover:border-red-300" : "border-blue-100 hover:border-blue-300 hover:shadow-md"}`}
+                id={`question-card-${q.id}`}
+                className={`relative bg-white rounded-2xl shadow-sm border-2 transition-all duration-300 overflow-hidden scroll-mt-24 ${isExpanded ? "border-blue-500 shadow-xl shadow-blue-100" : inReview ? "border-rose-300 hover:border-rose-400" : userRating >= 4 ? "border-emerald-300 hover:border-emerald-400" : userRating > 0 && userRating <= 2 ? "border-red-200 hover:border-red-300" : "border-blue-100 hover:border-blue-300 hover:shadow-md"}`}
               >
                 <button
                   type="button"

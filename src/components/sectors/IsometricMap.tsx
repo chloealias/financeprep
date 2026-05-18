@@ -12,25 +12,21 @@ import {
 import { SECTOR_BUILDING_COMPONENTS } from "@/components/sectors/sector-buildings-3d";
 
 type IsometricMapProps = {
-  selectedSector: SectorId | null;
-  onSectorSelect: (id: SectorId | null) => void;
+  onSectorSelect: (id: SectorId) => void;
+  selectedSectorId?: SectorId | null;
 };
 
-export function IsometricMap({ selectedSector, onSectorSelect }: IsometricMapProps) {
+export function IsometricMap({ onSectorSelect, selectedSectorId = null }: IsometricMapProps) {
   const [hovered, setHovered] = useState<SectorId | null>(null);
-
-  const handleClick = (id: SectorId) => {
-    onSectorSelect(selectedSector === id ? null : id);
-  };
 
   const buildingProps = (id: SectorId) => {
     const Building = SECTOR_BUILDING_COMPONENTS[id];
     return {
       meta: SECTOR_META[id],
-      isSelected: selectedSector === id,
+      isSelected: selectedSectorId === id || hovered === id,
       isHovered: hovered === id,
-      isDimmed: selectedSector !== null && selectedSector !== id,
-      onSelect: () => handleClick(id),
+      isDimmed: hovered !== null && hovered !== id,
+      onSelect: () => onSectorSelect(id),
       onHover: () => setHovered(id),
       onLeave: () => setHovered(null),
       children: <Building />,
@@ -67,13 +63,7 @@ export function IsometricMap({ selectedSector, onSectorSelect }: IsometricMapPro
           </p>
           <div className="flex flex-wrap justify-center gap-1.5">
             {SECTOR_LIST.map((id) => (
-              <GuideChipButton
-                key={id}
-                size="sm"
-                active={selectedSector === id}
-                ariaPressed={selectedSector === id}
-                onClick={() => handleClick(id)}
-              >
+              <GuideChipButton key={id} size="sm" onClick={() => onSectorSelect(id)}>
                 {SECTOR_META[id].shortLabel}
               </GuideChipButton>
             ))}

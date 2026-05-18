@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { concepts } from "@/data/concepts";
 import { QUESTION_CATEGORIES, getCategoryLabel } from "@/lib/categories";
@@ -17,8 +17,9 @@ const ALLOWED_CATEGORIES = [
 ];
 
 export function ConceptsTab() {
-  const [conceptCategory, setConceptCategory] = useState(() => {
-    if (typeof window === "undefined") return "all";
+  const [conceptCategory, setConceptCategory] = useState("all");
+
+  useEffect(() => {
     const saved = loadSavedFilters(
       (raw) => {
         const o = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
@@ -40,8 +41,8 @@ export function ConceptsTab() {
         conceptCategory: "all",
       },
     );
-    return saved.conceptCategory;
-  });
+    setConceptCategory(saved.conceptCategory);
+  }, []);
   const [expandedConcept, setExpandedConcept] = useState<string | number | null>(null);
 
   const categories = QUESTION_CATEGORIES;

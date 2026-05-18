@@ -6,8 +6,15 @@ describe("validateHomeSearch", () => {
     expect(validateHomeSearch({})).toEqual({ tab: "guide" });
   });
 
-  it("preserves secteurs tab and sector", () => {
+  it("preserves secteurs tab and sector for modal deep link", () => {
     expect(validateHomeSearch({ tab: "secteurs", sector: "tmt" })).toEqual({
+      tab: "secteurs",
+      sector: "tmt",
+    });
+  });
+
+  it("opens secteurs tab when sector is set without tab", () => {
+    expect(validateHomeSearch({ sector: "tmt" })).toEqual({
       tab: "secteurs",
       sector: "tmt",
     });

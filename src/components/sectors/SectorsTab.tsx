@@ -1,10 +1,8 @@
 import { lazy, Suspense, useEffect, useRef } from "react";
 import { Route } from "@/routes/index";
-import { SectorPanel } from "@/components/sectors/SectorPanel";
-import { DetailSheet } from "@/components/hub/DetailSheet";
 import { SECTOR_DATA } from "@/data/sector-data";
-import { isValidSectorId, type SectorId } from "@/lib/sectors";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+import type { SectorId } from "@/lib/sectors";
+import { SectorDetailDialog } from "@/components/sectors/SectorDetailDialog";
 
 const IsometricMap = lazy(() =>
   import("@/components/sectors/IsometricMap").then((m) => ({ default: m.IsometricMap })),
@@ -13,21 +11,17 @@ const IsometricMap = lazy(() =>
 export function SectorsTab() {
   const { sector: sectorFromUrl } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const panelRef = useRef<HTMLDivElement>(null);
-  const lastSectorTriggerRef = useRef<HTMLElement | null>(null);
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
 
-  const selectedSector = sectorFromUrl && isValidSectorId(sectorFromUrl) ? sectorFromUrl : null;
+  const selectedSectorId =
+    sectorFromUrl && SECTOR_DATA[sectorFromUrl] ? sectorFromUrl : null;
 
-  const handleSectorSelect = (id: SectorId | null) => {
-    if (id !== null && document.activeElement instanceof HTMLElement) {
-      lastSectorTriggerRef.current = document.activeElement;
-    }
+  const handleSectorSelect = (id: SectorId) => {
     navigate({
       search: (prev) => ({
+        ...prev,
         tab: "secteurs",
-        bank: undefined,
-        sector: id ?? undefined,
+        sector: selectedSectorId === id ? undefined : id,
       }),
     });
   };
@@ -35,6 +29,7 @@ export function SectorsTab() {
   const handleClose = () => {
     navigate({
       search: (prev) => ({
+        ...prev,
         tab: prev.tab ?? "secteurs",
         sector: undefined,
       }),
@@ -42,27 +37,12 @@ export function SectorsTab() {
   };
 
   useEffect(() => {
-    if (!selectedSector) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") handleClose();
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [selectedSector]);
-
-  useEffect(() => {
-    if (!selectedSector || isMobile || !panelRef.current) return;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timer = window.setTimeout(() => {
-      panelRef.current?.scrollIntoView({
-        behavior: reducedMotion ? "auto" : "smooth",
-        block: "start",
+    if (sectorFromUrl && !SECTOR_DATA[sectorFromUrl]) {
+      navigate({
+        search: (prev) => ({ ...prev, sector: undefined }),
       });
-    }, 100);
-    return () => window.clearTimeout(timer);
-  }, [selectedSector, isMobile]);
-
-  const isDeepLinked = Boolean(sectorFromUrl && selectedSector === sectorFromUrl);
+    }
+  }, [sectorFromUrl, navigate]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -90,26 +70,18 @@ export function SectorsTab() {
           />
         }
       >
-        <IsometricMap onSectorSelect={handleSectorSelect} selectedSector={selectedSector} />
+        <IsometricMap onSectorSelect={handleSectorSelect} selectedSectorId={selectedSectorId} />
       </Suspense>
 
-      {selectedSector && !isMobile && (
-        <div ref={panelRef} className="scroll-mt-24">
-          <SectorPanel sectorId={selectedSector} onClose={handleClose} highlighted={isDeepLinked} />
-        </div>
-      )}
-
-      {isMobile && selectedSector && SECTOR_DATA[selectedSector] && (
-        <DetailSheet
+      {selectedSectorId && (
+        <SectorDetailDialog
+          sectorId={selectedSectorId}
           open
           onOpenChange={(open) => {
             if (!open) handleClose();
           }}
-          title={`Fiche ${SECTOR_DATA[selectedSector].name}`}
-          returnFocusRef={lastSectorTriggerRef}
-        >
-          <SectorPanel sectorId={selectedSector} onClose={handleClose} highlighted={isDeepLinked} />
-        </DetailSheet>
+          returnFocusRef={lastTriggerRef}
+        />
       )}
     </div>
   );

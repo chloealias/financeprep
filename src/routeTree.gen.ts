@@ -19,6 +19,7 @@ import { Route as CvRouteImport } from './routes/cv'
 import { Route as ActualiteRouteImport } from './routes/actualite'
 import { Route as AccretionRouteImport } from './routes/accretion'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SecteurSectorIdRouteImport } from './routes/secteur/$sectorId'
 
 const PyramidRoute = PyramidRouteImport.update({
   id: '/pyramid',
@@ -70,6 +71,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SecteurSectorIdRoute = SecteurSectorIdRouteImport.update({
+  id: '/secteur/$sectorId',
+  path: '/secteur/$sectorId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/interview': typeof InterviewRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
+  '/secteur/$sectorId': typeof SecteurSectorIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/interview': typeof InterviewRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
+  '/secteur/$sectorId': typeof SecteurSectorIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/interview': typeof InterviewRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
+  '/secteur/$sectorId': typeof SecteurSectorIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/interview'
     | '/profil'
     | '/pyramid'
+    | '/secteur/$sectorId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/interview'
     | '/profil'
     | '/pyramid'
+    | '/secteur/$sectorId'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/interview'
     | '/profil'
     | '/pyramid'
+    | '/secteur/$sectorId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +170,7 @@ export interface RootRouteChildren {
   InterviewRoute: typeof InterviewRoute
   ProfilRoute: typeof ProfilRoute
   PyramidRoute: typeof PyramidRoute
+  SecteurSectorIdRoute: typeof SecteurSectorIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/secteur/$sectorId': {
+      id: '/secteur/$sectorId'
+      path: '/secteur/$sectorId'
+      fullPath: '/secteur/$sectorId'
+      preLoaderRoute: typeof SecteurSectorIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   InterviewRoute: InterviewRoute,
   ProfilRoute: ProfilRoute,
   PyramidRoute: PyramidRoute,
+  SecteurSectorIdRoute: SecteurSectorIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

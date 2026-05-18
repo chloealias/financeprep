@@ -2,6 +2,7 @@ import React from "react";
 import { ChevronRight, Library } from "lucide-react";
 import { Visual } from "@/components/interview/Visual";
 import { concepts } from "@/data/concepts";
+import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 
 type Concept = (typeof concepts)[number];
 
@@ -31,11 +32,9 @@ export function ConceptCard({
 
   React.useEffect(() => {
     if (isExpanded && !wasExpanded.current && cardRef.current) {
-      // Scroll the card to the top of the viewport, just under the sticky filter bar
-      const stickyBar = document.getElementById("concepts-sticky-bar");
-      const offset = (stickyBar?.offsetHeight ?? 96) + 12;
-      const top = cardRef.current.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: "smooth" });
+      const cleanup = smoothScrollIntoViewAfterLayout(cardRef.current, { block: "start" });
+      wasExpanded.current = isExpanded;
+      return cleanup;
     }
     wasExpanded.current = isExpanded;
   }, [isExpanded]);

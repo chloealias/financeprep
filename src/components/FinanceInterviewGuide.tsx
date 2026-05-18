@@ -26,17 +26,18 @@ type FinanceInterviewGuideProps = {
 };
 
 const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGuideProps) => {
-  const [ratings, setRatings] = useState<QuestionRatings>(() =>
-    typeof window !== "undefined" ? loadRatings() : {},
-  );
-  const [reviewList, setReviewList] = useState<string[]>(() =>
-    typeof window !== "undefined" ? loadReviewList() : [],
-  );
+  const [ratings, setRatings] = useState<QuestionRatings>({});
+  const [reviewList, setReviewList] = useState<string[]>([]);
   const [questionsFiltersKey, setQuestionsFiltersKey] = useState(0);
 
   useEffect(() => {
+    setReviewList(loadReviewList());
     void loadRatingsWithLegacyMigration().then((migrated) => {
-      if (Object.keys(migrated).length > 0) setRatings(migrated);
+      if (Object.keys(migrated).length > 0) {
+        setRatings(migrated);
+        return;
+      }
+      setRatings(loadRatings());
     });
   }, []);
 

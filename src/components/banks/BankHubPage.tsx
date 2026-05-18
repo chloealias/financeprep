@@ -26,6 +26,7 @@ import {
   isTargetBank,
   toggleTargetBank,
 } from "@/lib/target-banks-storage";
+import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import type { HomeSearch } from "@/lib/route-search";
 
 function matchesSearch(bank: BankProfile, query: string): boolean {
@@ -56,8 +57,13 @@ export function BankHubPage() {
 
   const [categoryFilter, setCategoryFilter] = useState<BankCategoryFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [targetsOnly, setTargetsOnly] = useState(() => consumeOpenTargetsFilter());
-  const [targetIds, setTargetIds] = useState<string[]>(() => getTargetBankIds());
+  const [targetsOnly, setTargetsOnly] = useState(false);
+  const [targetIds, setTargetIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    setTargetsOnly(consumeOpenTargetsFilter());
+    setTargetIds(getTargetBankIds());
+  }, []);
 
   const targetIdSet = useMemo(() => new Set(targetIds), [targetIds]);
 
@@ -135,11 +141,7 @@ export function BankHubPage() {
 
   useEffect(() => {
     if (!selectedBankId || isMobile || !panelRef.current) return;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    panelRef.current.scrollIntoView({
-      behavior: reducedMotion ? "auto" : "smooth",
-      block: "nearest",
-    });
+    return smoothScrollIntoViewAfterLayout(panelRef.current, { block: "nearest" });
   }, [selectedBankId, isMobile]);
 
   useEffect(() => {

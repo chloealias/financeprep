@@ -102,9 +102,11 @@ describe("buildInterviewPack", () => {
     expect(sector?.kind).toBe("sector");
     if (sector?.kind === "sector") {
       const links = getPackItemGuideLinks(sector);
-      expect(links.some((l) => l.search?.tab === "secteurs" && l.search.sector === "sante")).toBe(
-        true,
-      );
+      expect(
+        links.some(
+          (l) => l.to === "/" && l.search?.tab === "secteurs" && l.search?.sector === "sante",
+        ),
+      ).toBe(true);
       expect(links.some((l) => l.search?.deal === "d01")).toBe(true);
     }
   });

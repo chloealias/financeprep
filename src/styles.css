@@ -137,9 +137,19 @@
     border-color: var(--color-border);
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
@@ -151,9 +161,23 @@
   scrollbar-width: none;
 }
 
+@keyframes sector-focus-flash {
+  from {
+    background-color: oklch(0.97 0.014 254.604);
+  }
+  to {
+    background-color: #fff;
+  }
+}
+
+.sector-focus-flash {
+  animation: sector-focus-flash 600ms ease-out forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-in,
-  .animate-out {
+  .animate-out,
+  .sector-focus-flash {
     animation: none !important;
     transition: none !important;
   }

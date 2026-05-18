@@ -297,6 +297,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                       key={`${link.to}-${link.label}`}
                       to={link.to}
                       search={link.search}
+                      params={link.params}
                       className="text-sm text-blue-700 hover:text-blue-900 font-medium underline"
                     >
                       {link.label}

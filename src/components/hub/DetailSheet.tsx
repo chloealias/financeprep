@@ -1,6 +1,7 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "@/components/ui/drawer";
 import { ClientOnly } from "@/components/hub/ClientOnly";
+import { cn } from "@/lib/utils";
 
 type DetailSheetProps = {
   open: boolean;
@@ -8,6 +9,7 @@ type DetailSheetProps = {
   title: string;
   children: ReactNode;
   returnFocusRef?: React.RefObject<HTMLElement | null>;
+  contentClassName?: string;
 };
 
 export function DetailSheet({
@@ -16,6 +18,7 @@ export function DetailSheet({
   title,
   children,
   returnFocusRef,
+  contentClassName,
 }: DetailSheetProps) {
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +48,10 @@ export function DetailSheet({
           </DrawerDescription>
           <div
             ref={contentRef}
-            className="overflow-y-auto overscroll-contain px-1 pb-6 pt-2 max-h-[calc(90vh-2rem)]"
+            className={cn(
+              "overflow-y-auto overscroll-contain max-h-[calc(90vh-2rem)]",
+              contentClassName ?? "px-1 pb-6 pt-2",
+            )}
           >
             {children}
           </div>

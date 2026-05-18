@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -54,16 +54,21 @@ const defaultFilters = {
 
 export function ProfilePage() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<UserProfile>(() =>
-    typeof window !== "undefined" ? loadProfile() : DEFAULT_PROFILE,
-  );
+  const [profile, setProfile] = useState<UserProfile>(DEFAULT_PROFILE);
+  const [mounted, setMounted] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
-  const dashboard = useMemo(() => getProfileDashboard(), [refreshKey, profile]);
+
+  useEffect(() => {
+    setProfile(loadProfile());
+    setMounted(true);
+  }, []);
+
+  const dashboard = useMemo(() => (mounted ? getProfileDashboard() : null), [mounted, refreshKey]);
   const packSummary = useMemo(() => describePackPersonalization(profile), [profile, refreshKey]);
-  const sessions = useMemo(() => loadInterviewSessions(), [refreshKey]);
-  const targetIds = useMemo(() => getTargetBankIds(), [refreshKey]);
-  const countdown = formatInterviewCountdown(dashboard.daysUntil);
+  const sessions = useMemo(() => (mounted ? loadInterviewSessions() : []), [mounted, refreshKey]);
+  const targetIds = useMemo(() => (mounted ? getTargetBankIds() : []), [mounted, refreshKey]);
+  const countdown = formatInterviewCountdown(dashboard?.daysUntil ?? null);
 
   const persist = useCallback((next: UserProfile) => {
     const normalized = { ...next };
@@ -87,6 +92,20 @@ export function ProfilePage() {
     saveSavedFilters({ ...defaultFilters, ratingFilter: "weak" });
     navigate({ to: "/", search: { tab: "questions" } });
   };
+
+  if (!mounted || !dashboard) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="h-10 w-32 rounded-lg bg-blue-100 animate-pulse mb-8" />
+        <div className="h-48 rounded-2xl bg-blue-100/80 animate-pulse mb-8" />
+        <div className="grid sm:grid-cols-3 gap-3 mb-8">
+          <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
+          <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
+          <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">

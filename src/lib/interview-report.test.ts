@@ -57,8 +57,7 @@ describe("buildInterviewMarkdown", () => {
       },
       [],
     );
-    expect(md).toContain("tab=secteurs");
-    expect(md).toContain("sector=sante");
+    expect(md).toContain("/?tab=secteurs&sector=sante");
     expect(md).toContain("/actualite?deal=d01");
   });
 });

@@ -3,9 +3,7 @@ import { PROFILE_UPDATED_EVENT } from "@/lib/profile-events";
 import { DEFAULT_PROFILE, loadProfile, saveProfile, type UserProfile } from "@/lib/profile-storage";
 
 export function useUserProfile() {
-  const [profile, setProfile] = useState<UserProfile>(() =>
-    typeof window !== "undefined" ? loadProfile() : DEFAULT_PROFILE,
-  );
+  const [profile, setProfile] = useState<UserProfile>(DEFAULT_PROFILE);
 
   const refresh = useCallback(() => {
     setProfile(loadProfile());
