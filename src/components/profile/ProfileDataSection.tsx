@@ -38,7 +38,9 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
     <section className="mb-10 rounded-2xl border border-blue-100 bg-white overflow-hidden shadow-sm">
       <div className="px-5 py-4 border-b border-blue-50">
         <h2 className="text-blue-950 font-serif text-lg">Données</h2>
-        <p className="text-xs text-blue-500 mt-0.5">Stockage local · export pour changer d&apos;appareil</p>
+        <p className="text-xs text-blue-500 mt-0.5">
+          Stockage local · export pour changer d&apos;appareil
+        </p>
       </div>
 
       <div className="p-5 grid sm:grid-cols-2 gap-3">
@@ -85,7 +87,9 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
       </div>
 
       {importMsg && (
-        <p className="mx-5 mb-4 text-sm text-blue-800 bg-blue-50 px-3 py-2 rounded-lg">{importMsg}</p>
+        <p className="mx-5 mb-4 text-sm text-blue-800 bg-blue-50 px-3 py-2 rounded-lg">
+          {importMsg}
+        </p>
       )}
 
       {pendingImport && (

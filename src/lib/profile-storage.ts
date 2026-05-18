@@ -107,7 +107,9 @@ function writeJson(key: string, value: unknown): void {
 
 function normalizeSectorIds(raw: unknown): SectorId[] {
   if (!Array.isArray(raw)) return [];
-  return raw.filter((id): id is SectorId => typeof id === "string" && isValidSectorId(id)).slice(0, 3);
+  return raw
+    .filter((id): id is SectorId => typeof id === "string" && isValidSectorId(id))
+    .slice(0, 3);
 }
 
 export function normalizeProfile(raw: unknown): UserProfile {
@@ -222,15 +224,14 @@ export type BackupPreview = {
   srsCardsCount: number;
 };
 
-export function parseBackupPreview(json: string): { ok: true; preview: BackupPreview } | { ok: false; error: string } {
+export function parseBackupPreview(
+  json: string,
+): { ok: true; preview: BackupPreview } | { ok: false; error: string } {
   try {
     const raw = JSON.parse(json) as FinancePrepBackup;
     if (raw.version !== 1) return { ok: false, error: "Version de sauvegarde non supportée." };
     const profile = normalizeProfile(raw.profile);
-    const label =
-      profile.firstName?.trim() ||
-      profile.targetRole?.trim() ||
-      "Profil sans nom";
+    const label = profile.firstName?.trim() || profile.targetRole?.trim() || "Profil sans nom";
     return {
       ok: true,
       preview: {

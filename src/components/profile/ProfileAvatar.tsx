@@ -1,9 +1,5 @@
 import type { UserProfile } from "@/lib/profile-storage";
-import {
-  getProfileIcon,
-  patternColors,
-  type AvatarKind,
-} from "@/lib/profile-cosmetics";
+import { getProfileIcon, patternColors, type AvatarKind } from "@/lib/profile-cosmetics";
 
 type ProfileAvatarProps = {
   profile: Pick<UserProfile, "avatarKind" | "avatarId" | "avatarPatternSeed" | "firstName">;

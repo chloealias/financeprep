@@ -119,14 +119,15 @@ export function getProfileMenuBadges(): {
   return {
     srsDue: dashboard.srsDue,
     targetBankCount: dashboard.targetBankCount,
-    countdown: daysUntilInterview(profile.interviewDate) !== null
-      ? (() => {
-          const d = daysUntilInterview(profile.interviewDate)!;
-          if (d < 0) return null;
-          if (d === 0) return "J";
-          if (d <= 14) return String(d);
-          return null;
-        })()
-      : null,
+    countdown:
+      daysUntilInterview(profile.interviewDate) !== null
+        ? (() => {
+            const d = daysUntilInterview(profile.interviewDate)!;
+            if (d < 0) return null;
+            if (d === 0) return "J";
+            if (d <= 14) return String(d);
+            return null;
+          })()
+        : null,
   };
 }

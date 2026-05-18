@@ -127,8 +127,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
   const finishSession = (final: SessionAnswer[]) => {
     const durationMs = Date.now() - startedAtRef.current;
     const rated = final.filter((a) => a.stars > 0);
-    const avgStars =
-      rated.length > 0 ? rated.reduce((s, a) => s + a.stars, 0) / rated.length : 0;
+    const avgStars = rated.length > 0 ? rated.reduce((s, a) => s + a.stars, 0) / rated.length : 0;
 
     const record: InterviewSessionRecord = {
       id: sessionIdRef.current,
@@ -336,9 +335,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                   onChange={(e) => setStructureOk(e.target.checked)}
                   className="mt-1"
                 />
-                <span className="text-sm text-blue-950">
-                  Structure claire (Pyramid / STAR)
-                </span>
+                <span className="text-sm text-blue-950">Structure claire (Pyramid / STAR)</span>
               </label>
               <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-blue-100 bg-white cursor-pointer hover:border-blue-300">
                 <input
@@ -385,8 +382,7 @@ function InterviewResults({
   const [srsAdded, setSrsAdded] = useState(false);
 
   const rated = answers.filter((a) => a.stars > 0);
-  const avg =
-    rated.length > 0 ? rated.reduce((s, a) => s + a.stars, 0) / rated.length : 0;
+  const avg = rated.length > 0 ? rated.reduce((s, a) => s + a.stars, 0) / rated.length : 0;
   const scorePct = Math.round((avg / 5) * 100);
   const weak = answers.filter((a) => a.stars > 0 && a.stars <= 2);
   const weakCats = computeWeakCategories(answers);
@@ -461,9 +457,7 @@ function InterviewResults({
 
       {weak.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-serif text-blue-950 mb-4">
-            À revoir ({weak.length})
-          </h2>
+          <h2 className="text-xl font-serif text-blue-950 mb-4">À revoir ({weak.length})</h2>
           <ul className="space-y-2 mb-4">
             {weak.map((a, i) => (
               <li
@@ -488,10 +482,7 @@ function InterviewResults({
       )}
 
       <div className="mb-8 flex flex-wrap gap-3">
-        <Link
-          to="/cv"
-          className="text-sm text-blue-700 hover:text-blue-900 font-medium underline"
-        >
+        <Link to="/cv" className="text-sm text-blue-700 hover:text-blue-900 font-medium underline">
           Guide CV
         </Link>
         <Link
@@ -570,8 +561,8 @@ export function InterviewSessionSetup({
         {mode === "full" ? "Simulation d'entretien" : "Mini-entretien"}
       </h1>
       <p className="text-blue-700 font-light mb-6 max-w-2xl">
-        {packSize} questions type entretien · ~{totalMin} min au total (timer par question).
-        Pack : ouverture CV, technique, actualité M&A, sectoriel
+        {packSize} questions type entretien · ~{totalMin} min au total (timer par question). Pack :
+        ouverture CV, technique, actualité M&A, sectoriel
         {packSize === 7 ? ", + fit." : "."}
       </p>
       <ul className="mb-8 space-y-2">
@@ -581,7 +572,9 @@ export function InterviewSessionSetup({
             className="flex justify-between gap-4 text-sm bg-white rounded-lg border border-blue-100 px-4 py-3"
           >
             <span className="text-blue-950 font-medium">{packItemLabel(item)}</span>
-            <span className="text-blue-600 tabular-nums">{Math.round(item.secondsLimit / 60)} min</span>
+            <span className="text-blue-600 tabular-nums">
+              {Math.round(item.secondsLimit / 60)} min
+            </span>
           </li>
         ))}
       </ul>

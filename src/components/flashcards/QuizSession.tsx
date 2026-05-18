@@ -6,8 +6,7 @@ type Phase = "setup" | "playing";
 
 export function QuizSession({ onBack }: { onBack: () => void }) {
   const [phase, setPhase] = useState<Phase>("setup");
-  const packSize =
-    typeof window !== "undefined" ? (loadProfile().defaultPackSize ?? 5) : 5;
+  const packSize = typeof window !== "undefined" ? (loadProfile().defaultPackSize ?? 5) : 5;
 
   if (phase === "setup") {
     return (
@@ -20,7 +19,5 @@ export function QuizSession({ onBack }: { onBack: () => void }) {
     );
   }
 
-  return (
-    <InterviewSession mode="mini" packSize={packSize} onBack={() => setPhase("setup")} />
-  );
+  return <InterviewSession mode="mini" packSize={packSize} onBack={() => setPhase("setup")} />;
 }

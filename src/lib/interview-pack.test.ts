@@ -50,9 +50,7 @@ describe("buildInterviewPack", () => {
 
   it("has no duplicate question ids", () => {
     const pack = buildInterviewPack({ size: 7 });
-    const qIds = pack
-      .filter((p) => p.kind === "question")
-      .map((p) => (p as { id: string }).id);
+    const qIds = pack.filter((p) => p.kind === "question").map((p) => (p as { id: string }).id);
     expect(new Set(qIds).size).toBe(qIds.length);
   });
 

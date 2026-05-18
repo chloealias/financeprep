@@ -7,12 +7,7 @@ type ProfileBannerProps = {
   children?: React.ReactNode;
 };
 
-export function ProfileBanner({
-  bannerId,
-  className = "",
-  style,
-  children,
-}: ProfileBannerProps) {
+export function ProfileBanner({ bannerId, className = "", style, children }: ProfileBannerProps) {
   const banner = getProfileBanner(bannerId);
   return (
     <div className={`relative ${banner.className} ${className}`} style={style}>

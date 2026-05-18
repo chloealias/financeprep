@@ -112,7 +112,11 @@ export function inferInterviewSlot(q: {
   const id = questionIdKey(q.id);
   if (FIT_QUESTION_IDS.has(id)) return "fit";
   const blob = `${q.question ?? ""} ${q.explanation ?? ""} ${q.tip ?? ""}`.toLowerCase();
-  if (/\bquestion fit\b|\bfit ultra\b|\bfit révélatrice\b|\bfit piège\b|\bfit\/strat\b|\bfit fondamentale\b|\bfit déstabilisante\b/.test(blob)) {
+  if (
+    /\bquestion fit\b|\bfit ultra\b|\bfit révélatrice\b|\bfit piège\b|\bfit\/strat\b|\bfit fondamentale\b|\bfit déstabilisante\b/.test(
+      blob,
+    )
+  ) {
     return "fit";
   }
   if (q.category === "brainteaser") return "brainteaser";
@@ -212,7 +216,10 @@ function pickTechnicalQuestions(
   }));
 }
 
-function pickFitQuestion(pool: RawQuestion[], excludeIds: Set<string>): QuestionPackItem | undefined {
+function pickFitQuestion(
+  pool: RawQuestion[],
+  excludeIds: Set<string>,
+): QuestionPackItem | undefined {
   const fits = pool.filter((q) => {
     const id = questionIdKey(q!.id);
     if (excludeIds.has(id)) return false;

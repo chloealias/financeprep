@@ -1,9 +1,4 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ProfileAppearanceEditor } from "@/components/profile/ProfileAppearanceEditor";
 import type { UserProfile } from "@/lib/profile-storage";
 

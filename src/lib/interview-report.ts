@@ -72,7 +72,12 @@ export function buildInterviewMarkdown(
     .map((a) => answerResourceLink(a))
     .filter(Boolean);
 
-  lines.push("## Ressources", "", "- [Guide CV — Walk me through your CV](/cv)", "- [Pyramid Principle + STAR](/pyramid)");
+  lines.push(
+    "## Ressources",
+    "",
+    "- [Guide CV — Walk me through your CV](/cv)",
+    "- [Pyramid Principle + STAR](/pyramid)",
+  );
 
   if (dealLinks.length > 0) {
     for (const link of dealLinks) {

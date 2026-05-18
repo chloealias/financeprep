@@ -181,7 +181,6 @@ export function isStorageAvailable(): boolean {
   }
 }
 
-
 export function loadInterviewSessions(): InterviewSessionRecord[] {
   const list = readJson<unknown>(INTERVIEW_SESSIONS_KEY, []);
   if (!Array.isArray(list)) return [];
@@ -196,7 +195,10 @@ export function loadInterviewSessions(): InterviewSessionRecord[] {
 
 export function saveInterviewSession(session: InterviewSessionRecord): void {
   const prev = loadInterviewSessions();
-  const next = [session, ...prev.filter((s) => s.id !== session.id)].slice(0, MAX_INTERVIEW_SESSIONS);
+  const next = [session, ...prev.filter((s) => s.id !== session.id)].slice(
+    0,
+    MAX_INTERVIEW_SESSIONS,
+  );
   writeJson(INTERVIEW_SESSIONS_KEY, next);
 }
 

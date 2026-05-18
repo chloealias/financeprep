@@ -39,7 +39,11 @@ import {
 import type { SectorId } from "@/lib/sectors";
 import { requestOpenTargetsFilter } from "@/lib/target-banks-storage";
 import { getTargetBankIds } from "@/lib/target-banks-storage";
-import { loadInterviewSessions, saveSavedFilters, type InterviewSessionRecord } from "@/lib/storage";
+import {
+  loadInterviewSessions,
+  saveSavedFilters,
+  type InterviewSessionRecord,
+} from "@/lib/storage";
 const defaultFilters = {
   activeCategory: "all",
   activeDifficulty: "all",
@@ -155,7 +159,7 @@ export function ProfilePage() {
         </label>
       </section>
 
-{/* Objectif entretien */}
+      {/* Objectif entretien */}
       <section className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-sm">
         <h2 className="text-blue-950 font-serif text-lg mb-3">Objectifs</h2>
 
@@ -176,7 +180,6 @@ export function ProfilePage() {
             }}
           />
         </div>
-
 
         <div className="mb-6">
           <span className="text-sm font-medium text-blue-950 block mb-2">
@@ -280,11 +283,7 @@ export function ProfilePage() {
                 : "Derniers deals et tendances"
             }
             href="/actualite"
-            search={
-              dashboard.suggestedDealId
-                ? { deal: dashboard.suggestedDealId }
-                : undefined
-            }
+            search={dashboard.suggestedDealId ? { deal: dashboard.suggestedDealId } : undefined}
             icon={<Newspaper className="w-5 h-5" />}
             highlight={Boolean(dashboard.suggestedDealId)}
           />
@@ -294,9 +293,7 @@ export function ProfilePage() {
             desc="Timer 30 min"
             href="/interview"
             icon={<Mic className="w-5 h-5" />}
-            highlight={
-              dashboard.suggestSimulation || dashboard.todayHighlights.has("simulation")
-            }
+            highlight={dashboard.suggestSimulation || dashboard.todayHighlights.has("simulation")}
           />
           <TodayCard
             title="Questions faibles"

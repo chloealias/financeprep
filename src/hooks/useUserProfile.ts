@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { PROFILE_UPDATED_EVENT } from "@/lib/profile-events";
-import {
-  DEFAULT_PROFILE,
-  loadProfile,
-  saveProfile,
-  type UserProfile,
-} from "@/lib/profile-storage";
+import { DEFAULT_PROFILE, loadProfile, saveProfile, type UserProfile } from "@/lib/profile-storage";
 
 export function useUserProfile() {
   const [profile, setProfile] = useState<UserProfile>(() =>

@@ -144,7 +144,9 @@ export function ProfileAppearanceEditor({
                 type="button"
                 onClick={() => selectBanner(id)}
                 className={`h-12 sm:h-14 rounded-xl ${className} relative overflow-hidden transition-transform ${
-                  selected ? "ring-2 ring-blue-500 ring-offset-2 scale-[1.02]" : "hover:scale-[1.02]"
+                  selected
+                    ? "ring-2 ring-blue-500 ring-offset-2 scale-[1.02]"
+                    : "hover:scale-[1.02]"
                 }`}
                 aria-pressed={selected}
               >

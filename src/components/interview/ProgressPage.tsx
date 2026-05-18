@@ -121,14 +121,16 @@ export function ProgressPage({
     ...(concepts as { id: string | number }[]).map((c) => ({ id: `c-${questionIdKey(c.id)}` })),
   ];
   const srsBuckets =
-    typeof window !== "undefined" ? countBuckets(srsCards, srsStore) : { due: 0, fresh: 0, later: 0, mastered: 0 };
+    typeof window !== "undefined"
+      ? countBuckets(srsCards, srsStore)
+      : { due: 0, fresh: 0, later: 0, mastered: 0 };
   const sessions = typeof window !== "undefined" ? loadInterviewSessions() : [];
   const lastSession = sessions[0];
   const recentAvg =
     sessions.length > 0
       ? sessions.slice(0, 5).reduce((s, x) => s + x.avgStars, 0) / Math.min(5, sessions.length)
       : null;
-    return (
+  return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
@@ -233,7 +235,9 @@ export function ProgressPage({
         <div className="grid sm:grid-cols-3 gap-4 mb-4">
           <div className="rounded-xl bg-indigo-50 border border-indigo-100 p-4">
             <div className="text-2xl font-serif text-indigo-950 tabular-nums">{srsBuckets.due}</div>
-            <div className="text-xs uppercase tracking-wider text-indigo-700 mt-1">Cartes SRS dues</div>
+            <div className="text-xs uppercase tracking-wider text-indigo-700 mt-1">
+              Cartes SRS dues
+            </div>
           </div>
           <div className="rounded-xl bg-violet-50 border border-violet-100 p-4">
             <div className="text-2xl font-serif text-violet-950 tabular-nums">
@@ -249,7 +253,9 @@ export function ProgressPage({
                 ? new Date(lastSession.startedAt).toLocaleDateString("fr-FR")
                 : "Aucune session"}
             </div>
-            <div className="text-xs uppercase tracking-wider text-blue-700 mt-1">Dernière simulation</div>
+            <div className="text-xs uppercase tracking-wider text-blue-700 mt-1">
+              Dernière simulation
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap gap-3">

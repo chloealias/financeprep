@@ -3,7 +3,9 @@ import { getInterviewPlanMessage } from "@/lib/profile-personalization";
 
 describe("getInterviewPlanMessage", () => {
   it("returns null when no interview date context", () => {
-    expect(getInterviewPlanMessage(null, { srsDue: 0, weakCount: 0, suggestSimulation: false })).toBeNull();
+    expect(
+      getInterviewPlanMessage(null, { srsDue: 0, weakCount: 0, suggestSimulation: false }),
+    ).toBeNull();
   });
 
   it("returns day-of message", () => {

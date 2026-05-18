@@ -11,7 +11,7 @@ type Phase = "briefing" | "setup" | "playing";
 export function InterviewSimulator({ onBack }: { onBack: () => void }) {
   const [phase, setPhase] = useState<Phase>("briefing");
   const [packSize, setPackSize] = useState<5 | 7>(() =>
-    typeof window !== "undefined" ? loadProfile().defaultPackSize ?? 5 : 5,
+    typeof window !== "undefined" ? (loadProfile().defaultPackSize ?? 5) : 5,
   );
   const targetBankNames = typeof window !== "undefined" ? getTargetBankNames() : [];
 

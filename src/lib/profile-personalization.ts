@@ -31,7 +31,9 @@ export type PackPersonalizationSummary = {
 export function describePackPersonalization(profile: UserProfile): PackPersonalizationSummary {
   const packSize = profile.defaultPackSize ?? 5;
   const bankNames = getTargetBankNames();
-  const sectorNames = (profile.sectorIds ?? []).map((id) => SECTOR_DATA[id as SectorId]?.name ?? id);
+  const sectorNames = (profile.sectorIds ?? []).map(
+    (id) => SECTOR_DATA[id as SectorId]?.name ?? id,
+  );
   return {
     packSize,
     bankNames,
@@ -68,10 +70,7 @@ export function getTodayHighlightKeys(profile: UserProfile): Set<TodayHighlightK
   if (profile.experienceLevel === "reconversion") {
     keys.add("cv");
     keys.add("srs");
-  } else if (
-    profile.experienceLevel === "junior" ||
-    profile.experienceLevel === "stagiaire"
-  ) {
+  } else if (profile.experienceLevel === "junior" || profile.experienceLevel === "stagiaire") {
     keys.add("simulation");
     keys.add("weak");
   }
@@ -114,5 +113,7 @@ export function suggestedDefaultPackSize(processType: UserProfile["processType"]
 
 export function validateTargetBankIds(ids: unknown): string[] {
   if (!Array.isArray(ids)) return [];
-  return ids.filter((id): id is string => typeof id === "string" && !!getBankById(id)).map((id) => id);
+  return ids
+    .filter((id): id is string => typeof id === "string" && !!getBankById(id))
+    .map((id) => id);
 }
