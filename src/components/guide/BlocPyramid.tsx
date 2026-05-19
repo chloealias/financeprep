@@ -254,6 +254,43 @@ export function BlocPyramid() {
           </table>
         </div>
       </div>
+
+      <div className="mt-10 mb-8">
+        <GuideSectionTitle>Gagner du temps / gérer un blanc</GuideSectionTitle>
+        <p className="text-blue-800 text-sm font-light mb-4">
+          Un silence de 3 secondes paraît long en entretien. Ces réflexes achètent du temps sans
+          perdre en crédibilité — en combinant avec Pyramid (conclusion d&apos;abord).
+        </p>
+        <div className="grid sm:grid-cols-2 gap-4 mb-4">
+          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+            <div className="text-xs uppercase tracking-wider text-emerald-700 font-semibold mb-2">
+              Phrases utiles
+            </div>
+            <ul className="text-blue-900 text-sm space-y-2 list-disc list-inside">
+              <li>« Si je reformule bien, vous me demandez… »</li>
+              <li>« Je vais structurer ma réponse en trois points. »</li>
+              <li>« En synthèse : [conclusion]. Détail : … »</li>
+              <li>« Puis-je prendre quelques secondes pour organiser ma pensée ? »</li>
+              <li>« Côté chiffres, l&apos;ordre de grandeur est… » (avant le calcul exact)</li>
+            </ul>
+          </div>
+          <div className="bg-rose-50 border border-rose-200 rounded-xl p-4">
+            <div className="text-xs uppercase tracking-wider text-rose-700 font-semibold mb-2">
+              À éviter
+            </div>
+            <ul className="text-blue-900 text-sm space-y-2 list-disc list-inside">
+              <li>Silence total sans annoncer la structure</li>
+              <li>Inventer un chiffre pour « remplir »</li>
+              <li>« Je ne sais pas » sans proposer une piste</li>
+              <li>Partir dans le détail avant la conclusion</li>
+            </ul>
+          </div>
+        </div>
+        <p className="text-blue-600 text-xs font-light italic">
+          Règle : même sous pression, donner une conclusion en 10 secondes — puis approfondir ou
+          demander une précision.
+        </p>
+      </div>
     </>
   );
 }

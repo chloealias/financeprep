@@ -1,8 +1,8 @@
 import type { LucideIcon } from "lucide-react";
-import { Library, Newspaper, Table2, TrendingUp, Triangle, User } from "lucide-react";
+import { Calculator, Library, Newspaper, Table2, TrendingUp, Triangle, User } from "lucide-react";
 
 export type GuideModule = {
-  href: "/cv" | "/excel" | "/pyramid" | "/accretion" | "/actualite" | "/glossaire";
+  href: "/cv" | "/excel" | "/pyramid" | "/accretion" | "/actualite" | "/glossaire" | "/mental-math";
   tag: string;
   title: string;
   icon: LucideIcon;
@@ -20,6 +20,12 @@ export const guideModules: GuideModule[] = [
     tag: "Méta-framework",
     title: "Pyramid Principle + STAR",
     icon: Triangle,
+  },
+  {
+    href: "/mental-math",
+    tag: "Entraînement",
+    title: "Calcul mental (Trachtenberg & %)",
+    icon: Calculator,
   },
   {
     href: "/excel",

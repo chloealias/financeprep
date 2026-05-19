@@ -16,6 +16,9 @@ const SECTEUR_TO_SECTOR: Record<string, SectorId> = {
   "Immobilier / REIT logistique": "immo",
   "TMT / Gaming": "tmt",
   "Industrie / Distribution chimique": "industrie",
+  "Automobile / OEM": "auto",
+  "Automobile / Mobilité & EV": "auto",
+  "Automobile / Équipementiers": "auto",
 };
 
 export function getSectorIdForSecteur(secteur: string): SectorId | undefined {

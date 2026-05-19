@@ -1,6 +1,31 @@
 import { Link } from "@tanstack/react-router";
 import { getBankIdByName } from "@/data/bank-profiles";
-import { getSectorIdForSecteur } from "@/lib/sector-deals";
+import { getSectorIdForSecteur, getSectorLabel } from "@/lib/sector-deals";
+import type { SectorId } from "@/lib/sectors";
+
+type SectorHubChipProps = {
+  sectorId: SectorId;
+  label?: string;
+  className?: string;
+};
+
+/** Lien vers la fiche secteur sur le hub (symétrique à BankDealChip). */
+export function SectorHubChip({ sectorId, label, className }: SectorHubChipProps) {
+  const display = label ?? getSectorLabel(sectorId);
+  return (
+    <Link
+      to="/"
+      search={{ tab: "secteurs", sector: sectorId }}
+      className={
+        className ??
+        "bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded hover:bg-slate-200 transition-colors"
+      }
+      onClick={(e) => e.stopPropagation()}
+    >
+      {display}
+    </Link>
+  );
+}
 
 export function SectorDealChip({ secteur }: { secteur: string }) {
   const sectorId = getSectorIdForSecteur(secteur);
@@ -9,16 +34,7 @@ export function SectorDealChip({ secteur }: { secteur: string }) {
       <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded">{secteur}</span>
     );
   }
-  return (
-    <Link
-      to="/actualite"
-      search={{ sector: sectorId }}
-      className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded hover:bg-slate-200 transition-colors"
-      onClick={(e) => e.stopPropagation()}
-    >
-      {secteur}
-    </Link>
-  );
+  return <SectorHubChip sectorId={sectorId} label={secteur} />;
 }
 
 export function BankDealChip({ name }: { name: string }) {
@@ -42,10 +58,10 @@ export function BankDealChip({ name }: { name: string }) {
   );
 }
 
-/** Nom de banque dans une liste d'advisors (texte libre, ex. « Lazard »). */
+/** Nom de banque dans une liste d'advisors (texte libre, ex. « Lazard (M&A) »). */
 export function AdvisorBankName({ name }: { name: string }) {
-  const trimmed = name.replace(/^[·\s]+/, "").trim();
-  const bankId = getBankIdByName(trimmed);
+  const bankId = getBankIdByName(name);
+  const display = name.replace(/^[·\s]+/, "").trim();
   if (!bankId) {
     return <span>{name}</span>;
   }
@@ -56,7 +72,7 @@ export function AdvisorBankName({ name }: { name: string }) {
       className="text-blue-800 hover:text-blue-950 underline underline-offset-2"
       onClick={(e) => e.stopPropagation()}
     >
-      {trimmed}
+      {display.replace(/\s*\([^)]*\)\s*$/, "").trim() || display}
     </Link>
   );
 }

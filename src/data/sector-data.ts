@@ -1,5 +1,14 @@
 import type { LucideIcon } from "lucide-react";
-import { Building, Factory, Heart, Landmark, Monitor, ShoppingCart, Zap } from "lucide-react";
+import {
+  Building,
+  Car,
+  Factory,
+  Heart,
+  Landmark,
+  Monitor,
+  ShoppingCart,
+  Zap,
+} from "lucide-react";
 import type { SectorId } from "@/lib/sectors";
 
 export type SectorPanorama = {
@@ -291,6 +300,61 @@ export const SECTOR_DATA: Record<SectorId, SectorSheetData> = {
       "Comment modélisez-vous un groupe industriel avec des contrats long-terme à marge variable ?",
     reponse:
       "On analyse le carnet de commandes (backlog) et sa visibilité. Modélisation séparée par segment selon le type de contrat (fixed-price vs cost-plus). Stress test sur le taux de gain de nouveaux contrats et les cost overruns.",
+  },
+  auto: {
+    name: "Automotive",
+    tag: "Automobile & mobilité",
+    Icon: Car,
+    panorama: {
+      tailleMarche: "~3 000 Md$ CA automobile mondial (véhicules neufs + équipementiers)",
+      volumeMa:
+        "~200 deals auto/an mondiaux >100 M$ ; consolidation OEM et EV (2024-26) ; Chine = 1/3 du marché",
+      acteursMajeurs: [
+        "Stellantis (Peugeot, Fiat, Jeep, RAM)",
+        "Renault Group (Renault, Dacia, Alpine)",
+        "Volkswagen Group (VW, Audi, Porsche, Škoda)",
+        "BMW Group, Mercedes-Benz",
+        "Tesla, BYD (leaders BEV)",
+        "Forvia, Valeo, Continental (équipementiers)",
+      ],
+      segmentsCles: [
+        "OEM volume (mass market)",
+        "Premium / luxe",
+        "BEV & hybrides",
+        "Équipementiers (Tier-1)",
+        "Mobilité / services",
+      ],
+    },
+    kpis: [
+      "Volumes (unités vendues)",
+      "ASP (prix moyen véhicule)",
+      "Mix BEV / PHEV / ICE",
+      "Marge véhicule (auto op.)",
+      "CapEx plateformes & batteries",
+      "Order book / délais de livraison",
+    ],
+    multiples: [
+      { label: "EV/EBIT (OEM rentables)", value: "4-8x (cyclique)" },
+      { label: "P/E (côté)", value: "5-12x selon cycle" },
+      { label: "EV/Sales (EV pure-play)", value: "1-4x" },
+      { label: "EV/EBIT (équipementiers)", value: "6-10x" },
+    ],
+    tendances: [
+      "Électrification : pression marges, coût batteries, guerre des prix EV",
+      "Consolidation : plateformes partagées, JVs Chine-Europe",
+      "Déstockage et retour des incentives (US IRA, EU)",
+      "Software-defined vehicle : OTA, abonnements, partenariats tech",
+    ],
+    deal: {
+      titre: "Automobile — consolidation EV et pression prix",
+      texte:
+        "Tendance M&A 2025-26 : transition BEV, pression prix, entrée des OEM chinois. Stellantis, Renault, VW au cœur des entretiens sectoriels.",
+    },
+    emblematicDealId: "d18",
+    question:
+      "Pourquoi un constructeur auto peut-il avoir un EBITDA positif mais une valorisation faible ?",
+    reponse:
+      "Cyclicité (pic de marge = fin de cycle), CapEx massif (EV, nouvelles plateformes), incertitude sur le mix BEV et les volumes. Le marché anticipe un retournement de marge. Comparer EV/EBIT sur un cycle normalisé, pas le pic.",
   },
   immo: {
     name: "Immobilier",

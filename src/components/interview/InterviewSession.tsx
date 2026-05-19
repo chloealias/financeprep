@@ -495,7 +495,7 @@ function InterviewResults({
           to="/actualite"
           className="text-sm text-blue-700 hover:text-blue-900 font-medium underline"
         >
-          Actualité M&A
+          Actualité &amp; macro →
         </Link>
       </div>
 

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as MentalMathRouteImport } from './routes/mental-math'
 import { Route as InterviewRouteImport } from './routes/interview'
 import { Route as GlossaireRouteImport } from './routes/glossaire'
 import { Route as FlashcardsRouteImport } from './routes/flashcards'
@@ -29,6 +30,11 @@ const PyramidRoute = PyramidRouteImport.update({
 const ProfilRoute = ProfilRouteImport.update({
   id: '/profil',
   path: '/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentalMathRoute = MentalMathRouteImport.update({
+  id: '/mental-math',
+  path: '/mental-math',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InterviewRoute = InterviewRouteImport.update({
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/interview': typeof InterviewRoute
+  '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
   '/secteur/$sectorId': typeof SecteurSectorIdRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/interview': typeof InterviewRoute
+  '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
   '/secteur/$sectorId': typeof SecteurSectorIdRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/interview': typeof InterviewRoute
+  '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
   '/secteur/$sectorId': typeof SecteurSectorIdRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/glossaire'
     | '/interview'
+    | '/mental-math'
     | '/profil'
     | '/pyramid'
     | '/secteur/$sectorId'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/glossaire'
     | '/interview'
+    | '/mental-math'
     | '/profil'
     | '/pyramid'
     | '/secteur/$sectorId'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/glossaire'
     | '/interview'
+    | '/mental-math'
     | '/profil'
     | '/pyramid'
     | '/secteur/$sectorId'
@@ -168,6 +180,7 @@ export interface RootRouteChildren {
   FlashcardsRoute: typeof FlashcardsRoute
   GlossaireRoute: typeof GlossaireRoute
   InterviewRoute: typeof InterviewRoute
+  MentalMathRoute: typeof MentalMathRoute
   ProfilRoute: typeof ProfilRoute
   PyramidRoute: typeof PyramidRoute
   SecteurSectorIdRoute: typeof SecteurSectorIdRoute
@@ -187,6 +200,13 @@ declare module '@tanstack/react-router' {
       path: '/profil'
       fullPath: '/profil'
       preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mental-math': {
+      id: '/mental-math'
+      path: '/mental-math'
+      fullPath: '/mental-math'
+      preLoaderRoute: typeof MentalMathRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/interview': {
@@ -264,6 +284,7 @@ const rootRouteChildren: RootRouteChildren = {
   FlashcardsRoute: FlashcardsRoute,
   GlossaireRoute: GlossaireRoute,
   InterviewRoute: InterviewRoute,
+  MentalMathRoute: MentalMathRoute,
   ProfilRoute: ProfilRoute,
   PyramidRoute: PyramidRoute,
   SecteurSectorIdRoute: SecteurSectorIdRoute,

@@ -105,7 +105,7 @@ type GuideModuleLinkProps = {
   icon: LucideIcon;
 } & (
   | {
-      to: "/cv" | "/excel" | "/pyramid" | "/accretion" | "/actualite" | "/glossaire";
+      to: "/cv" | "/excel" | "/pyramid" | "/accretion" | "/actualite" | "/glossaire" | "/mental-math";
       search?: never;
     }
   | { to: "/"; search: { tab: "banques" | "secteurs" | "guide" } }

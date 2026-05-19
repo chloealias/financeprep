@@ -11,7 +11,7 @@ export const Route = createFileRoute("/actualite")({
       {
         name: "description",
         content:
-          "16 deals M&A détaillés (2023-2026), filtres par banque et secteur, pour montrer votre intérêt réel en entretien finance.",
+          "Indicateurs macro trimestriels (taux BCE/Fed, CAC 40, FX, spreads, pétrole) et deals M&A 2023-2026 pour l'entretien finance.",
       },
     ],
   }),

@@ -41,7 +41,7 @@ export function IsometricMap({ onSectorSelect, selectedSectorId = null }: Isomet
           className="w-full h-auto max-h-[min(50vh,360px)] block"
           preserveAspectRatio="xMidYMid meet"
           role="group"
-          aria-label="Carte isométrique des 7 secteurs — utilisez Tab pour naviguer entre les bâtiments ou les boutons ci-dessous"
+          aria-label="Carte isométrique des 8 secteurs — utilisez Tab pour naviguer entre les bâtiments ou les boutons ci-dessous"
         >
           <MapDefs />
           <MapBackground />

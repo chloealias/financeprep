@@ -992,6 +992,142 @@ export function Visual({ type }: { type: string }) {
     );
   }
 
+  if (type === "ni-fcff-bridge") {
+    const steps = [
+      { label: "Net Income", sub: "Compte de résultat", color: "#1e3a8a", sign: "" },
+      { label: "+ D&A", sub: "Non-cash", color: "#3b82f6", sign: "+" },
+      { label: "− Δ BFR", sub: "BFR en hausse = cash out", color: "#60a5fa", sign: "−" },
+      { label: "− CAPEX", sub: "Investissements", color: "#93c5fd", sign: "−" },
+      { label: "+ Int.×(1−t)", sub: "→ vision FCFF", color: "#1e40af", sign: "+" },
+      { label: "= FCFF", sub: "Base du DCF", color: "#312e81", sign: "=" },
+    ];
+    return (
+      <div className={wrapper}>
+        <div className={title}>
+          {titleBar}
+          <span>Pont Net Income → Free Cash Flow (FCFF)</span>
+        </div>
+        <svg viewBox="0 0 700 200" className="w-full h-auto">
+          {steps.map((s, i) => {
+            const x = 30 + i * 110;
+            return (
+              <g key={i}>
+                {i > 0 && (
+                  <text x={x - 18} y={75} fontSize="16" fill="#1e3a8a" textAnchor="middle">
+                    →
+                  </text>
+                )}
+                <rect x={x} y="40" width="95" height="70" fill={s.color} rx="4" />
+                <text x={x + 47} y="72" fontSize="11" fill="white" textAnchor="middle" fontWeight="bold">
+                  {s.label}
+                </text>
+                <text x={x + 47} y="88" fontSize="8" fill="#dbeafe" textAnchor="middle">
+                  {s.sub}
+                </text>
+                <text x={x + 47} y="130" fontSize="10" fill="#64748b" textAnchor="middle">
+                  {i + 1}
+                </text>
+              </g>
+            );
+          })}
+          <text x="350" y="175" fontSize="10" fill="#475569" textAnchor="middle" fontStyle="italic">
+            Alternative : FCFF = EBIT×(1−t) + D&A − CAPEX − ΔBFR
+          </text>
+        </svg>
+      </div>
+    );
+  }
+
+  if (type === "ipo-process") {
+    const phases = [
+      { name: "Préparation", d: "M0-M3" },
+      { name: "Roadshow", d: "M3-M4" },
+      { name: "Book-building", d: "M4-M5" },
+      { name: "Pricing", d: "M5" },
+      { name: "IPO Day", d: "M5-M6" },
+      { name: "Lock-up", d: "+90-180j" },
+    ];
+    return (
+      <div className={wrapper}>
+        <div className={title}>
+          {titleBar}
+          <span>Timeline IPO — du prospectus au lock-up</span>
+        </div>
+        <svg viewBox="0 0 700 220" className="w-full h-auto">
+          <line x1="40" y1="100" x2="660" y2="100" stroke="#cbd5e1" strokeWidth="2" />
+          {phases.map((p, i) => {
+            const x = 55 + i * 118;
+            return (
+              <g key={i}>
+                <circle cx={x} cy="100" r="14" fill={i === 4 ? "#dc2626" : "#1e3a8a"} />
+                <text x={x} y="105" fontSize="10" fill="white" textAnchor="middle" fontWeight="bold">
+                  {i + 1}
+                </text>
+                <text x={x} y="70" fontSize="10" fill="#1e3a8a" textAnchor="middle" fontWeight="bold">
+                  {p.name}
+                </text>
+                <text x={x} y="135" fontSize="9" fill="#64748b" textAnchor="middle">
+                  {p.d}
+                </text>
+              </g>
+            );
+          })}
+          <rect x="480" y="155" width="180" height="55" fill="#eff6ff" stroke="#3b82f6" rx="4" />
+          <text x="570" y="175" fontSize="9" fill="#1e3a8a" textAnchor="middle" fontWeight="bold">
+            Greenshoe +15 %
+          </text>
+          <text x="570" y="190" fontSize="8" fill="#475569" textAnchor="middle">
+            Dual track = IPO ∥ M&A
+          </text>
+          <text x="350" y="210" fontSize="10" fill="#475569" textAnchor="middle" fontStyle="italic">
+            Ex. Lineage Logistics IPO 2024
+          </text>
+        </svg>
+      </div>
+    );
+  }
+
+  if (type === "distressed-waterfall") {
+    const tranches = [
+      { name: "Super Senior / DIP", pct: 100, color: "#1e3a8a" },
+      { name: "Senior Secured", pct: 75, color: "#1e40af" },
+      { name: "Senior Unsecured", pct: 50, color: "#3b82f6" },
+      { name: "Sub / Holdco", pct: 30, color: "#60a5fa" },
+      { name: "Equity (souvent 0)", pct: 5, color: "#dc2626" },
+    ];
+    return (
+      <div className={wrapper}>
+        <div className={title}>
+          {titleBar}
+          <span>Waterfall créanciers — distressed (EV insuffisante)</span>
+        </div>
+        <svg viewBox="0 0 700 280" className="w-full h-auto">
+          <text x="350" y="25" fontSize="11" fill="#1e3a8a" textAnchor="middle" fontWeight="bold">
+            EV récupérable &lt; Dette totale → equity diluée / effacée
+          </text>
+          {tranches.map((t, i) => {
+            const y = 45 + i * 44;
+            const width = (t.pct / 100) * 400;
+            return (
+              <g key={i}>
+                <text x="240" y={y + 22} fontSize="10" fill="#1e3a8a" textAnchor="end">
+                  {t.name}
+                </text>
+                <rect x="250" y={y} width={width} height="32" fill={t.color} rx="3" />
+                <text x={250 + width + 8} y={y + 20} fontSize="10" fill="#64748b">
+                  {t.pct === 5 ? "~0 €" : `~${t.pct}% recovery`}
+                </text>
+              </g>
+            );
+          })}
+          <text x="350" y="265" fontSize="10" fill="#475569" textAnchor="middle" fontStyle="italic">
+            Chapter 11 (US) · Scheme of arrangement (UK) · Conciliation (FR) — ex. Altice
+          </text>
+        </svg>
+      </div>
+    );
+  }
+
   if (type === "beta-sectors") {
     const sectors = [
       { name: "Utilities (EDF)", beta: 0.6, color: "#10b981" },

@@ -23,6 +23,16 @@ describe("bank-profiles helpers", () => {
     expect(deals.some((d) => d.id === "d02")).toBe(true);
   });
 
+  it("getDealsForBank matches Citi alias on coordinateur dette", () => {
+    const deals = getDealsForBank("Citigroup");
+    expect(deals.some((d) => d.id === "d01")).toBe(true);
+  });
+
+  it("getBankIdByName resolves advisor labels and aliases", () => {
+    expect(getBankIdByName("Lazard (M&A)")).toBe("lazard");
+    expect(getBankIdByName("Citi")).toBe("citi");
+  });
+
   it("financing banks can use bank filter link type", () => {
     const socgen = getBankById("societe-generale");
     expect(socgen?.emblematicLinkType).toBe("bank");
@@ -34,5 +44,8 @@ describe("bank-profiles helpers", () => {
     expect(getBankById("evercore")?.emblematicDealId).toBe("d06");
     expect(getBankById("houlihan-lokey")?.categoryId).toBe("elite-boutique");
     expect(getBankById("mediobanca")?.hq).toContain("Milan");
+    expect(getBankById("moelis")?.categoryId).toBe("elite-boutique");
+    expect(getBankById("pjt-partners")?.name).toContain("PJT");
+    expect(getBankById("perella-weinberg")?.name).toContain("Perella");
   });
 });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { dealMatchesBank } from "@/data/bank-profiles";
 import {
-  dealMatchesBank,
   dealMatchesSector,
   getDealById,
   getDealsForSector,
@@ -22,6 +22,7 @@ describe("ma-deals helpers", () => {
     const deal = getDealById("d01");
     expect(deal).toBeDefined();
     expect(dealMatchesBank(deal!, "Rothschild & Co")).toBe(true);
+    expect(dealMatchesBank(deal!, "Citi")).toBe(true);
     expect(dealMatchesBank(deal!, "Unknown Bank")).toBe(false);
   });
 
@@ -39,8 +40,14 @@ describe("ma-deals helpers", () => {
     expect(dealMatchesSector(deal!, "tmt")).toBe(false);
   });
 
-  it("has 16 deals", () => {
-    expect(MA_DEALS.length).toBe(16);
+  it("has 17 deals", () => {
+    expect(MA_DEALS.length).toBe(17);
+  });
+
+  it("getDealsForSector includes automotive", () => {
+    const auto = getDealsForSector("auto");
+    expect(auto.some((d) => d.id === "d18")).toBe(true);
+    expect(dealMatchesSector(getDealById("d18")!, "auto")).toBe(true);
   });
 
   it("includes UBS / Credit Suisse rescue deal", () => {

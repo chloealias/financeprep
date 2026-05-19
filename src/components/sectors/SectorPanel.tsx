@@ -3,6 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import type { SectorId } from "@/lib/sectors";
 import { SECTOR_DATA } from "@/data/sector-data";
+import { getDealById } from "@/data/ma-deals";
+import { BankDealChip } from "@/components/deals/DealEntityChips";
 
 type SectorPanelContentProps = {
   sectorId: SectorId;
@@ -18,6 +20,8 @@ export function SectorPanelContent({
 }: SectorPanelContentProps) {
   const [showReponse, setShowReponse] = useState(false);
   const data = SECTOR_DATA[sectorId];
+  const emblematicDeal = data.emblematicDealId ? getDealById(data.emblematicDealId) : undefined;
+  const emblematicBanks = emblematicDeal?.banks.slice(0, 6) ?? [];
 
   useEffect(() => {
     setShowReponse(false);
@@ -206,6 +210,18 @@ export function SectorPanelContent({
             >
               Voir tous les deals {data.name} dans Actualité M&A
             </Link>
+            {emblematicBanks.length > 0 && (
+              <div className="mt-3">
+                <div className="text-xs uppercase tracking-wider text-blue-500 font-medium mb-2">
+                  Banques sur ce deal
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {emblematicBanks.map((b) => (
+                    <BankDealChip key={b} name={b} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div>

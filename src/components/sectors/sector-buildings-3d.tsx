@@ -96,6 +96,47 @@ export function BuildingIndustrie() {
   );
 }
 
+export function BuildingAuto() {
+  const wheelY = 6;
+  const rearWheelX = -24;
+  const frontWheelX = 22;
+
+  return (
+    <g>
+      {/* Ombre au sol */}
+      <ellipse cx={0} cy={wheelY + 4} rx={36} ry={5} fill="#172554" opacity="0.25" />
+
+      {/* Roues (profil latéral) */}
+      <ellipse cx={rearWheelX} cy={wheelY} rx={11} ry={5.5} fill="#172554" />
+      <ellipse cx={rearWheelX} cy={wheelY - 1} rx={6} ry={3} fill="#475569" />
+      <ellipse cx={frontWheelX} cy={wheelY} rx={11} ry={5.5} fill="#172554" />
+      <ellipse cx={frontWheelX} cy={wheelY - 1} rx={6} ry={3} fill="#475569" />
+
+      {/* Carrosserie — profil berline */}
+      <polygon
+        points={`-34,${wheelY - 2} -34,-10 -26,-18 -10,-22 8,-22 20,-16 28,-10 32,${wheelY - 2}`}
+        fill="#1e3a8a"
+      />
+      {/* Toit / habitacle */}
+      <polygon points="-22,-12 -8,-20 12,-20 22,-14 14,-12 -10,-12" fill="#2563eb" />
+      {/* Pare-brise */}
+      <polygon points="6,-20 14,-15 10,-13 -4,-13" fill="#93c5fd" opacity="0.9" />
+      {/* Ligne de caisse */}
+      <line
+        x1={-32}
+        y1={wheelY - 3}
+        x2={30}
+        y2={wheelY - 3}
+        stroke="#1e40af"
+        strokeWidth="1.5"
+      />
+      {/* Phares / feux */}
+      <rect x={26} y={-14} width={4} height={3} fill="#fef08a" rx="0.5" />
+      <rect x={-32} y={-12} width={3} height={4} fill="#f87171" rx="0.5" />
+    </g>
+  );
+}
+
 export function BuildingImmo() {
   return (
     <g>
@@ -146,6 +187,7 @@ export const SECTOR_BUILDING_COMPONENTS = {
   energie: BuildingEnergie,
   retail: BuildingRetail,
   industrie: BuildingIndustrie,
+  auto: BuildingAuto,
   immo: BuildingImmo,
   fi: BuildingFIG,
 } as const;

@@ -32,6 +32,9 @@ export const BANK_BRAND: Record<string, BankBrand> = {
   jefferies: { initials: "JEF", color: "#003DA5", logoScale: 1.5 },
   macquarie: { initials: "MQG", color: "#000000" },
   "oddo-bhf": { initials: "OB", color: "#C41230", logoScale: 1.5 },
+  moelis: { initials: "MC", color: "#1B365D", logoScale: 1.35 },
+  "pjt-partners": { initials: "PJT", color: "#002855", logoOnDark: true, logoScale: 1.25 },
+  "perella-weinberg": { initials: "PWP", color: "#0F2B46", logoScale: 1.3 },
 };
 
 export const BANK_LOGO_PATH = (bankId: string) => `/logos/banks/${bankId}.svg`;

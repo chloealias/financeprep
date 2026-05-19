@@ -455,4 +455,234 @@ export const concepts = [
       "Marge EBITDA haute mais ROCE faible",
     ],
   },
+  {
+    id: "c16",
+    category: "valuation",
+    title: "DDM — Gordon, 2 étapes et H-model",
+    simple:
+      "Le DDM valorise l'action en actualisant les dividendes futurs. Indispensable en FIG et utilities quand les FCF sont opaques mais les dividendes stables — complète le DCF (c2) et le CAPM (c14).",
+    formula:
+      "Gordon : P₀ = D₁ / (Ke − g)  |  2 étapes : Σ Dₜ/(1+Ke)ᵗ + Pₙ/(1+Ke)ⁿ  |  H-model : P₀ = D₀(1+gₗ)/(Ke−gₗ) + D₀·H·(gₛ−gₗ)/(Ke−gₗ)",
+    deepDive:
+      "Quand l'utiliser :\n• Banques, assurances, utilities, REITs : politique de dividende explicite, payout ratio stable\n• Complément au DCF : si le DDM et le DCF divergent, vérifier g, Ke et la politique de distribution\n\n1. Gordon Growth (croissance constante) :\n• Hypothèse : dividende croît à g constant, g < Ke\n• D₁ = D₀ × (1+g) ou EPS × payout\n• Limite : ne convient qu'aux sociétés matures à croissance stable\n\n2. Modèle à 2 étapes :\n• Phase 1 (ex. 5 ans) : dividendes projetés explicitement\n• Phase 2 : Gordon sur le dividende terminal Dₙ₊₁\n• Standard pour une banque en transition de payout\n\n3. H-model (croissance décroissante) :\n• La croissance passe linéairement de gₛ (court terme) à gₗ (long terme) sur 2H années\n• Évite le « cliff » du passage brutal au Gordon\n• Très utilisé en FIG pour les utilities en phase de hausse de dividende\n\nLien CAPM : Ke vient du CAPM (c14). Le beta des utilities est bas (0,5-0,7) → Ke plus bas → valorisation plus sensible à g.",
+    table: {
+      headers: ["Modèle", "Hypothèse clé", "Secteur type", "Piège"],
+      rows: [
+        ["Gordon", "g constant, g < Ke", "Utility mature, REIT", "g trop élevé"],
+        ["2 étapes", "Croissance explicite puis stable", "Banque en transition", "TV mal calibrée"],
+        ["H-model", "g décline linéairement", "Utility qui monte le dividende", "H mal estimé"],
+        ["DDM vs DCF", "Dividendes vs FCFF", "FIG / utilities", "Payout ≠ 100 % FCF"],
+      ],
+    },
+    pitfalls: [
+      "g ≥ Ke (modèle invalide)",
+      "Appliquer Gordon à une tech en forte croissance sans dividende",
+      "Oublier que le DDM donne l'Equity Value directement (pas l'EV)",
+      "Payout ratio non soutenable à long terme",
+      "Ke incohérent avec le beta du secteur",
+    ],
+  },
+  {
+    id: "c17",
+    category: "ma",
+    title: "Process IPO — book-building, greenshoe, lock-up",
+    simple:
+      "Une IPO transforme une société privée en cotée via une offre publique. Le book-building fixe le prix ; la greenshoe et le lock-up structurent la stabilisation et la liquidité post-flottant.",
+    formula:
+      "Flottant = Actions vendues / Capital post-IPO  |  Greenshoe = +15 % max (option de sur-allocation)",
+    deepDive:
+      "Étapes clés (6 à 9 mois typiques) :\n1. Préparation : audit IFRS/US GAAP, gouvernance, choix place (NYSE, Euronext…), rédaction du prospectus (S-1 / document de base AMF)\n2. Due diligence et roadshow : rencontres investisseurs institutionnels\n3. Book-building : les investisseurs soumissionnent un prix et une quantité ; le syndicat fixe le prix final dans la fourchette indicative\n4. Pricing & allocation : priorité aux institutionnels (book) ; retail via souscription\n5. Trading day : première cotation\n\nMécanismes à connaître :\n• Greenshoe (option de sur-allocation ~15 %) : le syndicat peut émettre des actions supplémentaires si la demande dépasse l'offre — stabilise le cours les premiers jours\n• Lock-up (90-180 jours) : insiders et PE ne peuvent pas vendre — évite la pression vendeuse immédiate\n• Dual track : process IPO parallèle à une vente M&A — le vendeur maximise la tension (ex. avant une vente stratégique)\n\nLien deal : Lineage Logistics (2024) — plus grande IPO US depuis 2021, cold storage REIT, book-building institutionnel massif.",
+    table: {
+      headers: ["Élément", "Rôle", "Durée / taille", "Pour qui"],
+      rows: [
+        ["Book-building", "Découverte prix-demande", "1-2 semaines", "Institutionnels"],
+        ["Fourchette indicative", "Guide de pricing", "±10-15 % du prix final", "Marché"],
+        ["Greenshoe", "Stabilisation cours", "Jusqu'à +15 % actions", "Syndicat lead"],
+        ["Lock-up", "Interdiction de vente insiders", "90-180 jours", "Fondateurs, PE"],
+        ["Dual track", "IPO vs M&A en parallèle", "Tout le process", "Vendeur PE/stratégique"],
+        ["Flottant", "Liquidité boursière", "15-30 % typique mid-cap", "Investisseurs publics"],
+      ],
+    },
+    visual: "ipo-process",
+    pitfalls: [
+      "Confondre prix d'offre et premier cours de bourse (pop)",
+      "Oublier les frais (underwriting ~3-7 %)",
+      "Ignorer le lock-up dans l'analyse du flottant réel",
+      "Dual track sans NDA et calendrier alignés",
+    ],
+  },
+  {
+    id: "c18",
+    category: "ma",
+    title: "Squeeze-out, OPA et OPE",
+    simple:
+      "En droit français, l'OPA vise le contrôle (30 %), l'OPE la sortie de cotation, le squeeze-out force les minoritaires à vendre une fois le seuil atteint. Complète la distinction fusion vs acquisition.",
+    formula:
+      "OPA : seuil 30 % (déclenchement)  |  OPE : sortie de marché  |  Squeeze-out : 90 % + 95 % des droits de vote",
+    deepDive:
+      "Fusion vs acquisition (rappel) :\n• Acquisition : contrôle d'une entité par une autre (majorité des actions)\n• Fusion : combinaison juridique (absorption ou création)\n• En pratique, la plupart des « fusions » annoncées sont des acquisitions avec prime de contrôle\n\nOPA (Offre Publique d'Achat) :\n• Déclenchée quand un acquéreur franchit 30 % du capital ou des droits de vote (seuil de déclenchement)\n• Objectif : prendre le contrôle ; prix avec prime (souvent 20-40 % vs cours)\n• Régulation AMF : calendrier, document d'offre, délai d'acceptation\n• Exemple app : UniCredit / Commerzbank (OPA hostile, seuil allemand 30 %)\n\nOPE (Offre Publique d'Échange) :\n• Offre visant la sortie de cotation (delisting)\n• Souvent après une OPA réussie quand l'acquéreur détient >90 %\n• Les actionnaires restants échangent leurs titres contre une indemnité\n\nSqueeze-out (retait obligatoire) :\n• Permet à l'acquéreur de forcer l'achat des minoritaires après OPA/OPE\n• Seuils légaux (France) : 90 % du capital et 95 % des droits de vote détenus\n• Évite les actionnaires « dormants » qui bloquent la simplification\n\nPour l'entretien : maîtriser le séquençage OPA → seuils → OPE → squeeze-out, et citer un deal récent (Commerzbank, Sanofi Blueprint tender).",
+    table: {
+      headers: ["Mécanisme", "Objectif", "Seuil clé", "Exemple type"],
+      rows: [
+        ["OPA", "Prendre le contrôle", "30 % déclenchement (FR)", "UniCredit/CBK"],
+        ["OPA amicale", "Accord conseil cible", "Négocié", "L'Oréal/Aesop"],
+        ["OPE", "Sortir de la cote", "Post-90 %", "Delisting post-LBO"],
+        ["Squeeze-out", "Forcer les minoritaires", "90 % / 95 % votes", "Simplification groupe"],
+        ["Fusion", "Entités combinées", "Accord 2/3 AG", "UBS/CS (urgence)"],
+        ["Acquisition", "Achat de contrôle", "Variable", "Majorité des deals"],
+      ],
+    },
+    pitfalls: [
+      "Confondre OPA et OPE (contrôle vs delisting)",
+      "Oublier la prime réglementaire minimale",
+      "Ignorer les seuils allemands vs français dans un deal cross-border",
+      "Squeeze-out impossible si seuils non atteints",
+    ],
+  },
+  {
+    id: "c19",
+    category: "ma",
+    title: "Earn-out, Vendor Loan et Revenue-based pricing",
+    simple:
+      "Trois mécanismes post-closing pour ajuster ou étaler le prix : l'earn-out lie le prix à la performance future, le vendor loan diffère le paiement, le revenue-based pricing indexe sur le CA.",
+    formula:
+      "Prix total = Upfront + Earn-out conditionnel + Vendor Loan (différé)  |  RBP : Prix = f(CA futur)",
+    deepDive:
+      "Earn-out (complément de prix conditionnel) :\n• Payé si objectifs atteints (EBITDA, CA, jalons produit) sur 1-5 ans\n• Usage : désaccord vendeur/acheteur sur la valeur, management qui reste\n• Risque vendeur : l'acquéreur peut « gérer » les KPIs (allocation de coûts groupe)\n• Protection : bonne foi, comptabilité séparée, plafonds/planchers\n\nVendor Loan (crédit-vendeur) :\n• Le vendeur finance une partie du prix (paiement différé, souvent 10-30 %)\n• Subordonné à la dette bancaire ; taux négocié (souvent 4-8 %)\n• Alignement : le vendeur garde un intérêt économique dans le succès\n• Hiérarchie défaut : Senior > Mezz > Vendor Loan > Equity\n\nRevenue-based pricing (RBP) :\n• Le prix varie selon le chiffre d'affaires futur (royalty, % du CA sur N années)\n• Fréquent en tech/SaaS early-stage où l'EBITDA n'est pas pertinent\n• Avantage acheteur : paie seulement si le CA se matérialise\n• Risque vendeur : dépendance à la politique commerciale post-deal\n\nComparaison rapide :\n• Earn-out = « je te paie si tu performes »\n• Vendor loan = « je te paie plus tard, avec intérêts »\n• RBP = « je t'indexe sur ton CA »\n\nSouvent combinés : upfront 70 % + earn-out 20 % + vendor loan 10 %.",
+    table: {
+      headers: ["Mécanisme", "Déclencheur", "Qui porte le risque", "Litiges"],
+      rows: [
+        ["Earn-out", "KPIs futurs (EBITDA, CA)", "Vendeur (performance)", "Très fréquents"],
+        ["Vendor Loan", "Échéancier contractuel", "Vendeur (crédit)", "Modérés"],
+        ["RBP", "CA réalisé", "Vendeur (volume)", "Définition du CA"],
+        ["Escrow", "Indemnités garanties", "Vendeur (bloqué)", "Post-closing"],
+        ["CVR", "Événement boursier (biotech)", "Acheteur (option)", "Spécifique pharma"],
+      ],
+    },
+    pitfalls: [
+      "Earn-out mal documenté (source de litige #1 post-deal)",
+      "Vendor loan sans subordination claire",
+      "RBP avec définition de CA trop large (consolidé vs standalone)",
+      "Confondre earn-out passé (debt-like) et earn-out futur (prix)",
+    ],
+  },
+  {
+    id: "c20",
+    category: "dcf",
+    title: "Pont Net Income → Free Cash Flow",
+    simple:
+      "Le pont relie le résultat net comptable au cash réellement disponible. C'est la base du DCF : on part du P&L, on retire les éléments non-cash et on intègre les investissements.",
+    formula:
+      "FCFF = Net Income + D&A − ΔBFR − CAPEX + Intérêts×(1−t)  |  ou : FCFF = EBIT×(1−t) + D&A − CAPEX − ΔBFR",
+    deepDive:
+      "Méthode indirecte (la plus demandée en entretien) :\n\n1. Net Income (point de départ — compte de résultat)\n2. + D&A (charges non-cash : amortissements, dépréciations)\n3. +/− Δ BFR (hausse du BFR = consommation de cash)\n4. − CAPEX (investissements en immobilisations)\n5. = Cash flow opérationnel avant intérêts (proche du CFO)\n\nPour obtenir le FCFF (cash disponible pour tous les financeurs) :\n6. + Intérêts × (1 − taux d'IS) (retraitement dette → vision « entreprise »)\n7. = FCFF (utilisé dans le DCF avec le WACC)\n\nVariante FCFE (cash aux actionnaires uniquement) :\nFCFE = Net Income + D&A − ΔBFR − CAPEX − Remboursement dette net + Nouveaux emprunts\n\nPoints clés :\n• D&A : non-cash mais le CAPEX de maintenance compense en industrie lourde\n• Δ BFR : une croissance de 20 % du CA peut « manger » tout le cash malgré un NI positif\n• Toujours distinguer CAPEX maintenance vs growth\n\nEn modélisation : ce pont doit boucler avec le tableau de flux (c4).",
+    table: {
+      headers: ["Étape", "Impact cash", "Non-cash ?", "Oubli fréquent"],
+      rows: [
+        ["Net Income", "Départ", "—", "—"],
+        ["+ D&A", "Ajout", "Oui", "Provision non-cash"],
+        ["− Δ BFR", "Si BFR ↑ = sortie", "Non", "Saisonnalité"],
+        ["− CAPEX", "Sortie", "Non", "Maintenance vs growth"],
+        ["+ Int.(1−t)", "Reclassement FCFF", "Non", "Actualiser au WACC"],
+        ["= FCFF", "Base DCF", "—", "Confondre avec FCFE"],
+      ],
+    },
+    visual: "ni-fcff-bridge",
+    pitfalls: [
+      "Oublier le Δ BFR dans une entreprise en forte croissance",
+      "Confondre FCFF (WACC) et FCFE (Ke)",
+      "CAPEX = D&A en perpetuity sans vérifier le secteur",
+      "Double comptage des intérêts",
+    ],
+  },
+  {
+    id: "c21",
+    category: "valuation",
+    title: "Football Field — synthèse de valorisation",
+    simple:
+      "Graphique en barres horizontales qui juxtapose les fourchettes de chaque méthode (DCF, comps, transactions, LBO). Outil de pitch incontournable pour défendre une fourchette, pas un point unique.",
+    formula:
+      "Fair value = zone de chevauchement des méthodes retenues  |  Largeur barre = sensibilité de la méthode",
+    deepDive:
+      "Pourquoi l'utiliser :\n• Montre que la valorisation n'est pas une science exacte\n• Permet au client/board de voir la convergence (ou divergence) des approches\n• Standard dans les fairness opinions et pitch books\n\nMéthodes typiquement affichées :\n1. DCF (fourchette via sensibilités WACC × g)\n2. Trading comps (cours boursiers des comparables)\n3. Precedent transactions (deals récents avec prime de contrôle)\n4. LBO (prix max qu'un PE peut payer à TRI 20-25 %)\n5. 52-week high/low ou objectifs brokers (cotées)\n\nComment lire le graphique :\n• Chaque barre = min-max d'une méthode\n• La zone centrale où les barres se chevauchent = fourchette consensuelle\n• Une barre très large (DCF) signale une forte sensibilité aux hypothèses\n\nBonnes pratiques pitch :\n• 4-5 méthodes bien construites > 8 méthodes bâclées\n• Exclure le LBO pour une utility mature (peu pertinent)\n• Toujours dater la valorisation (les multiples bougent vite)\n• Expliquer pourquoi une méthode est exclue plutôt que de la minorer\n\nLien : la question « multiples » (c8) donne les barres ; le DCF (c2) en donne une autre.",
+    table: {
+      headers: ["Méthode", "Borne basse", "Borne haute", "Quand exclure"],
+      rows: [
+        ["DCF", "WACC élevé, g bas", "WACC bas, g haut", "Données flux faibles"],
+        ["Trading comps", "Médiane − décote", "Médiane + prime", "Pas de comparables"],
+        ["Deal comps", "Transactions − prime", "Transactions + prime", "Peu de deals récents"],
+        ["LBO", "TRI 25 %+", "TRI 18-20 %", "Cible non LBO-able"],
+        ["DDM", "Ke élevé", "Ke bas", "Hors FIG/utilities"],
+        ["ANR", "Actif net retraité", "Liquidation", "Holding, foncière"],
+      ],
+    },
+    visual: "football-field",
+    pitfalls: [
+      "Présenter un point unique au lieu d'une fourchette",
+      "Mélanger dates de valorisation entre méthodes",
+      "Inclure des méthodes non pertinentes pour faire « sérieux »",
+      "Oublier la prime de contrôle dans les trading comps",
+    ],
+  },
+  {
+    id: "c22",
+    category: "ma",
+    title: "Restructuring et Distressed M&A",
+    simple:
+      "Quand une entreprise est surendettée, on restructure la dette (Chapter 11 US, scheme UK, conciliation FR) ou on vend les actifs en distressed M&A. L'equity est souvent diluée ou annulée.",
+    formula:
+      "Valeur récupérable < Dette totale → équity worthless  |  Debt-for-equity : créanciers deviennent actionnaires",
+    deepDive:
+      "Situation distressed :\n• L'entreprise ne peut plus servir sa dette (covenant breach, refinancement impossible)\n• La valeur d'entreprise ne couvre plus la dette → l'equity vaut théoriquement 0\n• Les créanciers deviennent les décideurs (pas les actionnaires)\n\nMécanismes par juridiction :\n• US — Chapter 11 : protection judiciaire, plan de réorganisation, DIP financing, debt-for-equity swap. L'equity existant est souvent effacé ; les créanciers senior reçoivent la nouvelle equity\n• UK — Scheme of arrangement : vote des classes de créanciers (75 % en valeur), rapide et flexible. Ex. restructurations telecom européennes\n• France — Mandat ad hoc, conciliation, sauvegarde, redressement judiciaire : cadre AMF/ tribunaux de commerce. Altice France 2025 = cas d'école\n\nDistressed M&A :\n• Vente d'actifs (stalking horse, enchères 363 US)\n• Acheteur achète sans reprendre toute la dette (asset deal) ou via NewCo\n• Prix « haircut » : EV fortement décotée vs going concern\n\nDebt-for-equity :\n• Les créanciers échangent leur créance contre des actions\n• Réduit le levier ; l'ancien equity est dilué à quasi-zéro\n• Ex. Altice : créanciers secured (~19 Md€) vs holdco (~4,4 Md€) — hiérarchie des créances détermine qui reçoit quoi\n\nLien deal : Altice France (d02) — restructuration dette €24 Md, cession SFR métropolitain, advisors distincts par camp de créanciers.",
+    table: {
+      headers: ["Mécanisme", "Juridiction", "Qui perd", "Qui gagne"],
+      rows: [
+        ["Chapter 11", "US", "Equity, juniors", "Senior, DIP lenders"],
+        ["Scheme of arrangement", "UK", "Equity diluée", "Créanciers votants"],
+        ["Conciliation / sauvegarde", "France", "Actionnaires", "Plan de continuation"],
+        ["Debt-for-equity", "Tous", "Ancien equity", "Créanciers convertis"],
+        ["363 sale (asset)", "US", "Dette résiduelle", "Acheteur d'actifs"],
+        ["Stalking horse", "US/EU", "—", "Acheteur de référence"],
+      ],
+    },
+    visual: "distressed-waterfall",
+    pitfalls: [
+      "Valoriser l'equity comme en going concern",
+      "Ignorer la waterfall des créanciers (senior vs sub vs holdco)",
+      "Confondre restructuring opérationnel et financier",
+      "Oublier le risque de litige entre classes de créanciers",
+    ],
+  },
+  {
+    id: "c23",
+    category: "accounting",
+    title: "IFRS vs US GAAP — 10 différences clés",
+    simple:
+      "IFRS (Europe, la plupart des marchés) et US GAAP (SEC) divergent sur le goodwill, la R&D, les leasings et la reconnaissance du revenu. En TS/M&A, ces écarts expliquent des ajustements de valorisation et de dette nette.",
+    formula:
+      "Écart comptable → retraitement en QoE / Net Debt → impact EBITDA, FCF et multiples",
+    deepDive:
+      "Quand citer en entretien :\n• Transaction Services : retraitements IFRS 16, goodwill, provisions, classification cash\n• Audit / Big Four : normes en détail (IAS vs ASC)\n• M&A cross-border US/EU : toujours préciser sous quelle norme sont les comptes de la cible\n\nLes 10 différences majeures sont dans le tableau ci-dessous. En pratique, l'écart le plus négocié en SPA reste le leasing IFRS 16 (debt-like) et les add-backs liés à la SBC.\n\nRappel : les groupes cotés US publient en US GAAP ; la plupart des cibles EU mid-cap en IFRS. Les ADR et les dual-listings imposent des rapprochements (reconciliation).",
+    table: {
+      headers: ["Thème", "IFRS", "US GAAP", "Impact M&A"],
+      rows: [
+        ["Goodwill", "Pas d'amortissement — test d'impairment annuel (IAS 36)", "Idem post-2001 (impairment only)", "PPA et tests de dépréciation"],
+        ["R&D", "Recherche en charge ; développement immobilisable si critères PIRATE (IAS 38)", "R&D en charge sauf logiciels internes (ASC 350-40)", "EBITDA ajusté, actifs incorporels"],
+        ["Leasing", "IFRS 16 : quasi tout au bilan (dette + droit d'usage)", "ASC 842 : similaire mais seuils et exemptions US", "Dette nette, EBITDA (loyer → amort + intérêts)"],
+        ["Revenus", "IFRS 15 — 5 étapes, contrôle du bien/service", "ASC 606 — aligné conceptuellement", "ARR vs revenue SaaS, contrats long terme"],
+        ["Intérêts (CFO)", "Choix : intérêts payés souvent en CFO ou CFF", "Intérêts payés en CFO (règle stricte)", "CFO comparabilité cross-border"],
+        ["Impairment", "Test valeur recouvrable (max fair value less costs / VIU)", "Two-step goodwill test (ASC 350)", "Charges exceptionnelles, QoE"],
+        ["Stock options", "IFRS 2 — juste valeur à l'attribution, étalement", "ASC 718 — modèle similaire", "Diluted EPS, retraitement non-cash"],
+        ["Joint-ventures", "Mise en équivalence (IAS 28) — pas de proportionnelle", "Equity method (ASC 323)", "Consolidation, périmètre"],
+        ["Cash flow", "Méthode indirecte standard ; flexibilité intérêts/dividendes", "Règles plus prescriptives (ASC 230)", "Pont NI → FCF"],
+        ["Présentation", "Pas de format P&L imposé (par nature ou fonction)", "SEC : lignes spécifiques (operating income…)", "Comparables US vs EU"],
+      ],
+    },
+    pitfalls: [
+      "Appliquer des multiples US à des comptes IFRS sans retraitement",
+      "Oublier IFRS 16 dans la dette nette",
+      "Confondre ARR (métrique business) et revenue IFRS 15",
+      "Supposer que goodwill est amorti sous IFRS",
+    ],
+  },
 ];

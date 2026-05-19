@@ -7,8 +7,13 @@ import {
   guideAlertClass,
   guideCardClass,
 } from "@/components/guide/guide-ui";
-import { BankDealChip, SectorDealChip, AdvisorBankName } from "@/components/deals/DealEntityChips";
-import { getBankById, getBankIdByName } from "@/data/bank-profiles";
+import {
+  BankDealChip,
+  SectorDealChip,
+  SectorHubChip,
+  AdvisorBankName,
+} from "@/components/deals/DealEntityChips";
+import { dealMatchesBank, getBankById, getBankIdByName } from "@/data/bank-profiles";
 import { getSectorLabel } from "@/lib/sector-deals";
 import { DealRefText } from "@/lib/linkify-deal-refs";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
@@ -16,7 +21,6 @@ import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetai
 import type { SectorId } from "@/lib/sectors";
 import {
   dealDateBadge,
-  dealMatchesBank,
   dealMatchesSector,
   dealMatchesType,
   MA_DEAL_BANKS,
@@ -26,6 +30,7 @@ import {
   MA_DEALS,
   type MaDeal,
 } from "@/data/ma-deals";
+import { MacroIndicatorsPanel } from "@/components/guide/MacroIndicatorsPanel";
 import { Route } from "@/routes/actualite";
 
 const typeColors: Record<string, string> = {
@@ -111,7 +116,19 @@ function DealDetail({ deal }: { deal: MaDeal }) {
 
   return (
     <div className="mt-4 space-y-5">
-      <p className="text-blue-600 text-xs font-light">{deal.dates}</p>
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="text-blue-600 text-xs font-light">{deal.dates}</p>
+        {deal.sectorId && <SectorHubChip sectorId={deal.sectorId} label={deal.secteur} />}
+        {deal.sectorId && (
+          <Link
+            to="/actualite"
+            search={{ sector: deal.sectorId }}
+            className="text-xs text-blue-600 hover:text-blue-900 underline underline-offset-2"
+          >
+            Tous les deals du secteur
+          </Link>
+        )}
+      </div>
 
       {!isTrend && deal.valorisation && deal.valorisation.length > 0 && (
         <DealSection title="Valorisation">
@@ -285,10 +302,13 @@ export function BlocActualite() {
     <>
       <div className={`${guideAlertClass} mb-6`}>
         <p>
-          Dernière mise à jour : 2025-2026. Citer un deal récent avec la banque cible est un signal
-          fort d&apos;intérêt réel. Sources : Financial Times, Bloomberg, Mergermarket.
+          Contexte macro (ci-dessous) puis deals récents. Dernière mise à jour deals : 2025-2026.
+          Citer un deal récent avec la banque cible est un signal fort d&apos;intérêt réel. Sources
+          deals : Financial Times, Bloomberg, Mergermarket.
         </p>
       </div>
+
+      <MacroIndicatorsPanel />
 
       <div className="space-y-4 mb-6">
         <div className="grid md:grid-cols-2 gap-4">

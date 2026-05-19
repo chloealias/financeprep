@@ -66,7 +66,7 @@ export function SectorsTab() {
           Fiches <span className="italic font-light text-blue-700">sectorielles</span>
         </h2>
         <p className="text-blue-700 mt-3 font-light">
-          7 secteurs couvrant ~80% des deals. Cliquez sur un bâtiment ou utilisez les boutons sous
+          8 secteurs couvrant ~80% des deals. Cliquez sur un bâtiment ou utilisez les boutons sous
           la carte pour ouvrir une fiche.
         </p>
       </div>

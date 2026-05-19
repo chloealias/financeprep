@@ -2481,4 +2481,48 @@ export const questions = [
     ],
     tip: "Choisis une entreprise qui parle au recruteur (cotée et connue) — exemples solides : Carrefour, Renault, Atos, Engie, Stellantis.",
   },
+  // Calcul mental (ids 131–133 — ne pas réutiliser 120–122, déjà en TS)
+  {
+    id: 131,
+    category: "brainteaser",
+    difficulty: "intermédiaire",
+    question: "Calculez 84 × 11 mentalement.",
+    explanation: "Exercice type Trachtenberg ×11 — très fréquent en entretien bulge / boutique.",
+    steps: [
+      "Unité = 4 (dernier chiffre)",
+      "Milieu = 8 + 4 = 12 → écrire 2, retenue 1",
+      "Dizaine = 8 + retenue 1 = 9",
+      "Réponse : 924",
+      "Vérification : 84 × 10 = 840 ; +84 = 924",
+    ],
+    tip: "Annoncer la méthode à voix haute montre la structure — même si le calcul prend 5 secondes.",
+  },
+  {
+    id: 132,
+    category: "brainteaser",
+    difficulty: "basique",
+    question: "Quel est 7,5 % de 400 ?",
+    explanation: "Pourcentage composé — décomposer en morceaux connus.",
+    steps: [
+      "10 % de 400 = 40",
+      "5 % de 400 = 20 (moitié de 10 %)",
+      "2,5 % = 10 (moitié de 5 %)",
+      "7,5 % = 5 % + 2,5 % = 20 + 10 = 30",
+      "Ou : 7,5 % = 0,075 × 400 = 30",
+    ],
+    tip: "Toujours vérifier l'ordre de grandeur : 7,5 % < 10 % donc < 40 → 30 est cohérent.",
+  },
+  {
+    id: 133,
+    category: "brainteaser",
+    difficulty: "intermédiaire",
+    question: "Estimez 19 × 23 (ordre de grandeur exact).",
+    explanation: "Identité (a+b)(a−b) ou arrondi — classique Goldman / McKinsey.",
+    steps: [
+      "Méthode 1 : (20−1)(20+3) = 20² + 20×3 −20 −3 = 400 + 60 −23 = 437",
+      "Méthode 2 : 20 × 23 = 460 ; moins 23 = 437",
+      "Méthode 3 : 19 × 20 = 380 ; +57 = 437",
+    ],
+    tip: "Pour les entretiens, la méthode « arrondir puis corriger » est souvent la plus rapide.",
+  },
 ];

@@ -774,6 +774,41 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       "Incontournable pour UBS, Credit Suisse (legacy) et FIG. Expliquer FINMA, l'annulation des AT1, et pourquoi l'équivalent d'une « prime de contrôle négative » a été accepté pour la stabilité financière.",
     kind: "deal",
   },
+  {
+    id: "d18",
+    title: "Automobile — consolidation EV et pression prix (Europe)",
+    dates: "Tendance 2025-2026",
+    type: "Tendance",
+    secteur: "Automobile / Mobilité & EV",
+    headlineEv: "Tendance sectorielle",
+    banks: [],
+    parties: [
+      {
+        label: "Contexte",
+        text: "Transition BEV accélérée mais rentabilité EV sous pression (guerre des prix, coût batteries). OEM européens (Stellantis, Renault, VW) réorganisent plateformes et partenariats. Entrée agressive des constructeurs chinois (BYD, SAIC) en Europe.",
+      },
+      {
+        label: "Exemples à citer",
+        text: "Stellantis (multi-marques, discount boursier), Renault Group (Ampere / véhicule électrique), Volkswagen (software, Scout), BMW & Mercedes (mix premium EV). Tesla reste la référence pricing BEV.",
+      },
+    ],
+    interests: [
+      {
+        side: "OEM européens",
+        text: "Réduire le coût de plateforme, partager R&D (batteries, software), céder ou fermer des actifs non stratégiques. M&A ciblé sur équipementiers et tech (ADAS, batteries).",
+      },
+      {
+        side: "PE / stratégiques",
+        text: "Carve-outs de divisions non-core, restructurations supply chain, opportunités sur équipementiers en difficulté (réorganisation, dette).",
+      },
+    ],
+    contexte:
+      "Multiples auto cycliques : EV/EBIT souvent élevé en phase d'investissement ; marché sanctionne l'exécution et le mix BEV. En entretien : lier volumes, ASP, CapEx plateforme et cycle.",
+    pointEntretien:
+      "Citer Stellantis ou Renault pour illustrer discount de cycle + enjeu EV. Distinguer OEM vs équipementiers (marges, BFR, carnet). Mentionner BYD/Tesla comme référence prix sur le BEV.",
+    advisors: {},
+    kind: "trend",
+  },
 ];
 
 export const MA_DEALS: MaDeal[] = MA_DEALS_RAW.map((d) => ({
@@ -817,10 +852,6 @@ export function getDealById(id: string): MaDeal | undefined {
 
 export function getDealsForSector(sectorId: SectorId): MaDeal[] {
   return MA_DEALS.filter((d) => d.sectorId === sectorId);
-}
-
-export function dealMatchesBank(deal: MaDeal, bank: string): boolean {
-  return deal.banks.includes(bank);
 }
 
 export function dealMatchesType(deal: MaDeal, type: string): boolean {

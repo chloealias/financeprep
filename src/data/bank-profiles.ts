@@ -1,6 +1,7 @@
 import type { BankCategoryId } from "@/lib/bank-categories";
 import { BANK_CATEGORY_IDS } from "@/lib/bank-categories";
-import { dealMatchesBank, MA_DEALS, type MaDeal } from "@/data/ma-deals";
+import { MA_DEALS, type MaDeal } from "@/data/ma-deals";
+import { collectDealBankLabels, normalizeBankLabel } from "@/lib/bank-name-resolve";
 
 export type BankProfile = {
   id: string;
@@ -685,6 +686,86 @@ export const BANK_LIST: BankProfile[] = [
     reponsePiège:
       "Groupe indépendant diversifié (CIB + banque privée + AM), mais pas universal bank au sens BNP (pas de retail massif). Positionnement « independent financial group » — terme à utiliser en entretien.",
   },
+  {
+    id: "moelis",
+    categoryId: "elite-boutique",
+    name: "Moelis & Company",
+    category: "Elite boutique (advisory US)",
+    hq: "New York / Paris",
+    tagline: "Conseil indépendant — M&A, restructuring et capital solutions",
+    divisions: ["M&A", "Restructuring", "Capital markets advisory", "Private funds advisory"],
+    particularites: [
+      "Fondée en 2007 par Ken Moelis (ex-UBS/Lazard) — croissance rapide aux US et en Europe",
+      "Forte sur mid-cap, situations spéciales et restructurations",
+      "Paris : hub européen actif sur mandats cross-border",
+      "Modèle 100% advisory, pas de balance sheet",
+    ],
+    recrutement:
+      "Entretiens techniques + fit. Culture exigeante, équipes relativement petites vs bulge.",
+    pointEntretien:
+      "Comparer à Evercore/Lazard : indépendance, focus situations complexes. Ne pas la confondre avec une banque universelle.",
+    dealEmblematique: {
+      titre: "Restructuring & mid-cap M&A",
+      texte:
+        "Moelis conseille régulièrement sur restructurations et ventes sous pression — segment où l'expertise process prime sur le bilan.",
+    },
+    questionPiège: "Moelis est-elle une banque d'investissement classique ?",
+    reponsePiège:
+      "Non — elite boutique advisory pure. Pas de lending, pas de trading propriétaire. En entretien, la classer avec Evercore, PJT, Perella plutôt qu'avec JPM/GS.",
+  },
+  {
+    id: "pjt-partners",
+    categoryId: "elite-boutique",
+    name: "PJT Partners",
+    category: "Elite boutique (restructuring & M&A)",
+    hq: "New York / Londres",
+    tagline: "Spin-off de Blackstone Advisory — leader restructuring, M&A stratégique",
+    divisions: ["Restructuring & Special Situations", "Strategic Advisory", "Park Hill (fund placement)"],
+    particularites: [
+      "Créée en 2015 (spin-off Blackstone Advisory Partners)",
+      "Référence US en Chapter 11 et situations distressed",
+      "Europe : Londres, mandats telecom et industriels en difficulté",
+      "Culture proche du restructuring banking (HL, Lazard) avec advisory pur",
+    ],
+    recrutement:
+      "Profils appréciés : restructuring, dette, M&A. Entretiens très techniques sur process et waterfall créanciers.",
+    pointEntretien:
+      "Citer l'expertise restructuring (Altice, telecom) et distinguer PJT de Blackstone (asset manager vs advisor).",
+    dealEmblematique: {
+      titre: "Restructuring telecom & industriels",
+      texte:
+        "PJT est souvent mandatée débiteur ou comité de créanciers sur les grands dossiers US/EU — compétence Chapter 11 et schemes UK.",
+    },
+    questionPiège: "PJT Partners et Blackstone, c'est la même chose ?",
+    reponsePiège:
+      "Non — entités séparées depuis 2015. Blackstone = asset manager / PE ; PJT = conseil pur. En entretien, ne jamais dire « j'ai vu chez Blackstone » si le stage était chez PJT.",
+  },
+  {
+    id: "perella-weinberg",
+    categoryId: "elite-boutique",
+    name: "Perella Weinberg Partners",
+    category: "Elite boutique (M&A stratégique)",
+    hq: "New York / Londres / Paris",
+    tagline: "Conseil M&A indépendant — fondé par d'anciens banquiers Lazard",
+    divisions: ["M&A advisory", "Restructuring", "Capital markets & financing advisory"],
+    particularites: [
+      "Fondé en 2006 par Joseph Perella et Peter Weinberg (ex-Goldman, ex-Morgan Stanley)",
+      "Positionnement haut de bilan : mega-deals et mandats stratégiques",
+      "Culture « partner-led », moins de hiérarchie que les bulge",
+      "Paris : présence sur mandats européens sensibles",
+    ],
+    recrutement: "Entretiens exigeants, cas M&A et fit. Parcours top schools fréquent.",
+    pointEntretien:
+      "Souligner l'indépendance vs bulge et l'ADN Lazard/Goldman des fondateurs. Bonne comparaison avec Centerview ou Evercore sur les mandats trophy.",
+    dealEmblematique: {
+      titre: "M&A stratégique cross-border",
+      texte:
+        "PWP conseille sur des fusions stratégiques et carve-outs sensibles — segment où la discrétion et la qualité du conseil priment.",
+    },
+    questionPiège: "En quoi PWP diffère-t-elle de Lazard ?",
+    reponsePiège:
+      "Même modèle advisory pur, mais PWP est plus jeune, plus US-centric historiquement, et moins présente sur le restructuring massif que Lazard. Les deux se concurrencent sur les mandats M&A premium.",
+  },
 ];
 
 export const BANK_PROFILES: Record<string, BankProfile> = Object.fromEntries(
@@ -707,8 +788,14 @@ export function getBanksByCategory(id: BankCategoryId): BankProfile[] {
   return BANKS_BY_CATEGORY[id];
 }
 
+export function dealInvolvesBankProfile(deal: MaDeal, bankId: string): boolean {
+  return collectDealBankLabels(deal).some((label) => getBankIdByName(label) === bankId);
+}
+
 export function getDealsForBank(name: string): MaDeal[] {
-  return MA_DEALS.filter((d) => dealMatchesBank(d, name));
+  const bankId = getBankIdByName(name);
+  if (!bankId) return [];
+  return MA_DEALS.filter((d) => dealInvolvesBankProfile(d, bankId));
 }
 
 const BANK_NAME_TO_ID: Record<string, string> = Object.fromEntries(
@@ -716,5 +803,12 @@ const BANK_NAME_TO_ID: Record<string, string> = Object.fromEntries(
 );
 
 export function getBankIdByName(name: string): string | undefined {
-  return BANK_NAME_TO_ID[name];
+  const normalized = normalizeBankLabel(name);
+  return BANK_NAME_TO_ID[normalized];
+}
+
+export function dealMatchesBank(deal: MaDeal, bankFilter: string): boolean {
+  const bankId = getBankIdByName(bankFilter);
+  if (bankId) return dealInvolvesBankProfile(deal, bankId);
+  return deal.banks.includes(bankFilter);
 }

@@ -1,11 +1,13 @@
 import { DEFAULT_APP_TAB, isAppTab, type AppTab } from "@/lib/app-tabs";
 import { isValidBankId } from "@/data/bank-profiles";
+import { isValidPeFundId } from "@/data/pe-fund-profiles";
 import { isValidDealId } from "@/data/ma-deals";
 import { isValidSectorId, type SectorId } from "@/lib/sectors";
 
 export type HomeSearch = {
   tab: AppTab;
   bank?: string;
+  pe?: string;
   sector?: SectorId;
 };
 
@@ -16,12 +18,17 @@ export function validateHomeSearch(search: Record<string, unknown>): HomeSearch 
   const bankRaw = typeof search.bank === "string" ? search.bank : undefined;
   const bank = bankRaw && isValidBankId(bankRaw) ? bankRaw : undefined;
 
+  const peRaw = typeof search.pe === "string" ? search.pe : undefined;
+  const pe = peRaw && isValidPeFundId(peRaw) ? peRaw : undefined;
+
   const sectorRaw = typeof search.sector === "string" ? search.sector : undefined;
   const sector = sectorRaw && isValidSectorId(sectorRaw) ? sectorRaw : undefined;
 
-  const resolved: AppTab = sector && tabResolved !== "secteurs" ? "secteurs" : tabResolved;
+  let resolved: AppTab = tabResolved;
+  if (sector && tabResolved !== "secteurs") resolved = "secteurs";
+  else if ((bank || pe) && tabResolved !== "banques") resolved = "banques";
 
-  return { tab: resolved, bank, sector };
+  return { tab: resolved, bank: pe ? undefined : bank, pe, sector };
 }
 
 export type ActualiteSearch = {

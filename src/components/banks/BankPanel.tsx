@@ -4,6 +4,8 @@ import { ChevronRight, X } from "lucide-react";
 import { BankLogo } from "@/components/banks/BankLogo";
 import type { BankProfile } from "@/data/bank-profiles";
 import { getDealsForBank } from "@/data/bank-profiles";
+import { getDealById } from "@/data/ma-deals";
+import { BankDealChip, SectorHubChip } from "@/components/deals/DealEntityChips";
 
 type BankPanelProps = {
   bank: BankProfile;
@@ -21,6 +23,10 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
         : null;
 
   const deals = getDealsForBank(bank.name);
+  const emblematicDeal =
+    bank.emblematicDealId && bank.emblematicLinkType !== "bank"
+      ? getDealById(bank.emblematicDealId)
+      : undefined;
 
   useEffect(() => {
     setShowReponse(false);
@@ -145,6 +151,11 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
                 </p>
               </div>
             )}
+            {emblematicDeal?.sectorId && (
+              <div className="mt-2">
+                <SectorHubChip sectorId={emblematicDeal.sectorId} />
+              </div>
+            )}
           </div>
 
           <div>
@@ -194,11 +205,11 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
           <>
             <ul className="space-y-3">
               {deals.map((d) => (
-                <li key={d.id}>
+                <li key={d.id} className="bg-blue-50 rounded-lg px-3 py-3 text-sm">
                   <Link
                     to="/actualite"
                     search={{ deal: d.id }}
-                    className="block bg-blue-50 rounded-lg px-3 py-3 text-sm hover:bg-blue-100/80 transition-colors"
+                    className="block hover:text-blue-900 transition-colors"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
                       <span className="text-blue-900 font-medium">{d.title}</span>
@@ -210,6 +221,11 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
                       {d.pointEntretien}
                     </p>
                   </Link>
+                  {d.sectorId && (
+                    <div className="mt-2">
+                      <SectorHubChip sectorId={d.sectorId} />
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

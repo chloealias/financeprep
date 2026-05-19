@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@tanstack/react-router";
 import { ChevronRight, Library } from "lucide-react";
 import { Visual } from "@/components/interview/Visual";
 import { concepts } from "@/data/concepts";
@@ -171,6 +172,17 @@ export function ConceptCard({
                     </tbody>
                   </table>
                 </div>
+                {concept.id === "c3" && (
+                  <p className="mt-3 text-sm">
+                    <Link
+                      to="/actualite"
+                      hash="indicateurs-macro"
+                      className="text-blue-700 font-medium hover:text-blue-900 underline"
+                    >
+                      Voir les niveaux macro actuels (taux, spreads, marchés) →
+                    </Link>
+                  </p>
+                )}
               </div>
             )}
 

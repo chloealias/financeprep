@@ -5,7 +5,7 @@ import { SECTOR_IDS, type SectorId } from "@/lib/sectors";
 import { shuffle, type SrsStore } from "@/lib/srs";
 import { getTargetBankNames, loadProfile, type UserProfile } from "@/lib/profile-storage";
 import { questionIdKey, type QuestionRatings } from "@/lib/storage";
-import { dealMatchesBank } from "@/data/ma-deals";
+import { dealMatchesBank } from "@/data/bank-profiles";
 
 export type InterviewSlot = "opening" | "fit" | "technical" | "actu" | "sector" | "brainteaser";
 

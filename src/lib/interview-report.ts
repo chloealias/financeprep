@@ -77,6 +77,7 @@ export function buildInterviewMarkdown(
     "",
     "- [Guide CV — Walk me through your CV](/cv)",
     "- [Pyramid Principle + STAR](/pyramid)",
+    "- [Indicateurs macro](/actualite#indicateurs-macro)",
   );
 
   if (dealLinks.length > 0) {
