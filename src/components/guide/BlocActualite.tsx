@@ -48,7 +48,7 @@ const MAX_BANK_CHIPS = 4;
 function DealSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <div className="text-xs text-blue-400 uppercase tracking-wider font-medium mb-2">{title}</div>
+      <div className="text-xs text-primary uppercase tracking-wider font-medium mb-2">{title}</div>
       {children}
     </div>
   );
@@ -63,7 +63,7 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
 
   if (!hasAdvisors) {
     return (
-      <p className="text-blue-500 text-sm font-light italic">
+      <p className="text-muted-foreground text-sm font-light italic">
         Advisors non confirmés publiquement.
       </p>
     );
@@ -73,8 +73,8 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
     <div className="space-y-3 text-sm">
       {advisors.sellSide && advisors.sellSide.length > 0 && (
         <div>
-          <span className="text-blue-500 text-xs uppercase tracking-wider">Vendeur / débiteur</span>
-          <ul className="mt-1 space-y-0.5 text-blue-800 font-light">
+          <span className="text-primary text-xs uppercase tracking-wider">Vendeur / débiteur</span>
+          <ul className="mt-1 space-y-0.5 text-foreground font-light">
             {advisors.sellSide.map((a, i) => (
               <li key={i}>
                 · <AdvisorBankName name={a} />
@@ -85,8 +85,8 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
       )}
       {advisors.buySide && advisors.buySide.length > 0 && (
         <div>
-          <span className="text-blue-500 text-xs uppercase tracking-wider">Acquéreur</span>
-          <ul className="mt-1 space-y-0.5 text-blue-800 font-light">
+          <span className="text-primary text-xs uppercase tracking-wider">Acquéreur</span>
+          <ul className="mt-1 space-y-0.5 text-foreground font-light">
             {advisors.buySide.map((a, i) => (
               <li key={i}>
                 · <AdvisorBankName name={a} />
@@ -97,8 +97,8 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
       )}
       {advisors.other?.map((group, i) => (
         <div key={i}>
-          <span className="text-blue-500 text-xs uppercase tracking-wider">{group.label}</span>
-          <ul className="mt-1 space-y-0.5 text-blue-800 font-light">
+          <span className="text-primary text-xs uppercase tracking-wider">{group.label}</span>
+          <ul className="mt-1 space-y-0.5 text-foreground font-light">
             {group.banks.map((b, j) => (
               <li key={j}>
                 · <AdvisorBankName name={b} />
@@ -117,13 +117,13 @@ function DealDetail({ deal }: { deal: MaDeal }) {
   return (
     <div className="mt-4 space-y-5">
       <div className="flex flex-wrap items-center gap-2">
-        <p className="text-blue-600 text-xs font-light">{deal.dates}</p>
+        <p className="text-muted-foreground text-xs font-light">{deal.dates}</p>
         {deal.sectorId && <SectorHubChip sectorId={deal.sectorId} label={deal.secteur} />}
         {deal.sectorId && (
           <Link
             to="/actualite"
             search={{ sector: deal.sectorId }}
-            className="text-xs text-blue-600 hover:text-blue-900 underline underline-offset-2"
+            className="text-xs text-primary hover:text-primary/80 underline underline-offset-2"
           >
             Tous les deals du secteur
           </Link>
@@ -135,13 +135,13 @@ function DealDetail({ deal }: { deal: MaDeal }) {
           <div className="space-y-1.5">
             {deal.valorisation.map((v, i) => (
               <div key={i} className="flex gap-2 text-sm">
-                <span className="text-blue-500 w-36 flex-shrink-0 font-light">{v.label}</span>
-                <span className="text-blue-900 font-medium">{v.value}</span>
+                <span className="text-primary w-36 flex-shrink-0 font-light">{v.label}</span>
+                <span className="text-foreground font-medium">{v.value}</span>
               </div>
             ))}
           </div>
           {deal.financing && (
-            <p className="mt-3 text-blue-700 text-sm font-light leading-relaxed border-l-2 border-blue-200 pl-3">
+            <p className="mt-3 text-muted-foreground text-sm font-light leading-relaxed border-l-2 border-border pl-3">
               {deal.financing}
             </p>
           )}
@@ -152,10 +152,10 @@ function DealDetail({ deal }: { deal: MaDeal }) {
         <div className="space-y-4">
           {deal.parties.map((p, i) => (
             <div key={i}>
-              <span className="text-blue-600 text-xs font-semibold uppercase tracking-wider">
+              <span className="text-primary text-xs font-semibold uppercase tracking-wider">
                 {p.label}
               </span>
-              <p className="text-blue-800 text-sm font-light mt-0.5 leading-relaxed">{p.text}</p>
+              <p className="text-foreground text-sm font-light mt-0.5 leading-relaxed">{p.text}</p>
             </div>
           ))}
         </div>
@@ -170,9 +170,9 @@ function DealDetail({ deal }: { deal: MaDeal }) {
       <DealSection title="Intérêts des parties">
         <div className="grid md:grid-cols-2 gap-3">
           {deal.interests.map((item, i) => (
-            <div key={i} className="bg-blue-50/80 rounded-lg px-3 py-2.5">
-              <div className="text-blue-600 text-xs font-semibold mb-1">{item.side}</div>
-              <p className="text-blue-800 text-sm font-light leading-relaxed">{item.text}</p>
+            <div key={i} className="bg-muted/80 rounded-lg px-3 py-2.5">
+              <div className="text-primary text-xs font-semibold mb-1">{item.side}</div>
+              <p className="text-foreground text-sm font-light leading-relaxed">{item.text}</p>
             </div>
           ))}
         </div>
@@ -180,7 +180,7 @@ function DealDetail({ deal }: { deal: MaDeal }) {
 
       {deal.contexte && (
         <DealSection title="Contexte">
-          <p className="text-blue-700 text-sm font-light leading-relaxed">
+          <p className="text-muted-foreground text-sm font-light leading-relaxed">
             <DealRefText text={deal.contexte} />
           </p>
         </DealSection>
@@ -200,7 +200,7 @@ function DealDetail({ deal }: { deal: MaDeal }) {
           href={deal.ftUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="touch-target-bar gap-1.5 text-blue-600 text-xs hover:text-blue-900 transition-colors"
+          className="touch-target-bar gap-1.5 text-primary text-xs hover:text-primary/80 transition-colors"
         >
           <ExternalLink className="w-3.5 h-3.5" />
           Lire dans le Financial Times
@@ -323,7 +323,7 @@ export function BlocActualite() {
             }))}
           />
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">
+            <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium mb-2">
               Type de deal
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -341,7 +341,7 @@ export function BlocActualite() {
           </div>
         </div>
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium mb-2">
             Secteur
           </p>
           <div className="flex flex-wrap gap-1.5">
@@ -371,7 +371,7 @@ export function BlocActualite() {
               key={deal.id}
               id={`deal-card-${deal.id}`}
               className={`${guideCardClass} overflow-hidden scroll-mt-24 ${
-                isOpen && isDeepLinked ? "border-blue-400 ring-2 ring-blue-200" : ""
+                isOpen && isDeepLinked ? "border-primary ring-2 ring-primary/20" : ""
               }`}
             >
               <button
@@ -382,18 +382,18 @@ export function BlocActualite() {
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-wrap gap-2 mb-2">
-                    <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded font-medium">
+                    <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded font-medium">
                       {dealDateBadge(deal.dates)}
                     </span>
                     <span
-                      className={`text-xs px-2 py-0.5 rounded font-medium ${typeColors[deal.type] || "bg-slate-100 text-slate-600"}`}
+                      className={`text-xs px-2 py-0.5 rounded font-medium ${typeColors[deal.type] || "bg-muted text-muted-foreground"}`}
                     >
                       {deal.type}
                     </span>
                     <SectorDealChip secteur={deal.secteur} />
                   </div>
-                  <div className="font-serif text-blue-950 text-base">{deal.title}</div>
-                  <div className="text-blue-400 text-xs mt-1 flex flex-wrap items-center gap-1">
+                  <div className="font-serif text-foreground text-base">{deal.title}</div>
+                  <div className="text-primary text-xs mt-1 flex flex-wrap items-center gap-1">
                     <span>{deal.headlineEv}</span>
                     {visibleBanks.length > 0 && (
                       <>
@@ -402,18 +402,18 @@ export function BlocActualite() {
                           <BankDealChip key={b} name={b} />
                         ))}
                         {extraBanks > 0 && (
-                          <span className="text-blue-400 text-xs">+{extraBanks}</span>
+                          <span className="text-primary text-xs">+{extraBanks}</span>
                         )}
                       </>
                     )}
                   </div>
                 </div>
                 <ChevronRight
-                  className={`w-4 h-4 text-blue-300 flex-shrink-0 mt-1 transition-transform ${isOpen ? "rotate-90" : ""}`}
+                  className={`w-4 h-4 text-muted-foreground flex-shrink-0 mt-1 transition-transform ${isOpen ? "rotate-90" : ""}`}
                 />
               </button>
               {isOpen && (
-                <div className="px-5 pb-5 border-t border-blue-50">
+                <div className="px-5 pb-5 border-t border-border">
                   <DealDetail deal={deal} />
                 </div>
               )}
@@ -421,7 +421,7 @@ export function BlocActualite() {
           );
         })}
         {filtered.length === 0 && (
-          <div className="text-center py-8 text-blue-300 italic text-sm">
+          <div className="text-center py-8 text-muted-foreground italic text-sm">
             Aucun deal pour ces filtres.
           </div>
         )}

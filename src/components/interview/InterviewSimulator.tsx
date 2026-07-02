@@ -21,7 +21,7 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
         <button
           type="button"
           onClick={onBack}
-          className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+          className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Retour
@@ -29,22 +29,22 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
 
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-12 bg-blue-700" />
-            <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">
+            <div className="h-px w-12 bg-primary" />
+            <span className="text-primary text-sm tracking-[0.3em] uppercase font-light">
               Simulation
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
-            Entretien <span className="italic font-light text-blue-700">30 min</span>
+          <h1 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
+            Entretien <span className="italic font-light text-primary">30 min</span>
           </h1>
-          <p className="text-blue-700 mt-3 font-light max-w-2xl">
+          <p className="text-muted-foreground mt-3 font-light max-w-2xl">
             Pack structuré type vrai entretien : CV, technique, actualité M&A, sectoriel. Timer par
             question + limite globale 30 minutes.
           </p>
         </div>
 
         {targetBankNames.length > 0 && (
-          <div className="mb-6 rounded-xl bg-indigo-50 border border-indigo-200 p-4 text-sm text-indigo-950">
+          <div className="mb-6 rounded-xl bg-primary/10 border border-primary/20 p-4 text-sm text-foreground">
             <strong>Banques cibles :</strong> {targetBankNames.join(", ")} — personnalisez vos
             exemples fit et deals en conséquence.
           </div>
@@ -53,28 +53,28 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
         <div className="grid sm:grid-cols-2 gap-4 mb-8">
           <Link
             to="/cv"
-            className="flex gap-3 p-4 rounded-xl bg-white border-2 border-blue-100 hover:border-blue-300 transition-colors"
+            className="flex gap-3 p-4 rounded-xl bg-card border-2 border-border hover:border-primary/40 transition-colors"
           >
-            <User className="w-6 h-6 text-blue-700 flex-shrink-0" />
+            <User className="w-6 h-6 text-primary flex-shrink-0" />
             <div>
-              <div className="font-medium text-blue-950">Guide CV</div>
-              <p className="text-sm text-blue-600 font-light">Timer 2 min · checklist</p>
+              <div className="font-medium text-foreground">Guide CV</div>
+              <p className="text-sm text-muted-foreground font-light">Timer 2 min · checklist</p>
             </div>
           </Link>
           <Link
             to="/pyramid"
-            className="flex gap-3 p-4 rounded-xl bg-white border-2 border-blue-100 hover:border-blue-300 transition-colors"
+            className="flex gap-3 p-4 rounded-xl bg-card border-2 border-border hover:border-primary/40 transition-colors"
           >
-            <Triangle className="w-6 h-6 text-blue-700 flex-shrink-0" />
+            <Triangle className="w-6 h-6 text-primary flex-shrink-0" />
             <div>
-              <div className="font-medium text-blue-950">Pyramid + STAR</div>
-              <p className="text-sm text-blue-600 font-light">Structurer vos réponses</p>
+              <div className="font-medium text-foreground">Pyramid + STAR</div>
+              <p className="text-sm text-muted-foreground font-light">Structurer vos réponses</p>
             </div>
           </Link>
         </div>
 
         <div className="mb-8">
-          <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">
+          <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3">
             Taille du pack
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -85,8 +85,8 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
                 onClick={() => setPackSize(s)}
                 className={`px-4 py-4 rounded-xl border-2 font-medium transition-colors ${
                   packSize === s
-                    ? "bg-blue-900 text-white border-blue-900"
-                    : "bg-white text-blue-900 border-blue-200 hover:border-blue-400"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card text-foreground border-border hover:border-primary/50"
                 }`}
               >
                 <div className="text-2xl font-serif">{s}</div>
@@ -99,7 +99,7 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
         <button
           type="button"
           onClick={() => setPhase("setup")}
-          className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-800 text-white font-medium text-lg shadow-lg"
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-medium text-lg shadow-lg hover:bg-primary/90"
         >
           <Clock className="w-5 h-5" />
           Continuer vers le pack

@@ -23,7 +23,7 @@ export function DealRefText({ text, className }: DealRefTextProps) {
             key={i}
             to="/actualite"
             search={{ deal: part.id }}
-            className="text-blue-700 hover:text-blue-900 underline underline-offset-2 font-medium"
+            className="text-primary hover:text-primary/80 underline underline-offset-2 font-medium"
           >
             deal {part.id}
           </Link>

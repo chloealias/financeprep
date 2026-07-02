@@ -1,8 +1,16 @@
 import type { UserProfile } from "@/lib/profile-storage";
-import { getProfileIcon, patternColors, type AvatarKind } from "@/lib/profile-cosmetics";
+import {
+  getProfileIcon,
+  getProfileIconColor,
+  patternColors,
+  type AvatarKind,
+} from "@/lib/profile-cosmetics";
 
 type ProfileAvatarProps = {
-  profile: Pick<UserProfile, "avatarKind" | "avatarId" | "avatarPatternSeed" | "firstName">;
+  profile: Pick<
+    UserProfile,
+    "avatarKind" | "avatarId" | "avatarPatternSeed" | "avatarIconColorId" | "firstName"
+  >;
   size?: "sm" | "md" | "lg";
   className?: string;
   ring?: boolean;
@@ -15,9 +23,9 @@ const SIZE = {
 };
 
 const ICON_SIZE = {
-  sm: "w-4 h-4",
-  md: "w-8 h-8",
-  lg: "w-11 h-11",
+  sm: "w-3.5 h-3.5",
+  md: "w-7 h-7",
+  lg: "w-9 h-9",
 };
 
 function PatternFace({ seed, className }: { seed: number; className: string }) {
@@ -69,12 +77,15 @@ export function ProfileAvatar({
   }
 
   const icon = getProfileIcon(profile.avatarId);
+  const colorChoice = getProfileIconColor(profile.avatarIconColorId);
+  const bg = colorChoice.id === "default" ? icon.bg : colorChoice.bg;
+  const fg = colorChoice.id === "default" ? icon.fg : colorChoice.fg;
   const { Icon } = icon;
 
   return (
     <div
       className={`rounded-full flex items-center justify-center flex-shrink-0 ${SIZE[size]} ${ringClass} ${className}`}
-      style={{ backgroundColor: icon.bg, color: icon.fg }}
+      style={{ backgroundColor: bg, color: fg }}
       aria-hidden
     >
       <Icon className={ICON_SIZE[size]} strokeWidth={1.75} />

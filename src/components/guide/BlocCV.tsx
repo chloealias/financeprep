@@ -101,17 +101,17 @@ export function BlocCV() {
                 type="checkbox"
                 checked={!!checked[item.id]}
                 onChange={(e) => updateChecked(item.id, e.target.checked)}
-                className="w-4 h-4 accent-blue-700"
+                className="w-4 h-4 accent-primary"
               />
               <span
-                className={`text-sm transition-all ${checked[item.id] ? "line-through text-blue-300" : "text-blue-900"}`}
+                className={`text-sm transition-all ${checked[item.id] ? "line-through text-muted-foreground" : "text-foreground"}`}
               >
                 {item.text}
               </span>
             </label>
           ))}
         </div>
-        <div className="text-xs text-blue-500">{score}/6 critères cochés</div>
+        <div className="text-xs text-primary">{score}/6 critères cochés</div>
       </div>
 
       <div className="mb-8">
@@ -142,23 +142,23 @@ export function BlocCV() {
           ].map((acte) => (
             <div
               key={acte.num}
-              className={`rounded-xl p-5 ${acte.dark ? "bg-blue-900 text-white" : "bg-blue-50 border border-blue-200"}`}
+              className={`rounded-xl p-5 ${acte.dark ? "bg-primary text-primary-foreground" : "bg-muted border border-border"}`}
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="text-2xl font-serif font-light text-blue-300">{acte.num}</span>
+                <span className="text-2xl font-serif font-light text-primary/70">{acte.num}</span>
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full ${acte.dark ? "bg-blue-800 text-blue-300" : "bg-blue-100 text-blue-600"}`}
+                  className={`text-xs px-2 py-0.5 rounded-full ${acte.dark ? "bg-primary/80 text-primary-foreground/80" : "bg-primary/10 text-primary"}`}
                 >
                   {acte.duree}
                 </span>
               </div>
               <div
-                className={`font-serif text-lg mb-2 ${acte.dark ? "text-white" : "text-blue-950"}`}
+                className={`font-serif text-lg mb-2 ${acte.dark ? "text-primary-foreground" : "text-foreground"}`}
               >
                 {acte.titre}
               </div>
               <div
-                className={`text-sm font-light leading-relaxed ${acte.dark ? "text-blue-200" : "text-blue-700"}`}
+                className={`text-sm font-light leading-relaxed ${acte.dark ? "text-primary-foreground/80" : "text-muted-foreground"}`}
               >
                 {acte.desc}
               </div>
@@ -169,15 +169,15 @@ export function BlocCV() {
 
       <div className="mb-8">
         <GuideSectionTitle>Variante — Walk me through a deal</GuideSectionTitle>
-        <div className={`${guideCardClass} p-6 bg-blue-50/50 space-y-3`}>
+        <div className={`${guideCardClass} p-6 bg-muted/50 space-y-3`}>
           {dealSteps.map((step) => (
             <div key={step.num} className="flex gap-4">
-              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white text-sm font-serif flex items-center justify-center">
+              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary text-primary-foreground text-sm font-serif flex items-center justify-center">
                 {step.num}
               </div>
               <div className="pt-1">
-                <span className="text-blue-950 font-medium text-sm">{step.label} — </span>
-                <span className="text-blue-700 text-sm font-light">{step.desc}</span>
+                <span className="text-foreground font-medium text-sm">{step.label} — </span>
+                <span className="text-muted-foreground text-sm font-light">{step.desc}</span>
               </div>
             </div>
           ))}
@@ -188,33 +188,35 @@ export function BlocCV() {
         <GuideSectionTitle>Timer d'entraînement</GuideSectionTitle>
         <div className={`${guideCardClass} p-6 text-center`}>
           <div
-            className={`text-5xl font-mono font-light mb-4 ${timeLeft === 0 ? "text-red-500" : "text-blue-950"}`}
+            className={`text-5xl font-mono font-light mb-4 ${timeLeft === 0 ? "text-destructive" : "text-foreground"}`}
           >
             {mm}:{ss}
           </div>
-          <div className="w-full bg-blue-100 rounded-full h-2 mb-6">
+          <div className="w-full bg-muted rounded-full h-2 mb-6">
             <div
-              className={`h-2 rounded-full transition-all duration-1000 ${timeLeft === 0 ? "bg-red-400" : "bg-blue-700"}`}
+              className={`h-2 rounded-full transition-all duration-1000 ${timeLeft === 0 ? "bg-destructive/70" : "bg-primary"}`}
               style={{ width: `${progress}%` }}
             />
           </div>
-          {timeLeft === 0 && <div className="text-red-500 font-medium mb-4">Temps écoulé !</div>}
+          {timeLeft === 0 && (
+            <div className="text-destructive font-medium mb-4">Temps écoulé !</div>
+          )}
           <div className="flex justify-center gap-3">
             <button
               onClick={() => setTimerActive((a) => !a)}
               disabled={timeLeft === 0}
-              className="px-6 py-2.5 bg-blue-900 text-white rounded-lg text-sm font-medium hover:bg-blue-800 disabled:opacity-40 transition-all"
+              className="px-6 py-2.5 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 disabled:opacity-40 transition-all"
             >
               {timerActive ? "Pause" : timeLeft === 120 ? "Démarrer (2 min)" : "Reprendre"}
             </button>
             <button
               onClick={resetTimer}
-              className="px-6 py-2.5 border border-blue-200 text-blue-700 rounded-lg text-sm font-medium hover:bg-blue-50 transition-all"
+              className="px-6 py-2.5 border border-border text-foreground rounded-lg text-sm font-medium hover:bg-muted transition-all"
             >
               Reset
             </button>
           </div>
-          <p className="text-blue-400 text-xs mt-4 italic">
+          <p className="text-muted-foreground text-xs mt-4 italic">
             Répondez à voix haute. Enregistrez-vous si possible.
           </p>
         </div>

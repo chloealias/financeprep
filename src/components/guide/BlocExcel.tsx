@@ -108,21 +108,21 @@ export function BlocExcel() {
 
       <div className="mb-8">
         <GuideSectionTitle>Raccourcis indispensables</GuideSectionTitle>
-        <div className="overflow-x-auto rounded-xl border-2 border-blue-100">
+        <div className="overflow-x-auto rounded-xl border-2 border-border">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-blue-900 text-white">
+              <tr className="bg-primary text-primary-foreground">
                 <th className="text-left px-4 py-3 font-medium w-48">Raccourci</th>
                 <th className="text-left px-4 py-3 font-medium">Usage</th>
               </tr>
             </thead>
             <tbody>
               {activeShortcuts.map((s, i) => (
-                <tr key={s.key} className={i % 2 === 0 ? "bg-blue-50" : "bg-white"}>
-                  <td className="px-4 py-2.5 font-mono text-blue-800 text-xs font-medium">
+                <tr key={s.key} className={i % 2 === 0 ? "bg-muted" : "bg-card"}>
+                  <td className="px-4 py-2.5 font-mono text-foreground text-xs font-medium">
                     {s.key}
                   </td>
-                  <td className="px-4 py-2.5 text-blue-700">{s.usage}</td>
+                  <td className="px-4 py-2.5 text-muted-foreground">{s.usage}</td>
                 </tr>
               ))}
             </tbody>
@@ -135,12 +135,12 @@ export function BlocExcel() {
         <div className="grid md:grid-cols-2 gap-4">
           {formulas[tab].map((f) => (
             <div key={f.name} className={`${guideCardClass} p-5`}>
-              <div className="font-serif text-blue-950 text-lg mb-2">{f.name}</div>
-              <div className="font-mono text-xs bg-slate-900 text-blue-300 rounded-lg px-3 py-2 mb-3 break-all">
+              <div className="font-serif text-foreground text-lg mb-2">{f.name}</div>
+              <div className="font-mono text-xs bg-foreground text-background rounded-lg px-3 py-2 mb-3 break-all">
                 {f.formula}
               </div>
-              <div className="text-blue-700 text-sm mb-1">{f.usage}</div>
-              <div className="text-blue-400 text-xs italic">Cas : {f.cas}</div>
+              <div className="text-muted-foreground text-sm mb-1">{f.usage}</div>
+              <div className="text-primary text-xs italic">Cas : {f.cas}</div>
             </div>
           ))}
         </div>
@@ -153,10 +153,10 @@ export function BlocExcel() {
         <ol className="space-y-2">
           {tips[tab].map((tip, i) => (
             <li key={tip} className={`flex gap-4 ${guideCardClass} px-4 py-3`}>
-              <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white text-xs font-serif flex items-center justify-center">
+              <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-primary text-primary-foreground text-xs font-serif flex items-center justify-center">
                 {i + 1}
               </div>
-              <span className="text-blue-900 text-sm font-light pt-0.5">{tip}</span>
+              <span className="text-foreground text-sm font-light pt-0.5">{tip}</span>
             </li>
           ))}
         </ol>

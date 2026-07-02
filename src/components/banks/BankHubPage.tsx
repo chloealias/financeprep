@@ -236,15 +236,15 @@ export function BankHubPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-12 bg-blue-700" />
-          <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">
+          <div className="h-px w-12 bg-primary" />
+          <span className="text-primary text-sm tracking-[0.3em] uppercase font-light">
             Ciblage entretien
           </span>
         </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
-          Fiches <span className="italic font-light text-blue-700">banques</span>
+        <h2 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
+          Fiches <span className="italic font-light text-primary">banques</span>
         </h2>
-        <p className="text-blue-700 mt-3 font-light max-w-2xl">
+        <p className="text-muted-foreground mt-3 font-light max-w-2xl">
           {hubView === "conseil"
             ? `${BANK_LIST.length} banques de conseil et groupes intégrés — fiches pour préparer vos entretiens M&A.`
             : `${PE_FUND_LIST.length} fonds PE majeurs en France — stratégie, deals et questions piège.`}
@@ -296,7 +296,7 @@ export function BankHubPage() {
           {hubView === "conseil" ? "Rechercher une banque" : "Rechercher un fonds PE"}
         </label>
         <Search
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-300 pointer-events-none"
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
           aria-hidden
         />
         <input
@@ -305,13 +305,13 @@ export function BankHubPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Rechercher par nom…"
-          className="w-full rounded-lg border border-blue-200 bg-white/80 pl-10 pr-4 py-2.5 text-sm text-blue-900 placeholder:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+          className="w-full rounded-lg border border-border bg-card/80 pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
         />
       </div>
 
       {hubView === "pe" ? (
         filteredPeFunds.length === 0 ? (
-          <p className="text-blue-400 text-sm font-light italic text-center py-8">
+          <p className="text-muted-foreground text-sm font-light italic text-center py-8">
             Aucun fonds ne correspond à votre recherche.
           </p>
         ) : (
@@ -321,8 +321,8 @@ export function BankHubPage() {
                 <div
                   className={`relative rounded-xl border transition-all ${
                     selectedPeId === fund.id
-                      ? "border-blue-400 bg-blue-50 shadow-sm"
-                      : "border-blue-100 bg-white/80 hover:border-blue-200 hover:bg-white"
+                      ? "border-primary bg-primary/10 shadow-sm"
+                      : "border-border bg-card/80 hover:border-primary/30 hover:bg-card"
                   }`}
                 >
                   <button
@@ -332,9 +332,9 @@ export function BankHubPage() {
                   >
                     <PeFundLogo fundId={fund.id} fundName={fund.name} size="sm" expandable />
                     <div className="min-w-0 flex-1">
-                      <span className="font-serif text-blue-950 text-base">{fund.name}</span>
-                      <div className="text-blue-500 text-xs mt-0.5">{fund.aum}</div>
-                      <p className="text-blue-600 text-xs font-light mt-1 line-clamp-2">
+                      <span className="font-serif text-foreground text-base">{fund.name}</span>
+                      <div className="text-primary text-xs mt-0.5">{fund.aum}</div>
+                      <p className="text-muted-foreground text-xs font-light mt-1 line-clamp-2">
                         {fund.ticketTypique}
                       </p>
                     </div>
@@ -350,7 +350,7 @@ export function BankHubPage() {
           </div>
         )
       ) : sections.length === 0 ? (
-        <p className="text-blue-400 text-sm font-light italic text-center py-8">
+        <p className="text-muted-foreground text-sm font-light italic text-center py-8">
           Aucune banque ne correspond à votre recherche.
         </p>
       ) : (
@@ -358,13 +358,13 @@ export function BankHubPage() {
           {sections.map(({ categoryId, banks }) => (
             <section key={categoryId}>
               <div className="mb-4">
-                <h3 className="text-lg font-serif text-blue-950">
+                <h3 className="text-lg font-serif text-foreground">
                   {BANK_CATEGORY_META[categoryId].label}
-                  <span className="text-blue-400 font-sans text-sm font-light ml-2">
+                  <span className="text-muted-foreground font-sans text-sm font-light ml-2">
                     ({banks.length})
                   </span>
                 </h3>
-                <p className="text-blue-600 text-sm font-light mt-1">
+                <p className="text-muted-foreground text-sm font-light mt-1">
                   {BANK_CATEGORY_META[categoryId].description}
                 </p>
               </div>
@@ -377,21 +377,19 @@ export function BankHubPage() {
                       <div
                         className={`relative rounded-xl border transition-all ${
                           selectedBankId === bank.id
-                            ? "border-blue-400 bg-blue-50 shadow-sm"
-                            : "border-blue-100 bg-white/80 hover:border-blue-200 hover:bg-white"
+                            ? "border-primary bg-primary/10 shadow-sm"
+                            : "border-border bg-card/80 hover:border-primary/30 hover:bg-card"
                         }`}
                       >
                         <button
                           type="button"
                           onClick={(e) => handleToggleTarget(bank.id, e)}
-                          className="absolute top-1 right-1 z-10 touch-target rounded-full text-blue-300 hover:text-amber-500 hover:bg-amber-50 transition-colors"
+                          className="absolute top-1 right-1 z-10 touch-target rounded-full text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
                           aria-label={
                             isFav ? "Retirer des banques cibles" : "Ajouter aux banques cibles"
                           }
                         >
-                          <Star
-                            className={`w-4 h-4 ${isFav ? "fill-amber-400 text-amber-500" : ""}`}
-                          />
+                          <Star className={`w-4 h-4 ${isFav ? "fill-primary text-primary" : ""}`} />
                         </button>
                         <button
                           type="button"
@@ -407,7 +405,7 @@ export function BankHubPage() {
                           />
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className="font-serif text-blue-950 text-base">
+                              <span className="font-serif text-foreground text-base">
                                 {bank.name}
                               </span>
                               {dealCount > 0 && (
@@ -415,14 +413,14 @@ export function BankHubPage() {
                                   to="/actualite"
                                   search={{ bank: bank.id }}
                                   onClick={(e) => e.stopPropagation()}
-                                  className="text-[10px] font-medium uppercase tracking-wide text-blue-600 bg-blue-100 hover:bg-blue-200 px-1.5 py-0.5 rounded transition-colors"
+                                  className="text-[10px] font-medium uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 px-1.5 py-0.5 rounded transition-colors"
                                 >
                                   {dealCount} deal{dealCount > 1 ? "s" : ""}
                                 </Link>
                               )}
                             </div>
-                            <div className="text-blue-500 text-xs mt-0.5">{bank.category}</div>
-                            <p className="text-blue-600 text-xs font-light mt-1 line-clamp-2">
+                            <div className="text-primary text-xs mt-0.5">{bank.category}</div>
+                            <p className="text-muted-foreground text-xs font-light mt-1 line-clamp-2">
                               {bank.tagline}
                             </p>
                           </div>

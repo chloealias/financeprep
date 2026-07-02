@@ -134,31 +134,33 @@ export function ProgressPage({
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
       <div className="mb-8 sm:mb-10">
-        <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
           Progression
         </h2>
-        <p className="mt-2 text-sm text-blue-600 font-light">
+        <p className="mt-2 text-sm text-muted-foreground font-light">
           Vos étoiles, filtres et liste à réviser sont enregistrés sur cet appareil (navigateur).
           Elles ne se synchronisent pas entre téléphone et ordinateur.
         </p>
         {!storageOk && (
-          <p className="mt-2 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          <p className="mt-2 text-sm text-foreground bg-muted border border-border rounded-lg px-3 py-2">
             Le stockage local est bloqué (navigation privée ou réglages du navigateur). Vos notes ne
             pourront pas être conservées après fermeture de l’onglet.
           </p>
         )}
 
-        <div className="mt-6 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card">
+        <div className="mt-6 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
           <div className="flex items-baseline justify-between gap-3 mb-3">
-            <span className="text-blue-700 text-sm font-light">Questions maîtrisées (≥ 4★)</span>
-            <span className="text-blue-950 font-serif text-lg">
+            <span className="text-muted-foreground text-sm font-light">
+              Questions maîtrisées (≥ 4★)
+            </span>
+            <span className="text-foreground font-serif text-lg">
               <span className="text-2xl">{masteredCount}</span>
-              <span className="text-blue-400">/{totalQuestions}</span>
-              <span className="ml-2 text-blue-700 text-sm">· {masteredPct}%</span>
+              <span className="text-muted-foreground">/{totalQuestions}</span>
+              <span className="ml-2 text-muted-foreground text-sm">· {masteredPct}%</span>
             </span>
           </div>
           <div
-            className="h-2.5 bg-blue-50 rounded-full overflow-hidden"
+            className="h-2.5 bg-muted rounded-full overflow-hidden"
             role="progressbar"
             aria-valuenow={masteredPct}
             aria-valuemin={0}
@@ -166,7 +168,7 @@ export function ProgressPage({
             aria-label={`${masteredPct} pour cent maîtrisé`}
           >
             <div
-              className="h-full bg-blue-800 transition-all"
+              className="h-full bg-primary transition-all"
               style={{ width: `${masteredPct}%` }}
             />
           </div>
@@ -175,29 +177,31 @@ export function ProgressPage({
 
       {/* Bloc Reprendre */}
       <section aria-label="Reprendre votre travail" className="mb-10">
-        <h3 className="text-blue-950 font-serif text-xl mb-4">Reprendre où vous en êtes</h3>
+        <h3 className="text-foreground font-serif text-xl mb-4">Reprendre où vous en êtes</h3>
         <div className="grid sm:grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => goToFilter("weak")}
             disabled={weakCount === 0}
             aria-label={`Reprendre les ${weakCount} questions à retravailler`}
-            className="group text-left bg-blue-900 hover:bg-blue-950 disabled:bg-blue-200 disabled:cursor-not-allowed text-white rounded-2xl p-5 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+            className="group text-left bg-primary hover:bg-primary/90 disabled:bg-muted disabled:cursor-not-allowed text-primary-foreground rounded-2xl p-5 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div className="text-xs uppercase tracking-[0.2em] text-blue-200 font-light mb-2">
+            <div className="text-xs uppercase tracking-[0.2em] text-primary-foreground/80 font-light mb-2">
               À retravailler
             </div>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <div className="font-serif text-2xl">
                   {weakCount}{" "}
-                  <span className="text-base font-light text-blue-200">
+                  <span className="text-base font-light text-primary-foreground/80">
                     question{weakCount > 1 ? "s" : ""}
                   </span>
                 </div>
-                <div className="text-sm text-blue-100 font-light mt-1">Notées 1 ou 2 étoiles</div>
+                <div className="text-sm text-primary-foreground/85 font-light mt-1">
+                  Notées 1 ou 2 étoiles
+                </div>
               </div>
-              <ChevronRight className="w-6 h-6 text-blue-200 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+              <ChevronRight className="w-6 h-6 text-primary-foreground/80 group-hover:translate-x-1 transition-transform flex-shrink-0" />
             </div>
           </button>
 
@@ -206,22 +210,24 @@ export function ProgressPage({
             onClick={() => goToFilter("unrated")}
             disabled={unratedCount === 0}
             aria-label={`Découvrir les ${unratedCount} questions non notées`}
-            className="group text-left bg-white hover:bg-blue-50 disabled:opacity-60 disabled:cursor-not-allowed text-blue-950 rounded-2xl p-5 border border-blue-200 transition-colors shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+            className="group text-left bg-card hover:bg-muted disabled:opacity-60 disabled:cursor-not-allowed text-foreground rounded-2xl p-5 border border-border transition-colors shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div className="text-xs uppercase tracking-[0.2em] text-blue-600 font-light mb-2">
+            <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-light mb-2">
               À découvrir
             </div>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <div className="font-serif text-2xl">
                   {unratedCount}{" "}
-                  <span className="text-base font-light text-blue-500">
+                  <span className="text-base font-light text-muted-foreground">
                     question{unratedCount > 1 ? "s" : ""}
                   </span>
                 </div>
-                <div className="text-sm text-blue-600 font-light mt-1">Pas encore notées</div>
+                <div className="text-sm text-muted-foreground font-light mt-1">
+                  Pas encore notées
+                </div>
               </div>
-              <ChevronRight className="w-6 h-6 text-blue-400 group-hover:translate-x-1 transition-transform flex-shrink-0" />
+              <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0" />
             </div>
           </button>
         </div>
@@ -229,31 +235,31 @@ export function ProgressPage({
 
       <section
         aria-label="Entraînement actif"
-        className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card"
+        className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card"
       >
-        <h3 className="text-blue-950 font-serif text-xl mb-4">Entraînement actif</h3>
+        <h3 className="text-foreground font-serif text-xl mb-4">Entraînement actif</h3>
         <div className="grid sm:grid-cols-3 gap-4 mb-4">
-          <div className="rounded-xl bg-indigo-50 border border-indigo-100 p-4">
-            <div className="text-2xl font-serif text-indigo-950 tabular-nums">{srsBuckets.due}</div>
-            <div className="text-xs uppercase tracking-wider text-indigo-700 mt-1">
+          <div className="rounded-xl bg-muted border border-border p-4">
+            <div className="text-2xl font-serif text-foreground tabular-nums">{srsBuckets.due}</div>
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">
               Cartes SRS dues
             </div>
           </div>
-          <div className="rounded-xl bg-violet-50 border border-violet-100 p-4">
-            <div className="text-2xl font-serif text-violet-950 tabular-nums">
+          <div className="rounded-xl bg-primary/10 border border-primary/20 p-4">
+            <div className="text-2xl font-serif text-foreground tabular-nums">
               {recentAvg !== null ? recentAvg.toFixed(1) : "—"}
             </div>
-            <div className="text-xs uppercase tracking-wider text-violet-700 mt-1">
+            <div className="text-xs uppercase tracking-wider text-primary mt-1">
               Moy. 5 dernières simulations
             </div>
           </div>
-          <div className="rounded-xl bg-blue-50 border border-blue-100 p-4">
-            <div className="text-sm font-medium text-blue-950 truncate">
+          <div className="rounded-xl bg-muted border border-border p-4">
+            <div className="text-sm font-medium text-foreground truncate">
               {lastSession
                 ? new Date(lastSession.startedAt).toLocaleDateString("fr-FR")
                 : "Aucune session"}
             </div>
-            <div className="text-xs uppercase tracking-wider text-blue-700 mt-1">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">
               Dernière simulation
             </div>
           </div>
@@ -261,34 +267,34 @@ export function ProgressPage({
         <div className="flex flex-wrap gap-3">
           <Link
             to="/flashcards"
-            className="touch-target-bar gap-2 px-4 rounded-xl bg-blue-900 text-white text-sm font-medium hover:bg-blue-950"
+            className="touch-target-bar gap-2 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
           >
             <Clock className="w-4 h-4" />
             Mini-entretien
           </Link>
           <Link
             to="/interview"
-            className="touch-target-bar gap-2 px-4 rounded-xl bg-violet-800 text-white text-sm font-medium hover:bg-violet-900"
+            className="touch-target-bar gap-2 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
           >
             <Mic className="w-4 h-4" />
             Simulation 30 min
           </Link>
           <Link
             to="/flashcards"
-            className="touch-target-bar gap-2 px-4 rounded-xl border border-blue-200 text-blue-900 text-sm font-medium hover:bg-blue-50"
+            className="touch-target-bar gap-2 px-4 rounded-xl border border-border text-foreground text-sm font-medium hover:bg-muted"
           >
             <Sparkles className="w-4 h-4" />
             Flashcards SRS
           </Link>
         </div>
         {sessions.length > 0 && (
-          <ul className="mt-5 space-y-2 border-t border-blue-100 pt-4">
+          <ul className="mt-5 space-y-2 border-t border-border pt-4">
             {sessions.slice(0, 3).map((s) => (
-              <li key={s.id} className="text-sm text-blue-800 flex justify-between gap-2">
+              <li key={s.id} className="text-sm text-foreground flex justify-between gap-2">
                 <span>
                   {s.mode === "full" ? "Simulation" : "Mini-entretien"} · {s.packSize} questions
                 </span>
-                <span className="tabular-nums text-blue-600">{s.avgStars.toFixed(1)}★</span>
+                <span className="tabular-nums text-muted-foreground">{s.avgStars.toFixed(1)}★</span>
               </li>
             ))}
           </ul>
@@ -298,59 +304,59 @@ export function ProgressPage({
       {/* Vue d'ensemble compacte */}
       <section
         aria-label="Vue d'ensemble"
-        className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card"
+        className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card"
       >
-        <h3 className="text-blue-950 font-serif text-xl mb-5">Vue d'ensemble</h3>
+        <h3 className="text-foreground font-serif text-xl mb-5">Vue d'ensemble</h3>
         <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-6">
           <div>
-            <div className="text-2xl sm:text-3xl font-serif text-blue-950">{ratedCount}</div>
-            <div className="text-xs uppercase tracking-wider text-blue-600 font-light mt-1">
+            <div className="text-2xl sm:text-3xl font-serif text-foreground">{ratedCount}</div>
+            <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mt-1">
               Notées
             </div>
           </div>
-          <div className="border-l border-blue-100 pl-4 sm:pl-6">
-            <div className="text-2xl sm:text-3xl font-serif text-blue-950">{masteredCount}</div>
-            <div className="text-xs uppercase tracking-wider text-blue-600 font-light mt-1">
+          <div className="border-l border-border pl-4 sm:pl-6">
+            <div className="text-2xl sm:text-3xl font-serif text-foreground">{masteredCount}</div>
+            <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mt-1">
               Maîtrisées
             </div>
           </div>
-          <div className="border-l border-blue-100 pl-4 sm:pl-6">
-            <div className="text-2xl sm:text-3xl font-serif text-blue-950 flex items-baseline gap-1">
+          <div className="border-l border-border pl-4 sm:pl-6">
+            <div className="text-2xl sm:text-3xl font-serif text-foreground flex items-baseline gap-1">
               {avgRating}
-              {avgRating !== "—" && <Star className="w-4 h-4 fill-amber-400 text-amber-400" />}
+              {avgRating !== "—" && <Star className="w-4 h-4 fill-primary text-primary" />}
             </div>
-            <div className="text-xs uppercase tracking-wider text-blue-600 font-light mt-1">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mt-1">
               Moyenne
             </div>
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <div className="text-xs uppercase tracking-wider text-blue-600 font-light mb-2">
+          <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mb-2">
             Répartition des notes
           </div>
           {[5, 4, 3, 2, 1].map((r) => {
             const d = ratingDist.find((x) => x.rating === r);
             const pct = ((d?.count ?? 0) / distMax) * 100;
-            const intensity = r >= 4 ? "bg-blue-800" : r === 3 ? "bg-blue-500" : "bg-blue-300";
+            const intensity = r >= 4 ? "bg-primary" : r === 3 ? "bg-primary/70" : "bg-primary/40";
             return (
               <div key={r} className="flex items-center gap-3">
                 <div className="flex items-center gap-0.5 w-20 flex-shrink-0">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star
                       key={s}
-                      className={`w-3 h-3 ${s <= r ? "fill-amber-400 text-amber-400" : "text-blue-100"}`}
+                      className={`w-3 h-3 ${s <= r ? "fill-primary text-primary" : "text-muted"}`}
                       strokeWidth={1.5}
                     />
                   ))}
                 </div>
-                <div className="flex-1 h-2 bg-blue-50 rounded-full overflow-hidden">
+                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                   <div
                     className={`h-full ${intensity} transition-all`}
                     style={{ width: `${pct}%` }}
                   />
                 </div>
-                <div className="w-8 text-right text-blue-700 font-medium text-xs tabular-nums">
+                <div className="w-8 text-right text-muted-foreground font-medium text-xs tabular-nums">
                   {d?.count ?? 0}
                 </div>
               </div>
@@ -362,12 +368,12 @@ export function ProgressPage({
       {/* Par catégorie */}
       <section
         aria-label="Progression par catégorie"
-        className="mb-10 bg-white rounded-2xl border border-blue-100 shadow-card overflow-hidden"
+        className="mb-10 bg-card rounded-2xl border border-border shadow-card overflow-hidden"
       >
-        <h3 className="text-blue-950 font-serif text-xl px-5 sm:px-6 pt-5 sm:pt-6 mb-3">
+        <h3 className="text-foreground font-serif text-xl px-5 sm:px-6 pt-5 sm:pt-6 mb-3">
           Par catégorie
         </h3>
-        <ul className="divide-y divide-blue-100">
+        <ul className="divide-y divide-border">
           {byCategory.map((c) => {
             const Icon = c.icon;
             const pct = c.total > 0 ? (c.mastered / c.total) * 100 : 0;
@@ -379,33 +385,33 @@ export function ProgressPage({
                     applyQuestionFilters({ activeCategory: c.id, ratingFilter: "all" })
                   }
                   aria-label={`Voir les questions de ${c.label}, ${c.mastered} sur ${c.total} maîtrisées`}
-                  className="w-full text-left px-5 sm:px-6 py-4 hover:bg-blue-50/60 transition-colors flex items-center gap-4 focus:outline-none focus-visible:bg-blue-50"
+                  className="w-full text-left px-5 sm:px-6 py-4 hover:bg-muted transition-colors flex items-center gap-4 focus:outline-none focus-visible:bg-muted"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-4.5 h-4.5 text-blue-800" />
+                  <div className="w-9 h-9 rounded-lg bg-muted border border-border flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-4.5 h-4.5 text-primary" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-baseline justify-between gap-3 mb-1.5">
-                      <span className="font-medium text-blue-950 truncate">{c.label}</span>
-                      <span className="text-sm text-blue-700 font-light tabular-nums flex-shrink-0">
-                        <span className="text-blue-950 font-medium">{c.mastered}</span>
-                        <span className="text-blue-400">/{c.total}</span>
+                      <span className="font-medium text-foreground truncate">{c.label}</span>
+                      <span className="text-sm text-muted-foreground font-light tabular-nums flex-shrink-0">
+                        <span className="text-foreground font-medium">{c.mastered}</span>
+                        <span className="text-muted-foreground">/{c.total}</span>
                       </span>
                     </div>
                     <div
-                      className="h-1.5 bg-blue-50 rounded-full overflow-hidden"
+                      className="h-1.5 bg-muted rounded-full overflow-hidden"
                       role="progressbar"
                       aria-valuenow={Math.round(pct)}
                       aria-valuemin={0}
                       aria-valuemax={100}
                     >
                       <div
-                        className="h-full bg-blue-700 transition-all"
+                        className="h-full bg-primary transition-all"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                  <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0" />
                 </button>
               </li>
             );
@@ -417,7 +423,7 @@ export function ProgressPage({
       <div className="text-center">
         <button
           onClick={onReset}
-          className="touch-target-bar gap-2 text-blue-600 hover:text-blue-900 text-sm font-light underline underline-offset-4"
+          className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-light underline underline-offset-4"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           Réinitialiser toutes mes notes

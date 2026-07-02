@@ -35,10 +35,10 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
   const [dangerOpen, setDangerOpen] = useState(false);
 
   return (
-    <section className="mb-10 rounded-2xl border border-blue-100 bg-white overflow-hidden shadow-card">
-      <div className="px-5 py-4 border-b border-blue-50">
-        <h2 className="text-blue-950 font-serif text-lg">Données</h2>
-        <p className="text-xs text-blue-500 mt-0.5">
+    <section className="mb-10 rounded-2xl border border-border bg-card overflow-hidden shadow-card">
+      <div className="px-5 py-4 border-b border-border">
+        <h2 className="text-foreground font-serif text-lg">Données</h2>
+        <p className="text-xs text-muted-foreground mt-0.5">
           Stockage local · export pour changer d&apos;appareil
         </p>
       </div>
@@ -47,7 +47,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
         <button
           type="button"
           onClick={downloadBackup}
-          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-900 text-white text-sm font-medium hover:bg-blue-950"
+          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
         >
           <Download className="w-4 h-4" />
           Exporter
@@ -55,7 +55,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-blue-200 text-blue-900 text-sm font-medium hover:bg-blue-50"
+          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-border text-foreground text-sm font-medium hover:bg-muted"
         >
           <Upload className="w-4 h-4" />
           Importer
@@ -87,22 +87,22 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
       </div>
 
       {importMsg && (
-        <p className="mx-5 mb-4 text-sm text-blue-800 bg-blue-50 px-3 py-2 rounded-lg">
+        <p className="mx-5 mb-4 text-sm text-foreground bg-muted px-3 py-2 rounded-lg">
           {importMsg}
         </p>
       )}
 
       {pendingImport && (
-        <div className="mx-5 mb-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm">
-          <p className="font-medium text-amber-950 mb-2">Confirmer l&apos;import ?</p>
-          <p className="text-amber-900 text-xs mb-3">
+        <div className="mx-5 mb-4 rounded-xl border border-border bg-muted p-4 text-sm">
+          <p className="font-medium text-foreground mb-2">Confirmer l&apos;import ?</p>
+          <p className="text-muted-foreground text-xs mb-3">
             {pendingImport.preview.ratingsCount} notes · {pendingImport.preview.sessionsCount}{" "}
             sessions · {pendingImport.preview.targetBanksCount} banques
           </p>
           <div className="flex gap-2">
             <button
               type="button"
-              className="touch-target-bar px-3 rounded-lg bg-blue-900 text-white text-xs font-medium"
+              className="touch-target-bar px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
               onClick={() => {
                 const result = importBackup(pendingImport.json);
                 if (result.ok) {
@@ -116,7 +116,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
             </button>
             <button
               type="button"
-              className="touch-target-bar px-3 rounded-lg border border-amber-300 text-xs"
+              className="touch-target-bar px-3 rounded-lg border border-border text-xs"
               onClick={() => setPendingImport(null)}
             >
               Annuler
@@ -128,7 +128,7 @@ export function ProfileDataSection({ onImportDone, onResetAll }: ProfileDataSect
       <button
         type="button"
         onClick={() => setDangerOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-5 py-3 text-sm text-red-800 bg-red-50/50 hover:bg-red-50 border-t border-red-100"
+        className="w-full flex items-center justify-between px-5 py-3 text-sm text-destructive bg-destructive/10 hover:bg-destructive/15 border-t border-destructive/20"
       >
         <span className="font-medium">Zone de réinitialisation</span>
         <ChevronDown className={`w-4 h-4 transition-transform ${dangerOpen ? "rotate-180" : ""}`} />
@@ -209,8 +209,8 @@ function ResetRow({
           type="button"
           className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg border text-left text-sm ${
             destructive
-              ? "border-red-200 bg-red-50 text-red-900 hover:bg-red-100"
-              : "border-blue-100 bg-slate-50 text-blue-950 hover:bg-white"
+              ? "border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/15"
+              : "border-border bg-muted text-foreground hover:bg-card"
           }`}
         >
           <span className="flex items-center gap-2">
@@ -228,7 +228,7 @@ function ResetRow({
         <AlertDialogFooter>
           <AlertDialogCancel>Annuler</AlertDialogCancel>
           <AlertDialogAction
-            className={destructive ? "bg-red-700 hover:bg-red-800" : undefined}
+            className={destructive ? "bg-destructive hover:bg-destructive/90" : undefined}
             onClick={() => {
               if (scope) resetData(scope);
               onDone();

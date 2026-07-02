@@ -82,10 +82,10 @@ export function ConceptsTab() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
       <div className="mb-6 sm:mb-10">
-        <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
           Concepts essentiels
         </h2>
-        <p className="text-blue-700 mt-2 font-light text-sm sm:text-base hidden sm:block">
+        <p className="text-muted-foreground mt-2 font-light text-sm sm:text-base hidden sm:block">
           {concepts.length} fiches pédagogiques.
         </p>
       </div>
@@ -93,10 +93,10 @@ export function ConceptsTab() {
       {/* Filtres + mini-nav : un seul bloc sticky top-0 (fond blanc opaque) */}
       <div
         id="concepts-sticky-bar"
-        className="sticky top-0 z-40 -mx-4 sm:-mx-6 lg:-mx-8 mb-6 sm:mb-8 bg-white border-b border-blue-200 shadow-[0_4px_12px_-2px_rgba(30,58,138,0.12)] isolate"
+        className="sticky top-0 z-40 -mx-4 sm:-mx-6 lg:-mx-8 mb-6 sm:mb-8 bg-card border-b border-border shadow-[0_4px_12px_-2px_rgba(30,58,138,0.12)] isolate"
       >
         <div className="px-4 sm:px-6 lg:px-8 pt-3 pb-3 sm:pt-4 sm:pb-4">
-          <div className="hidden sm:block text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">
+          <div className="hidden sm:block text-xs uppercase tracking-wider text-primary font-medium mb-3">
             Filtrer par thématique
           </div>
           <div
@@ -121,12 +121,12 @@ export function ConceptsTab() {
                     role="tab"
                     aria-selected={isActive}
                     onClick={() => persistCategory(cat.id)}
-                    className={`flex-shrink-0 snap-start touch-target-bar gap-1.5 px-3 rounded-full text-sm font-medium transition-colors border focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${isActive ? "bg-blue-900 text-white border-blue-900" : "bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50"}`}
+                    className={`flex-shrink-0 snap-start touch-target-bar gap-1.5 px-3 rounded-full text-sm font-medium transition-colors border focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${isActive ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"}`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     <span className="whitespace-nowrap">{cat.label}</span>
                     <span
-                      className={`text-[11px] px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/20" : "bg-blue-50"}`}
+                      className={`text-[11px] px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/20" : "bg-muted"}`}
                     >
                       {count}
                     </span>

@@ -12,16 +12,16 @@ export function GuideSectionTitle({
 }) {
   return (
     <div
-      className={`text-sm font-semibold text-blue-900 uppercase tracking-wider flex items-center gap-2 flex-wrap ${className || "mb-4"}`}
+      className={`text-sm font-semibold text-foreground uppercase tracking-wider flex items-center gap-2 flex-wrap ${className || "mb-4"}`}
     >
-      <span className="h-px w-6 bg-blue-700 shrink-0" aria-hidden="true" />
+      <span className="h-px w-6 bg-primary shrink-0" aria-hidden="true" />
       {children}
     </div>
   );
 }
 
 export function GuideIntro({ children }: { children: ReactNode }) {
-  return <p className="text-blue-700 font-light leading-relaxed mb-8">{children}</p>;
+  return <p className="text-muted-foreground font-light leading-relaxed mb-8">{children}</p>;
 }
 
 export function GuideSelect({
@@ -42,7 +42,7 @@ export function GuideSelect({
     <div>
       <label
         htmlFor={selectId}
-        className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-2 block"
+        className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium mb-2 block"
       >
         {label}
       </label>
@@ -51,7 +51,7 @@ export function GuideSelect({
           id={selectId}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full appearance-none rounded-lg border border-blue-200 bg-white px-3 py-2.5 pr-10 text-sm text-blue-900 font-medium shadow-sm transition-colors hover:border-blue-300 focus:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+          className="w-full appearance-none rounded-lg border border-border bg-card px-3 py-2.5 pr-10 text-sm text-foreground font-medium shadow-sm transition-colors hover:border-primary/40 focus:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -60,7 +60,7 @@ export function GuideSelect({
           ))}
         </select>
         <ChevronDown
-          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-blue-400"
+          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
           aria-hidden
         />
       </div>
@@ -87,10 +87,10 @@ export function GuideChipButton({
       type="button"
       onClick={onClick}
       aria-pressed={ariaPressed ?? active}
-      className={`${sizeClass} rounded-lg font-medium border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+      className={`${sizeClass} rounded-lg font-medium border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
         active
-          ? "bg-blue-900 text-white border-blue-900"
-          : "bg-white text-blue-700 border-blue-200 hover:bg-blue-50"
+          ? "bg-primary text-primary-foreground border-primary"
+          : "bg-card text-foreground border-border hover:bg-muted"
       }`}
     >
       {children}
@@ -123,23 +123,23 @@ export function GuideModuleLink({ to, tag, title, icon: Icon, ...rest }: GuideMo
     <Link
       to={to}
       search={search}
-      className="block group rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+      className="block group rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
     >
-      <article className="bg-white rounded-2xl border-2 border-blue-100 shadow-card transition-all group-hover:border-blue-200 group-hover:shadow-card-hover">
+      <article className="bg-card rounded-2xl border-2 border-border shadow-card transition-all group-hover:border-primary/30 group-hover:shadow-card-hover">
         <div className="px-6 sm:px-8 py-6 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 min-w-0">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center shrink-0">
-              <Icon className="w-6 h-6 text-white" aria-hidden="true" />
+            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shrink-0">
+              <Icon className="w-6 h-6 text-primary-foreground" aria-hidden="true" />
             </div>
             <div className="min-w-0">
-              <div className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-0.5">
+              <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium mb-0.5">
                 {tag}
               </div>
-              <h3 className="text-xl font-serif text-blue-950">{title}</h3>
+              <h3 className="text-xl font-serif text-foreground">{title}</h3>
             </div>
           </div>
           <ChevronRight
-            className="w-5 h-5 text-blue-400 shrink-0 transition-transform group-hover:translate-x-0.5"
+            className="w-5 h-5 text-muted-foreground shrink-0 transition-transform group-hover:translate-x-0.5"
             aria-hidden="true"
           />
         </div>
@@ -149,15 +149,15 @@ export function GuideModuleLink({ to, tag, title, icon: Icon, ...rest }: GuideMo
 }
 
 /** Carte interne standard des blocs guide */
-export const guideCardClass = "bg-white border-2 border-blue-100 rounded-xl shadow-card";
+export const guideCardClass = "bg-card border-2 border-border rounded-xl shadow-card";
 
 /** Groupe de badges/chips (gap 8px) */
 export const hubBadgeGroupClass = "flex flex-wrap items-center gap-2";
 
 /** Badge hub — padding 4px 10px */
 export const hubBadgeClass =
-  "inline-flex items-center gap-1.5 text-xs font-medium py-1 px-2.5 rounded border bg-blue-50 text-blue-800 border-blue-100";
+  "inline-flex items-center gap-1.5 text-xs font-medium py-1 px-2.5 rounded border bg-muted text-foreground border-border";
 
 /** Encadré d'avertissement (actualité, tips) */
 export const guideAlertClass =
-  "bg-amber-50 border border-amber-200 rounded-xl p-4 text-amber-800 text-sm";
+  "bg-muted border border-border rounded-xl p-4 text-foreground text-sm";

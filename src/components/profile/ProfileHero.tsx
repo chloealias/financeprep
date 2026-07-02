@@ -19,7 +19,7 @@ export function ProfileHero({
   onOpenAppearance,
 }: ProfileHeroProps) {
   return (
-    <section className="mb-4 rounded-2xl overflow-hidden border border-blue-100 shadow-card">
+    <section className="mb-4 rounded-2xl overflow-hidden border border-border shadow-card">
       <ProfileBanner bannerId={profile.bannerId} className="relative">
         <div
           className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/30 pointer-events-none"
@@ -30,7 +30,7 @@ export function ProfileHero({
           type="button"
           onClick={onOpenAppearance}
           aria-label="Personnaliser l'apparence"
-          className="absolute top-3 left-3 z-10 bg-black/25 backdrop-blur rounded-full p-2 text-white hover:bg-black/40 transition-colors"
+          className="absolute top-3 left-3 z-20 bg-black/25 backdrop-blur rounded-full p-2 text-white hover:bg-black/40 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
         >
           <Palette className="w-4 h-4" />
         </button>
@@ -68,7 +68,7 @@ export function ProfileHero({
           </div>
 
           {interviewPlan && (
-            <p className="mt-4 text-xs text-blue-950 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 leading-relaxed border border-white/30">
+            <p className="mt-4 text-xs text-foreground bg-card/90 backdrop-blur-sm rounded-lg px-3 py-2 leading-relaxed border border-border/60">
               {interviewPlan}
             </p>
           )}

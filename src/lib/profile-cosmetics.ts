@@ -34,8 +34,10 @@ export type ProfileBannerId =
   | "emerald"
   | "rose"
   | "navy"
-  | "copper"
-  | "graphite";
+  | "copper";
+
+export type ProfileAccentThemeId = "navy" | "violet" | "emerald" | "amber" | "rose" | "cobalt";
+export type ProfileIconColorId = "default" | "primary" | "violet" | "emerald" | "amber" | "rose";
 
 export const PROFILE_ICONS: {
   id: ProfileIconId;
@@ -106,11 +108,71 @@ export const PROFILE_BANNERS: {
     label: "Cuivre",
     className: "bg-gradient-to-br from-orange-800 via-red-900 to-stone-900",
   },
+];
+
+export const PROFILE_ACCENT_THEMES: {
+  id: ProfileAccentThemeId;
+  label: string;
+  primary: string;
+  ring: string;
+  sidebarPrimary: string;
+}[] = [
   {
-    id: "graphite",
-    label: "Graphite",
-    className: "bg-gradient-to-br from-zinc-700 via-zinc-800 to-black",
+    id: "navy",
+    label: "Navy",
+    primary: "oklch(0.24 0.07 258)",
+    ring: "oklch(0.62 0.09 258)",
+    sidebarPrimary: "oklch(0.24 0.07 258)",
   },
+  {
+    id: "violet",
+    label: "Violet",
+    primary: "oklch(0.34 0.15 305)",
+    ring: "oklch(0.7 0.14 305)",
+    sidebarPrimary: "oklch(0.34 0.15 305)",
+  },
+  {
+    id: "emerald",
+    label: "Emeraude",
+    primary: "oklch(0.42 0.12 165)",
+    ring: "oklch(0.74 0.12 165)",
+    sidebarPrimary: "oklch(0.42 0.12 165)",
+  },
+  {
+    id: "amber",
+    label: "Ambre",
+    primary: "oklch(0.55 0.14 72)",
+    ring: "oklch(0.79 0.11 72)",
+    sidebarPrimary: "oklch(0.55 0.14 72)",
+  },
+  {
+    id: "rose",
+    label: "Rose",
+    primary: "oklch(0.51 0.16 15)",
+    ring: "oklch(0.74 0.12 15)",
+    sidebarPrimary: "oklch(0.51 0.16 15)",
+  },
+  {
+    id: "cobalt",
+    label: "Cobalt",
+    primary: "oklch(0.42 0.14 266)",
+    ring: "oklch(0.72 0.12 266)",
+    sidebarPrimary: "oklch(0.42 0.14 266)",
+  },
+];
+
+export const PROFILE_ICON_COLORS: {
+  id: ProfileIconColorId;
+  label: string;
+  bg: string;
+  fg: string;
+}[] = [
+  { id: "default", label: "Par défaut", bg: "", fg: "" },
+  { id: "primary", label: "Accent", bg: "var(--primary)", fg: "var(--primary-foreground)" },
+  { id: "violet", label: "Violet", bg: "oklch(0.34 0.15 305)", fg: "white" },
+  { id: "emerald", label: "Émeraude", bg: "oklch(0.42 0.12 165)", fg: "white" },
+  { id: "amber", label: "Ambre", bg: "oklch(0.55 0.14 72)", fg: "white" },
+  { id: "rose", label: "Rose", bg: "oklch(0.51 0.16 15)", fg: "white" },
 ];
 
 const ICON_MAP = Object.fromEntries(PROFILE_ICONS.map((i) => [i.id, i])) as Record<
@@ -123,12 +185,28 @@ const BANNER_MAP = Object.fromEntries(PROFILE_BANNERS.map((b) => [b.id, b])) as 
   (typeof PROFILE_BANNERS)[number]
 >;
 
+const ACCENT_THEME_MAP = Object.fromEntries(
+  PROFILE_ACCENT_THEMES.map((theme) => [theme.id, theme]),
+) as Record<ProfileAccentThemeId, (typeof PROFILE_ACCENT_THEMES)[number]>;
+
+const ICON_COLOR_MAP = Object.fromEntries(
+  PROFILE_ICON_COLORS.map((color) => [color.id, color]),
+) as Record<ProfileIconColorId, (typeof PROFILE_ICON_COLORS)[number]>;
+
 export function getProfileIcon(id: string | undefined) {
   return ICON_MAP[id as ProfileIconId] ?? PROFILE_ICONS[0]!;
 }
 
 export function getProfileBanner(id: string | undefined) {
   return BANNER_MAP[id as ProfileBannerId] ?? PROFILE_BANNERS[0]!;
+}
+
+export function getProfileAccentTheme(id: string | undefined) {
+  return ACCENT_THEME_MAP[id as ProfileAccentThemeId] ?? PROFILE_ACCENT_THEMES[0]!;
+}
+
+export function getProfileIconColor(id: string | undefined) {
+  return ICON_COLOR_MAP[id as ProfileIconColorId] ?? PROFILE_ICON_COLORS[0]!;
 }
 
 export function randomPatternSeed(): number {
@@ -159,6 +237,26 @@ export function normalizeAvatarId(raw: unknown): ProfileIconId {
 export function normalizeBannerId(raw: unknown): ProfileBannerId {
   const id = typeof raw === "string" ? raw : "";
   return BANNER_MAP[id as ProfileBannerId] ? (id as ProfileBannerId) : "midnight";
+}
+
+export function normalizeAccentThemeId(raw: unknown): ProfileAccentThemeId {
+  const id = typeof raw === "string" ? raw : "";
+  return ACCENT_THEME_MAP[id as ProfileAccentThemeId] ? (id as ProfileAccentThemeId) : "navy";
+}
+
+export function normalizeIconColorId(raw: unknown): ProfileIconColorId {
+  const id = typeof raw === "string" ? raw : "";
+  return ICON_COLOR_MAP[id as ProfileIconColorId] ? (id as ProfileIconColorId) : "default";
+}
+
+/** Apply the profile accent palette to global CSS variables. */
+export function applyProfileAccentTheme(id: string | undefined): void {
+  if (typeof document === "undefined") return;
+  const theme = getProfileAccentTheme(id);
+  const root = document.documentElement;
+  root.style.setProperty("--primary", theme.primary);
+  root.style.setProperty("--ring", theme.ring);
+  root.style.setProperty("--sidebar-primary", theme.sidebarPrimary);
 }
 
 export function normalizePatternSeed(raw: unknown): number {

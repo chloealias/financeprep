@@ -52,7 +52,7 @@ export function FilterRadioGroup({
     <div className="mb-5">
       <div
         id={labelId}
-        className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3 flex items-center gap-1.5"
+        className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-1.5"
       >
         {LabelIcon && <LabelIcon className="w-3 h-3" aria-hidden="true" />}
         {label}
@@ -73,7 +73,7 @@ export function FilterRadioGroup({
               tabIndex={idx === focusedIndex ? 0 : -1}
               onClick={() => onChange(opt.id)}
               onKeyDown={(e) => handleKeyDown(e, idx)}
-              className={`touch-target-bar gap-2 px-4 rounded-lg text-sm font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-blue-500 ${isActive ? activeClass : inactiveClass}`}
+              className={`touch-target-bar gap-2 px-4 rounded-lg text-sm font-medium transition-all border focus:outline-none focus:ring-2 focus:ring-ring ${isActive ? activeClass : inactiveClass}`}
             >
               {Icon && <Icon className="w-4 h-4" aria-hidden="true" />}
               {opt.label}

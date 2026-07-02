@@ -1,5 +1,3 @@
-import { Link } from "@tanstack/react-router";
-import { ExternalLink } from "lucide-react";
 import { getBankById } from "@/data/bank-profiles";
 import { BankLogo } from "@/components/banks/BankLogo";
 import { POPULAR_TARGET_BANK_IDS } from "@/lib/profile-personalization";
@@ -24,8 +22,8 @@ export function TargetBankQuickPick({ targetIds, onChange, onViewAll }: TargetBa
               key={id}
               className={`inline-flex items-center gap-1 rounded-full border transition-colors ${
                 selected
-                  ? "bg-indigo-50 border-indigo-400 text-indigo-950"
-                  : "bg-white border-blue-200 text-blue-800 hover:border-blue-400"
+                  ? "bg-primary/10 border-primary/50 text-foreground"
+                  : "bg-card border-border text-foreground hover:border-primary/40"
               }`}
             >
               <button
@@ -34,21 +32,12 @@ export function TargetBankQuickPick({ targetIds, onChange, onViewAll }: TargetBa
                   toggleTargetBank(id);
                   onChange();
                 }}
-                className="inline-flex items-center gap-2 pl-1 pr-1 py-1 text-sm"
+                className="inline-flex items-center gap-2 px-2 py-1 text-sm"
                 aria-pressed={selected}
               >
                 <BankLogo bankId={id} bankName={bank.name} size="sm" />
-                <span className="font-medium pr-1">{bank.name}</span>
+                <span className="font-medium">{bank.name}</span>
               </button>
-              <Link
-                to="/"
-                search={{ tab: "banques", bank: id }}
-                className="touch-target mr-0.5 rounded-full text-blue-500 hover:text-blue-900 hover:bg-blue-50"
-                aria-label={`Fiche ${bank.name}`}
-                title="Voir la fiche banque"
-              >
-                <ExternalLink className="w-3.5 h-3.5" />
-              </Link>
             </div>
           );
         })}
@@ -63,18 +52,10 @@ export function TargetBankQuickPick({ targetIds, onChange, onViewAll }: TargetBa
               return (
                 <span
                   key={id}
-                  className="inline-flex items-center gap-2 pl-1 pr-2 py-1 rounded-full bg-blue-50 border border-blue-200 text-sm text-blue-900"
+                  className="inline-flex items-center gap-2 px-2 py-1 rounded-full bg-muted border border-border text-sm text-foreground"
                 >
                   <BankLogo bankId={id} bankName={bank?.name} size="sm" />
                   {bank?.name ?? id}
-                  <Link
-                    to="/"
-                    search={{ tab: "banques", bank: id }}
-                    className="p-0.5 text-blue-500 hover:text-blue-900"
-                    aria-label={`Fiche ${bank?.name ?? id}`}
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                  </Link>
                 </span>
               );
             })}
@@ -84,9 +65,9 @@ export function TargetBankQuickPick({ targetIds, onChange, onViewAll }: TargetBa
       <button
         type="button"
         onClick={onViewAll}
-        className="text-sm text-blue-700 hover:text-blue-900 font-medium"
+        className="text-sm text-primary hover:text-primary/80 font-medium underline-offset-2 hover:underline"
       >
-        Voir toutes les banques →
+        Voir toutes les banques (action distincte) →
       </button>
     </div>
   );

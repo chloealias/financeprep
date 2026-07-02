@@ -3,7 +3,9 @@ import { RefreshCw, Sparkles } from "lucide-react";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { ProfileBanner } from "@/components/profile/ProfileBanner";
 import {
+  PROFILE_ACCENT_THEMES,
   PROFILE_BANNERS,
+  PROFILE_ICON_COLORS,
   PROFILE_ICONS,
   randomPatternSeed,
   type AvatarKind,
@@ -44,16 +46,16 @@ export function ProfileAppearanceEditor({
 
   return (
     <>
-      <p className="text-xs text-blue-500 mb-4">
-        Avatar et bannière du header, appliqués dans toute l&apos;app.
+      <p className="text-xs text-muted-foreground mb-4">
+        Personnalisez l&apos;avatar, la bannière et la couleur d&apos;accent principale.
       </p>
 
       {showAppPreview && (
-        <div className="mb-6 rounded-xl overflow-hidden border border-blue-100">
-          <p className="text-[10px] uppercase tracking-wider text-blue-400 px-3 pt-2">
+        <div className="mb-6">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
             Aperçu header
           </p>
-          <ProfileBanner bannerId={profile.bannerId} className="h-16">
+          <ProfileBanner bannerId={profile.bannerId} className="h-16 rounded-xl overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-end px-4 gap-3">
               <span className="text-white/90 text-sm font-medium hidden sm:inline">
                 Finance Interview
@@ -65,13 +67,13 @@ export function ProfileAppearanceEditor({
       )}
 
       <div className="mb-6">
-        <h3 className="text-sm font-medium text-blue-950 mb-3">Icône de profil</h3>
-        <div className="flex gap-1 p-1 bg-slate-100 rounded-lg mb-3 max-w-xs">
+        <h3 className="text-sm font-medium text-foreground mb-3">Icône de profil</h3>
+        <div className="flex gap-1 p-1 bg-muted rounded-lg mb-3 max-w-xs">
           <button
             type="button"
             onClick={() => setAvatarTab("icon")}
             className={`flex-1 touch-target-bar justify-center text-xs font-medium rounded-md ${
-              avatarTab === "icon" ? "bg-white shadow-sm text-blue-950" : "text-slate-600"
+              avatarTab === "icon" ? "bg-card shadow-sm text-foreground" : "text-muted-foreground"
             }`}
           >
             Icônes finance
@@ -83,7 +85,9 @@ export function ProfileAppearanceEditor({
               if (profile.avatarKind !== "pattern") selectPattern();
             }}
             className={`flex-1 touch-target-bar justify-center text-xs font-medium rounded-md gap-1 ${
-              avatarTab === "pattern" ? "bg-white shadow-sm text-blue-950" : "text-slate-600"
+              avatarTab === "pattern"
+                ? "bg-card shadow-sm text-foreground"
+                : "text-muted-foreground"
             }`}
           >
             <Sparkles className="w-3 h-3" />
@@ -103,18 +107,51 @@ export function ProfileAppearanceEditor({
                   type="button"
                   title={label}
                   onClick={() => selectIcon(id)}
-                  className={`aspect-square min-h-11 min-w-11 rounded-xl flex items-center justify-center transition-all ${
+                  className={`aspect-square min-h-10 min-w-10 rounded-xl flex items-center justify-center transition-all ${
                     selected
-                      ? "ring-2 ring-blue-500 ring-offset-2 scale-105"
+                      ? "ring-2 ring-ring ring-offset-2 scale-105"
                       : "opacity-85 hover:opacity-100 hover:scale-105"
                   }`}
                   style={{ backgroundColor: bg, color: fg }}
                   aria-pressed={selected}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4" />
                 </button>
               );
             })}
+          </div>
+          
+          <div className="mt-4">
+            <h4 className="text-xs font-medium text-foreground mb-2">
+              Couleur de l&apos;icône (optionnel)
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {PROFILE_ICON_COLORS.map((opt) => {
+                const selected = (profile.avatarIconColorId ?? "default") === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => onChange({ avatarIconColorId: opt.id })}
+                    className={`touch-target-bar gap-2 rounded-lg border px-3 text-xs transition-colors ${
+                      selected
+                        ? "border-primary bg-primary/10 text-foreground"
+                        : "border-border bg-card text-foreground hover:border-primary/40"
+                    }`}
+                    aria-pressed={selected}
+                  >
+                    <span
+                      className={`h-3 w-3 rounded-full border ${opt.id === "default" ? "bg-transparent" : ""}`}
+                      style={{
+                        background: opt.id === "default" ? undefined : opt.bg,
+                        borderColor: opt.id === "default" ? "var(--border)" : "transparent",
+                      }}
+                    />
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <div className="flex flex-wrap items-center gap-4">
@@ -122,7 +159,7 @@ export function ProfileAppearanceEditor({
             <button
               type="button"
               onClick={() => selectPattern()}
-              className="touch-target-bar gap-2 px-3 rounded-lg border border-blue-200 text-sm text-blue-900 hover:bg-blue-50"
+              className="touch-target-bar gap-2 px-3 rounded-lg border border-border text-sm text-foreground hover:bg-muted"
             >
               <RefreshCw className="w-4 h-4" />
               Nouveau motif
@@ -131,8 +168,36 @@ export function ProfileAppearanceEditor({
         )}
       </div>
 
+      <div className="mb-6">
+        <h3 className="text-sm font-medium text-foreground mb-3">Couleur d&apos;accent</h3>
+        <div className="flex flex-wrap gap-2">
+          {PROFILE_ACCENT_THEMES.map((theme) => {
+            const selected = (profile.accentThemeId ?? "navy") === theme.id;
+            return (
+              <button
+                key={theme.id}
+                type="button"
+                onClick={() => onChange({ accentThemeId: theme.id })}
+                className={`touch-target-bar gap-2 rounded-lg border px-3 text-sm transition-colors ${
+                  selected
+                    ? "border-primary bg-primary/10 text-foreground"
+                    : "border-border bg-card text-foreground hover:border-primary/40"
+                }`}
+                aria-pressed={selected}
+              >
+                <span
+                  className="h-3.5 w-3.5 rounded-full border border-black/10"
+                  style={{ backgroundColor: theme.primary }}
+                />
+                {theme.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div>
-        <h3 className="text-sm font-medium text-blue-950 mb-3">
+        <h3 className="text-sm font-medium text-foreground mb-3">
           Bannière de l&apos;app ({PROFILE_BANNERS.length} thèmes)
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
@@ -144,9 +209,7 @@ export function ProfileAppearanceEditor({
                 type="button"
                 onClick={() => selectBanner(id)}
                 className={`h-12 sm:h-14 rounded-xl ${className} relative overflow-hidden transition-transform ${
-                  selected
-                    ? "ring-2 ring-blue-500 ring-offset-2 scale-[1.02]"
-                    : "hover:scale-[1.02]"
+                  selected ? "ring-2 ring-ring ring-offset-2 scale-[1.02]" : "hover:scale-[1.02]"
                 }`}
                 aria-pressed={selected}
               >

@@ -1,10 +1,15 @@
 import { getBankById } from "@/data/bank-profiles";
 import {
+  applyProfileAccentTheme,
+  normalizeAccentThemeId,
   normalizeAvatarId,
   normalizeAvatarKind,
   normalizeBannerId,
+  normalizeIconColorId,
   normalizePatternSeed,
   randomPatternSeed,
+  type ProfileAccentThemeId,
+  type ProfileIconColorId,
 } from "@/lib/profile-cosmetics";
 import { notifyProfileUpdated } from "@/lib/profile-events";
 import { validateTargetBankIds } from "@/lib/profile-personalization";
@@ -52,7 +57,10 @@ export type UserProfile = {
   avatarKind?: "icon" | "pattern";
   avatarId?: string;
   avatarPatternSeed?: number;
+  /** Optionnel: couleur forcée pour l'avatar icône. */
+  avatarIconColorId?: ProfileIconColorId;
   bannerId?: string;
+  accentThemeId?: ProfileAccentThemeId;
 };
 
 export const DEFAULT_PROFILE: UserProfile = {
@@ -66,7 +74,9 @@ export const DEFAULT_PROFILE: UserProfile = {
   avatarKind: "icon",
   avatarId: "landmark",
   avatarPatternSeed: 42,
+  avatarIconColorId: "default",
   bannerId: "midnight",
+  accentThemeId: "navy",
 };
 
 export const CV_CHECKLIST_TOTAL = 6;
@@ -131,7 +141,9 @@ export function normalizeProfile(raw: unknown): UserProfile {
     avatarKind: normalizeAvatarKind(o.avatarKind),
     avatarId: normalizeAvatarId(o.avatarId),
     avatarPatternSeed: normalizePatternSeed(o.avatarPatternSeed ?? randomPatternSeed()),
+    avatarIconColorId: normalizeIconColorId(o.avatarIconColorId),
     bannerId: normalizeBannerId(o.bannerId),
+    accentThemeId: normalizeAccentThemeId(o.accentThemeId),
   };
 }
 
@@ -140,7 +152,9 @@ export function loadProfile(): UserProfile {
 }
 
 export function saveProfile(profile: UserProfile): void {
-  writeJson(PROFILE_KEY, normalizeProfile(profile));
+  const normalized = normalizeProfile(profile);
+  writeJson(PROFILE_KEY, normalized);
+  applyProfileAccentTheme(normalized.accentThemeId);
   notifyProfileUpdated();
 }
 

@@ -17,7 +17,7 @@ export function AppearanceDialog({ open, onOpenChange, profile, onChange }: Appe
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-blue-950">Apparence</DialogTitle>
+          <DialogTitle className="font-serif text-foreground">Apparence</DialogTitle>
         </DialogHeader>
         <ProfileAppearanceEditor profile={profile} onChange={onChange} showAppPreview />
       </DialogContent>

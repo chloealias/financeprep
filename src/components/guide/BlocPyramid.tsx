@@ -148,8 +148,10 @@ export function BlocPyramid() {
             Chiffres, cas concrets, anecdotes
           </text>
         </svg>
-        <div className="bg-blue-900 text-white rounded-xl p-5 mb-6">
-          <div className="text-blue-300 text-xs uppercase tracking-[0.2em] mb-2">Règle d'or</div>
+        <div className="bg-primary text-primary-foreground rounded-xl p-5 mb-6">
+          <div className="text-primary-foreground/80 text-xs uppercase tracking-[0.2em] mb-2">
+            Règle d'or
+          </div>
           <p className="font-light">
             Ne jamais commencer par le contexte. Commencer par la réponse. Le contexte vient ensuite
             pour justifier.
@@ -192,18 +194,18 @@ export function BlocPyramid() {
         <GuideSectionTitle>Framework STAR</GuideSectionTitle>
         <div className="grid md:grid-cols-2 gap-4">
           {starCards.map((card) => (
-            <div key={card.letter} className="bg-white border-2 border-blue-100 rounded-xl p-5">
+            <div key={card.letter} className="bg-card border-2 border-border rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-700 to-indigo-800 text-white font-serif text-xl flex items-center justify-center">
+                <div className="w-10 h-10 rounded-lg bg-primary text-primary-foreground font-serif text-xl flex items-center justify-center">
                   {card.letter}
                 </div>
-                <span className="font-serif text-blue-950 text-lg">{card.label}</span>
+                <span className="font-serif text-foreground text-lg">{card.label}</span>
               </div>
-              <div className="text-blue-900 text-sm mb-2">{card.quoi}</div>
+              <div className="text-foreground text-sm mb-2">{card.quoi}</div>
               <div className="bg-red-50 rounded-lg px-3 py-2 mb-2 text-red-700 text-xs">
                 ⚠ {card.erreur}
               </div>
-              <div className="bg-blue-50 rounded-lg px-3 py-2 text-blue-700 text-xs italic">
+              <div className="bg-muted rounded-lg px-3 py-2 text-muted-foreground text-xs italic">
                 "{card.exemple}"
               </div>
             </div>
@@ -216,7 +218,7 @@ export function BlocPyramid() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-blue-900 text-white">
+              <tr className="bg-primary text-primary-foreground">
                 <th className="text-left px-4 py-3 rounded-tl-lg font-medium">Question</th>
                 <th className="px-4 py-3 font-medium text-center">Pyramid</th>
                 <th className="px-4 py-3 rounded-tr-lg font-medium text-center">STAR</th>
@@ -224,8 +226,8 @@ export function BlocPyramid() {
             </thead>
             <tbody>
               {matrix.map((row, i) => (
-                <tr key={i} className={i % 2 === 0 ? "bg-blue-50" : "bg-white"}>
-                  <td className="px-4 py-3 text-blue-900">{row.q}</td>
+                <tr key={i} className={i % 2 === 0 ? "bg-muted" : "bg-card"}>
+                  <td className="px-4 py-3 text-foreground">{row.q}</td>
                   <td className="px-4 py-3 text-center">
                     {row.pyramid ? (
                       <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">
@@ -257,7 +259,7 @@ export function BlocPyramid() {
 
       <div className="mt-10 mb-8">
         <GuideSectionTitle>Gagner du temps / gérer un blanc</GuideSectionTitle>
-        <p className="text-blue-800 text-sm font-light mb-4">
+        <p className="text-muted-foreground text-sm font-light mb-4">
           Un silence de 3 secondes paraît long en entretien. Ces réflexes achètent du temps sans
           perdre en crédibilité — en combinant avec Pyramid (conclusion d&apos;abord).
         </p>
@@ -266,7 +268,7 @@ export function BlocPyramid() {
             <div className="text-xs uppercase tracking-wider text-emerald-700 font-semibold mb-2">
               Phrases utiles
             </div>
-            <ul className="text-blue-900 text-sm space-y-2 list-disc list-inside">
+            <ul className="text-foreground text-sm space-y-2 list-disc list-inside">
               <li>« Si je reformule bien, vous me demandez… »</li>
               <li>« Je vais structurer ma réponse en trois points. »</li>
               <li>« En synthèse : [conclusion]. Détail : … »</li>
@@ -278,7 +280,7 @@ export function BlocPyramid() {
             <div className="text-xs uppercase tracking-wider text-rose-700 font-semibold mb-2">
               À éviter
             </div>
-            <ul className="text-blue-900 text-sm space-y-2 list-disc list-inside">
+            <ul className="text-foreground text-sm space-y-2 list-disc list-inside">
               <li>Silence total sans annoncer la structure</li>
               <li>Inventer un chiffre pour « remplir »</li>
               <li>« Je ne sais pas » sans proposer une piste</li>
@@ -286,7 +288,7 @@ export function BlocPyramid() {
             </ul>
           </div>
         </div>
-        <p className="text-blue-600 text-xs font-light italic">
+        <p className="text-muted-foreground text-xs font-light italic">
           Règle : même sous pression, donner une conclusion en 10 secondes — puis approfondir ou
           demander une précision.
         </p>

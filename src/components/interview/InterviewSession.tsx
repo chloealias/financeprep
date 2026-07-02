@@ -213,7 +213,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
         <button
           type="button"
           onClick={onBack}
-          className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium"
+          className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           Quitter
@@ -221,32 +221,34 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
         <div className="flex items-center gap-2">
           <div
             className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-mono text-sm font-semibold tabular-nums ${
-              danger ? "bg-red-100 text-red-800 animate-pulse" : "bg-blue-100 text-blue-900"
+              danger
+                ? "bg-destructive/15 text-destructive animate-pulse"
+                : "bg-primary/10 text-primary"
             }`}
           >
             <Clock className="w-4 h-4" />
             {formatTime(remainingQ)}
           </div>
           {globalLimitMs ? (
-            <span className="text-xs text-blue-600 font-medium tabular-nums">
+            <span className="text-xs text-muted-foreground font-medium tabular-nums">
               Global {formatTime(remainingGlobal)}
             </span>
           ) : null}
         </div>
-        <span className="text-blue-700 text-sm font-medium tabular-nums">
+        <span className="text-muted-foreground text-sm font-medium tabular-nums">
           {index + 1} / {total}
         </span>
       </div>
 
-      <div className="h-1.5 bg-blue-100 rounded-full overflow-hidden mb-4">
+      <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-4">
         <div
-          className="h-full bg-gradient-to-r from-blue-600 to-indigo-700 transition-all duration-300"
+          className="h-full bg-primary transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        <span className="text-xs font-medium uppercase tracking-wider text-indigo-800 bg-indigo-50 py-1 px-2.5 rounded border border-indigo-200">
+        <span className="text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 py-1 px-2.5 rounded border border-primary/20">
           {packItemLabel(current)}
         </span>
         {current.kind === "question" && (
@@ -259,31 +261,31 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
         )}
       </div>
 
-      <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-card overflow-hidden">
+      <div className="bg-card rounded-2xl border-2 border-border shadow-card overflow-hidden">
         <div className="px-6 py-8">
-          <h2 className="text-2xl sm:text-3xl font-serif text-blue-950 leading-snug mb-6">
+          <h2 className="text-2xl sm:text-3xl font-serif text-foreground leading-snug mb-6">
             {itemQuestion(current)}
           </h2>
 
           {revealed && (
             <>
-              <div className="border-t border-dashed border-blue-200 my-4" />
-              <div className="text-blue-700 text-xs uppercase tracking-wider font-medium mb-3">
+              <div className="border-t border-dashed border-border my-4" />
+              <div className="text-primary text-xs uppercase tracking-wider font-medium mb-3">
                 Réponse modèle
               </div>
               <ol className="space-y-3">
                 {itemSteps(current).map((step, i) => (
-                  <li key={i} className="flex gap-4 bg-blue-50 rounded-lg p-4">
-                    <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-blue-700 text-white font-serif text-xs flex items-center justify-center">
+                  <li key={i} className="flex gap-4 bg-muted rounded-lg p-4">
+                    <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-primary text-primary-foreground font-serif text-xs flex items-center justify-center">
                       {i + 1}
                     </div>
-                    <p className="text-blue-900 leading-relaxed flex-1 text-sm">{step}</p>
+                    <p className="text-foreground leading-relaxed flex-1 text-sm">{step}</p>
                   </li>
                 ))}
               </ol>
               {itemTip(current) && (
-                <div className="mt-5 rounded-lg bg-gradient-to-r from-indigo-900 to-blue-900 text-white px-4 py-3">
-                  <div className="text-blue-200 text-xs uppercase tracking-[0.2em] font-medium mb-1">
+                <div className="mt-5 rounded-lg bg-primary text-primary-foreground px-4 py-3">
+                  <div className="text-primary-foreground/80 text-xs uppercase tracking-[0.2em] font-medium mb-1">
                     Conseil
                   </div>
                   <p className="text-sm font-light leading-relaxed">{itemTip(current)}</p>
@@ -297,7 +299,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                       to={link.to}
                       search={link.search}
                       params={link.params}
-                      className="text-sm text-blue-700 hover:text-blue-900 font-medium underline"
+                      className="text-sm text-primary hover:text-primary/80 font-medium underline"
                     >
                       {link.label}
                     </Link>
@@ -314,44 +316,44 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
           <button
             type="button"
             onClick={() => setRevealed(true)}
-            className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-blue-900 text-white font-medium hover:bg-blue-800 transition-colors"
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
           >
             <Eye className="w-5 h-5" />
             Voir la réponse modèle
           </button>
         ) : (
           <div className="space-y-5">
-            <div className="bg-white rounded-xl border border-blue-100 p-5">
-              <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">
+            <div className="bg-card rounded-xl border border-border p-5">
+              <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3">
                 Auto-évaluation (1–5)
               </div>
               <StarRating value={stars} onChange={setStars} size="lg" />
             </div>
             <div className="grid sm:grid-cols-2 gap-3">
-              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-blue-100 bg-white cursor-pointer hover:border-blue-300">
+              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-border bg-card cursor-pointer hover:border-primary/40">
                 <input
                   type="checkbox"
                   checked={structureOk}
                   onChange={(e) => setStructureOk(e.target.checked)}
                   className="mt-1"
                 />
-                <span className="text-sm text-blue-950">Structure claire (Pyramid / STAR)</span>
+                <span className="text-sm text-foreground">Structure claire (Pyramid / STAR)</span>
               </label>
-              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-blue-100 bg-white cursor-pointer hover:border-blue-300">
+              <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-border bg-card cursor-pointer hover:border-primary/40">
                 <input
                   type="checkbox"
                   checked={numbersOk}
                   onChange={(e) => setNumbersOk(e.target.checked)}
                   className="mt-1"
                 />
-                <span className="text-sm text-blue-950">Chiffres et précision corrects</span>
+                <span className="text-sm text-foreground">Chiffres et précision corrects</span>
               </label>
             </div>
             <button
               type="button"
               disabled={stars < 1}
               onClick={submitAnswer}
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-800 text-white font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-primary text-primary-foreground font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <CheckCircle2 className="w-5 h-5" />
               {index + 1 >= total ? "Terminer la session" : "Question suivante"}
@@ -418,35 +420,35 @@ function InterviewResults({
 
   const tone = scorePct >= 80 ? "emerald" : scorePct >= 50 ? "amber" : "red";
   const toneClasses = {
-    emerald: "from-emerald-700 to-emerald-900",
-    amber: "from-amber-600 to-amber-800",
-    red: "from-red-700 to-red-900",
+    emerald: "bg-primary",
+    amber: "bg-primary/80",
+    red: "bg-destructive",
   } as const;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       <div className="text-center mb-10">
         <div
-          className={`inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br ${toneClasses[tone]} text-white mb-6 shadow-xl`}
+          className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${toneClasses[tone]} text-primary-foreground mb-6 shadow-xl`}
         >
           <Trophy className="w-10 h-10" />
         </div>
-        <div className="text-7xl font-serif text-blue-950 mb-2 tabular-nums">{scorePct}%</div>
-        <p className="text-blue-700 font-light">
+        <div className="text-7xl font-serif text-foreground mb-2 tabular-nums">{scorePct}%</div>
+        <p className="text-muted-foreground font-light">
           Note moyenne {avg.toFixed(1)} / 5 · {rated.length} réponses notées
         </p>
       </div>
 
       {weakCats.length > 0 && (
-        <div className="mb-8 rounded-xl bg-amber-50 border-2 border-amber-200 p-5">
-          <div className="text-amber-900 text-xs uppercase tracking-[0.2em] font-bold mb-2">
+        <div className="mb-8 rounded-xl bg-primary/10 border-2 border-primary/20 p-5">
+          <div className="text-foreground text-xs uppercase tracking-[0.2em] font-bold mb-2">
             Catégories à retravailler
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {weakCats.map((w) => (
               <span
                 key={w.cat}
-                className="px-3 py-1 rounded-full bg-white border border-amber-300 text-amber-900 text-sm font-medium"
+                className="px-3 py-1 rounded-full bg-card border border-border text-foreground text-sm font-medium"
               >
                 {getCategoryLabel(w.cat)} · {w.avg.toFixed(1)}★
               </span>
@@ -457,14 +459,16 @@ function InterviewResults({
 
       {weak.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-serif text-blue-950 mb-4">À revoir ({weak.length})</h2>
+          <h2 className="text-xl font-serif text-foreground mb-4">À revoir ({weak.length})</h2>
           <ul className="space-y-2 mb-4">
             {weak.map((a, i) => (
               <li
                 key={i}
-                className="p-4 rounded-lg bg-white border border-red-200 text-sm text-blue-950"
+                className="p-4 rounded-lg bg-card border border-destructive/30 text-sm text-foreground"
               >
-                <div className="text-xs text-red-700 uppercase font-semibold mb-1">{a.label}</div>
+                <div className="text-xs text-destructive uppercase font-semibold mb-1">
+                  {a.label}
+                </div>
                 {a.question}
               </li>
             ))}
@@ -473,7 +477,7 @@ function InterviewResults({
             type="button"
             onClick={addWeakToSrs}
             disabled={srsAdded || weak.every((a) => !a.srsId)}
-            className="touch-target-bar gap-2 px-4 rounded-lg bg-indigo-900 text-white text-sm font-medium disabled:opacity-50"
+            className="touch-target-bar gap-2 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
           >
             <Sparkles className="w-4 h-4" />
             {srsAdded ? "Ajouté au SRS" : "Ajouter les ratées au SRS"}
@@ -482,18 +486,18 @@ function InterviewResults({
       )}
 
       <div className="mb-8 flex flex-wrap gap-3">
-        <Link to="/cv" className="text-sm text-blue-700 hover:text-blue-900 font-medium underline">
+        <Link to="/cv" className="text-sm text-primary hover:text-primary/80 font-medium underline">
           Guide CV
         </Link>
         <Link
           to="/pyramid"
-          className="text-sm text-blue-700 hover:text-blue-900 font-medium underline"
+          className="text-sm text-primary hover:text-primary/80 font-medium underline"
         >
           Pyramid + STAR
         </Link>
         <Link
           to="/actualite"
-          className="text-sm text-blue-700 hover:text-blue-900 font-medium underline"
+          className="text-sm text-primary hover:text-primary/80 font-medium underline"
         >
           Actualité &amp; macro →
         </Link>
@@ -503,7 +507,7 @@ function InterviewResults({
         <button
           type="button"
           onClick={copyReport}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-900 text-white font-medium hover:bg-blue-800"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90"
         >
           <Copy className="w-4 h-4" />
           {copied ? "Copié !" : "Copier le rapport"}
@@ -511,7 +515,7 @@ function InterviewResults({
         <button
           type="button"
           onClick={onRestart}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border-2 border-blue-200 text-blue-900 font-medium hover:border-blue-400"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-card border-2 border-border text-foreground font-medium hover:border-primary/50"
         >
           <RotateCcw className="w-4 h-4" />
           Recommencer
@@ -519,7 +523,7 @@ function InterviewResults({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border-2 border-blue-200 text-blue-900 font-medium hover:border-blue-400"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-card border-2 border-border text-foreground font-medium hover:border-primary/50"
         >
           Retour au menu
         </button>
@@ -552,15 +556,15 @@ export function InterviewSessionSetup({
       <button
         type="button"
         onClick={onBack}
-        className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+        className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Retour
       </button>
-      <h1 className="text-4xl font-serif text-blue-950 mb-3">
+      <h1 className="text-4xl font-serif text-foreground mb-3">
         {mode === "full" ? "Simulation d'entretien" : "Mini-entretien"}
       </h1>
-      <p className="text-blue-700 font-light mb-6 max-w-2xl">
+      <p className="text-muted-foreground font-light mb-6 max-w-2xl">
         {packSize} questions type entretien · ~{totalMin} min au total (timer par question). Pack :
         ouverture CV, technique, actualité M&A, sectoriel
         {packSize === 7 ? ", + fit." : "."}
@@ -569,10 +573,10 @@ export function InterviewSessionSetup({
         {pack.map((item, i) => (
           <li
             key={i}
-            className="flex justify-between gap-4 text-sm bg-white rounded-lg border border-blue-100 px-4 py-3"
+            className="flex justify-between gap-4 text-sm bg-card rounded-lg border border-border px-4 py-3"
           >
-            <span className="text-blue-950 font-medium">{packItemLabel(item)}</span>
-            <span className="text-blue-600 tabular-nums">
+            <span className="text-foreground font-medium">{packItemLabel(item)}</span>
+            <span className="text-muted-foreground tabular-nums">
               {Math.round(item.secondsLimit / 60)} min
             </span>
           </li>
@@ -581,7 +585,7 @@ export function InterviewSessionSetup({
       <button
         type="button"
         onClick={onStart}
-        className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-800 text-white font-medium text-lg"
+        className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-medium text-lg"
       >
         <Clock className="w-5 h-5" />
         Démarrer

@@ -183,26 +183,26 @@ export function QuestionsTab({
   );
 
   const getDifficultyColor = (diff: string) => {
-    if (diff === "basique") return "bg-sky-100 text-sky-800 border-sky-300";
-    if (diff === "intermédiaire") return "bg-blue-100 text-blue-800 border-blue-400";
-    return "bg-indigo-100 text-indigo-900 border-indigo-500";
+    if (diff === "basique") return "bg-muted text-foreground border-border";
+    if (diff === "intermédiaire") return "bg-primary/10 text-primary border-primary/40";
+    return "bg-primary/20 text-foreground border-primary/50";
   };
 
   const getCategoryColor = (catId: string) =>
     catId === "brainteaser"
-      ? "bg-amber-50 text-amber-900 border-amber-300"
-      : "bg-blue-50 text-blue-700 border-blue-200";
+      ? "bg-primary/10 text-foreground border-primary/40"
+      : "bg-muted text-foreground border-border";
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <h2 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight mb-6 sm:mb-8">
+      <h2 className="text-2xl sm:text-3xl font-medium text-foreground tracking-tight mb-6 sm:mb-8">
         Questions
       </h2>
       {/* Filtres */}
-      <div className="bg-white rounded-2xl shadow-card border border-blue-100 p-4 sm:p-6 mb-6 sm:mb-8">
+      <div className="bg-card rounded-2xl shadow-card border border-border p-4 sm:p-6 mb-6 sm:mb-8">
         <div className="hidden sm:flex items-center gap-2 mb-5">
-          <Filter className="w-4 h-4 text-blue-700" />
-          <h2 className="text-blue-950 font-serif text-lg">Filtres & recherche</h2>
+          <Filter className="w-4 h-4 text-primary" />
+          <h2 className="text-foreground font-serif text-lg">Filtres & recherche</h2>
         </div>
 
         <div className="flex items-center gap-2 mb-5 sm:mb-5">
@@ -211,7 +211,7 @@ export function QuestionsTab({
               Rechercher une question ou un concept
             </label>
             <Search
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
               aria-hidden="true"
             />
             <input
@@ -226,14 +226,14 @@ export function QuestionsTab({
                   setSearchQuery("");
                 }
               }}
-              className="w-full pl-12 pr-12 py-3 bg-blue-50/50 border border-blue-200 rounded-lg text-base text-blue-950 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full pl-12 pr-12 py-3 bg-muted/50 border border-border rounded-lg text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
                 aria-label="Effacer la recherche"
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-400 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary focus:outline-none focus:ring-2 focus:ring-ring rounded"
               >
                 <X className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -251,12 +251,12 @@ export function QuestionsTab({
             aria-label={showMobileFilters ? "Masquer les filtres" : "Afficher les filtres"}
             aria-expanded={showMobileFilters}
             aria-controls="mobile-filters-panel"
-            className={`sm:hidden relative flex-shrink-0 w-12 h-12 rounded-lg border flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${showMobileFilters ? "bg-blue-900 text-white border-blue-900" : "bg-white text-blue-700 border-blue-200"}`}
+            className={`sm:hidden relative flex-shrink-0 w-12 h-12 rounded-lg border flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-ring ${showMobileFilters ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border"}`}
           >
             <Filter className="w-5 h-5" aria-hidden="true" />
             {(activeCategory !== "all" || activeDifficulty !== "all" || ratingFilter !== "all") && (
               <span
-                className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400"
+                className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary"
                 aria-hidden="true"
               />
             )}
@@ -279,8 +279,8 @@ export function QuestionsTab({
             value={activeCategory}
             onChange={setActiveCategory}
             options={categories.map((c) => ({ id: c.id, label: c.label, icon: c.icon }))}
-            activeClass="bg-blue-900 text-white border-blue-900 shadow-md"
-            inactiveClass="bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50"
+            activeClass="bg-primary text-primary-foreground border-primary shadow-md"
+            inactiveClass="bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"
           />
 
           <div className="grid md:grid-cols-2 gap-5">
@@ -289,22 +289,22 @@ export function QuestionsTab({
               value={activeDifficulty}
               onChange={setActiveDifficulty}
               options={difficulties.map((d) => ({ id: d.id, label: d.label }))}
-              activeClass="bg-indigo-900 text-white border-indigo-900 shadow-md"
-              inactiveClass="bg-white text-blue-700 border-blue-200 hover:border-blue-400 hover:bg-blue-50"
+              activeClass="bg-primary text-primary-foreground border-primary shadow-md"
+              inactiveClass="bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"
             />
             <FilterRadioGroup
               label="Filtre par notation"
               value={ratingFilter}
               onChange={setRatingFilter}
               options={ratingFilters.map((r) => ({ id: r.id, label: r.label }))}
-              activeClass="bg-amber-600 text-white border-amber-600 shadow-md"
-              inactiveClass="bg-white text-amber-700 border-amber-200 hover:border-amber-400 hover:bg-amber-50"
+              activeClass="bg-primary text-primary-foreground border-primary shadow-md"
+              inactiveClass="bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"
               labelIcon={Star}
             />
           </div>
 
-          <div className="mt-5 pt-5 border-t border-blue-100">
-            <div className="text-blue-950 text-xs uppercase tracking-wider font-semibold mb-2 flex items-center gap-1.5">
+          <div className="mt-5 pt-5 border-t border-border">
+            <div className="text-foreground text-xs uppercase tracking-wider font-semibold mb-2 flex items-center gap-1.5">
               <Bookmark className="w-3.5 h-3.5" /> À réviser
             </div>
             <button
@@ -313,8 +313,8 @@ export function QuestionsTab({
               disabled={reviewList.length === 0 && !showReviewOnly}
               className={`touch-target-bar px-3 rounded-lg border text-sm font-medium transition-all gap-2 ${
                 showReviewOnly
-                  ? "bg-rose-600 text-white border-rose-600 shadow-md"
-                  : "bg-white text-rose-700 border-rose-200 hover:border-rose-400 hover:bg-rose-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  ? "bg-primary text-primary-foreground border-primary shadow-md"
+                  : "bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed"
               }`}
             >
               {showReviewOnly ? (
@@ -324,7 +324,7 @@ export function QuestionsTab({
               )}
               {showReviewOnly ? "Afficher tout" : "Voir uniquement à réviser"}
               <span
-                className={`ml-1 px-1.5 py-0.5 rounded text-xs font-bold ${showReviewOnly ? "bg-white/20" : "bg-rose-100 text-rose-800"}`}
+                className={`ml-1 px-1.5 py-0.5 rounded text-xs font-bold ${showReviewOnly ? "bg-white/20" : "bg-muted text-foreground"}`}
               >
                 {reviewList.length}
               </span>
@@ -332,9 +332,9 @@ export function QuestionsTab({
           </div>
         </div>
 
-        <div className="mt-5 pt-5 border-t border-blue-100 flex items-center justify-between text-sm flex-wrap gap-2">
-          <span className="text-blue-700">
-            <span className="font-semibold text-blue-950">{stats.filtered}</span> question
+        <div className="mt-5 pt-5 border-t border-border flex items-center justify-between text-sm flex-wrap gap-2">
+          <span className="text-muted-foreground">
+            <span className="font-semibold text-foreground">{stats.filtered}</span> question
             {stats.filtered > 1 ? "s" : ""} affichée{stats.filtered > 1 ? "s" : ""}
           </span>
           {(activeCategory !== "all" ||
@@ -350,7 +350,7 @@ export function QuestionsTab({
                 setRatingFilter("all");
                 setShowReviewOnly(false);
               }}
-              className="touch-target-bar text-blue-700 hover:text-blue-900 underline underline-offset-2"
+              className="touch-target-bar text-primary hover:text-primary/80 underline underline-offset-2"
             >
               Réinitialiser
             </button>
@@ -361,9 +361,9 @@ export function QuestionsTab({
       {/* Questions */}
       <div className="space-y-4">
         {filteredQuestions.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-blue-100 p-12 text-center">
-            <Search className="w-12 h-12 text-blue-300 mx-auto mb-4" />
-            <p className="text-blue-700 text-lg mb-4">
+          <div className="bg-card rounded-2xl border border-border p-12 text-center">
+            <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-muted-foreground text-lg mb-4">
               {showReviewOnly && reviewList.length === 0
                 ? "Vous n'avez encore marqué aucune question à réviser."
                 : "Aucune question ne correspond à vos critères."}
@@ -376,7 +376,7 @@ export function QuestionsTab({
                 setRatingFilter("all");
                 setShowReviewOnly(false);
               }}
-              className="touch-target-bar px-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="touch-target-bar px-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
             >
               Réinitialiser les filtres
             </button>
@@ -391,7 +391,7 @@ export function QuestionsTab({
               <div
                 key={q.id}
                 id={`question-card-${q.id}`}
-                className={`relative bg-white rounded-2xl shadow-card border-2 transition-all duration-300 overflow-hidden scroll-mt-24 ${isExpanded ? "border-blue-500 shadow-card-elevated" : inReview ? "border-rose-300 hover:border-rose-400" : userRating >= 4 ? "border-emerald-300 hover:border-emerald-400" : userRating > 0 && userRating <= 2 ? "border-red-200 hover:border-red-300" : "border-blue-100 hover:border-blue-300 hover:shadow-card-hover"}`}
+                className={`relative bg-card rounded-2xl shadow-card border-2 transition-all duration-300 overflow-hidden scroll-mt-24 ${isExpanded ? "border-primary shadow-card-elevated" : inReview ? "border-primary/40 hover:border-primary/60" : userRating >= 4 ? "border-primary/35 hover:border-primary/55" : userRating > 0 && userRating <= 2 ? "border-primary/25 hover:border-primary/45" : "border-border hover:border-primary/40 hover:shadow-card-hover"}`}
               >
                 <button
                   type="button"
@@ -403,7 +403,7 @@ export function QuestionsTab({
                     inReview ? "Retirer de la liste à réviser" : "Marquer comme à réviser"
                   }
                   aria-pressed={inReview}
-                  className={`absolute top-3 right-3 z-10 touch-target rounded-full border transition-all ${inReview ? "bg-rose-600 text-white border-rose-600 shadow-md" : "bg-white text-rose-600 border-rose-200 hover:bg-rose-50 hover:border-rose-400"}`}
+                  className={`absolute top-3 right-3 z-10 touch-target rounded-full border transition-all ${inReview ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-primary border-border hover:bg-muted hover:border-primary/40"}`}
                 >
                   {inReview ? (
                     <BookmarkCheck className="w-4 h-4" />
@@ -418,12 +418,12 @@ export function QuestionsTab({
                       if (!isExpanded) captureScroll();
                       setExpandedQuestion(isExpanded ? null : q.id);
                     }}
-                    className="flex flex-1 min-w-0 min-h-11 items-start gap-3 sm:gap-4 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    className="flex flex-1 min-w-0 min-h-11 items-start gap-3 sm:gap-4 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     aria-expanded={isExpanded}
                   >
                     <div className="flex-shrink-0">
                       <div
-                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? "bg-blue-700 text-white" : userRating >= 4 ? "bg-emerald-50 text-emerald-700" : "bg-blue-50 text-blue-700"}`}
+                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? "bg-primary text-primary-foreground" : userRating >= 4 ? "bg-primary/10 text-primary" : "bg-muted text-foreground"}`}
                       >
                         {userRating >= 4 ? (
                           <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -444,7 +444,7 @@ export function QuestionsTab({
                               <span
                                 title={catLabel}
                                 aria-label={`Catégorie : ${catLabel}`}
-                                className={`sm:hidden inline-flex items-center justify-center w-6 h-6 rounded-full ${isBrain ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}
+                                className={`sm:hidden inline-flex items-center justify-center w-6 h-6 rounded-full ${isBrain ? "bg-primary/10 text-primary" : "bg-muted text-foreground"}`}
                               >
                                 <CatIcon className="w-3.5 h-3.5" />
                               </span>
@@ -473,7 +473,7 @@ export function QuestionsTab({
                                 {[0, 1, 2].map((i) => (
                                   <span
                                     key={i}
-                                    className={`w-1.5 h-1.5 rounded-full ${i < filled ? "bg-blue-700" : "bg-blue-200"}`}
+                                    className={`w-1.5 h-1.5 rounded-full ${i < filled ? "bg-primary" : "bg-muted-foreground/40"}`}
                                   />
                                 ))}
                               </span>
@@ -484,7 +484,7 @@ export function QuestionsTab({
                           );
                         })()}
                       </div>
-                      <h3 className="text-blue-950 font-serif text-base sm:text-xl leading-snug">
+                      <h3 className="text-foreground font-serif text-base sm:text-xl leading-snug">
                         {q.question}
                       </h3>
                     </div>
@@ -492,7 +492,7 @@ export function QuestionsTab({
                       className={`flex-shrink-0 self-center transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`}
                     >
                       <ChevronRight
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500"
+                        className="w-5 h-5 sm:w-6 sm:h-6 text-primary"
                         aria-hidden="true"
                       />
                     </div>
@@ -507,22 +507,24 @@ export function QuestionsTab({
                 </div>
 
                 {isExpanded && (
-                  <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-blue-100 bg-gradient-to-b from-blue-50/30 to-white">
+                  <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-border bg-gradient-to-b from-muted/40 to-card">
                     <div className="ml-0 sm:ml-16 mt-6 space-y-6">
                       <div>
                         <div className="flex items-center gap-2 mb-3">
-                          <div className="h-px w-6 bg-blue-700" />
-                          <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">
+                          <div className="h-px w-6 bg-primary" />
+                          <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
                             Explication
                           </h4>
                         </div>
-                        <p className="text-blue-900 leading-relaxed font-light">{q.explanation}</p>
+                        <p className="text-foreground leading-relaxed font-light">
+                          {q.explanation}
+                        </p>
                       </div>
 
                       <div>
                         <div className="flex items-center gap-2 mb-4">
-                          <div className="h-px w-6 bg-blue-700" />
-                          <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">
+                          <div className="h-px w-6 bg-primary" />
+                          <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
                             Étapes de réponse
                           </h4>
                         </div>
@@ -530,12 +532,14 @@ export function QuestionsTab({
                           {q.steps.map((step, i) => (
                             <li
                               key={i}
-                              className="flex gap-4 bg-white rounded-lg p-4 border border-blue-100"
+                              className="flex gap-4 bg-card rounded-lg p-4 border border-border"
                             >
-                              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-blue-700 text-white font-serif text-sm flex items-center justify-center">
+                              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary text-primary-foreground font-serif text-sm flex items-center justify-center">
                                 {i + 1}
                               </div>
-                              <p className="text-blue-900 leading-relaxed flex-1 pt-0.5">{step}</p>
+                              <p className="text-foreground leading-relaxed flex-1 pt-0.5">
+                                {step}
+                              </p>
                             </li>
                           ))}
                         </ol>
@@ -544,8 +548,8 @@ export function QuestionsTab({
                       {q.visual && (
                         <div>
                           <div className="flex items-center gap-2 mb-3">
-                            <div className="h-px w-6 bg-blue-700" />
-                            <h4 className="text-blue-950 font-semibold text-sm uppercase tracking-wider">
+                            <div className="h-px w-6 bg-primary" />
+                            <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
                               Visualisation
                             </h4>
                           </div>

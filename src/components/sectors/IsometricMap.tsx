@@ -53,12 +53,12 @@ export function IsometricMap({ onSectorSelect, selectedSectorId = null }: Isomet
           </g>
         </svg>
 
-        <p className="text-center text-xs text-blue-400 font-light italic py-4 px-4 bg-white">
+        <p className="text-center text-xs text-muted-foreground font-light italic py-4 px-4 bg-white">
           Cliquez sur un bâtiment ou utilisez les boutons ci-dessous pour ouvrir une fiche
         </p>
 
         <div className="px-3 pb-3 pt-2 border-t border-slate-100 bg-white">
-          <p className="text-[10px] uppercase tracking-wider text-blue-400 font-medium mb-1.5 hidden sm:block">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1.5 hidden sm:block">
             Accès rapide
           </p>
           <div className="flex flex-wrap justify-center gap-1.5">

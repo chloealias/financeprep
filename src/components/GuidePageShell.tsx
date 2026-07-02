@@ -12,11 +12,13 @@ export function GuidePageShell({ tag, title, description, children }: GuidePageS
   return (
     <GuideSubLayout>
       <header className="space-y-3 mb-8">
-        <div className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium">{tag}</div>
-        <h1 className="text-2xl sm:text-3xl font-serif text-blue-950 tracking-tight">{title}</h1>
-        {description && <p className="text-sm text-blue-700 font-light max-w-3xl">{description}</p>}
+        <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">{tag}</div>
+        <h1 className="text-2xl sm:text-3xl font-serif text-foreground tracking-tight">{title}</h1>
+        {description && (
+          <p className="text-sm text-muted-foreground font-light max-w-3xl">{description}</p>
+        )}
       </header>
-      <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-card px-6 sm:px-8 py-8">
+      <div className="bg-card rounded-2xl border-2 border-border shadow-card px-6 sm:px-8 py-8">
         {children}
       </div>
     </GuideSubLayout>

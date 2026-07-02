@@ -135,7 +135,7 @@ export function SectorBuilding({
         onMouseLeave={onLeave}
         onFocus={onHover}
         onBlur={onLeave}
-        className="cursor-pointer outline-none focus-visible:[&>circle:last-child]:stroke-blue-500 focus-visible:[&>circle:last-child]:stroke-[3px]"
+        className="cursor-pointer outline-none focus-visible:[&>circle:last-child]:stroke-primary focus-visible:[&>circle:last-child]:stroke-[3px]"
       >
         <circle cx={0} cy={-25} r={hitR} fill="transparent" pointerEvents="all" />
       </g>

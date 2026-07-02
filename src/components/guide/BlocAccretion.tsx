@@ -37,15 +37,15 @@ export function BlocAccretion() {
   return (
     <>
       <div className="grid md:grid-cols-2 gap-4 mb-8">
-        <div className="bg-blue-50 border-l-4 border-blue-700 rounded-r-xl p-5">
-          <div className="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded inline-block mb-3">
+        <div className="bg-primary/10 border-l-4 border-primary rounded-r-xl p-5">
+          <div className="bg-primary/20 text-primary text-xs font-semibold px-2 py-0.5 rounded inline-block mb-3">
             ACCRETIF
           </div>
-          <p className="text-blue-900 text-sm mb-2">
+          <p className="text-foreground text-sm mb-2">
             Le deal augmente l&apos;EPS de l&apos;acquéreur post-acquisition.
           </p>
-          <p className="text-blue-700 text-sm font-mono">EPS pro forma &gt; EPS actuel</p>
-          <p className="text-blue-500 text-xs mt-2">
+          <p className="text-primary text-sm font-mono">EPS pro forma &gt; EPS actuel</p>
+          <p className="text-muted-foreground text-xs mt-2">
             Condition (échange d&apos;actions) : P/E acquéreur &gt; P/E cible
           </p>
         </div>
@@ -63,17 +63,17 @@ export function BlocAccretion() {
         </div>
       </div>
 
-      <div className="bg-slate-900 rounded-xl p-6 mb-8">
-        <div className="text-blue-400 text-xs uppercase tracking-[0.2em] mb-4">
+      <div className="bg-foreground rounded-xl p-6 mb-8">
+        <div className="text-primary/70 text-xs uppercase tracking-[0.2em] mb-4">
           Formule complète
         </div>
         <div className="font-mono text-sm leading-loose">
           <div className="text-white">EPS pro forma =</div>
-          <div className="text-blue-300 pl-4">
+          <div className="text-primary/80 pl-4">
             (Net Income acquéreur + Net Income cible + Synergies après impôt − Coût financement)
           </div>
           <div className="text-white pl-4">÷</div>
-          <div className="text-blue-300 pl-4">
+          <div className="text-primary/80 pl-4">
             (Shares outstanding acquéreur + Nouvelles actions émises)
           </div>
           <div className="mt-3 text-emerald-400">
@@ -86,7 +86,7 @@ export function BlocAccretion() {
         <GuideSectionTitle className="mb-1">
           Simulateur — échange d&apos;actions pur
         </GuideSectionTitle>
-        <p className="text-blue-400 text-xs italic mb-5">
+        <p className="text-muted-foreground text-xs italic mb-5">
           Bougez les curseurs pour voir l&apos;impact immédiat
         </p>
 
@@ -96,7 +96,7 @@ export function BlocAccretion() {
             { label: "P/E Cible", val: peTgt, set: setPeTgt },
           ].map((s) => (
             <div key={s.label} className="flex items-center gap-4">
-              <span className="text-blue-700 text-sm w-36 flex-shrink-0">{s.label}</span>
+              <span className="text-muted-foreground text-sm w-36 flex-shrink-0">{s.label}</span>
               <input
                 type="range"
                 min="8"
@@ -104,9 +104,11 @@ export function BlocAccretion() {
                 step="1"
                 value={s.val}
                 onChange={(e) => s.set(+e.target.value)}
-                className="flex-1 accent-blue-700"
+                className="flex-1 accent-primary"
               />
-              <span className="text-blue-950 font-semibold text-sm w-10 text-right">{s.val}x</span>
+              <span className="text-foreground font-semibold text-sm w-10 text-right">
+                {s.val}x
+              </span>
             </div>
           ))}
         </div>
@@ -140,7 +142,7 @@ export function BlocAccretion() {
             <span
               className={`text-xs px-2 py-1 rounded-full font-medium ${
                 verdict === "accretif"
-                  ? "bg-blue-100 text-blue-700"
+                  ? "bg-primary/10 text-primary"
                   : verdict === "dilutif"
                     ? "bg-red-100 text-red-700"
                     : "bg-slate-100 text-slate-500"
@@ -161,12 +163,12 @@ export function BlocAccretion() {
         <div className="space-y-2">
           {regles.map((r) => (
             <div key={r.label} className="flex gap-3">
-              <span className="bg-blue-100 text-blue-700 text-xs font-mono px-2 py-0.5 rounded flex-shrink-0 mt-0.5 h-fit">
+              <span className="bg-primary/10 text-primary text-xs font-mono px-2 py-0.5 rounded flex-shrink-0 mt-0.5 h-fit">
                 →
               </span>
               <div>
-                <span className="text-blue-950 text-sm font-medium">{r.label} : </span>
-                <span className="text-blue-700 text-sm font-light">{r.texte}</span>
+                <span className="text-foreground text-sm font-medium">{r.label} : </span>
+                <span className="text-muted-foreground text-sm font-light">{r.texte}</span>
               </div>
             </div>
           ))}

@@ -16,6 +16,12 @@ describe("profile-storage", () => {
     expect(p.sectorIds).toEqual([]);
     expect(p.avatarKind).toBe("icon");
     expect(p.bannerId).toBe("midnight");
+    expect(p.accentThemeId).toBe("navy");
+  });
+
+  it("normalizes invalid accent theme id", () => {
+    const p = normalizeProfile({ accentThemeId: "invalid" });
+    expect(p.accentThemeId).toBe("navy");
   });
 
   it("limits sectors to 3", () => {

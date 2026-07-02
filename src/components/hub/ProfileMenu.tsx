@@ -34,7 +34,7 @@ function ProfileMenuPanel({
       role="menu"
       className={
         className ??
-        "min-w-[200px] rounded-xl bg-white border border-blue-100 shadow-xl py-1 overflow-hidden"
+        "min-w-[200px] rounded-xl bg-card border border-border shadow-xl py-1 overflow-hidden"
       }
       style={style}
     >
@@ -107,7 +107,6 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
   const showSrsBadge = badges.srsDue > 0;
   const showCountdownBadge = !!badges.countdown;
   const showTargetBadge = targetCount > 0 && !showCountdownBadge;
-  const countdownLabel = formatInterviewCountdown(daysUntilInterview(profile.interviewDate));
 
   const menuItems = (
     <>
@@ -115,7 +114,7 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
         to="/profil"
         role="menuitem"
         onClick={() => setOpen(false)}
-        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-blue-950 hover:bg-blue-50"
+        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-foreground hover:bg-muted"
       >
         <ProfileAvatar profile={profile} size="sm" />
         <span className="font-medium truncate">{profile.firstName?.trim() || "Profil"}</span>
@@ -127,9 +126,9 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
           onPageChange("progress");
           setOpen(false);
         }}
-        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-blue-950 hover:bg-blue-50"
+        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-foreground hover:bg-muted"
       >
-        <BarChart3 className="w-4 h-4 text-blue-600" />
+        <BarChart3 className="w-4 h-4 text-primary" />
         Progression
       </button>
       <button
@@ -140,9 +139,9 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
           onPageChange("banques");
           setOpen(false);
         }}
-        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-blue-950 hover:bg-blue-50"
+        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-foreground hover:bg-muted"
       >
-        <Landmark className="w-4 h-4 text-blue-600" />
+        <Landmark className="w-4 h-4 text-primary" />
         {targetCount > 0 ? `Banques (${targetCount})` : "Banques"}
       </button>
     </>
@@ -180,40 +179,16 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
         className="touch-target rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
       >
         <ProfileAvatar profile={profile} size="sm" className="border-2 border-white/40" />
-        {showCountdownBadge && (
-          <span
-            className="absolute -top-0.5 -left-0.5 min-w-[1.25rem] h-5 px-1 rounded-full bg-violet-500 border-2 border-blue-900 text-[10px] font-bold text-white flex items-center justify-center tabular-nums"
-            title={countdownLabel ?? undefined}
-          >
-            {badges.countdown === "J" ? "J" : badges.countdown}
-          </span>
-        )}
-        {showTargetBadge && (
-          <span
-            className="absolute -top-0.5 -left-0.5 min-w-[1.25rem] h-5 px-1 rounded-full bg-sky-400 border-2 border-blue-900 text-[10px] font-bold text-blue-950 flex items-center justify-center tabular-nums"
-            title={`${targetCount} banques`}
-          >
-            {targetCount > 9 ? "9+" : targetCount}
-          </span>
-        )}
-        {showSrsBadge && (
-          <span
-            className="absolute -bottom-0.5 -right-0.5 min-w-[1.1rem] h-[1.1rem] px-0.5 rounded-full bg-amber-400 border-2 border-blue-900 text-[9px] font-bold text-blue-950 flex items-center justify-center"
-            title={`${badges.srsDue} SRS`}
-          >
-            {badges.srsDue > 9 ? "9+" : badges.srsDue}
-          </span>
-        )}
         {hasProgress && !showSrsBadge && !showCountdownBadge && !showTargetBadge && (
           <span
-            className="absolute top-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-blue-900"
+            className="absolute top-0.5 right-0.5 w-2.5 h-2.5 rounded-full bg-primary/30 border-2 border-primary"
             aria-hidden
           />
         )}
       </button>
 
       {open && !isMobile && (
-        <ProfileMenuPanel className="absolute right-0 top-full mt-2 z-[60] min-w-[200px] rounded-xl bg-white border border-blue-100 shadow-xl py-1 overflow-hidden">
+        <ProfileMenuPanel className="absolute right-0 top-full mt-2 z-[60] min-w-[200px] rounded-xl bg-card border border-border shadow-xl py-1 overflow-hidden">
           {menuItems}
         </ProfileMenuPanel>
       )}

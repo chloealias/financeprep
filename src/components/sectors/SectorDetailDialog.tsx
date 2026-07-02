@@ -26,7 +26,7 @@ function SectorDetailCloseButton({ onClose }: { onClose: () => void }) {
     <button
       type="button"
       onClick={onClose}
-      className="absolute top-0 right-0 z-10 touch-target rounded-full border border-blue-200 bg-white text-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all shadow-sm"
+      className="absolute top-0 right-0 z-10 touch-target rounded-full border border-border bg-card text-muted-foreground hover:text-primary hover:bg-muted transition-all shadow-sm"
       aria-label="Fermer la fiche"
     >
       <X className="w-4 h-4" />
@@ -44,12 +44,14 @@ function SectorDetailHeader({
   onClose: () => void;
 }) {
   return (
-    <header className="relative pr-12 mb-6 pb-5 border-b border-blue-100">
+    <header className="relative pr-12 mb-6 pb-5 border-b border-border">
       <SectorDetailCloseButton onClose={onClose} />
-      <p className="text-xs uppercase tracking-[0.2em] text-blue-400 font-medium mb-1.5">{tag}</p>
+      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium mb-1.5">
+        {tag}
+      </p>
       <h2
         id="sector-detail-title"
-        className="text-2xl sm:text-3xl font-serif text-blue-950 leading-tight"
+        className="text-2xl sm:text-3xl font-serif text-foreground leading-tight"
       >
         {name}
       </h2>
@@ -103,7 +105,7 @@ export function SectorDetailDialog({
     <ClientOnly>
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent
-          className="max-w-5xl w-[calc(100%-1.5rem)] max-h-[min(92vh,920px)] overflow-hidden flex flex-col gap-0 p-0 border-blue-200 sm:rounded-2xl [&>button.absolute]:hidden"
+          className="max-w-5xl w-[calc(100%-1.5rem)] max-h-[min(92vh,920px)] overflow-hidden flex flex-col gap-0 p-0 border-border sm:rounded-2xl [&>button.absolute]:hidden"
           aria-labelledby="sector-detail-title"
           onOpenAutoFocus={(e) => {
             e.preventDefault();
@@ -114,7 +116,7 @@ export function SectorDetailDialog({
             <DialogTitle>{data.name}</DialogTitle>
             <DialogDescription>Fiche sectorielle — {data.tag}</DialogDescription>
           </DialogHeader>
-          <div className="shrink-0 px-5 sm:px-8 pt-5 sm:pt-6 bg-white rounded-t-2xl">{header}</div>
+          <div className="shrink-0 px-5 sm:px-8 pt-5 sm:pt-6 bg-card rounded-t-2xl">{header}</div>
           <div
             ref={contentRef}
             tabIndex={-1}

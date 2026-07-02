@@ -18,7 +18,7 @@ export function SectorHubChip({ sectorId, label, className }: SectorHubChipProps
       search={{ tab: "secteurs", sector: sectorId }}
       className={
         className ??
-        "bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded hover:bg-slate-200 transition-colors"
+        "bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded hover:bg-muted/80 transition-colors"
       }
       onClick={(e) => e.stopPropagation()}
     >
@@ -31,7 +31,7 @@ export function SectorDealChip({ secteur }: { secteur: string }) {
   const sectorId = getSectorIdForSecteur(secteur);
   if (!sectorId) {
     return (
-      <span className="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded">{secteur}</span>
+      <span className="bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded">{secteur}</span>
     );
   }
   return <SectorHubChip sectorId={sectorId} label={secteur} />;
@@ -41,7 +41,7 @@ export function BankDealChip({ name }: { name: string }) {
   const bankId = getBankIdByName(name);
   if (!bankId) {
     return (
-      <span className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded">
+      <span className="inline-block bg-primary/10 border border-primary/20 text-primary text-xs px-1.5 py-0.5 rounded">
         {name}
       </span>
     );
@@ -50,7 +50,7 @@ export function BankDealChip({ name }: { name: string }) {
     <Link
       to="/"
       search={{ tab: "banques", bank: bankId }}
-      className="inline-block bg-blue-50 border border-blue-100 text-blue-600 text-xs px-1.5 py-0.5 rounded hover:bg-blue-100 hover:border-blue-200 transition-colors"
+      className="inline-block bg-primary/10 border border-primary/20 text-primary text-xs px-1.5 py-0.5 rounded hover:bg-primary/15 hover:border-primary/30 transition-colors"
       onClick={(e) => e.stopPropagation()}
     >
       {name}
@@ -69,7 +69,7 @@ export function AdvisorBankName({ name }: { name: string }) {
     <Link
       to="/"
       search={{ tab: "banques", bank: bankId }}
-      className="text-blue-800 hover:text-blue-950 underline underline-offset-2"
+      className="text-primary hover:text-primary/80 underline underline-offset-2"
       onClick={(e) => e.stopPropagation()}
     >
       {display.replace(/\s*\([^)]*\)\s*$/, "").trim() || display}

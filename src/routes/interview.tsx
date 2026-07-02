@@ -18,7 +18,7 @@ export const Route = createFileRoute("/interview")({
 function InterviewPage() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-sky-100">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/40 to-background">
       <InterviewSimulator onBack={() => navigate({ to: "/flashcards" })} />
     </div>
   );

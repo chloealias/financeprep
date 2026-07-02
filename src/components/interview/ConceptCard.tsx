@@ -44,21 +44,21 @@ export function ConceptCard({
   return (
     <div
       ref={cardRef}
-      className={`relative z-0 bg-white rounded-2xl shadow-card border transition-colors duration-200 overflow-hidden scroll-mt-48 ${
+      className={`relative z-0 bg-card rounded-2xl shadow-card border transition-colors duration-200 overflow-hidden scroll-mt-48 ${
         isExpanded
-          ? "border-blue-500 shadow-card-elevated"
-          : "border-blue-100 hover:border-blue-300 hover:shadow-card-hover"
+          ? "border-primary shadow-card-elevated"
+          : "border-border hover:border-primary/40 hover:shadow-card-hover"
       }`}
     >
       <button
         onClick={onToggle}
         aria-expanded={isExpanded}
-        className="w-full min-h-11 text-left p-4 sm:p-5 flex items-start gap-3 sm:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-2xl"
+        className="w-full min-h-11 text-left p-4 sm:p-5 flex items-start gap-3 sm:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-2xl"
       >
         <div className="flex-shrink-0">
           <div
             className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center transition-colors ${
-              isExpanded ? "bg-blue-800 text-white" : "bg-blue-50 text-blue-700"
+              isExpanded ? "bg-primary text-primary-foreground" : "bg-muted text-primary"
             }`}
           >
             <Library className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -66,7 +66,7 @@ export function ConceptCard({
         </div>
         <div className="flex-1 min-w-0">
           <div className={`${hubBadgeGroupClass} mb-2`}>
-            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-500 tabular-nums py-1 px-2.5">
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-primary tabular-nums py-1 px-2.5">
               {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
             <span
@@ -75,11 +75,11 @@ export function ConceptCard({
               {getCategoryLabel(concept.category)}
             </span>
           </div>
-          <h3 className="text-blue-950 font-serif text-lg sm:text-xl leading-snug">
+          <h3 className="text-foreground font-serif text-lg sm:text-xl leading-snug">
             {concept.title}
           </h3>
           {!isExpanded && (
-            <p className="text-blue-700 mt-1.5 text-sm leading-relaxed line-clamp-2 font-light">
+            <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed line-clamp-2 font-light">
               {concept.simple}
             </p>
           )}
@@ -87,35 +87,35 @@ export function ConceptCard({
         <div
           className={`flex-shrink-0 transition-transform duration-200 ${isExpanded ? "rotate-90" : ""}`}
         >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-blue-500" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
         </div>
       </button>
 
       {isExpanded && (
-        <div className="px-4 sm:px-6 pb-5 pt-2 border-t border-blue-100 bg-blue-50/20">
+        <div className="px-4 sm:px-6 pb-5 pt-2 border-t border-border bg-muted/30">
           <div className="ml-0 sm:ml-16 mt-5 space-y-5">
             {/* Simple */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <div className="h-px w-6 bg-blue-700" />
-                <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">
+                <div className="h-px w-6 bg-primary" />
+                <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
                   L&apos;essentiel
                 </h4>
               </div>
-              <p className="text-blue-900 leading-relaxed font-light">{concept.simple}</p>
+              <p className="text-foreground leading-relaxed font-light">{concept.simple}</p>
             </div>
 
             {/* Formule */}
             {concept.formula && (
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">
+                  <div className="h-px w-6 bg-primary" />
+                  <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
                     Formule clé
                   </h4>
                 </div>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
-                  <code className="block text-blue-900 font-mono text-[13px] sm:text-sm leading-relaxed whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
+                <div className="bg-muted border border-border rounded-lg p-3 sm:p-4">
+                  <code className="block text-foreground font-mono text-[13px] sm:text-sm leading-relaxed whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
                     {concept.formula}
                   </code>
                 </div>
@@ -126,12 +126,12 @@ export function ConceptCard({
             {concept.deepDive && (
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">
+                  <div className="h-px w-6 bg-primary" />
+                  <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
                     Pour bien comprendre
                   </h4>
                 </div>
-                <p className="text-blue-900 leading-relaxed font-light whitespace-pre-line">
+                <p className="text-foreground leading-relaxed font-light whitespace-pre-line">
                   {concept.deepDive}
                 </p>
               </div>
@@ -141,14 +141,14 @@ export function ConceptCard({
             {concept.table && (
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">
+                  <div className="h-px w-6 bg-primary" />
+                  <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
                     Tableau de référence
                   </h4>
                 </div>
-                <div className="bg-white border border-blue-200 rounded-lg overflow-x-auto -mx-4 sm:mx-0">
+                <div className="bg-card border border-border rounded-lg overflow-x-auto -mx-4 sm:mx-0">
                   <table className="w-full text-sm min-w-[480px]">
-                    <thead className="bg-blue-900 text-white">
+                    <thead className="bg-primary text-primary-foreground">
                       <tr>
                         {concept.table.headers.map((h: string, i: number) => (
                           <th
@@ -162,11 +162,11 @@ export function ConceptCard({
                     </thead>
                     <tbody>
                       {concept.table.rows.map((row: string[], ri: number) => (
-                        <tr key={ri} className={ri % 2 === 0 ? "bg-blue-50/40" : "bg-white"}>
+                        <tr key={ri} className={ri % 2 === 0 ? "bg-muted/40" : "bg-card"}>
                           {row.map((cell: string, ci: number) => (
                             <td
                               key={ci}
-                              className={`px-3 py-2.5 ${ci === 0 ? "font-semibold text-blue-950" : "text-blue-800"}`}
+                              className={`px-3 py-2.5 ${ci === 0 ? "font-semibold text-foreground" : "text-muted-foreground"}`}
                             >
                               {cell}
                             </td>
@@ -181,7 +181,7 @@ export function ConceptCard({
                     <Link
                       to="/actualite"
                       hash="indicateurs-macro"
-                      className="text-blue-700 font-medium hover:text-blue-900 underline"
+                      className="text-primary font-medium hover:text-primary/80 underline"
                     >
                       Voir les niveaux macro actuels (taux, spreads, marchés) →
                     </Link>
@@ -194,8 +194,8 @@ export function ConceptCard({
             {concept.visual && (
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="h-px w-6 bg-blue-700" />
-                  <h4 className="text-blue-950 font-semibold text-xs uppercase tracking-wider">
+                  <div className="h-px w-6 bg-primary" />
+                  <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
                     Schéma
                   </h4>
                 </div>
@@ -205,9 +205,9 @@ export function ConceptCard({
 
             {/* Pitfalls */}
             {concept.pitfalls && concept.pitfalls.length > 0 && (
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+              <div className="bg-muted border border-border rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-blue-900 text-xs uppercase tracking-[0.2em] font-bold">
+                  <span className="text-foreground text-xs uppercase tracking-[0.2em] font-bold">
                     Pièges à éviter
                   </span>
                 </div>
@@ -215,9 +215,9 @@ export function ConceptCard({
                   {concept.pitfalls.map((p: string, i: number) => (
                     <li
                       key={i}
-                      className="flex gap-2 text-blue-900 text-sm leading-relaxed font-light"
+                      className="flex gap-2 text-foreground text-sm leading-relaxed font-light"
                     >
-                      <span className="text-blue-500 flex-shrink-0">•</span>
+                      <span className="text-primary flex-shrink-0">•</span>
                       <span>{p}</span>
                     </li>
                   ))}
@@ -232,7 +232,7 @@ export function ConceptCard({
                 onClick={onPrev}
                 disabled={index === 0}
                 aria-label="Concept précédent"
-                className="touch-target-bar gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                className="touch-target-bar gap-1.5 text-primary hover:text-primary/80 disabled:text-muted-foreground disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-border hover:border-primary/50 disabled:border-border bg-card transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <ChevronRight className="w-4 h-4 rotate-180" />
                 <span className="hidden sm:inline">Précédent</span>
@@ -240,9 +240,9 @@ export function ConceptCard({
               <button
                 type="button"
                 onClick={onToggle}
-                className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-light px-4 rounded-lg border border-blue-200 hover:border-blue-400 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-light px-4 rounded-lg border border-border hover:border-primary/50 bg-card transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <span className="tabular-nums text-blue-500 text-xs">
+                <span className="tabular-nums text-primary text-xs">
                   {index + 1}/{total}
                 </span>
                 <span>Replier</span>
@@ -252,7 +252,7 @@ export function ConceptCard({
                 onClick={onNext}
                 disabled={index === total - 1}
                 aria-label="Concept suivant"
-                className="touch-target-bar gap-1.5 text-blue-700 hover:text-blue-900 disabled:text-blue-300 disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-blue-200 hover:border-blue-400 disabled:border-blue-100 bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                className="touch-target-bar gap-1.5 text-primary hover:text-primary/80 disabled:text-muted-foreground disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-border hover:border-primary/50 disabled:border-border bg-card transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <span className="hidden sm:inline">Suivant</span>
                 <ChevronRight className="w-4 h-4" />

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -24,6 +24,7 @@ import {
   formatPackPersonalizationShort,
   suggestedDefaultPackSize,
 } from "@/lib/profile-personalization";
+import { applyProfileAccentTheme } from "@/lib/profile-cosmetics";
 import {
   DEFAULT_PROFILE,
   EXPERIENCE_LEVEL_OPTIONS,
@@ -58,11 +59,21 @@ export function ProfilePage() {
   const [mounted, setMounted] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
+  const appearanceRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setProfile(loadProfile());
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    applyProfileAccentTheme(profile.accentThemeId);
+  }, [mounted, profile.accentThemeId]);
+
+  const handleOpenAppearance = () => {
+    setAppearanceOpen(true);
+  };
 
   const dashboard = useMemo(() => {
     if (!mounted) return null;
@@ -108,12 +119,12 @@ export function ProfilePage() {
   if (!mounted || !dashboard) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="h-10 w-32 rounded-lg bg-blue-100 animate-pulse mb-8" />
-        <div className="h-48 rounded-2xl bg-blue-100/80 animate-pulse mb-8" />
+        <div className="h-10 w-32 rounded-lg bg-muted animate-pulse mb-8" />
+        <div className="h-48 rounded-2xl bg-muted/80 animate-pulse mb-8" />
         <div className="grid sm:grid-cols-3 gap-4 mb-8">
-          <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
-          <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
-          <div className="h-24 rounded-xl bg-blue-50 animate-pulse" />
+          <div className="h-24 rounded-xl bg-muted/60 animate-pulse" />
+          <div className="h-24 rounded-xl bg-muted/60 animate-pulse" />
+          <div className="h-24 rounded-xl bg-muted/60 animate-pulse" />
         </div>
       </div>
     );
@@ -123,7 +134,7 @@ export function ProfilePage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <Link
         to="/"
-        className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+        className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Retour au guide
@@ -134,9 +145,10 @@ export function ProfilePage() {
         countdown={countdown}
         interviewPlan={dashboard.interviewPlan}
         onChange={update}
-        onOpenAppearance={() => setAppearanceOpen(true)}
+        onOpenAppearance={handleOpenAppearance}
       />
 
+      <div ref={appearanceRef} />
       <AppearanceDialog
         open={appearanceOpen}
         onOpenChange={setAppearanceOpen}
@@ -144,64 +156,66 @@ export function ProfilePage() {
         onChange={update}
       />
 
-      <section className="mb-8 grid sm:grid-cols-3 gap-4">
-        <label className="block">
-          <span className="text-[10px] uppercase tracking-wider text-blue-500 mb-1 block">
-            Entretien
-          </span>
-          <input
-            type="date"
-            value={profile.interviewDate ?? ""}
-            onChange={(e) => update({ interviewDate: e.target.value })}
-            className="w-full px-3 py-2 rounded-lg border border-blue-100 bg-white text-sm text-blue-950 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </label>
-        <label className="block">
-          <span className="text-[10px] uppercase tracking-wider text-blue-500 mb-1 block">
-            Niveau
-          </span>
-          <select
-            value={profile.experienceLevel ?? ""}
-            onChange={(e) => update({ experienceLevel: e.target.value as ExperienceLevel })}
-            className="w-full px-3 py-2 rounded-lg border border-blue-100 bg-white text-sm text-blue-950"
-          >
-            {EXPERIENCE_LEVEL_OPTIONS.map((o) => (
-              <option key={o.id || "none"} value={o.id}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block">
-          <span className="text-[10px] uppercase tracking-wider text-blue-500 mb-1 block">
-            Process
-          </span>
-          <select
-            value={profile.processType ?? ""}
-            onChange={(e) => update({ processType: e.target.value as ProcessType })}
-            className="w-full px-3 py-2 rounded-lg border border-blue-100 bg-white text-sm text-blue-950"
-          >
-            {PROCESS_TYPE_OPTIONS.map((o) => (
-              <option key={o.id || "none"} value={o.id}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-        </label>
+      <section className="mb-8 rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-card">
+        <h2 className="text-foreground font-serif text-lg mb-4">Préférences entretien</h2>
+        <div className="grid sm:grid-cols-3 gap-4">
+          <label className="block">
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">
+              Entretien
+            </span>
+            <input
+              type="date"
+              value={profile.interviewDate ?? ""}
+              onChange={(e) => update({ interviewDate: e.target.value })}
+              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+          </label>
+          <label className="block">
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">
+              Niveau
+            </span>
+            <select
+              value={profile.experienceLevel ?? ""}
+              onChange={(e) => update({ experienceLevel: e.target.value as ExperienceLevel })}
+              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-foreground"
+            >
+              {EXPERIENCE_LEVEL_OPTIONS.map((o) => (
+                <option key={o.id || "none"} value={o.id}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">
+              Process
+            </span>
+            <select
+              value={profile.processType ?? ""}
+              onChange={(e) => update({ processType: e.target.value as ProcessType })}
+              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-foreground"
+            >
+              {PROCESS_TYPE_OPTIONS.map((o) => (
+                <option key={o.id || "none"} value={o.id}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
       </section>
 
-      {/* Objectif entretien */}
-      <section className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card">
-        <h2 className="text-blue-950 font-serif text-lg mb-3">Objectifs</h2>
+      <section className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
+        <h2 className="text-foreground font-serif text-lg mb-3">Objectifs</h2>
 
-        <p className="mb-5 text-xs text-blue-600">
+        <p className="mb-4 text-xs text-muted-foreground">
           Simulations : {formatPackPersonalizationShort(packSummary)}
           {!packSummary.hasBanks && " · ajoutez des banques"}
           {!packSummary.hasSectors && " · choisissez des secteurs"}
         </p>
 
         <div className="mb-6">
-          <span className="text-sm font-medium text-blue-950 block mb-3">Banques cibles</span>
+          <span className="text-sm font-medium text-foreground block mb-3">Banques cibles</span>
           <TargetBankQuickPick
             targetIds={targetIds}
             onChange={bumpRefresh}
@@ -213,7 +227,7 @@ export function ProfilePage() {
         </div>
 
         <div className="mb-6">
-          <span className="text-sm font-medium text-blue-950 block mb-2">
+          <span className="text-sm font-medium text-foreground block mb-2">
             Secteurs d&apos;intérêt (max 3)
           </span>
           <div className="flex flex-wrap gap-2">
@@ -224,8 +238,8 @@ export function ProfilePage() {
                   key={id}
                   className={`inline-flex items-center rounded-lg border text-sm font-medium transition-colors ${
                     selected
-                      ? "bg-indigo-900 text-white border-indigo-900"
-                      : "bg-white text-blue-800 border-blue-200 hover:border-blue-400"
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background text-foreground border-border hover:border-primary/50"
                   }`}
                 >
                   <button
@@ -245,8 +259,8 @@ export function ProfilePage() {
                     search={{ tab: "secteurs", sector: id }}
                     className={`touch-target rounded-r-lg ${
                       selected
-                        ? "text-white/80 hover:text-white hover:bg-indigo-800"
-                        : "text-blue-500 hover:text-blue-900 hover:bg-blue-50"
+                        ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     }`}
                     aria-label={`Fiche ${SECTOR_DATA[id].name}`}
                     title="Voir la fiche secteur"
@@ -260,7 +274,7 @@ export function ProfilePage() {
         </div>
 
         <label className="block">
-          <span className="text-sm font-medium text-blue-950 block mb-2">
+          <span className="text-sm font-medium text-foreground block mb-2">
             Taille pack entretien par défaut
           </span>
           <div className="flex gap-2">
@@ -271,8 +285,8 @@ export function ProfilePage() {
                 onClick={() => update({ defaultPackSize: s })}
                 className={`touch-target-bar px-4 rounded-lg border-2 text-sm font-medium ${
                   profile.defaultPackSize === s
-                    ? "bg-blue-900 text-white border-blue-900"
-                    : "border-blue-200 text-blue-900"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "border-border text-foreground"
                 }`}
               >
                 {s} questions
@@ -282,9 +296,8 @@ export function ProfilePage() {
         </label>
       </section>
 
-      {/* Aujourd'hui */}
       <section className="mb-10">
-        <h2 className="text-blue-950 font-serif text-xl mb-4">Aujourd&apos;hui</h2>
+        <h2 className="text-foreground font-serif text-xl mb-4">Aujourd&apos;hui</h2>
         <div className="grid sm:grid-cols-2 gap-3">
           <TodayCard
             title="Flashcards SRS"
@@ -358,14 +371,13 @@ export function ProfilePage() {
         </div>
       </section>
 
-      {/* Activité */}
-      <section className="mb-10 bg-white rounded-2xl border border-blue-100 p-5 sm:p-6 shadow-card">
+      <section className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-blue-950 font-serif text-xl">Activité</h2>
+          <h2 className="text-foreground font-serif text-xl">Activité</h2>
           <Link
             to="/"
             search={{ tab: "progress" }}
-            className="text-sm text-blue-700 hover:text-blue-900 font-medium inline-flex items-center gap-1"
+            className="text-sm text-primary hover:text-primary/80 font-medium inline-flex items-center gap-1"
           >
             Progression détaillée
             <ChevronRight className="w-4 h-4" />
@@ -374,25 +386,25 @@ export function ProfilePage() {
 
         <div className="mb-4">
           <div className="flex justify-between text-sm mb-2">
-            <span className="text-blue-700">Questions maîtrisées (≥ 4★)</span>
-            <span className="text-blue-950 font-medium tabular-nums">
+            <span className="text-muted-foreground">Questions maîtrisées (≥ 4★)</span>
+            <span className="text-foreground font-medium tabular-nums">
               {dashboard.masteredCount}/{dashboard.totalQuestions} · {dashboard.masteredPct}%
             </span>
           </div>
-          <div className="h-2 bg-blue-50 rounded-full overflow-hidden">
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
             <div
-              className="h-full bg-blue-800 transition-all"
+              className="h-full bg-primary transition-all"
               style={{ width: `${dashboard.masteredPct}%` }}
             />
           </div>
         </div>
 
-        <p className="text-sm text-blue-600 font-light mb-4">
+        <p className="text-sm text-muted-foreground font-light mb-4">
           {dashboard.lastSessionLabel ?? "Aucune simulation enregistrée pour l'instant."}
         </p>
 
         {sessions.length > 0 && (
-          <ul className="border-t border-blue-100 pt-4 space-y-3">
+          <ul className="border-t border-border pt-4 space-y-3">
             {sessions.slice(0, 3).map((s) => (
               <SessionRow key={s.id} session={s} />
             ))}
@@ -416,7 +428,7 @@ export function ProfilePage() {
 
 function SessionRow({ session }: { session: InterviewSessionRecord }) {
   return (
-    <li className="flex flex-wrap items-center justify-between gap-2 text-sm text-blue-800">
+    <li className="flex flex-wrap items-center justify-between gap-2 text-sm text-foreground">
       <span>
         {session.mode === "full" ? "Simulation" : "Mini"} ·{" "}
         {new Date(session.startedAt).toLocaleString("fr-FR", {
@@ -429,14 +441,14 @@ function SessionRow({ session }: { session: InterviewSessionRecord }) {
         <button
           type="button"
           onClick={() => downloadSessionReport(session)}
-          className="touch-target-bar text-blue-700 hover:text-blue-900 font-medium text-xs"
+          className="touch-target-bar text-primary hover:text-primary/80 font-medium text-xs"
         >
           Rapport
         </button>
         <Link
           to={session.mode === "full" ? "/interview" : "/flashcards"}
           search={session.mode === "full" ? undefined : { mode: "quiz" }}
-          className="touch-target-bar text-blue-700 hover:text-blue-900 font-medium text-xs"
+          className="touch-target-bar text-primary hover:text-primary/80 font-medium text-xs"
         >
           Refaire
         </Link>
@@ -468,18 +480,18 @@ function TodayCard({
 }) {
   const className = `text-left rounded-2xl p-5 border-2 transition-all w-full ${
     disabled
-      ? "opacity-50 cursor-not-allowed border-blue-100 bg-white"
+      ? "opacity-50 cursor-not-allowed border-border bg-card"
       : highlight
-        ? "border-violet-300 bg-violet-50 hover:border-violet-400 shadow-card"
-        : "border-blue-100 bg-white hover:border-blue-300 shadow-card"
+        ? "border-primary/40 bg-primary/10 hover:border-primary/60 shadow-card"
+        : "border-border bg-card hover:border-primary/40 shadow-card"
   }`;
 
   const inner = (
     <>
-      <div className="flex items-center gap-2 text-blue-700 mb-2">{icon}</div>
-      <div className="font-serif text-lg text-blue-950">{title}</div>
-      <div className="text-sm font-semibold text-indigo-800 mt-1">{stat}</div>
-      <p className="text-xs text-blue-600 font-light mt-1">{desc}</p>
+      <div className="flex items-center gap-2 text-primary mb-2">{icon}</div>
+      <div className="font-serif text-lg text-foreground">{title}</div>
+      <div className="text-sm font-semibold text-primary mt-1">{stat}</div>
+      <p className="text-xs text-muted-foreground font-light mt-1">{desc}</p>
     </>
   );
 
