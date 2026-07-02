@@ -34,9 +34,7 @@ export function MacroIndicatorsPanel() {
             <div className="font-semibold text-blue-950 leading-snug">{row.label}</div>
             <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
               <span className="text-blue-800 font-medium">{row.value}</span>
-              {row.delta && (
-                <span className="text-blue-600 font-light">{row.delta}</span>
-              )}
+              {row.delta && <span className="text-blue-600 font-light">{row.delta}</span>}
             </div>
             {row.interviewNote && (
               <p className="mt-1.5 text-blue-700 font-light leading-snug border-t border-blue-100 pt-1.5">
@@ -62,10 +60,7 @@ export function MacroIndicatorsPanel() {
           <thead className="bg-blue-900 text-white">
             <tr>
               {["Indicateur", "Niveau", "Évol.", "En entretien"].map((h) => (
-                <th
-                  key={h}
-                  className="px-2 py-2 text-left uppercase tracking-wider font-semibold"
-                >
+                <th key={h} className="px-2 py-2 text-left uppercase tracking-wider font-semibold">
                   {h}
                 </th>
               ))}

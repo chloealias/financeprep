@@ -720,7 +720,11 @@ export const BANK_LIST: BankProfile[] = [
     category: "Elite boutique (restructuring & M&A)",
     hq: "New York / Londres",
     tagline: "Spin-off de Blackstone Advisory — leader restructuring, M&A stratégique",
-    divisions: ["Restructuring & Special Situations", "Strategic Advisory", "Park Hill (fund placement)"],
+    divisions: [
+      "Restructuring & Special Situations",
+      "Strategic Advisory",
+      "Park Hill (fund placement)",
+    ],
     particularites: [
       "Créée en 2015 (spin-off Blackstone Advisory Partners)",
       "Référence US en Chapter 11 et situations distressed",

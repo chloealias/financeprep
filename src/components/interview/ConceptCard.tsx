@@ -45,7 +45,9 @@ export function ConceptCard({
     <div
       ref={cardRef}
       className={`relative z-0 bg-white rounded-2xl shadow-card border transition-colors duration-200 overflow-hidden scroll-mt-48 ${
-        isExpanded ? "border-blue-500 shadow-card-elevated" : "border-blue-100 hover:border-blue-300 hover:shadow-card-hover"
+        isExpanded
+          ? "border-blue-500 shadow-card-elevated"
+          : "border-blue-100 hover:border-blue-300 hover:shadow-card-hover"
       }`}
     >
       <button
@@ -67,7 +69,9 @@ export function ConceptCard({
             <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-blue-500 tabular-nums py-1 px-2.5">
               {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
-            <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold ${hubBadgeClass}`}>
+            <span
+              className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold ${hubBadgeClass}`}
+            >
               {getCategoryLabel(concept.category)}
             </span>
           </div>

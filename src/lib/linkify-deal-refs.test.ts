@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { splitDealRefs } from "@/lib/linkify-deal-refs";
+import { splitDealRefs } from "@/lib/split-deal-refs";
 
 describe("splitDealRefs", () => {
   it("returns single text part when no deal refs", () => {

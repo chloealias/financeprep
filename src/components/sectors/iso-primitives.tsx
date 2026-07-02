@@ -1,26 +1,21 @@
 /** Primitives isométriques 3D (coords locales, centre ≈ 0,0 au sol) */
 
-type FaceColors = {
+export type FaceColors = {
   left: string;
   right: string;
   top: string;
 };
 
-export function isoBlock({
-  x,
-  y,
-  w,
-  d,
-  h,
-  colors,
-}: {
+type IsoBlockProps = {
   x: number;
   y: number;
   w: number;
   d: number;
   h: number;
   colors: FaceColors;
-}) {
+};
+
+export function IsoBlock({ x, y, w, d, h, colors }: IsoBlockProps) {
   const hw = w / 2;
   const hd = d / 2;
   return (
@@ -43,15 +38,3 @@ export function isoBlock({
     </g>
   );
 }
-
-export const ISO_NAVY = {
-  left: "#172554",
-  right: "#1e40af",
-  top: "#1e3a8a",
-} as const;
-
-export const ISO_NAVY_LIGHT = {
-  left: "#1e3a8a",
-  right: "#2563eb",
-  top: "#3b82f6",
-} as const;

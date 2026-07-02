@@ -659,23 +659,72 @@ export const concepts = [
     title: "IFRS vs US GAAP — 10 différences clés",
     simple:
       "IFRS (Europe, la plupart des marchés) et US GAAP (SEC) divergent sur le goodwill, la R&D, les leasings et la reconnaissance du revenu. En TS/M&A, ces écarts expliquent des ajustements de valorisation et de dette nette.",
-    formula:
-      "Écart comptable → retraitement en QoE / Net Debt → impact EBITDA, FCF et multiples",
+    formula: "Écart comptable → retraitement en QoE / Net Debt → impact EBITDA, FCF et multiples",
     deepDive:
       "Quand citer en entretien :\n• Transaction Services : retraitements IFRS 16, goodwill, provisions, classification cash\n• Audit / Big Four : normes en détail (IAS vs ASC)\n• M&A cross-border US/EU : toujours préciser sous quelle norme sont les comptes de la cible\n\nLes 10 différences majeures sont dans le tableau ci-dessous. En pratique, l'écart le plus négocié en SPA reste le leasing IFRS 16 (debt-like) et les add-backs liés à la SBC.\n\nRappel : les groupes cotés US publient en US GAAP ; la plupart des cibles EU mid-cap en IFRS. Les ADR et les dual-listings imposent des rapprochements (reconciliation).",
     table: {
       headers: ["Thème", "IFRS", "US GAAP", "Impact M&A"],
       rows: [
-        ["Goodwill", "Pas d'amortissement — test d'impairment annuel (IAS 36)", "Idem post-2001 (impairment only)", "PPA et tests de dépréciation"],
-        ["R&D", "Recherche en charge ; développement immobilisable si critères PIRATE (IAS 38)", "R&D en charge sauf logiciels internes (ASC 350-40)", "EBITDA ajusté, actifs incorporels"],
-        ["Leasing", "IFRS 16 : quasi tout au bilan (dette + droit d'usage)", "ASC 842 : similaire mais seuils et exemptions US", "Dette nette, EBITDA (loyer → amort + intérêts)"],
-        ["Revenus", "IFRS 15 — 5 étapes, contrôle du bien/service", "ASC 606 — aligné conceptuellement", "ARR vs revenue SaaS, contrats long terme"],
-        ["Intérêts (CFO)", "Choix : intérêts payés souvent en CFO ou CFF", "Intérêts payés en CFO (règle stricte)", "CFO comparabilité cross-border"],
-        ["Impairment", "Test valeur recouvrable (max fair value less costs / VIU)", "Two-step goodwill test (ASC 350)", "Charges exceptionnelles, QoE"],
-        ["Stock options", "IFRS 2 — juste valeur à l'attribution, étalement", "ASC 718 — modèle similaire", "Diluted EPS, retraitement non-cash"],
-        ["Joint-ventures", "Mise en équivalence (IAS 28) — pas de proportionnelle", "Equity method (ASC 323)", "Consolidation, périmètre"],
-        ["Cash flow", "Méthode indirecte standard ; flexibilité intérêts/dividendes", "Règles plus prescriptives (ASC 230)", "Pont NI → FCF"],
-        ["Présentation", "Pas de format P&L imposé (par nature ou fonction)", "SEC : lignes spécifiques (operating income…)", "Comparables US vs EU"],
+        [
+          "Goodwill",
+          "Pas d'amortissement — test d'impairment annuel (IAS 36)",
+          "Idem post-2001 (impairment only)",
+          "PPA et tests de dépréciation",
+        ],
+        [
+          "R&D",
+          "Recherche en charge ; développement immobilisable si critères PIRATE (IAS 38)",
+          "R&D en charge sauf logiciels internes (ASC 350-40)",
+          "EBITDA ajusté, actifs incorporels",
+        ],
+        [
+          "Leasing",
+          "IFRS 16 : quasi tout au bilan (dette + droit d'usage)",
+          "ASC 842 : similaire mais seuils et exemptions US",
+          "Dette nette, EBITDA (loyer → amort + intérêts)",
+        ],
+        [
+          "Revenus",
+          "IFRS 15 — 5 étapes, contrôle du bien/service",
+          "ASC 606 — aligné conceptuellement",
+          "ARR vs revenue SaaS, contrats long terme",
+        ],
+        [
+          "Intérêts (CFO)",
+          "Choix : intérêts payés souvent en CFO ou CFF",
+          "Intérêts payés en CFO (règle stricte)",
+          "CFO comparabilité cross-border",
+        ],
+        [
+          "Impairment",
+          "Test valeur recouvrable (max fair value less costs / VIU)",
+          "Two-step goodwill test (ASC 350)",
+          "Charges exceptionnelles, QoE",
+        ],
+        [
+          "Stock options",
+          "IFRS 2 — juste valeur à l'attribution, étalement",
+          "ASC 718 — modèle similaire",
+          "Diluted EPS, retraitement non-cash",
+        ],
+        [
+          "Joint-ventures",
+          "Mise en équivalence (IAS 28) — pas de proportionnelle",
+          "Equity method (ASC 323)",
+          "Consolidation, périmètre",
+        ],
+        [
+          "Cash flow",
+          "Méthode indirecte standard ; flexibilité intérêts/dividendes",
+          "Règles plus prescriptives (ASC 230)",
+          "Pont NI → FCF",
+        ],
+        [
+          "Présentation",
+          "Pas de format P&L imposé (par nature ou fonction)",
+          "SEC : lignes spécifiques (operating income…)",
+          "Comparables US vs EU",
+        ],
       ],
     },
     pitfalls: [

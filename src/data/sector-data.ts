@@ -1,14 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import {
-  Building,
-  Car,
-  Factory,
-  Heart,
-  Landmark,
-  Monitor,
-  ShoppingCart,
-  Zap,
-} from "lucide-react";
+import { Building, Car, Factory, Heart, Landmark, Monitor, ShoppingCart, Zap } from "lucide-react";
 import type { SectorId } from "@/lib/sectors";
 
 export type SectorPanorama = {

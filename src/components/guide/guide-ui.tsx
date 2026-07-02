@@ -81,8 +81,7 @@ export function GuideChipButton({
   size?: "sm" | "md";
   ariaPressed?: boolean;
 }) {
-  const sizeClass =
-    size === "sm" ? "px-3 min-h-11 min-w-11 text-xs" : "px-4 min-h-11 text-sm";
+  const sizeClass = size === "sm" ? "px-3 min-h-11 min-w-11 text-xs" : "px-4 min-h-11 text-sm";
   return (
     <button
       type="button"
@@ -105,7 +104,14 @@ type GuideModuleLinkProps = {
   icon: LucideIcon;
 } & (
   | {
-      to: "/cv" | "/excel" | "/pyramid" | "/accretion" | "/actualite" | "/glossaire" | "/mental-math";
+      to:
+        | "/cv"
+        | "/excel"
+        | "/pyramid"
+        | "/accretion"
+        | "/actualite"
+        | "/glossaire"
+        | "/mental-math";
       search?: never;
     }
   | { to: "/"; search: { tab: "banques" | "secteurs" | "guide" } }

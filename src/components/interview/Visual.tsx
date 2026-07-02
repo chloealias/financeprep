@@ -1018,7 +1018,14 @@ export function Visual({ type }: { type: string }) {
                   </text>
                 )}
                 <rect x={x} y="40" width="95" height="70" fill={s.color} rx="4" />
-                <text x={x + 47} y="72" fontSize="11" fill="white" textAnchor="middle" fontWeight="bold">
+                <text
+                  x={x + 47}
+                  y="72"
+                  fontSize="11"
+                  fill="white"
+                  textAnchor="middle"
+                  fontWeight="bold"
+                >
                   {s.label}
                 </text>
                 <text x={x + 47} y="88" fontSize="8" fill="#dbeafe" textAnchor="middle">
@@ -1060,10 +1067,24 @@ export function Visual({ type }: { type: string }) {
             return (
               <g key={i}>
                 <circle cx={x} cy="100" r="14" fill={i === 4 ? "#dc2626" : "#1e3a8a"} />
-                <text x={x} y="105" fontSize="10" fill="white" textAnchor="middle" fontWeight="bold">
+                <text
+                  x={x}
+                  y="105"
+                  fontSize="10"
+                  fill="white"
+                  textAnchor="middle"
+                  fontWeight="bold"
+                >
                   {i + 1}
                 </text>
-                <text x={x} y="70" fontSize="10" fill="#1e3a8a" textAnchor="middle" fontWeight="bold">
+                <text
+                  x={x}
+                  y="70"
+                  fontSize="10"
+                  fill="#1e3a8a"
+                  textAnchor="middle"
+                  fontWeight="bold"
+                >
                   {p.name}
                 </text>
                 <text x={x} y="135" fontSize="9" fill="#64748b" textAnchor="middle">

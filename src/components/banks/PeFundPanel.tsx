@@ -132,7 +132,9 @@ export function PeFundPanel({ fund, onClose }: PeFundPanelProps) {
             Question piège
           </div>
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-2">
-            <p className="text-amber-900 text-sm font-light italic">&ldquo;{fund.questionPiège}&rdquo;</p>
+            <p className="text-amber-900 text-sm font-light italic">
+              &ldquo;{fund.questionPiège}&rdquo;
+            </p>
           </div>
           {!showReponse ? (
             <button
@@ -144,7 +146,9 @@ export function PeFundPanel({ fund, onClose }: PeFundPanelProps) {
             </button>
           ) : (
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-              <p className="text-emerald-900 text-sm font-light leading-relaxed">{fund.reponsePiège}</p>
+              <p className="text-emerald-900 text-sm font-light leading-relaxed">
+                {fund.reponsePiège}
+              </p>
               <button
                 type="button"
                 onClick={() => setShowReponse(false)}

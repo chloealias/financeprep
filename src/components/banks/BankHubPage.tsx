@@ -96,8 +96,7 @@ export function BankHubPage() {
   const selectedBankId =
     hubView === "conseil" && bankFromUrl && getBankById(bankFromUrl) ? bankFromUrl : null;
   const selectedBank = selectedBankId ? getBankById(selectedBankId) : null;
-  const selectedPeId =
-    hubView === "pe" && peFromUrl && getPeFundById(peFromUrl) ? peFromUrl : null;
+  const selectedPeId = hubView === "pe" && peFromUrl && getPeFundById(peFromUrl) ? peFromUrl : null;
   const selectedPe = selectedPeId ? getPeFundById(selectedPeId) : null;
   const detailOpen = selectedBankId !== null || selectedPeId !== null;
   const captureScroll = usePreserveScrollOnDetailClose(detailOpen);
@@ -266,26 +265,30 @@ export function BankHubPage() {
       </div>
 
       {hubView === "conseil" && (
-      <div className="flex flex-wrap gap-2 mb-4">
-        {BANK_CATEGORY_FILTERS.map(({ id, label }) => (
-          <GuideChipButton
-            key={id}
-            size="sm"
-            active={categoryFilter === id && !targetsOnly}
-            onClick={() => {
-              setCategoryFilter(id);
-              setTargetsOnly(false);
-            }}
-          >
-            {label}
-          </GuideChipButton>
-        ))}
-        {showTargetsChip && (
-          <GuideChipButton size="sm" active={targetsOnly} onClick={() => setTargetsOnly((v) => !v)}>
-            Mes banques ({targetIds.length})
-          </GuideChipButton>
-        )}
-      </div>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {BANK_CATEGORY_FILTERS.map(({ id, label }) => (
+            <GuideChipButton
+              key={id}
+              size="sm"
+              active={categoryFilter === id && !targetsOnly}
+              onClick={() => {
+                setCategoryFilter(id);
+                setTargetsOnly(false);
+              }}
+            >
+              {label}
+            </GuideChipButton>
+          ))}
+          {showTargetsChip && (
+            <GuideChipButton
+              size="sm"
+              active={targetsOnly}
+              onClick={() => setTargetsOnly((v) => !v)}
+            >
+              Mes banques ({targetIds.length})
+            </GuideChipButton>
+          )}
+        </div>
       )}
 
       <div className="mb-8 relative max-w-md">

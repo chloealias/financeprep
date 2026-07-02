@@ -58,10 +58,12 @@ export const PE_FUND_LIST: PeFundProfile[] = [
       "Insister sur l'approche opérationnelle (EQT Motherbrain, value creation team) vs financial engineering pur.",
     dealEmblematique: {
       titre: "Buyout pan-européen",
-      texte: "EQT est parmi les GP les plus actifs en Europe sur les deals >1 Md€ — souvent en compétition avec KKR et CVC.",
+      texte:
+        "EQT est parmi les GP les plus actifs en Europe sur les deals >1 Md€ — souvent en compétition avec KKR et CVC.",
     },
     questionPiège: "EQT fait-elle du venture ou du buyout ?",
-    reponsePiège: "Les deux — plateforme multi-stratégies. En entretien LBO, parler du fonds Private Capital / Infrastructure selon le desk visé.",
+    reponsePiège:
+      "Les deux — plateforme multi-stratégies. En entretien LBO, parler du fonds Private Capital / Infrastructure selon le desk visé.",
   },
   {
     id: "kkr",
@@ -80,7 +82,8 @@ export const PE_FUND_LIST: PeFundProfile[] = [
       "Montrer la connaissance des 3 leviers LBO et citer un deal KKR récent en Europe. Distinguer KKR (GP) de KKR Capstone (ops).",
     dealEmblematique: {
       titre: "LBO large cap Europe",
-      texte: "KKR reste une référence absolue en entretien PE — préparer un deal et le mécanisme de création de valeur.",
+      texte:
+        "KKR reste une référence absolue en entretien PE — préparer un deal et le mécanisme de création de valeur.",
     },
     questionPiège: "KKR est-elle une banque d'investissement ?",
     reponsePiège:
@@ -103,7 +106,8 @@ export const PE_FUND_LIST: PeFundProfile[] = [
       "Citer un portefeuille français connu (Decathlon historique, etc.) et l'angle mid-cap vs mega-fonds US.",
     dealEmblematique: {
       titre: "Mid-cap française",
-      texte: "Eurazeo illustre le PE « français » accessible en entretien — tickets mid-cap, réseau industriel.",
+      texte:
+        "Eurazeo illustre le PE « français » accessible en entretien — tickets mid-cap, réseau industriel.",
     },
     questionPiège: "Eurazeo et Wendel, même groupe ?",
     reponsePiège:
@@ -129,7 +133,8 @@ export const PE_FUND_LIST: PeFundProfile[] = [
       texte: "PAI est souvent citée avec CVC et Ardian sur les deals mid/large cap européens.",
     },
     questionPiège: "PAI fait-elle du venture ?",
-    reponsePiège: "Non — buyout mid/large cap uniquement. Ne pas la présenter comme un fonds early-stage.",
+    reponsePiège:
+      "Non — buyout mid/large cap uniquement. Ne pas la présenter comme un fonds early-stage.",
   },
   {
     id: "wendel",
@@ -167,13 +172,16 @@ export const PE_FUND_LIST: PeFundProfile[] = [
       "Stratégie digital growth en complément du buyout",
       "Paris : bureau actif sur mandats français",
     ],
-    pointEntretien: "Citer le positionnement sectoriel (tech-enabled services) et un deal récent EU.",
+    pointEntretien:
+      "Citer le positionnement sectoriel (tech-enabled services) et un deal récent EU.",
     dealEmblematique: {
       titre: "Buyout tech-enabled services",
-      texte: "Apax illustre le PE global avec ancrage européen — comparable à CVC sur certains segments.",
+      texte:
+        "Apax illustre le PE global avec ancrage européen — comparable à CVC sur certains segments.",
     },
     questionPiège: "Apax est-elle uniquement UK ?",
-    reponsePiège: "Non — HQ Londres mais investissements globaux, bureau Paris, deals France réguliers.",
+    reponsePiège:
+      "Non — HQ Londres mais investissements globaux, bureau Paris, deals France réguliers.",
   },
   {
     id: "astorg",
@@ -188,10 +196,12 @@ export const PE_FUND_LIST: PeFundProfile[] = [
       "Secteurs défensifs (healthcare, software B2B)",
       "Moins médiatisé que PAI/Ardian mais très actif",
     ],
-    pointEntretien: "Mettre en avant le mid-cap et les build-ups — mécanisme de création de valeur clé.",
+    pointEntretien:
+      "Mettre en avant le mid-cap et les build-ups — mécanisme de création de valeur clé.",
     dealEmblematique: {
       titre: "Mid-cap buyout EU",
-      texte: "Astorg représente le segment mid-cap PE français en entretien — souvent en short-list avec PAI.",
+      texte:
+        "Astorg représente le segment mid-cap PE français en entretien — souvent en short-list avec PAI.",
     },
     questionPiège: "Astorg et Ardian, même taille ?",
     reponsePiège:
@@ -218,7 +228,8 @@ export const PE_FUND_LIST: PeFundProfile[] = [
     },
     emblematicDealId: "d01",
     questionPiège: "CD&R est-elle européenne ?",
-    reponsePiège: "US-based, mais très active en Europe. Opella prouve l'ancrage sur les grands carve-outs EU.",
+    reponsePiège:
+      "US-based, mais très active en Europe. Opella prouve l'ancrage sur les grands carve-outs EU.",
   },
   {
     id: "cvc",
