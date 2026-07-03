@@ -195,7 +195,7 @@ export function QuestionsTab({
       : "bg-muted text-foreground border-border";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:pb-12">
       <PageHeader
         eyebrow="Entraînement"
         title="Questions"
@@ -394,7 +394,7 @@ export function QuestionsTab({
               <div
                 key={q.id}
                 id={`question-card-${q.id}`}
-                className={`relative bg-card rounded-2xl shadow-card border-2 transition-all duration-300 overflow-hidden scroll-mt-24 ${isExpanded ? "border-primary shadow-card-elevated" : inReview ? "border-primary/40 hover:border-primary/60" : userRating >= 4 ? "border-primary/35 hover:border-primary/55" : userRating > 0 && userRating <= 2 ? "border-primary/25 hover:border-primary/45" : "border-border hover:border-primary/40 hover:shadow-card-hover"}`}
+                className={`relative bg-card rounded-2xl shadow-card border-2 transition-all duration-300 overflow-hidden scroll-mt-[calc(4.5rem+env(safe-area-inset-top))] sm:scroll-mt-24 ${isExpanded ? "border-primary shadow-card-elevated" : inReview ? "border-primary/40 hover:border-primary/60" : userRating >= 4 ? "border-primary/35 hover:border-primary/55" : userRating > 0 && userRating <= 2 ? "border-primary/25 hover:border-primary/45" : "border-border hover:border-primary/40 hover:shadow-card-hover"}`}
               >
                 <button
                   type="button"
@@ -414,16 +414,8 @@ export function QuestionsTab({
                     <Bookmark className="w-4 h-4" />
                   )}
                 </button>
-                <div className="w-full p-4 sm:p-6 pr-14 sm:pr-16 flex items-stretch gap-3 sm:gap-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (!isExpanded) captureScroll();
-                      setExpandedQuestion(isExpanded ? null : q.id);
-                    }}
-                    className="flex flex-1 min-w-0 min-h-11 items-start gap-3 sm:gap-4 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-expanded={isExpanded}
-                  >
+                <div className="w-full p-4 sm:p-6 pr-14 sm:pr-16">
+                  <div className="flex items-start gap-3 sm:gap-4">
                     <div className="flex-shrink-0">
                       <div
                         className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center font-serif text-base sm:text-lg transition-all ${isExpanded ? "bg-primary text-primary-foreground" : userRating >= 4 ? "bg-primary/10 text-primary" : "bg-muted text-foreground"}`}
@@ -436,26 +428,21 @@ export function QuestionsTab({
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className={`${hubBadgeGroupClass} mb-3`}>
+                      <div className={`${hubBadgeGroupClass} mb-2 sm:mb-3`}>
                         {(() => {
                           const cat = categories.find((c) => c.id === q.category);
                           const CatIcon = cat?.icon ?? BookOpen;
                           const isBrain = q.category === "brainteaser";
                           const catLabel = cat?.label ?? q.category;
                           return (
-                            <>
-                              <span
-                                title={catLabel}
-                                aria-label={`Catégorie : ${catLabel}`}
-                                className={`sm:hidden inline-flex items-center justify-center w-6 h-6 rounded-full ${isBrain ? "bg-primary/10 text-primary" : "bg-muted text-foreground"}`}
-                              >
-                                <CatIcon className="w-3.5 h-3.5" />
-                              </span>
-                              <span className={`hidden sm:inline-flex ${hubBadgeClass}`}>
-                                <CatIcon className="w-3.5 h-3.5 shrink-0" />
-                                {catLabel}
-                              </span>
-                            </>
+                            <span
+                              title={catLabel}
+                              aria-label={`Catégorie : ${catLabel}`}
+                              className={`inline-flex max-w-full ${hubBadgeClass} ${isBrain ? "bg-primary/10 text-primary border-primary/40" : ""}`}
+                            >
+                              <CatIcon className="w-3.5 h-3.5 shrink-0" />
+                              <span className="truncate">{catLabel}</span>
+                            </span>
                           );
                         })()}
                         {(() => {
@@ -487,24 +474,42 @@ export function QuestionsTab({
                           );
                         })()}
                       </div>
-                      <h3 className="text-foreground font-serif text-base sm:text-xl leading-snug">
-                        {q.question}
-                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!isExpanded) captureScroll();
+                          setExpandedQuestion(isExpanded ? null : q.id);
+                        }}
+                        className="w-full flex items-start gap-2 min-h-11 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        aria-expanded={isExpanded}
+                      >
+                        <h3 className="flex-1 min-w-0 text-foreground font-serif text-base sm:text-xl leading-snug">
+                          {q.question}
+                        </h3>
+                        <div
+                          className={`flex-shrink-0 mt-0.5 transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`}
+                        >
+                          <ChevronRight
+                            className="w-5 h-5 sm:w-6 sm:h-6 text-primary"
+                            aria-hidden="true"
+                          />
+                        </div>
+                      </button>
                     </div>
-                    <div
-                      className={`flex-shrink-0 self-center transition-transform duration-300 ${isExpanded ? "rotate-90" : ""}`}
-                    >
-                      <ChevronRight
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-primary"
-                        aria-hidden="true"
+                    <div className="hidden sm:flex flex-shrink-0 self-start pt-1">
+                      <StarRating
+                        value={userRating}
+                        onChange={(v) => onUpdateRating(q.id, v)}
+                        size="sm"
                       />
                     </div>
-                  </button>
-                  <div className="flex-shrink-0 self-start pt-1">
+                  </div>
+                  <div className="sm:hidden mt-2 pl-[3.25rem]">
                     <StarRating
                       value={userRating}
                       onChange={(v) => onUpdateRating(q.id, v)}
                       size="sm"
+                      compact
                     />
                   </div>
                 </div>

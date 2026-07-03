@@ -4,14 +4,19 @@ export function StarRating({
   value,
   onChange,
   size = "md",
+  compact = false,
 }: {
   value: number;
   onChange: (v: number) => void;
   size?: "sm" | "md" | "lg";
+  compact?: boolean;
 }) {
   const sizeClass = size === "sm" ? "w-4 h-4" : size === "lg" ? "w-7 h-7" : "w-5 h-5";
+  const touchClass = compact
+    ? "inline-flex items-center justify-center min-h-8 min-w-8"
+    : "touch-target";
   return (
-    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+    <div className="flex items-center gap-0.5 sm:gap-1" onClick={(e) => e.stopPropagation()}>
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
@@ -19,7 +24,7 @@ export function StarRating({
             e.stopPropagation();
             onChange(star === value ? 0 : star);
           }}
-          className="touch-target transition-transform hover:scale-110"
+          className={`${touchClass} transition-transform hover:scale-110`}
           aria-label={`Noter ${star} étoiles`}
         >
           <Star

@@ -64,7 +64,7 @@ export function ConceptCard({
             <Library className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 pr-2">
           <div className={`${hubBadgeGroupClass} mb-2`}>
             <span className="text-xs sm:text-xs uppercase tracking-wider font-semibold text-primary tabular-nums py-1 px-2.5">
               {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
@@ -75,7 +75,7 @@ export function ConceptCard({
               {getCategoryLabel(concept.category)}
             </span>
           </div>
-          <h3 className="text-foreground font-serif text-lg sm:text-xl leading-snug">
+          <h3 className="text-foreground font-serif text-base sm:text-xl leading-snug break-words">
             {concept.title}
           </h3>
           {!isExpanded && (
