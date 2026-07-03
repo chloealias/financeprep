@@ -72,7 +72,7 @@ export function SectorPanelContent({
         </p>
         <div className="grid sm:grid-cols-2 gap-4 mb-5">
           <div className="bg-card/80 rounded-xl border border-border p-4">
-            <div className="text-[11px] uppercase tracking-wider text-primary font-medium mb-1">
+            <div className="type-label text-primary mb-1">
               Taille du marché
             </div>
             <p className="text-foreground text-sm font-light leading-relaxed">
@@ -80,7 +80,7 @@ export function SectorPanelContent({
             </p>
           </div>
           <div className="bg-card/80 rounded-xl border border-border p-4">
-            <div className="text-[11px] uppercase tracking-wider text-primary font-medium mb-1">
+            <div className="type-label text-primary mb-1">
               Volume M&A
             </div>
             <p className="text-foreground text-sm font-light leading-relaxed">
@@ -89,7 +89,7 @@ export function SectorPanelContent({
           </div>
         </div>
         <div className="mb-4">
-          <div className="text-[11px] uppercase tracking-wider text-primary font-medium mb-2">
+          <div className="type-label text-primary mb-2">
             Acteurs majeurs
           </div>
           <div className="flex flex-wrap gap-2">
@@ -104,7 +104,7 @@ export function SectorPanelContent({
           </div>
         </div>
         <div>
-          <div className="text-[11px] uppercase tracking-wider text-primary font-medium mb-2">
+          <div className="type-label text-primary mb-2">
             Segments clés
           </div>
           <div className="flex flex-wrap gap-2">

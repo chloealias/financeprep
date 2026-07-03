@@ -38,7 +38,7 @@ export function MacroIndicatorsPanel() {
             </div>
             {row.interviewNote && (
               <p className="mt-1.5 text-muted-foreground font-light leading-snug border-t border-border pt-1.5">
-                <span className="text-primary uppercase tracking-wider text-[10px] font-medium">
+                <span className="text-primary type-label">
                   Entretien ·{" "}
                 </span>
                 {row.interviewNote}

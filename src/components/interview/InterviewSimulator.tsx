@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, Clock, Triangle, User } from "lucide-react";
 import { getTargetBankNames, loadProfile } from "@/lib/profile-storage";
 import { InterviewSession, InterviewSessionSetup } from "@/components/interview/InterviewSession";
+import { PageHeader } from "@/components/ui/page-header";
 
 const THIRTY_MIN_MS = 30 * 60 * 1000;
 
@@ -27,21 +28,16 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
           Retour
         </button>
 
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-12 bg-primary" />
-            <span className="text-primary text-sm tracking-[0.3em] uppercase font-light">
-              Simulation
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
-            Entretien <span className="italic font-light text-primary">30 min</span>
-          </h1>
-          <p className="text-muted-foreground mt-3 font-light max-w-2xl">
-            Pack structuré type vrai entretien : CV, technique, actualité M&A, sectoriel. Timer par
-            question + limite globale 30 minutes.
-          </p>
-        </div>
+        <PageHeader
+          eyebrow="Simulation"
+          title={
+            <>
+              Entretien <span className="type-accent">30 min</span>
+            </>
+          }
+          description="Pack structuré type vrai entretien : CV, technique, actualité M&A, sectoriel. Timer par question + limite globale 30 minutes."
+          className="mb-8"
+        />
 
         {targetBankNames.length > 0 && (
           <div className="mb-6 rounded-xl bg-primary/10 border border-primary/20 p-4 text-sm text-foreground">

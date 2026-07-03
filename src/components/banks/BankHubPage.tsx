@@ -16,6 +16,7 @@ import { BankLogo } from "@/components/banks/BankLogo";
 import { PeFundPanel } from "@/components/banks/PeFundPanel";
 import { PeFundLogo } from "@/components/banks/PeFundLogo";
 import { DetailSheet } from "@/components/hub/DetailSheet";
+import { PageHeader } from "@/components/ui/page-header";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
   BANK_LIST,
@@ -234,22 +235,20 @@ export function BankHubPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-12 bg-primary" />
-          <span className="text-primary text-sm tracking-[0.3em] uppercase font-light">
-            Ciblage entretien
-          </span>
-        </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
-          Fiches <span className="italic font-light text-primary">banques</span>
-        </h2>
-        <p className="text-muted-foreground mt-3 font-light max-w-2xl">
-          {hubView === "conseil"
+      <PageHeader
+        eyebrow="Ciblage entretien"
+        title={
+          <>
+            Fiches <span className="type-accent">banques</span>
+          </>
+        }
+        description={
+          hubView === "conseil"
             ? `${BANK_LIST.length} banques de conseil et groupes intégrés — fiches pour préparer vos entretiens M&A.`
-            : `${PE_FUND_LIST.length} fonds PE majeurs en France — stratégie, deals et questions piège.`}
-        </p>
-      </div>
+            : `${PE_FUND_LIST.length} fonds PE majeurs en France — stratégie, deals et questions piège.`
+        }
+        className="max-w-2xl"
+      />
 
       <div className="flex flex-wrap gap-2 mb-4">
         <GuideChipButton
@@ -360,7 +359,7 @@ export function BankHubPage() {
               <div className="mb-4">
                 <h3 className="text-lg font-serif text-foreground">
                   {BANK_CATEGORY_META[categoryId].label}
-                  <span className="text-muted-foreground font-sans text-sm font-light ml-2">
+                  <span className="text-muted-foreground text-sm font-light ml-2">
                     ({banks.length})
                   </span>
                 </h3>
@@ -413,7 +412,7 @@ export function BankHubPage() {
                                   to="/actualite"
                                   search={{ bank: bank.id }}
                                   onClick={(e) => e.stopPropagation()}
-                                  className="text-[10px] font-medium uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 px-1.5 py-0.5 rounded transition-colors"
+                                  className="text-xs font-medium uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 px-1.5 py-0.5 rounded transition-colors"
                                 >
                                   {dealCount} deal{dealCount > 1 ? "s" : ""}
                                 </Link>

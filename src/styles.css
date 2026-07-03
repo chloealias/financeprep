@@ -64,6 +64,9 @@
   --shadow-card-hover: 0 4px 12px -2px rgb(30 58 138 / 0.1), 0 8px 24px -6px rgb(30 58 138 / 0.07);
   --shadow-card-elevated:
     0 8px 24px -4px rgb(30 58 138 / 0.12), 0 16px 40px -8px rgb(30 58 138 / 0.06);
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 :root {
@@ -149,6 +152,41 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+}
+
+@layer components {
+  .type-eyebrow {
+    @apply text-primary text-sm uppercase tracking-[0.2em] font-light;
+  }
+
+  .type-display {
+    @apply text-4xl md:text-5xl font-serif text-foreground leading-tight;
+  }
+
+  .type-page-title {
+    @apply text-2xl sm:text-3xl font-serif text-foreground tracking-tight;
+  }
+
+  .type-section-title {
+    @apply text-xl font-serif text-foreground;
+  }
+
+  .type-card-title {
+    @apply font-serif text-lg leading-snug;
+  }
+
+  .type-label {
+    @apply text-xs uppercase tracking-wider font-medium text-muted-foreground;
+  }
+
+  .type-body-muted {
+    @apply text-sm text-muted-foreground font-light;
+  }
+
+  .type-accent {
+    @apply italic font-light text-primary;
   }
 }
 

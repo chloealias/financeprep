@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, Clock, Mic, Sparkles } from "lucide-react";
 import { FlashcardSession } from "@/components/flashcards/FlashcardSession";
 import { QuizSession } from "@/components/flashcards/QuizSession";
+import { PageHeader } from "@/components/ui/page-header";
 import { validateFlashcardsSearch } from "@/lib/route-search";
 
 export const Route = createFileRoute("/flashcards")({
@@ -56,18 +57,14 @@ function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
         Retour au guide
       </Link>
 
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-12 bg-primary" />
-          <span className="text-primary text-sm tracking-[0.3em] uppercase font-light">
-            Entraînement actif
-          </span>
-        </div>
-        <h1 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
-          Comment veux-tu <span className="italic font-light text-primary">t&apos;entraîner</span>{" "}
-          ?
-        </h1>
-      </div>
+      <PageHeader
+        eyebrow="Entraînement actif"
+        title={
+          <>
+            Comment veux-tu <span className="type-accent">t&apos;entraîner</span> ?
+          </>
+        }
+      />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <ToolCard

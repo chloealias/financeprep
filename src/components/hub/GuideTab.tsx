@@ -2,24 +2,20 @@ import { Link } from "@tanstack/react-router";
 import { ChevronRight, Sparkles } from "lucide-react";
 import { guideModules } from "@/data/guide-modules";
 import { GuideModuleLink } from "@/components/guide/guide-ui";
+import { PageHeader } from "@/components/ui/page-header";
 
 export function GuideTab() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-12 bg-primary" />
-          <span className="text-primary text-sm tracking-[0.3em] uppercase font-light">
-            Méthodologie
-          </span>
-        </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
-          Le <span className="italic font-light text-primary">guide complet</span>
-        </h2>
-        <p className="text-muted-foreground mt-3 font-light max-w-3xl">
-          6 guides interactifs. Cliquez sur un module pour l&apos;ouvrir en pleine page.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Méthodologie"
+        title={
+          <>
+            Le <span className="type-accent">guide complet</span>
+          </>
+        }
+        description="6 guides interactifs. Cliquez sur un module pour l'ouvrir en pleine page."
+      />
 
       <Link
         to="/flashcards"
@@ -34,7 +30,7 @@ export function GuideTab() {
             <div className="text-primary-foreground/70 text-xs uppercase tracking-[0.2em] font-semibold mb-1">
               Nouveau · Entraînement actif
             </div>
-            <h3 className="font-serif text-xl sm:text-2xl leading-snug">
+            <h3 className="type-card-title text-xl sm:text-2xl">
               Flashcards avec répétition espacée
             </h3>
             <p className="text-primary-foreground/80 text-sm font-light mt-1 hidden sm:block">

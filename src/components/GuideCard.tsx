@@ -37,7 +37,7 @@ export function GuideCard({ guide }: GuideCardProps) {
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-foreground leading-snug">{guide.title}</h3>
+        <h3 className="type-card-title text-foreground">{guide.title}</h3>
         <p className="text-sm text-muted-foreground leading-relaxed">{guide.description}</p>
       </div>
     </div>

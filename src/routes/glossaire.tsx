@@ -22,6 +22,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { PageHeader } from "@/components/ui/page-header";
 
 function SectionConceptLink({ category }: { category: CategoryId }) {
   const persistAndGo = () => {
@@ -47,7 +48,7 @@ function SectionConceptLink({ category }: { category: CategoryId }) {
       to="/"
       search={{ tab: "concepts" }}
       onClick={persistAndGo}
-      className="text-xs text-blue-600 hover:text-blue-900 underline underline-offset-2"
+      className="text-xs text-primary hover:text-primary/80 underline underline-offset-2"
     >
       Voir les concepts
     </Link>
@@ -91,38 +92,37 @@ function GlossairePage() {
     .filter((s) => s.items.length > 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50/40 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/40 to-background">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-6">
         <Link
           to="/"
           search={{ tab: "guide" }}
-          className="touch-target-bar gap-1.5 text-sm text-blue-700 hover:text-blue-900 transition-colors"
+          className="touch-target-bar gap-1.5 text-sm text-primary hover:text-primary/80 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" aria-hidden="true" />
           Retour au guide
         </Link>
 
-        <header className="space-y-3">
-          <h1 className="text-2xl sm:text-3xl font-medium text-blue-950 tracking-tight">
-            Glossaire des acronymes
-          </h1>
-          <p className="text-sm text-slate-600">
-            Tous les acronymes indispensables en TS / IB / PE.
-          </p>
-          <button
-            type="button"
-            onClick={() => setLearnOpen(true)}
-            className="touch-target-bar gap-2 rounded-full bg-blue-700 hover:bg-blue-800 transition-colors text-white text-sm font-medium px-4 shadow-sm"
-          >
-            <GraduationCap className="w-4 h-4" aria-hidden="true" />
-            Mode apprentissage
-          </button>
-        </header>
+        <PageHeader
+          size="page"
+          title="Glossaire des acronymes"
+          description="Tous les acronymes indispensables en TS / IB / PE."
+          className="mb-0 space-y-3"
+          showEyebrowLine={false}
+        />
+        <button
+          type="button"
+          onClick={() => setLearnOpen(true)}
+          className="touch-target-bar gap-2 rounded-full bg-primary hover:bg-primary/90 transition-colors text-primary-foreground text-sm font-medium px-4 shadow-sm"
+        >
+          <GraduationCap className="w-4 h-4" aria-hidden="true" />
+          Mode apprentissage
+        </button>
 
-        <div className="bg-white rounded-3xl border border-blue-100 shadow-card p-5 sm:p-6 space-y-5">
+        <div className="bg-card rounded-3xl border border-border shadow-card p-5 sm:p-6 space-y-5">
           <div className="relative">
             <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-400"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
               aria-hidden="true"
             />
             <input
@@ -130,41 +130,41 @@ function GlossairePage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher un acronyme ou une traduction…"
-              className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-blue-100 bg-blue-50/40 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-border bg-muted/40 focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
 
           {filtered.length === 0 ? (
-            <p className="text-sm text-slate-500 italic">Aucun résultat.</p>
+            <p className="text-sm text-muted-foreground italic">Aucun résultat.</p>
           ) : (
             filtered.map((section) => (
               <div key={section.title} className="space-y-2">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h2 className="text-xs uppercase tracking-[0.18em] text-blue-700 font-medium">
+                  <h2 className="type-label text-primary">
                     {section.title}
                   </h2>
                   {section.hubCategory && <SectionConceptLink category={section.hubCategory} />}
                 </div>
-                <ul className="divide-y divide-blue-50">
+                <ul className="divide-y divide-border">
                   {section.items.map((a) => (
                     <li
                       key={a.abbr}
                       className="py-3 grid grid-cols-[minmax(90px,auto)_1fr] gap-x-4 gap-y-1 sm:grid-cols-[180px_1fr_1.2fr] sm:gap-x-6 items-baseline"
                     >
-                      <span className="font-semibold text-blue-900 text-sm sm:text-base">
+                      <span className="font-semibold text-foreground text-sm sm:text-base">
                         {a.abbr}
                       </span>
                       {a.english ? (
                         <>
-                          <span className="text-slate-700 text-sm sm:text-base col-start-2">
+                          <span className="text-foreground text-sm sm:text-base col-start-2">
                             {a.english}
                           </span>
-                          <span className="text-slate-600 text-sm sm:text-base col-span-2 sm:col-span-1 sm:col-start-3">
+                          <span className="text-muted-foreground text-sm sm:text-base col-span-2 sm:col-span-1 sm:col-start-3">
                             {a.french}
                           </span>
                         </>
                       ) : (
-                        <span className="text-slate-600 text-sm sm:text-base col-start-2 sm:col-start-2 sm:col-span-2">
+                        <span className="text-muted-foreground text-sm sm:text-base col-start-2 sm:col-start-2 sm:col-span-2">
                           {a.french}
                         </span>
                       )}
@@ -180,7 +180,7 @@ function GlossairePage() {
       <Dialog open={learnOpen} onOpenChange={setLearnOpen}>
         <DialogContent className="max-w-xl">
           <DialogHeader>
-            <DialogTitle className="text-blue-950">Mode apprentissage</DialogTitle>
+            <DialogTitle className="font-serif text-foreground">Mode apprentissage</DialogTitle>
             <DialogDescription>
               Révise les acronymes en flashcards ou teste-toi en QCM.
             </DialogDescription>
@@ -239,14 +239,14 @@ function FlashcardMode() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between text-xs text-slate-500">
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span>
           {idx + 1} / {deck.length}
         </span>
         <button
           type="button"
           onClick={reshuffle}
-          className="touch-target-bar gap-1 text-blue-700 hover:text-blue-900"
+          className="touch-target-bar gap-1 text-primary hover:text-primary/80"
         >
           <Shuffle className="w-3.5 h-3.5" /> Mélanger
         </button>
@@ -255,23 +255,23 @@ function FlashcardMode() {
       <button
         type="button"
         onClick={() => setFlipped((f) => !f)}
-        className="w-full min-h-[220px] rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-white shadow-card flex flex-col items-center justify-center gap-3 p-6 text-center transition hover:shadow-card-hover"
+        className="w-full min-h-[220px] rounded-2xl border border-border bg-gradient-to-br from-muted to-card shadow-card flex flex-col items-center justify-center gap-3 p-6 text-center transition hover:shadow-card-hover"
       >
         {!flipped ? (
           <>
-            <span className="text-xs uppercase tracking-[0.18em] text-blue-600">Acronyme</span>
-            <span className="text-3xl sm:text-4xl font-semibold text-blue-950">{card.abbr}</span>
-            <span className="text-xs text-slate-400 mt-2 inline-flex items-center gap-1">
+            <span className="type-label text-primary">Acronyme</span>
+            <span className="text-3xl sm:text-4xl font-semibold text-foreground">{card.abbr}</span>
+            <span className="text-xs text-muted-foreground mt-2 inline-flex items-center gap-1">
               <RotateCw className="w-3 h-3" /> Cliquer pour révéler
             </span>
           </>
         ) : (
           <>
-            <span className="text-xs uppercase tracking-[0.18em] text-blue-600">Signification</span>
+            <span className="type-label text-primary">Signification</span>
             {card.english && (
-              <span className="text-base sm:text-lg font-medium text-blue-900">{card.english}</span>
+              <span className="text-base sm:text-lg font-medium text-foreground">{card.english}</span>
             )}
-            <span className="text-sm sm:text-base text-slate-700">{card.french}</span>
+            <span className="text-sm sm:text-base text-muted-foreground">{card.french}</span>
           </>
         )}
       </button>
@@ -280,14 +280,14 @@ function FlashcardMode() {
         <button
           type="button"
           onClick={prev}
-          className="touch-target-bar gap-1 rounded-full border border-blue-100 px-3 text-sm text-blue-800 hover:bg-blue-50"
+          className="touch-target-bar gap-1 rounded-full border border-border px-3 text-sm text-foreground hover:bg-muted"
         >
           <ChevronLeft className="w-4 h-4" /> Précédent
         </button>
         <button
           type="button"
           onClick={next}
-          className="touch-target-bar gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 text-sm"
+          className="touch-target-bar gap-1 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-4 text-sm"
         >
           Suivant <ChevronRight className="w-4 h-4" />
         </button>
@@ -379,28 +379,28 @@ function QcmMode() {
     const pct = total > 0 ? Math.round((score / total) * 100) : 0;
     return (
       <div className="text-center space-y-5 py-6">
-        <div className="text-xs uppercase tracking-[0.18em] text-blue-600">Résultat</div>
+        <div className="type-label text-primary">Résultat</div>
 
         <div className="flex items-center justify-center gap-6">
           <div className="space-y-1">
-            <div className="text-3xl font-semibold text-blue-950">
+            <div className="text-3xl font-semibold text-foreground">
               {score} / {total}
             </div>
-            <div className="text-xs text-slate-500">bonnes réponses</div>
+            <div className="text-xs text-muted-foreground">bonnes réponses</div>
           </div>
-          <div className="w-px h-10 bg-blue-100" />
+          <div className="w-px h-10 bg-border" />
           <div className="space-y-1">
-            <div className="text-3xl font-semibold text-blue-950">{pct}%</div>
-            <div className="text-xs text-slate-500">de réussite</div>
+            <div className="text-3xl font-semibold text-foreground">{pct}%</div>
+            <div className="text-xs text-muted-foreground">de réussite</div>
           </div>
-          <div className="w-px h-10 bg-blue-100" />
+          <div className="w-px h-10 bg-border" />
           <div className="space-y-1">
-            <div className="text-3xl font-semibold text-blue-950">{formatDuration(elapsed)}</div>
-            <div className="text-xs text-slate-500">temps</div>
+            <div className="text-3xl font-semibold text-foreground">{formatDuration(elapsed)}</div>
+            <div className="text-xs text-muted-foreground">temps</div>
           </div>
         </div>
 
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-muted-foreground">
           {score === total
             ? "Sans faute, bravo !"
             : score >= total * 0.7
@@ -412,14 +412,14 @@ function QcmMode() {
           <button
             type="button"
             onClick={restartSame}
-            className="touch-target-bar gap-1 rounded-full border border-blue-100 bg-white hover:bg-blue-50 text-blue-800 px-4 text-sm"
+            className="touch-target-bar gap-1 rounded-full border border-border bg-card hover:bg-muted text-foreground px-4 text-sm"
           >
             <RotateCw className="w-4 h-4" /> Recommencer la même session
           </button>
           <button
             type="button"
             onClick={restart}
-            className="touch-target-bar gap-1 rounded-full bg-blue-700 hover:bg-blue-800 text-white px-4 text-sm"
+            className="touch-target-bar gap-1 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-4 text-sm"
           >
             <Shuffle className="w-4 h-4" /> Nouveau quiz
           </button>
@@ -430,7 +430,7 @@ function QcmMode() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between text-xs text-slate-500">
+      <div className="flex items-center justify-between text-xs text-muted-foreground">
         <span>
           Question {idx + 1} / {total}
         </span>
@@ -438,7 +438,7 @@ function QcmMode() {
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-xs text-slate-500">Questions :</span>
+        <span className="text-xs text-muted-foreground">Questions :</span>
         {QCM_OPTIONS.map((opt) => {
           const active = qCount === opt;
           const label = opt === "all" ? "Toutes" : `${opt}`;
@@ -449,8 +449,8 @@ function QcmMode() {
               onClick={() => startQuiz(opt)}
               className={`touch-target-bar text-xs rounded-full px-2.5 transition border ${
                 active
-                  ? "bg-blue-700 text-white border-blue-700"
-                  : "bg-white text-slate-600 border-blue-100 hover:border-blue-300"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-card text-muted-foreground border-border hover:border-primary/40"
               }`}
             >
               {label}
@@ -459,20 +459,20 @@ function QcmMode() {
         })}
       </div>
 
-      <div className="rounded-2xl border border-blue-100 bg-blue-50/40 p-5 text-center">
-        <div className="text-xs uppercase tracking-[0.18em] text-blue-600 mb-2">Que signifie</div>
-        <div className="text-2xl sm:text-3xl font-semibold text-blue-950">{q.acronym.abbr}</div>
+      <div className="rounded-2xl border border-border bg-muted/40 p-5 text-center">
+        <div className="type-label text-primary mb-2">Que signifie</div>
+        <div className="text-2xl sm:text-3xl font-semibold text-foreground">{q.acronym.abbr}</div>
       </div>
 
       <div className="space-y-2">
         {q.choices.map((c) => {
           const isCorrect = c === q.correct;
           const isPicked = picked === c;
-          let cls = "border-blue-100 hover:bg-blue-50";
+          let cls = "border-border hover:bg-muted";
           if (picked) {
             if (isCorrect) cls = "border-green-300 bg-green-50";
             else if (isPicked) cls = "border-red-300 bg-red-50";
-            else cls = "border-blue-100 opacity-60";
+            else cls = "border-border opacity-60";
           }
           return (
             <button
@@ -482,7 +482,7 @@ function QcmMode() {
               disabled={!!picked}
               className={`w-full touch-target-bar text-left px-4 rounded-xl border text-sm transition justify-between gap-2 ${cls}`}
             >
-              <span className="text-slate-800">{c}</span>
+              <span className="text-foreground">{c}</span>
               {picked && isCorrect && <Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />}
               {picked && isPicked && !isCorrect && (
                 <X className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
@@ -497,7 +497,7 @@ function QcmMode() {
           type="button"
           onClick={next}
           disabled={!picked}
-          className="touch-target-bar gap-1 rounded-full bg-blue-700 hover:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 text-sm"
+          className="touch-target-bar gap-1 rounded-full bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed text-primary-foreground px-4 text-sm"
         >
           {idx + 1 >= total ? "Voir le résultat" : "Suivant"} <ChevronRight className="w-4 h-4" />
         </button>

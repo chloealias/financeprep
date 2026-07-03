@@ -66,11 +66,11 @@ export function ConceptCard({
         </div>
         <div className="flex-1 min-w-0">
           <div className={`${hubBadgeGroupClass} mb-2`}>
-            <span className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold text-primary tabular-nums py-1 px-2.5">
+            <span className="text-xs sm:text-xs uppercase tracking-wider font-semibold text-primary tabular-nums py-1 px-2.5">
               {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
             <span
-              className={`text-[10px] sm:text-xs uppercase tracking-wider font-semibold ${hubBadgeClass}`}
+              className={`text-xs sm:text-xs uppercase tracking-wider font-semibold ${hubBadgeClass}`}
             >
               {getCategoryLabel(concept.category)}
             </span>

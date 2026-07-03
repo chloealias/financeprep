@@ -4,6 +4,7 @@ import { SECTOR_DATA } from "@/data/sector-data";
 import type { SectorId } from "@/lib/sectors";
 import { SectorDetailDialog } from "@/components/sectors/SectorDetailDialog";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
+import { PageHeader } from "@/components/ui/page-header";
 
 const IsometricMap = lazy(() =>
   import("@/components/sectors/IsometricMap").then((m) => ({ default: m.IsometricMap })),
@@ -55,21 +56,15 @@ export function SectorsTab() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-12 bg-primary" />
-          <span className="text-primary text-sm tracking-[0.3em] uppercase font-light">
-            Couverture sectorielle
-          </span>
-        </div>
-        <h2 className="text-4xl md:text-5xl font-serif text-foreground leading-tight">
-          Fiches <span className="italic font-light text-primary">sectorielles</span>
-        </h2>
-        <p className="text-muted-foreground mt-3 font-light">
-          8 secteurs couvrant ~80% des deals. Cliquez sur un bâtiment ou utilisez les boutons sous
-          la carte pour ouvrir une fiche.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Couverture sectorielle"
+        title={
+          <>
+            Fiches <span className="type-accent">sectorielles</span>
+          </>
+        }
+        description="8 secteurs couvrant ~80% des deals. Cliquez sur un bâtiment ou utilisez les boutons sous la carte pour ouvrir une fiche."
+      />
 
       <Suspense
         fallback={

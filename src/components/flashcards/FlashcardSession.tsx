@@ -12,6 +12,7 @@ import {
   type SrsGrade,
   type SrsStore,
 } from "@/lib/srs";
+import { PageHeader } from "@/components/ui/page-header";
 
 type CardSource = "question" | "concept";
 
@@ -183,27 +184,21 @@ function FlashcardMenu({
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
       <Link
         to="/"
-        className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium mb-8"
+        className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Retour
       </Link>
 
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-3">
-          <div className="h-px w-12 bg-blue-700" />
-          <span className="text-blue-700 text-sm tracking-[0.3em] uppercase font-light">
-            Entraînement actif
-          </span>
-        </div>
-        <h1 className="text-4xl md:text-5xl font-serif text-blue-950 leading-tight">
-          Flashcards <span className="italic font-light text-blue-700">spaced repetition</span>
-        </h1>
-        <p className="text-blue-700 mt-3 font-light max-w-2xl">
-          Algorithme SM-2 : les cartes ratées reviennent vite, celles que vous maîtrisez
-          s&apos;espacent dans le temps. 20 cartes par session, 5 minutes.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Entraînement actif"
+        title={
+          <>
+            Flashcards <span className="type-accent">spaced repetition</span>
+          </>
+        }
+        description="Algorithme SM-2 : les cartes ratées reviennent vite, celles que vous maîtrisez s'espacent dans le temps. 20 cartes par session, 5 minutes."
+      />
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
@@ -215,7 +210,7 @@ function FlashcardMenu({
 
       {/* Scope picker */}
       <div className="mb-8">
-        <div className="text-xs uppercase tracking-wider text-blue-700 font-medium mb-3">
+        <div className="type-label text-primary mb-3">
           Périmètre
         </div>
         <div className="flex flex-wrap gap-2">
@@ -226,15 +221,15 @@ function FlashcardMenu({
               onClick={() => onScopeChange(s.id)}
               className={`touch-target-bar px-4 rounded-full text-sm font-medium border transition-colors ${
                 scope === s.id
-                  ? "bg-blue-900 text-white border-blue-900"
-                  : "bg-white text-blue-700 border-blue-200 hover:border-blue-400"
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-card text-primary border-border hover:border-primary/40"
               }`}
             >
               {s.label}
             </button>
           ))}
         </div>
-        <p className="text-blue-500 text-xs mt-2">{totalCards} cartes dans ce périmètre.</p>
+        <p className="text-muted-foreground text-xs mt-2">{totalCards} cartes dans ce périmètre.</p>
       </div>
 
       {/* CTA */}
@@ -242,7 +237,7 @@ function FlashcardMenu({
         type="button"
         onClick={onStart}
         disabled={reviewable === 0}
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-700 to-indigo-800 text-white font-medium text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+        className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-medium text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <Sparkles className="w-5 h-5" />
         {reviewable === 0
@@ -251,7 +246,7 @@ function FlashcardMenu({
       </button>
 
       {reviewable === 0 && counts.later > 0 && (
-        <p className="text-blue-600 text-sm mt-4 font-light">
+        <p className="text-muted-foreground text-sm mt-4 font-light">
           Toutes les cartes sont déjà programmées pour plus tard. Revenez demain ou changez de
           périmètre.
         </p>
@@ -271,8 +266,8 @@ function StatCard({
 }) {
   const tones = {
     alert: "bg-amber-50 border-amber-200 text-amber-900",
-    primary: "bg-blue-50 border-blue-200 text-blue-900",
-    neutral: "bg-slate-50 border-slate-200 text-slate-700",
+    primary: "bg-primary/10 border-primary/20 text-foreground",
+    neutral: "bg-muted border-border text-muted-foreground",
     success: "bg-emerald-50 border-emerald-200 text-emerald-900",
   } as const;
   return (
@@ -311,66 +306,66 @@ function CardView({
         <button
           type="button"
           onClick={onAbort}
-          className="touch-target-bar gap-2 text-blue-700 hover:text-blue-900 text-sm font-medium"
+          className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
           Quitter
         </button>
-        <div className="text-blue-700 text-sm font-medium tabular-nums">
+        <div className="text-primary text-sm font-medium tabular-nums">
           {index + 1} / {total}
         </div>
       </div>
 
       {/* Progress bar */}
-      <div className="h-1.5 bg-blue-100 rounded-full overflow-hidden mb-8">
+      <div className="h-1.5 bg-muted rounded-full overflow-hidden mb-8">
         <div
-          className="h-full bg-gradient-to-r from-blue-600 to-indigo-700 transition-all duration-300"
+          className="h-full bg-primary transition-all duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-card overflow-hidden min-h-[400px] flex flex-col">
-        <div className="px-6 py-4 border-b border-blue-100 bg-blue-50/50 flex items-center justify-between">
-          <span className="text-xs uppercase tracking-wider text-blue-700 font-semibold">
+      <div className="bg-card rounded-2xl border-2 border-border shadow-card overflow-hidden min-h-[400px] flex flex-col">
+        <div className="px-6 py-4 border-b border-border bg-muted/50 flex items-center justify-between">
+          <span className="type-label text-primary font-semibold">
             {card.source === "question" ? "Question" : "Notion"} · {getCategoryLabel(card.category)}
           </span>
           {card.difficulty && (
-            <span className="text-xs font-medium py-1 px-2.5 rounded bg-white border border-blue-200 text-blue-700 capitalize">
+            <span className="text-xs font-medium py-1 px-2.5 rounded bg-card border border-border text-primary capitalize">
               {card.difficulty}
             </span>
           )}
         </div>
 
         <div className="flex-1 px-6 py-8 flex flex-col">
-          <div className="text-blue-700 text-xs uppercase tracking-wider font-medium mb-3">
+          <div className="type-label text-primary mb-3">
             Recto
           </div>
-          <h2 className="text-2xl sm:text-3xl font-serif text-blue-950 leading-snug mb-6">
+          <h2 className="type-page-title leading-snug mb-6">
             {card.front}
           </h2>
 
           {revealed && (
             <>
-              <div className="border-t border-dashed border-blue-200 my-4" />
-              <div className="text-blue-700 text-xs uppercase tracking-wider font-medium mb-3">
+              <div className="border-t border-dashed border-border my-4" />
+              <div className="type-label text-primary mb-3">
                 Verso
               </div>
-              <p className="text-blue-900 leading-relaxed font-light text-base sm:text-lg whitespace-pre-line">
+              <p className="text-foreground leading-relaxed font-light text-base sm:text-lg whitespace-pre-line">
                 {card.back}
               </p>
               {card.hubQuestionId && (
                 <Link
                   to="/"
                   search={{ tab: "questions" }}
-                  className="inline-block mt-4 text-sm text-blue-700 hover:text-blue-900 font-medium underline"
+                  className="inline-block mt-4 text-sm text-primary hover:text-primary/80 font-medium underline"
                 >
                   Réponse modèle complète dans Questions →
                 </Link>
               )}
               {card.hint && (
-                <div className="mt-5 rounded-lg bg-gradient-to-r from-indigo-900 to-blue-900 text-white px-4 py-3">
-                  <div className="text-blue-200 text-xs uppercase tracking-[0.2em] font-medium mb-1">
+                <div className="mt-5 rounded-lg bg-primary text-primary-foreground px-4 py-3">
+                  <div className="text-primary-foreground/70 text-xs uppercase tracking-[0.2em] font-medium mb-1">
                     💡 {card.source === "concept" ? "Formule" : "Conseil"}
                   </div>
                   <p className="text-sm font-light leading-relaxed">{card.hint}</p>
@@ -387,7 +382,7 @@ function CardView({
           <button
             type="button"
             onClick={onReveal}
-            className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-blue-900 text-white font-medium hover:bg-blue-800 transition-colors"
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
           >
             <Eye className="w-5 h-5" />
             Révéler la réponse
@@ -437,7 +432,7 @@ function GradeButton({
 }) {
   const tones = {
     red: "bg-red-50 border-red-200 text-red-900 hover:bg-red-100 hover:border-red-300",
-    blue: "bg-blue-50 border-blue-200 text-blue-900 hover:bg-blue-100 hover:border-blue-300",
+    blue: "bg-primary/10 border-primary/20 text-foreground hover:bg-primary/15 hover:border-primary/30",
     emerald:
       "bg-emerald-50 border-emerald-200 text-emerald-900 hover:bg-emerald-100 hover:border-emerald-300",
   } as const;
@@ -471,11 +466,11 @@ function SessionDone({
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16 text-center">
-      <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-blue-700 to-indigo-800 text-white mb-6">
+      <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary text-primary-foreground mb-6">
         <CheckCircle2 className="w-10 h-10" />
       </div>
-      <h1 className="text-4xl font-serif text-blue-950 mb-3">Session terminée</h1>
-      <p className="text-blue-700 font-light mb-10">
+      <h1 className="type-display mb-3">Session terminée</h1>
+      <p className="type-body-muted mb-10">
         {total} cartes révisées · {successRate}% de réussite
       </p>
 
@@ -484,9 +479,9 @@ function SessionDone({
           <div className="text-3xl font-serif text-red-900">{stats.again}</div>
           <div className="text-xs uppercase tracking-wider text-red-700 mt-1">À revoir</div>
         </div>
-        <div className="rounded-xl border-2 border-blue-200 bg-blue-50 px-3 py-4">
-          <div className="text-3xl font-serif text-blue-900">{stats.good}</div>
-          <div className="text-xs uppercase tracking-wider text-blue-700 mt-1">Correct</div>
+        <div className="rounded-xl border-2 border-primary/20 bg-primary/10 px-3 py-4">
+          <div className="text-3xl font-serif text-foreground">{stats.good}</div>
+          <div className="type-label text-primary mt-1">Correct</div>
         </div>
         <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-4">
           <div className="text-3xl font-serif text-emerald-900">{stats.easy}</div>
@@ -498,7 +493,7 @@ function SessionDone({
         <button
           type="button"
           onClick={onRestart}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-900 text-white font-medium hover:bg-blue-800 transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
         >
           <Sparkles className="w-4 h-4" />
           Nouvelle session
@@ -506,7 +501,7 @@ function SessionDone({
         <button
           type="button"
           onClick={onBackToMenu}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border-2 border-blue-200 text-blue-900 font-medium hover:border-blue-400 transition-colors"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-card border-2 border-border text-foreground font-medium hover:border-primary/40 transition-colors"
         >
           Retour au menu
         </button>

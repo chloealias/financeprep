@@ -157,10 +157,10 @@ export function ProfilePage() {
       />
 
       <section className="mb-8 rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-card">
-        <h2 className="text-foreground font-serif text-lg mb-4">Préférences entretien</h2>
+        <h2 className="type-section-title mb-4">Préférences entretien</h2>
         <div className="grid sm:grid-cols-3 gap-4">
           <label className="block">
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">
+            <span className="type-label mb-1 block">
               Entretien
             </span>
             <input
@@ -171,7 +171,7 @@ export function ProfilePage() {
             />
           </label>
           <label className="block">
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">
+            <span className="type-label mb-1 block">
               Niveau
             </span>
             <select
@@ -187,7 +187,7 @@ export function ProfilePage() {
             </select>
           </label>
           <label className="block">
-            <span className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 block">
+            <span className="type-label mb-1 block">
               Process
             </span>
             <select
@@ -206,7 +206,7 @@ export function ProfilePage() {
       </section>
 
       <section className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
-        <h2 className="text-foreground font-serif text-lg mb-3">Objectifs</h2>
+        <h2 className="type-section-title mb-3">Objectifs</h2>
 
         <p className="mb-4 text-xs text-muted-foreground">
           Simulations : {formatPackPersonalizationShort(packSummary)}
@@ -297,7 +297,7 @@ export function ProfilePage() {
       </section>
 
       <section className="mb-10">
-        <h2 className="text-foreground font-serif text-xl mb-4">Aujourd&apos;hui</h2>
+        <h2 className="type-section-title mb-4">Aujourd&apos;hui</h2>
         <div className="grid sm:grid-cols-2 gap-3">
           <TodayCard
             title="Flashcards SRS"
@@ -373,7 +373,7 @@ export function ProfilePage() {
 
       <section className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-foreground font-serif text-xl">Activité</h2>
+          <h2 className="type-section-title">Activité</h2>
           <Link
             to="/"
             search={{ tab: "progress" }}

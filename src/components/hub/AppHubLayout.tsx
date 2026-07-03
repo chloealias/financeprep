@@ -127,14 +127,14 @@ export function AppHubLayout({
                   <Icon className="w-5 h-5" aria-hidden="true" />
                   {p.count != null && (
                     <span
-                      className={`absolute -top-1 -right-0 text-[9px] font-semibold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center ${isActive ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}
+                      className={`absolute -top-1 -right-0 text-xs font-semibold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center ${isActive ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}
                     >
                       {p.count}
                     </span>
                   )}
                 </div>
                 <span
-                  className={`text-[10px] leading-none ${isActive ? "font-semibold" : "font-medium"}`}
+                  className={`text-xs leading-none ${isActive ? "font-semibold" : "font-medium"}`}
                 >
                   {p.label}
                 </span>
@@ -150,7 +150,7 @@ export function AppHubLayout({
         <div className="text-center">
           <div className="inline-flex items-center gap-3 mb-3">
             <div className="h-px w-12 bg-primary" />
-            <span className="text-primary text-xs tracking-[0.3em] uppercase">
+            <span className="type-eyebrow text-xs">
               Bonne préparation
             </span>
             <div className="h-px w-12 bg-primary" />

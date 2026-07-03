@@ -28,6 +28,7 @@ import { Visual } from "@/components/interview/Visual";
 import { StarRating } from "@/components/interview/StarRating";
 import { FilterRadioGroup } from "@/components/interview/FilterRadioGroup";
 import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
+import { PageHeader } from "@/components/ui/page-header";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 
@@ -195,14 +196,16 @@ export function QuestionsTab({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <h2 className="text-2xl sm:text-3xl font-medium text-foreground tracking-tight mb-6 sm:mb-8">
-        Questions
-      </h2>
+      <PageHeader
+        eyebrow="Entraînement"
+        title="Questions"
+        description="131 questions d'entretien avec réponses modèles, filtres et auto-évaluation."
+      />
       {/* Filtres */}
       <div className="bg-card rounded-2xl shadow-card border border-border p-4 sm:p-6 mb-6 sm:mb-8">
         <div className="hidden sm:flex items-center gap-2 mb-5">
           <Filter className="w-4 h-4 text-primary" />
-          <h2 className="text-foreground font-serif text-lg">Filtres & recherche</h2>
+          <h2 className="type-section-title">Filtres & recherche</h2>
         </div>
 
         <div className="flex items-center gap-2 mb-5 sm:mb-5">

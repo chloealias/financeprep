@@ -52,7 +52,7 @@ export function ProfileAppearanceEditor({
 
       {showAppPreview && (
         <div className="mb-6">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+          <p className="type-label mb-2">
             Aperçu header
           </p>
           <ProfileBanner bannerId={profile.bannerId} className="h-16 rounded-xl overflow-hidden">
@@ -67,7 +67,7 @@ export function ProfileAppearanceEditor({
       )}
 
       <div className="mb-6">
-        <h3 className="text-sm font-medium text-foreground mb-3">Icône de profil</h3>
+        <h3 className="type-section-title text-lg mb-3">Icône de profil</h3>
         <div className="flex gap-1 p-1 bg-muted rounded-lg mb-3 max-w-xs">
           <button
             type="button"
@@ -171,7 +171,7 @@ export function ProfileAppearanceEditor({
       </div>
 
       <div className="mb-6">
-        <h3 className="text-sm font-medium text-foreground mb-3">Couleur d&apos;accent</h3>
+        <h3 className="type-section-title text-lg mb-3">Couleur d&apos;accent</h3>
         <div className="flex flex-wrap gap-2">
           {PROFILE_ACCENT_THEMES.map((theme) => {
             const selected = (profile.accentThemeId ?? "navy") === theme.id;
@@ -199,7 +199,7 @@ export function ProfileAppearanceEditor({
       </div>
 
       <div>
-        <h3 className="text-sm font-medium text-foreground mb-3">
+        <h3 className="type-section-title text-lg mb-3">
           Bannière de l&apos;app ({PROFILE_BANNERS.length} thèmes)
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
@@ -215,7 +215,7 @@ export function ProfileAppearanceEditor({
                 }`}
                 aria-pressed={selected}
               >
-                <span className="absolute bottom-1 left-2 text-[10px] font-medium text-white/90 drop-shadow">
+                <span className="absolute bottom-1 left-2 text-xs font-medium text-white/90 drop-shadow">
                   {label}
                 </span>
               </button>

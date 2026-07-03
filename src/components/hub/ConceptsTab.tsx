@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { concepts } from "@/data/concepts";
 import { QUESTION_CATEGORIES, getCategoryLabel } from "@/lib/categories";
 import { ConceptCard } from "@/components/interview/ConceptCard";
+import { PageHeader } from "@/components/ui/page-header";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import { loadSavedFilters, saveSavedFilters, type SavedFilters } from "@/lib/storage";
 
@@ -81,14 +82,12 @@ export function ConceptsTab() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
-      <div className="mb-6 sm:mb-10">
-        <h2 className="text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-          Concepts essentiels
-        </h2>
-        <p className="text-muted-foreground mt-2 font-light text-sm sm:text-base hidden sm:block">
-          {concepts.length} fiches pédagogiques.
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Référence"
+        title="Concepts essentiels"
+        description={`${concepts.length} fiches pédagogiques.`}
+        className="mb-6 sm:mb-10"
+      />
 
       {/* Filtres + mini-nav : un seul bloc sticky top-0 (fond blanc opaque) */}
       <div
@@ -96,7 +95,7 @@ export function ConceptsTab() {
         className="sticky top-0 z-40 -mx-4 sm:-mx-6 lg:-mx-8 mb-6 sm:mb-8 bg-card border-b border-border shadow-[0_4px_12px_-2px_rgba(30,58,138,0.12)] isolate"
       >
         <div className="px-4 sm:px-6 lg:px-8 pt-3 pb-3 sm:pt-4 sm:pb-4">
-          <div className="hidden sm:block text-xs uppercase tracking-wider text-primary font-medium mb-3">
+          <div className="hidden sm:block type-label text-primary mb-3">
             Filtrer par thématique
           </div>
           <div
@@ -126,7 +125,7 @@ export function ConceptsTab() {
                     <Icon className="w-3.5 h-3.5" />
                     <span className="whitespace-nowrap">{cat.label}</span>
                     <span
-                      className={`text-[11px] px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/20" : "bg-muted"}`}
+                      className={`text-xs px-1.5 py-0.5 rounded-full ${isActive ? "bg-white/20" : "bg-muted"}`}
                     >
                       {count}
                     </span>

@@ -23,6 +23,7 @@ import {
   saveSavedFilters,
   type SavedFilters,
 } from "@/lib/storage";
+import { PageHeader } from "@/components/ui/page-header";
 
 type ProgressCategory = {
   id: string;
@@ -133,22 +134,20 @@ export function ProgressPage({
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
-      <div className="mb-8 sm:mb-10">
-        <h2 className="text-2xl sm:text-3xl font-medium text-foreground tracking-tight">
-          Progression
-        </h2>
-        <p className="mt-2 text-sm text-muted-foreground font-light">
-          Vos étoiles, filtres et liste à réviser sont enregistrés sur cet appareil (navigateur).
-          Elles ne se synchronisent pas entre téléphone et ordinateur.
+      <PageHeader
+        eyebrow="Suivi"
+        title="Progression"
+        description="Vos étoiles, filtres et liste à réviser sont enregistrés sur cet appareil (navigateur). Elles ne se synchronisent pas entre téléphone et ordinateur."
+        className="mb-8 sm:mb-10"
+      />
+      {!storageOk && (
+        <p className="-mt-6 mb-8 text-sm text-foreground bg-muted border border-border rounded-lg px-3 py-2">
+          Le stockage local est bloqué (navigation privée ou réglages du navigateur). Vos notes ne
+          pourront pas être conservées après fermeture de l’onglet.
         </p>
-        {!storageOk && (
-          <p className="mt-2 text-sm text-foreground bg-muted border border-border rounded-lg px-3 py-2">
-            Le stockage local est bloqué (navigation privée ou réglages du navigateur). Vos notes ne
-            pourront pas être conservées après fermeture de l’onglet.
-          </p>
-        )}
+      )}
 
-        <div className="mt-6 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
+      <div className="mb-8 sm:mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
           <div className="flex items-baseline justify-between gap-3 mb-3">
             <span className="text-muted-foreground text-sm font-light">
               Questions maîtrisées (≥ 4★)
@@ -173,11 +172,10 @@ export function ProgressPage({
             />
           </div>
         </div>
-      </div>
 
       {/* Bloc Reprendre */}
       <section aria-label="Reprendre votre travail" className="mb-10">
-        <h3 className="text-foreground font-serif text-xl mb-4">Reprendre où vous en êtes</h3>
+        <h3 className="type-section-title mb-4">Reprendre où vous en êtes</h3>
         <div className="grid sm:grid-cols-2 gap-3">
           <button
             type="button"
