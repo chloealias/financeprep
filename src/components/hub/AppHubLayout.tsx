@@ -21,7 +21,7 @@ const pages: HubPage[] = [
   { id: "concepts", label: "Notions", icon: Library, count: concepts.length },
   { id: "guide", label: "Guide", icon: BookMarked },
   { id: "secteurs", label: "Secteurs", icon: Building2 },
-  { id: "banques", label: "Banque", icon: Landmark },
+  { id: "banques", label: "Banques", icon: Landmark },
 ];
 
 type AppHubLayoutProps = {

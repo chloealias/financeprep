@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "@tanstack/react-router";
-import { BarChart3, Landmark } from "lucide-react";
+import { BarChart3 } from "lucide-react";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { getProfileMenuBadges } from "@/lib/profile-dashboard";
-import { formatInterviewCountdown, daysUntilInterview } from "@/lib/profile-storage";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { requestOpenTargetsFilter, getTargetBankIds } from "@/lib/target-banks-storage";
+import { getTargetBankIds } from "@/lib/target-banks-storage";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import type { AppTab } from "@/lib/app-tabs";
 
@@ -130,19 +129,6 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
       >
         <BarChart3 className="w-4 h-4 text-primary" />
         Progression
-      </button>
-      <button
-        type="button"
-        role="menuitem"
-        onClick={() => {
-          requestOpenTargetsFilter();
-          onPageChange("banques");
-          setOpen(false);
-        }}
-        className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-foreground hover:bg-muted"
-      >
-        <Landmark className="w-4 h-4 text-primary" />
-        {targetCount > 0 ? `Banques (${targetCount})` : "Banques"}
       </button>
     </>
   );

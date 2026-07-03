@@ -96,63 +96,65 @@ export function ProfileAppearanceEditor({
         </div>
 
         {avatarTab === "icon" ? (
-          <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
-            {PROFILE_ICONS.map(({ id, label, Icon, bg, fg }) => {
-              const selected =
-                (profile.avatarKind ?? "icon") !== "pattern" &&
-                (profile.avatarId ?? "landmark") === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  title={label}
-                  onClick={() => selectIcon(id)}
-                  className={`aspect-square min-h-10 min-w-10 rounded-xl flex items-center justify-center transition-all ${
-                    selected
-                      ? "ring-2 ring-ring ring-offset-2 scale-105"
-                      : "opacity-85 hover:opacity-100 hover:scale-105"
-                  }`}
-                  style={{ backgroundColor: bg, color: fg }}
-                  aria-pressed={selected}
-                >
-                  <Icon className="w-4 h-4" />
-                </button>
-              );
-            })}
-          </div>
-          
-          <div className="mt-4">
-            <h4 className="text-xs font-medium text-foreground mb-2">
-              Couleur de l&apos;icône (optionnel)
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {PROFILE_ICON_COLORS.map((opt) => {
-                const selected = (profile.avatarIconColorId ?? "default") === opt.id;
+          <>
+            <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
+              {PROFILE_ICONS.map(({ id, label, Icon, bg, fg }) => {
+                const selected =
+                  (profile.avatarKind ?? "icon") !== "pattern" &&
+                  (profile.avatarId ?? "landmark") === id;
                 return (
                   <button
-                    key={opt.id}
+                    key={id}
                     type="button"
-                    onClick={() => onChange({ avatarIconColorId: opt.id })}
-                    className={`touch-target-bar gap-2 rounded-lg border px-3 text-xs transition-colors ${
+                    title={label}
+                    onClick={() => selectIcon(id)}
+                    className={`aspect-square min-h-10 min-w-10 rounded-xl flex items-center justify-center transition-all ${
                       selected
-                        ? "border-primary bg-primary/10 text-foreground"
-                        : "border-border bg-card text-foreground hover:border-primary/40"
+                        ? "ring-2 ring-ring ring-offset-2 scale-105"
+                        : "opacity-85 hover:opacity-100 hover:scale-105"
                     }`}
+                    style={{ backgroundColor: bg, color: fg }}
                     aria-pressed={selected}
                   >
-                    <span
-                      className={`h-3 w-3 rounded-full border ${opt.id === "default" ? "bg-transparent" : ""}`}
-                      style={{
-                        background: opt.id === "default" ? undefined : opt.bg,
-                        borderColor: opt.id === "default" ? "var(--border)" : "transparent",
-                      }}
-                    />
-                    {opt.label}
+                    <Icon className="w-4 h-4" />
                   </button>
                 );
               })}
             </div>
-          </div>
+
+            <div className="mt-4">
+              <h4 className="text-xs font-medium text-foreground mb-2">
+                Couleur de l&apos;icône (optionnel)
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {PROFILE_ICON_COLORS.map((opt) => {
+                  const selected = (profile.avatarIconColorId ?? "default") === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => onChange({ avatarIconColorId: opt.id })}
+                      className={`touch-target-bar gap-2 rounded-lg border px-3 text-xs transition-colors ${
+                        selected
+                          ? "border-primary bg-primary/10 text-foreground"
+                          : "border-border bg-card text-foreground hover:border-primary/40"
+                      }`}
+                      aria-pressed={selected}
+                    >
+                      <span
+                        className={`h-3 w-3 rounded-full border ${opt.id === "default" ? "bg-transparent" : ""}`}
+                        style={{
+                          background: opt.id === "default" ? undefined : opt.bg,
+                          borderColor: opt.id === "default" ? "var(--border)" : "transparent",
+                        }}
+                      />
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </>
         ) : (
           <div className="flex flex-wrap items-center gap-4">
             <ProfileAvatar profile={{ ...profile, avatarKind: "pattern" }} size="lg" ring />
