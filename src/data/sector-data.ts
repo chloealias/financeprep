@@ -341,7 +341,7 @@ export const SECTOR_DATA: Record<SectorId, SectorSheetData> = {
       texte:
         "Tendance M&A 2025-26 : transition BEV, pression prix, entrée des OEM chinois. Stellantis, Renault, VW au cœur des entretiens sectoriels.",
     },
-    emblematicDealId: "d18",
+    emblematicDealId: "d17",
     question:
       "Pourquoi un constructeur auto peut-il avoir un EBITDA positif mais une valorisation faible ?",
     reponse:

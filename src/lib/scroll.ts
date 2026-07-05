@@ -63,7 +63,7 @@ export function restoreWindowScrollPosition(top: number, delayMs = 0): () => voi
     });
   };
 
-  let timer: ReturnType<typeof setTimeout> | undefined;
+  let timer: number | undefined;
   if (delayMs > 0) {
     timer = window.setTimeout(schedule, delayMs);
   } else {

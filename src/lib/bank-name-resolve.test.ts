@@ -12,7 +12,7 @@ describe("bank-name-resolve", () => {
     const deal = getDealById("d01");
     expect(deal).toBeDefined();
     const labels = collectDealBankLabels(deal!);
-    expect(labels.some((l) => l.includes("Citi"))).toBe(true);
+    expect(labels.some((l) => l.includes("Citigroup"))).toBe(true);
     expect(labels.some((l) => l.includes("Rothschild"))).toBe(true);
   });
 });

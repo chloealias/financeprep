@@ -300,7 +300,6 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                       key={`${link.to}-${link.label}`}
                       to={link.to}
                       search={link.search}
-                      params={link.params}
                       className="text-sm text-primary hover:text-primary/80 font-medium underline"
                     >
                       {link.label}

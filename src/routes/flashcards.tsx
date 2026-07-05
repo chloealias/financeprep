@@ -4,7 +4,7 @@ import { ArrowLeft, Clock, Mic, Sparkles } from "lucide-react";
 import { FlashcardSession } from "@/components/flashcards/FlashcardSession";
 import { QuizSession } from "@/components/flashcards/QuizSession";
 import { PageHeader } from "@/components/ui/page-header";
-import { validateFlashcardsSearch } from "@/lib/route-search";
+import { validateFlashcardsSearch, defaultHomeSearch } from "@/lib/route-search";
 
 export const Route = createFileRoute("/flashcards")({
   validateSearch: validateFlashcardsSearch,
@@ -51,6 +51,7 @@ function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
       <Link
         to="/"
+        search={defaultHomeSearch()}
         className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />

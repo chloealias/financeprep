@@ -3,6 +3,7 @@ import { getSectorIdForSecteur } from "@/lib/sector-deals";
 
 export type MaDealType =
   | "M&A"
+  | "IPO"
   | "LBO"
   | "Carve-out"
   | "Restructuring"
@@ -90,7 +91,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
         {
           label: "Coordinateurs dette",
           banks: [
-            "Citi",
+            "Citigroup",
             "Goldman Sachs",
             "Barclays",
             "BNP Paribas",
@@ -239,7 +240,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     type: "OPA",
     secteur: "FIG — Banques",
     headlineEv: "~43 Md€ (capitalisation CBK)",
-    banks: [],
+    banks: ["Goldman Sachs", "Rothschild & Co", "UBS", "JPMorgan"],
     parties: [
       {
         label: "Cible",
@@ -269,7 +270,16 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
         value: "Détient ~12% de Commerzbank (reliquat sauvetage 2008), opposé au rachat",
       },
     ],
-    advisors: {},
+    advisors: {
+      sellSide: [
+        "Goldman Sachs (défense Commerzbank)",
+        "UBS (conseil supervisory board Commerzbank)",
+      ],
+      other: [
+        { label: "État allemand (~12 %)", banks: ["Rothschild & Co"] },
+        { label: "Bookrunner cession partielle sept. 2024", banks: ["JPMorgan"] },
+      ],
+    },
     interests: [
       {
         side: "UniCredit",
@@ -281,7 +291,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
     ],
     contexte:
-      "CEO Commerzbank : Bettina Orlopp. OPA hostile / échange d'actions. Résistance politique allemande forte. Offre échouée à convaincre le free-float (décote ~14 % vs cours) ; UniCredit conserve ~28–30 % + dérivés (~42 % d'exposition économique totale). Clôture réglementaire ECB attendue 2027.",
+      "CEO Commerzbank : Bettina Orlopp. OPA hostile / échange d'actions. Résistance politique allemande forte. Offre échouée à convaincre le free-float (décote ~14 % vs cours) ; UniCredit conserve ~28–30 % + dérivés (~42 % d'exposition économique totale). Clôture réglementaire ECB attendue 2027. Goldman Sachs conseille la défense de Commerzbank ; Rothschild conseille l'État allemand sur sa participation résiduelle.",
     pointEntretien:
       "Incontournable en FIG ou M&A européen. Expliquer : OPA progressive via total return swaps, seuil 30 % en droit allemand, échec relatif de l'offre (12,5 % tendered), pourquoi les fusions bancaires cross-border échouent en Europe (pas d'union bancaire, résistance politique, exigences CET1).",
     ftUrl: "https://www.ft.com/content/unicredit-commerzbank",
@@ -484,7 +494,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     type: "OPA",
     secteur: "Santé / Biopharma",
     headlineEv: "~$9,1-9,5 Md (equity value)",
-    banks: [],
+    banks: ["Centerview Partners", "Jefferies"],
     parties: [
       {
         label: "Cible",
@@ -502,7 +512,9 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
         value: "~$9,1 Md upfront ; jusqu'à ~$9,5 Md avec CVR (milestones BLU-808)",
       },
     ],
-    advisors: {},
+    advisors: {
+      sellSide: ["Centerview Partners", "Jefferies"],
+    },
     interests: [
       {
         side: "Sanofi",
@@ -527,7 +539,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     type: "M&A",
     secteur: "Industrie / Infrastructure",
     headlineEv: "~1,6 Md$",
-    banks: [],
+    banks: ["HSBC", "Macquarie"],
     parties: [
       {
         label: "Cible",
@@ -546,7 +558,10 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       { label: "EV", value: "~150 Md roupies indiennes (~1,6 Md$)" },
       { label: "Multiple", value: "~15x EBITDA" },
     ],
-    advisors: {},
+    advisors: {
+      buySide: ["HSBC (M&A — Vinci)"],
+      sellSide: ["Macquarie Asset Management"],
+    },
     interests: [
       {
         side: "Vinci",
@@ -605,7 +620,13 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     type: "M&A",
     secteur: "Énergie / Oil & Gas",
     headlineEv: "~$60 Md",
-    banks: [],
+    banks: [
+      "Citigroup",
+      "Centerview Partners",
+      "Goldman Sachs",
+      "Morgan Stanley",
+      "Bank of America",
+    ],
     parties: [
       {
         label: "Cible",
@@ -621,6 +642,10 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       { label: "Multiple", value: "~6x EBITDA forward" },
       { label: "Synergies", value: "$2 Md/an via optimisation technique" },
     ],
+    advisors: {
+      buySide: ["Citigroup (lead)", "Centerview Partners"],
+      sellSide: ["Goldman Sachs (lead)", "Morgan Stanley", "Bank of America"],
+    },
     interests: [
       {
         side: "Exxon",
@@ -642,7 +667,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     id: "d13",
     title: "Lineage Logistics — IPO (2024)",
     dates: "IPO juil. 2024",
-    type: "M&A",
+    type: "IPO",
     secteur: "Immobilier / REIT logistique",
     headlineEv: "~18 Md$ valorisation",
     banks: ["Morgan Stanley", "Goldman Sachs", "JPMorgan"],
@@ -664,6 +689,14 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     ],
     pointEntretien:
       "Illustrer la différence REIT vs promoteur : FFO, NAV, cap rates. Citer MS/GS/JPM comme bookrunners sur une IPO infra/logistique.",
+    advisors: {
+      other: [
+        {
+          label: "Bookrunners IPO",
+          banks: ["Morgan Stanley", "Goldman Sachs", "JPMorgan"],
+        },
+      ],
+    },
     kind: "deal",
   },
   {
@@ -673,7 +706,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     type: "M&A",
     secteur: "TMT / Gaming",
     headlineEv: "~69 Md$",
-    banks: [],
+    banks: ["Goldman Sachs", "Morgan Stanley"],
     parties: [
       {
         label: "Cible",
@@ -685,6 +718,10 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       { label: "Prix", value: "~95$/action, ~69 Md$" },
       { label: "Multiple", value: "~10x revenue" },
     ],
+    advisors: {
+      buySide: ["Goldman Sachs"],
+      sellSide: ["Morgan Stanley"],
+    },
     interests: [
       {
         side: "Microsoft",
@@ -696,7 +733,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     kind: "deal",
   },
   {
-    id: "d16",
+    id: "d15",
     title: "Chevron / Hess Corporation",
     dates: "Annonce oct. 2023 — Closing juil. 2024",
     type: "M&A",
@@ -717,12 +754,15 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
         text: "Accès au pétrole guyanais (Stabroek) — actif parmi les plus convoités au monde. Consolidation shale US.",
       },
     ],
+    advisors: {
+      buySide: ["Morgan Stanley", "Citigroup"],
+    },
     pointEntretien:
       "Complète Exxon/Pioneer : vague de M&A O&G 2023-24. Discuter paradoxe ESG vs rachat de réserves fossiles.",
     kind: "deal",
   },
   {
-    id: "d17",
+    id: "d16",
     title: "UBS / Credit Suisse (fusion d'urgence)",
     dates: "Annonce 19 mars 2023 — Closing juin 2023",
     type: "M&A",
@@ -781,7 +821,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     kind: "deal",
   },
   {
-    id: "d18",
+    id: "d17",
     title: "Automobile — consolidation EV et pression prix (Europe)",
     dates: "Tendance 2025-2026",
     type: "Tendance",
@@ -816,7 +856,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     kind: "trend",
   },
   {
-    id: "d19",
+    id: "d18",
     title: "Meta / Scale AI",
     dates: "Annonce juin 2025",
     type: "M&A",
@@ -849,7 +889,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
     ],
     contexte:
-      "Illustration parfaite de la « quasi-acquisition » : participation minoritaire non-contrôlante + embauche des dirigeants clés. Ce montage vise à contourner le contrôle des concentrations (FTC/DOJ, Commission européenne), sur le même modèle que Microsoft/Inflection, Google/Character.AI et Amazon/Adept (voir tendance deal d20).",
+      "Illustration parfaite de la « quasi-acquisition » : participation minoritaire non-contrôlante + embauche des dirigeants clés. Ce montage vise à contourner le contrôle des concentrations (FTC/DOJ, Commission européenne), sur le même modèle que Microsoft/Inflection, Google/Character.AI et Amazon/Adept (voir tendance deal d19).",
     pointEntretien:
       "Savoir expliquer pourquoi les Big Tech privilégient des prises de participation minoritaires assorties d'acqui-hires plutôt que des acquisitions pleines : contournement du contrôle des concentrations tout en captant talent et technologie. Angle clé sur le risque réglementaire de l'IA.",
     ftUrl: "https://www.ft.com/content/meta-scale-ai",
@@ -857,7 +897,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     kind: "deal",
   },
   {
-    id: "d20",
+    id: "d19",
     title: "Big Tech / IA — méga-investissements et acqui-hires",
     dates: "Tendance 2024-2026",
     type: "Tendance",
@@ -871,7 +911,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
       {
         label: "Exemples à citer",
-        text: "Investissements : Microsoft / OpenAI (~13 Md$), Amazon / Anthropic (~8 Md$), Google / Anthropic. Acqui-hires : Microsoft / Inflection (Mustafa Suleyman, ~650 M$ de licence), Google / Character.AI (~2,7 Md$ de licence, Noam Shazeer), Amazon / Adept, Meta / Scale AI (voir deal d19).",
+        text: "Investissements : Microsoft / OpenAI (~13 Md$), Amazon / Anthropic (~8 Md$), Google / Anthropic. Acqui-hires : Microsoft / Inflection (Mustafa Suleyman, ~650 M$ de licence), Google / Character.AI (~2,7 Md$ de licence, Noam Shazeer), Amazon / Adept, Meta / Scale AI (voir deal d18).",
       },
     ],
     interests: [
@@ -892,10 +932,10 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     kind: "trend",
   },
   {
-    id: "d21",
+    id: "d20",
     title: "CoreWeave — IPO (infrastructure IA / GPU cloud)",
     dates: "IPO mars 2025",
-    type: "M&A",
+    type: "IPO",
     secteur: "TMT / Infrastructure IA & Cloud",
     headlineEv: "~23 Md$ valorisation",
     banks: ["Morgan Stanley", "Goldman Sachs", "JPMorgan"],
@@ -929,7 +969,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     kind: "deal",
   },
   {
-    id: "d22",
+    id: "d21",
     title: "SpaceX / Starlink — perspectives d'IPO",
     dates: "Spéculation 2025-2026",
     type: "Tendance",
@@ -995,6 +1035,7 @@ export const MA_DEAL_SECTOR_IDS = [
 
 const TYPE_ORDER: MaDealType[] = [
   "M&A",
+  "IPO",
   "LBO",
   "Carve-out",
   "Restructuring",

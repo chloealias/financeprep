@@ -11,6 +11,11 @@ export type HomeSearch = {
   sector?: SectorId;
 };
 
+/** Search par défaut pour les liens vers `/` (tab requis par le routeur). */
+export function defaultHomeSearch(overrides?: Partial<HomeSearch>): HomeSearch {
+  return { tab: DEFAULT_APP_TAB, ...overrides };
+}
+
 export function validateHomeSearch(search: Record<string, unknown>): HomeSearch {
   const tab = typeof search.tab === "string" ? search.tab : undefined;
   const tabResolved: AppTab = isAppTab(tab) ? tab : DEFAULT_APP_TAB;

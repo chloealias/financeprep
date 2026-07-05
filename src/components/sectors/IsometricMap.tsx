@@ -63,7 +63,12 @@ export function IsometricMap({ onSectorSelect, selectedSectorId = null }: Isomet
           </p>
           <div className="flex flex-wrap justify-center gap-1.5">
             {SECTOR_LIST.map((id) => (
-              <GuideChipButton key={id} size="sm" onClick={() => onSectorSelect(id)}>
+              <GuideChipButton
+                key={id}
+                size="sm"
+                active={selectedSectorId === id}
+                onClick={() => onSectorSelect(id)}
+              >
                 {SECTOR_META[id].shortLabel}
               </GuideChipButton>
             ))}

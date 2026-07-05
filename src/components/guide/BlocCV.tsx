@@ -18,7 +18,7 @@ export function BlocCV() {
   };
   const [timerActive, setTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(120);
-  const intervalRef = React.useRef(null);
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
 
   const checklist = [
     { id: "c1", text: "Je connais le nom de mon interlocuteur et sa banque" },
@@ -33,10 +33,13 @@ export function BlocCV() {
   useEffect(() => {
     if (timerActive && timeLeft > 0) {
       intervalRef.current = setInterval(() => setTimeLeft((t) => t - 1), 1000);
-    } else {
+    } else if (intervalRef.current !== null) {
       clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      if (intervalRef.current !== null) clearInterval(intervalRef.current);
+    };
   }, [timerActive, timeLeft]);
 
   const resetTimer = () => {

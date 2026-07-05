@@ -100,6 +100,17 @@ export const FIT_QUESTION_IDS = new Set([
 
 type RawQuestion = (typeof questions)[number];
 
+function rawQuestionForSlot(q: RawQuestion) {
+  return {
+    id: q.id,
+    interviewSlot: q.interviewSlot as InterviewSlotOnQuestion | undefined,
+    question: q.question,
+    explanation: q.explanation,
+    tip: q.tip,
+    category: q.category,
+  };
+}
+
 export function inferInterviewSlot(q: {
   id: string | number;
   interviewSlot?: InterviewSlotOnQuestion;
@@ -191,7 +202,7 @@ function pickTechnicalQuestions(
   const candidates = pool.filter((q) => {
     const id = questionIdKey(q!.id);
     if (excludeIds.has(id)) return false;
-    const slot = inferInterviewSlot({ ...q!, id });
+    const slot = inferInterviewSlot({ ...rawQuestionForSlot(q!), id });
     return slot === "technical";
   });
   const ranked = [...candidates].sort(
@@ -223,7 +234,7 @@ function pickFitQuestion(
   const fits = pool.filter((q) => {
     const id = questionIdKey(q!.id);
     if (excludeIds.has(id)) return false;
-    return inferInterviewSlot({ ...q!, id }) === "fit";
+    return inferInterviewSlot({ ...rawQuestionForSlot(q!), id }) === "fit";
   });
   const q = pickOne(fits);
   if (!q) return undefined;

@@ -9,6 +9,7 @@ import {
 import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
+import { defaultHomeSearch } from "@/lib/route-search";
 
 function NotFoundComponent() {
   return (
@@ -22,6 +23,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
+            search={defaultHomeSearch()}
             className="touch-target-bar justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Retour à l&apos;accueil
@@ -57,6 +59,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           </button>
           <Link
             to="/"
+            search={defaultHomeSearch()}
             className="touch-target-bar justify-center rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
             Retour à l&apos;accueil

@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { TodayPlanWidget, TodayActionCard } from "@/components/hub/TodayPlanWidget";
+import { defaultHomeSearch } from "@/lib/route-search";
 import { getAllTodayActions, type TodayAction, type TodayActionId } from "@/lib/today-plan";
 import { SECTOR_DATA } from "@/data/sector-data";
 import { AppearanceDialog } from "@/components/profile/AppearanceDialog";
@@ -136,6 +137,7 @@ export function ProfilePage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <Link
         to="/"
+        search={defaultHomeSearch()}
         className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />

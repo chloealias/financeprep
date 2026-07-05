@@ -505,7 +505,7 @@ export const BANK_LIST: BankProfile[] = [
       texte:
         "Sauvetage systémique orchestré par la FINMA (CHF 3 Md, ratio 1 UBS pour 22,48 CS). Annulation totale des AT1 (~CHF 16 Md). Cas incontournable risque, régulation et consolidation bancaire.",
     },
-    emblematicDealId: "d17",
+    emblematicDealId: "d16",
     questionPiège: "Peut-on encore postuler chez Credit Suisse à Paris ?",
     reponsePiège:
       "Non — l'entité juridique Credit Suisse a été absorbée par UBS. En entretien, montrer qu'on suit l'intégration (synergies, rationalisation) et qu'on postule chez UBS si l'objectif est la Suisse / l'IB européenne.",

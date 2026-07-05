@@ -22,7 +22,7 @@ describe("ma-deals helpers", () => {
     const deal = getDealById("d01");
     expect(deal).toBeDefined();
     expect(dealMatchesBank(deal!, "Rothschild & Co")).toBe(true);
-    expect(dealMatchesBank(deal!, "Citi")).toBe(true);
+    expect(dealMatchesBank(deal!, "Citigroup")).toBe(true);
     expect(dealMatchesBank(deal!, "Unknown Bank")).toBe(false);
   });
 
@@ -46,12 +46,27 @@ describe("ma-deals helpers", () => {
 
   it("getDealsForSector includes automotive", () => {
     const auto = getDealsForSector("auto");
-    expect(auto.some((d) => d.id === "d18")).toBe(true);
-    expect(dealMatchesSector(getDealById("d18")!, "auto")).toBe(true);
+    expect(auto.some((d) => d.id === "d17")).toBe(true);
+    expect(dealMatchesSector(getDealById("d17")!, "auto")).toBe(true);
   });
 
   it("includes UBS / Credit Suisse rescue deal", () => {
-    expect(getDealById("d17")?.title).toContain("Credit Suisse");
-    expect(dealMatchesBank(getDealById("d17")!, "UBS")).toBe(true);
+    expect(getDealById("d16")?.title).toContain("Credit Suisse");
+    expect(dealMatchesBank(getDealById("d16")!, "UBS")).toBe(true);
+  });
+
+  it("has sequential deal ids d01–d21 without gaps", () => {
+    const ids = MA_DEALS.map((d) => d.id).sort();
+    for (let i = 1; i <= 21; i++) {
+      expect(ids).toContain(`d${String(i).padStart(2, "0")}`);
+    }
+  });
+
+  it("UniCredit / Commerzbank is filterable by bank", () => {
+    const deal = getDealById("d04");
+    expect(deal).toBeDefined();
+    expect(deal!.banks.length).toBeGreaterThan(0);
+    expect(dealMatchesBank(deal!, "Goldman Sachs")).toBe(true);
+    expect(dealMatchesBank(deal!, "Rothschild & Co")).toBe(true);
   });
 });
