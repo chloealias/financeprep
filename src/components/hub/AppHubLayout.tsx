@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { ListChecks, Library, BookMarked, Building2, Landmark } from "lucide-react";
+import { ListChecks, Library, BookMarked, Building2, Landmark, BarChart3 } from "lucide-react";
+import { useEffect, useState } from "react";
 import type { AppTab, HubNavTab } from "@/lib/app-tabs";
 import { isHubNavTab } from "@/lib/app-tabs";
 import { questions } from "@/data/questions";
@@ -8,6 +9,7 @@ import { concepts } from "@/data/concepts";
 import { ProfileMenu } from "@/components/hub/ProfileMenu";
 import { ProfileBanner } from "@/components/profile/ProfileBanner";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { getProfileDashboard } from "@/lib/profile-dashboard";
 
 type HubPage = {
   id: HubNavTab;
@@ -22,6 +24,7 @@ const pages: HubPage[] = [
   { id: "guide", label: "Guide", icon: BookMarked },
   { id: "secteurs", label: "Secteurs", icon: Building2 },
   { id: "banques", label: "Banques", icon: Landmark },
+  { id: "progress", label: "Progrès", icon: BarChart3 },
 ];
 
 type AppHubLayoutProps = {
@@ -39,6 +42,11 @@ export function AppHubLayout({
 }: AppHubLayoutProps) {
   const navActivePage = isHubNavTab(activePage) ? activePage : null;
   const { profile } = useUserProfile();
+  const [masteredPct, setMasteredPct] = useState<number | null>(null);
+
+  useEffect(() => {
+    setMasteredPct(getProfileDashboard().masteredPct);
+  }, [activePage, hasProgress]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/40 to-background pb-[calc(6rem+env(safe-area-inset-bottom))] sm:pb-0">
@@ -70,6 +78,21 @@ export function AppHubLayout({
             </h1>
             <ProfileMenu onPageChange={onPageChange} hasProgress={hasProgress} />
           </div>
+
+          {masteredPct !== null && masteredPct > 0 && (
+            <div className="hidden sm:block mt-4 max-w-md">
+              <div className="flex justify-between text-xs text-white/80 mb-1">
+                <span>Maîtrise questions</span>
+                <span className="tabular-nums">{masteredPct}%</span>
+              </div>
+              <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-white/90 transition-all"
+                  style={{ width: `${masteredPct}%` }}
+                />
+              </div>
+            </div>
+          )}
 
           <nav className="hidden sm:block mt-8" aria-label="Navigation principale">
             <div className="flex flex-wrap gap-2">

@@ -28,6 +28,7 @@ import {
   MA_DEAL_TYPES,
   getDealById,
   MA_DEALS,
+  getDealInterviewAngles,
   type MaDeal,
 } from "@/data/ma-deals";
 import { MacroIndicatorsPanel } from "@/components/guide/MacroIndicatorsPanel";
@@ -193,6 +194,16 @@ function DealDetail({ deal }: { deal: MaDeal }) {
         <p className="text-amber-900 text-sm font-light leading-relaxed">
           <DealRefText text={deal.pointEntretien} />
         </p>
+        {getDealInterviewAngles(deal).length > 1 && (
+          <ul className="mt-3 space-y-1.5 border-t border-amber-200/80 pt-3">
+            {getDealInterviewAngles(deal).map((angle, i) => (
+              <li key={i} className="text-amber-900 text-sm font-light flex gap-2">
+                <span className="text-amber-600 shrink-0">→</span>
+                <DealRefText text={angle} />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {deal.ftUrl && (

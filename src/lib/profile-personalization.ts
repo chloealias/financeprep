@@ -104,6 +104,79 @@ export function getInterviewPlanMessage(
   return null;
 }
 
+export type AdaptivePlanAction = {
+  label: string;
+  href: string;
+  search?: { mode?: "flashcards" | "quiz"; tab?: string };
+  priority: number;
+  doneToday?: boolean;
+};
+
+/** Ordered actions based on days until interview. */
+export function getAdaptivePlanActions(
+  daysUntil: number | null,
+  ctx: { srsDue: number; weakCount: number; suggestSimulation: boolean },
+): AdaptivePlanAction[] {
+  const actions: AdaptivePlanAction[] = [];
+
+  if (ctx.srsDue > 0) {
+    actions.push({
+      label: `Flashcards SRS (${ctx.srsDue} dues)`,
+      href: "/flashcards",
+      search: { mode: "flashcards" },
+      priority: 100,
+    });
+  }
+
+  if (daysUntil !== null && daysUntil >= 0 && daysUntil <= 3) {
+    if (ctx.suggestSimulation) {
+      actions.push({
+        label: "Simulation 30 min",
+        href: "/interview",
+        priority: 95,
+      });
+    }
+    if (ctx.weakCount > 0) {
+      actions.push({
+        label: `Questions faibles (${ctx.weakCount})`,
+        href: "/",
+        search: { tab: "questions" },
+        priority: 90,
+      });
+    }
+    actions.push({ label: "Checklist CV", href: "/cv", priority: 80 });
+  } else if (daysUntil !== null && daysUntil <= 7) {
+    actions.push({
+      label: "Mini-entretien",
+      href: "/flashcards",
+      search: { mode: "quiz" },
+      priority: 85,
+    });
+    if (ctx.suggestSimulation) {
+      actions.push({ label: "Simulation 30 min", href: "/interview", priority: 80 });
+    }
+    actions.push({ label: "Actualité M&A", href: "/actualite", priority: 70 });
+  } else if (daysUntil !== null && daysUntil <= 14) {
+    actions.push({ label: "Checklist CV", href: "/cv", priority: 75 });
+    actions.push({
+      label: "Mini-entretien ou simulation",
+      href: "/flashcards",
+      search: { mode: "quiz" },
+      priority: 70,
+    });
+  } else {
+    actions.push({
+      label: "Flashcards quotidiennes",
+      href: "/flashcards",
+      search: { mode: "flashcards" },
+      priority: 60,
+    });
+    actions.push({ label: "Notions clés", href: "/", search: { tab: "concepts" }, priority: 55 });
+  }
+
+  return actions.sort((a, b) => b.priority - a.priority);
+}
+
 /** Suggestion pack par défaut selon le type de process. */
 export function suggestedDefaultPackSize(processType: UserProfile["processType"]): 5 | 7 | null {
   if (processType === "full-time") return 7;

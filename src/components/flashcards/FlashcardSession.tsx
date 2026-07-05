@@ -13,6 +13,7 @@ import {
   type SrsStore,
 } from "@/lib/srs";
 import { PageHeader } from "@/components/ui/page-header";
+import { logDailyActivity } from "@/lib/daily-goal";
 
 type CardSource = "question" | "concept";
 
@@ -110,6 +111,7 @@ export function FlashcardSession() {
     setSessionStats((prev) => ({ ...prev, [g]: prev[g] + 1 }));
 
     if (index + 1 >= queue.length) {
+      logDailyActivity("srs", 15);
       setMode("done");
     } else {
       setIndex(index + 1);

@@ -12,6 +12,8 @@ import {
   Newspaper,
   Sparkles,
 } from "lucide-react";
+import { TodayPlanWidget, TodayActionCard } from "@/components/hub/TodayPlanWidget";
+import { getAllTodayActions, type TodayAction, type TodayActionId } from "@/lib/today-plan";
 import { SECTOR_DATA } from "@/data/sector-data";
 import { AppearanceDialog } from "@/components/profile/AppearanceDialog";
 import { ProfileHero } from "@/components/profile/ProfileHero";
@@ -297,78 +299,16 @@ export function ProfilePage() {
       </section>
 
       <section className="mb-10">
-        <h2 className="type-section-title mb-4">Aujourd&apos;hui</h2>
-        <div className="grid sm:grid-cols-2 gap-3">
-          <TodayCard
-            title="Flashcards SRS"
-            stat={`${dashboard.srsDue} due`}
-            desc="Révision SRS"
-            href="/flashcards"
-            search={dashboard.srsDue > 0 ? { mode: "flashcards" as const } : undefined}
-            icon={<Sparkles className="w-5 h-5" />}
-            highlight={dashboard.srsDue > 0 || dashboard.todayHighlights.has("srs")}
-          />
-          <TodayCard
-            title="Mini-entretien"
-            stat={dashboard.weakCount > 0 ? `${dashboard.weakCount} faiblesses` : "Pack structuré"}
-            desc={`${profile.defaultPackSize ?? 5} questions`}
-            href="/flashcards"
-            search={{ mode: "quiz" }}
-            icon={<Clock className="w-5 h-5" />}
-            highlight={dashboard.todayHighlights.has("quiz")}
-          />
-          <TodayCard
-            title="Actualité M&A"
-            stat={dashboard.suggestedDealTitle ? "Deal suggéré" : "Fiches deals"}
-            desc={
-              dashboard.suggestedDealTitle
-                ? dashboard.suggestedDealTitle.slice(0, 42) +
-                  (dashboard.suggestedDealTitle.length > 42 ? "…" : "")
-                : "Derniers deals et tendances"
-            }
-            href="/actualite"
-            search={dashboard.suggestedDealId ? { deal: dashboard.suggestedDealId } : undefined}
-            icon={<Newspaper className="w-5 h-5" />}
-            highlight={Boolean(dashboard.suggestedDealId)}
-          />
-          <TodayCard
-            title="Simulation 30 min"
-            stat={dashboard.suggestSimulation ? "Recommandé" : "À jour"}
-            desc="Timer 30 min"
-            href="/interview"
-            icon={<Mic className="w-5 h-5" />}
-            highlight={dashboard.suggestSimulation || dashboard.todayHighlights.has("simulation")}
-          />
-          <TodayCard
-            title="Questions faibles"
-            stat={`${dashboard.weakCount}`}
-            desc="Notes 1–2★"
-            onClick={openWeakQuestions}
-            icon={<BarChart3 className="w-5 h-5" />}
-            disabled={dashboard.weakCount === 0}
-            highlight={dashboard.todayHighlights.has("weak")}
-          />
-          <TodayCard
-            title="Checklist CV"
-            stat={`${dashboard.cvChecked}/${dashboard.cvTotal}`}
-            desc="Walk me through CV"
-            href="/cv"
-            icon={<Calendar className="w-5 h-5" />}
-            highlight={dashboard.todayHighlights.has("cv")}
-          />
-          <TodayCard
-            title="À réviser"
-            stat={`${dashboard.reviewCount}`}
-            desc="Signets"
-            onClick={() => {
-              saveSavedFilters({ ...defaultFilters, ratingFilter: "all" });
-              navigate({ to: "/", search: { tab: "questions" } });
-            }}
-            icon={<Bookmark className="w-5 h-5" />}
-            disabled={dashboard.reviewCount === 0}
-            highlight={dashboard.todayHighlights.has("review")}
-          />
-        </div>
+        <TodayPlanWidget showStreak className="mb-6" maxCards={3} compact />
+        <h2 className="type-section-title mb-4">Toutes les actions</h2>
+        <ProfileTodayGrid
+          actions={getAllTodayActions(dashboard, profile)}
+          onWeak={openWeakQuestions}
+          onReview={() => {
+            saveSavedFilters({ ...defaultFilters, ratingFilter: "all" });
+            navigate({ to: "/", search: { tab: "questions" } });
+          }}
+        />
       </section>
 
       <section className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
@@ -457,55 +397,40 @@ function SessionRow({ session }: { session: InterviewSessionRecord }) {
   );
 }
 
-function TodayCard({
-  title,
-  stat,
-  desc,
-  href,
-  search,
-  onClick,
-  icon,
-  highlight,
-  disabled,
+function ProfileTodayGrid({
+  actions,
+  onWeak,
+  onReview,
 }: {
-  title: string;
-  stat: string;
-  desc: string;
-  href?: string;
-  search?: { mode?: "flashcards" | "quiz"; deal?: string };
-  onClick?: () => void;
-  icon: React.ReactNode;
-  highlight?: boolean;
-  disabled?: boolean;
+  actions: TodayAction[];
+  onWeak: () => void;
+  onReview: () => void;
 }) {
-  const className = `text-left rounded-2xl p-5 border-2 transition-all w-full ${
-    disabled
-      ? "opacity-50 cursor-not-allowed border-border bg-card"
-      : highlight
-        ? "border-primary/40 bg-primary/10 hover:border-primary/60 shadow-card"
-        : "border-border bg-card hover:border-primary/40 shadow-card"
-  }`;
+  const ICONS: Record<TodayActionId, React.ReactNode> = {
+    srs: <Sparkles className="w-5 h-5" />,
+    quiz: <Clock className="w-5 h-5" />,
+    simulation: <Mic className="w-5 h-5" />,
+    weak: <BarChart3 className="w-5 h-5" />,
+    cv: <Calendar className="w-5 h-5" />,
+    review: <Bookmark className="w-5 h-5" />,
+    deal: <Newspaper className="w-5 h-5" />,
+  };
 
-  const inner = (
-    <>
-      <div className="flex items-center gap-2 text-primary mb-2">{icon}</div>
-      <div className="font-serif text-lg text-foreground">{title}</div>
-      <div className="text-sm font-semibold text-primary mt-1">{stat}</div>
-      <p className="text-xs text-muted-foreground font-light mt-1">{desc}</p>
-    </>
-  );
-
-  if (href && !disabled) {
-    return (
-      <Link to={href} search={search} className={className}>
-        {inner}
-      </Link>
-    );
-  }
+  const handleAction = (action: TodayAction) => {
+    if (action.onClickKey === "weak") onWeak();
+    if (action.onClickKey === "review") onReview();
+  };
 
   return (
-    <button type="button" className={className} onClick={onClick} disabled={disabled}>
-      {inner}
-    </button>
+    <div className="grid sm:grid-cols-2 gap-3">
+      {actions.map((action) => (
+        <TodayActionCard
+          key={action.id}
+          action={action}
+          icon={ICONS[action.id]}
+          onAction={handleAction}
+        />
+      ))}
+    </div>
   );
 }

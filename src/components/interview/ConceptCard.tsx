@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, Library } from "lucide-react";
+import { ChevronRight, Library, Mic } from "lucide-react";
 import { Visual } from "@/components/interview/Visual";
+import { AcronymText } from "@/components/interview/AcronymText";
+import { ClientOnly } from "@/components/hub/ClientOnly";
+import { ConceptDetailSkeleton } from "@/components/hub/QuestionDetailSkeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { concepts } from "@/data/concepts";
 import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
+import { loadStudyMode, type StudyMode } from "@/lib/storage";
 
 type Concept = (typeof concepts)[number];
 
@@ -31,6 +36,17 @@ export function ConceptCard({
 }: ConceptCardProps) {
   const cardRef = React.useRef<HTMLDivElement | null>(null);
   const wasExpanded = React.useRef(isExpanded);
+  const [studyMode, setStudyMode] = useState<StudyMode>("lecture");
+  const [revealed, setRevealed] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setStudyMode(loadStudyMode());
+  }, []);
+
+  useEffect(() => {
+    if (!isExpanded) setRevealed(false);
+  }, [isExpanded]);
 
   React.useEffect(() => {
     if (isExpanded && !wasExpanded.current && cardRef.current) {
@@ -51,7 +67,7 @@ export function ConceptCard({
       }`}
     >
       <button
-        onClick={onToggle}
+        onClick={() => startTransition(() => onToggle())}
         aria-expanded={isExpanded}
         className="w-full min-h-11 text-left p-4 sm:p-5 flex items-start gap-3 sm:gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-2xl"
       >
@@ -78,9 +94,14 @@ export function ConceptCard({
           <h3 className="text-foreground font-serif text-base sm:text-xl leading-snug break-words">
             {concept.title}
           </h3>
-          {!isExpanded && (
+          {!isExpanded && studyMode === "lecture" && (
             <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed line-clamp-2 font-light">
-              {concept.simple}
+              <AcronymText text={concept.simple} />
+            </p>
+          )}
+          {!isExpanded && studyMode === "entretien" && (
+            <p className="text-muted-foreground mt-1.5 text-sm italic">
+              Mode entretien — répondez avant d&apos;ouvrir
             </p>
           )}
         </div>
@@ -93,6 +114,23 @@ export function ConceptCard({
 
       {isExpanded && (
         <div className="px-4 sm:px-6 pb-5 pt-2 border-t border-border bg-muted/30">
+          {isPending ? (
+            <ConceptDetailSkeleton />
+          ) : studyMode === "entretien" && !revealed ? (
+            <div className="ml-0 sm:ml-16 mt-6 text-center py-8 space-y-4">
+              <Mic className="w-8 h-8 text-primary mx-auto" />
+              <p className="text-sm text-muted-foreground">
+                Expliquez cette notion à voix haute, puis révélez la définition.
+              </p>
+              <button
+                type="button"
+                onClick={() => setRevealed(true)}
+                className="touch-target-bar px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium"
+              >
+                J&apos;ai répondu
+              </button>
+            </div>
+          ) : (
           <div className="ml-0 sm:ml-16 mt-5 space-y-5">
             {/* Simple */}
             <div>
@@ -102,7 +140,9 @@ export function ConceptCard({
                   L&apos;essentiel
                 </h4>
               </div>
-              <p className="text-foreground leading-relaxed font-light">{concept.simple}</p>
+              <p className="text-foreground leading-relaxed font-light">
+                <AcronymText text={concept.simple} />
+              </p>
             </div>
 
             {/* Formule */}
@@ -199,7 +239,9 @@ export function ConceptCard({
                     Schéma
                   </h4>
                 </div>
-                <Visual type={concept.visual} />
+                <ClientOnly fallback={<Skeleton className="h-48 w-full rounded-xl" />}>
+                  <Visual type={concept.visual} />
+                </ClientOnly>
               </div>
             )}
 
@@ -259,10 +301,9 @@ export function ConceptCard({
               </button>
             </div>
           </div>
+          )}
         </div>
       )}
     </div>
   );
 }
-
-// =====================================================

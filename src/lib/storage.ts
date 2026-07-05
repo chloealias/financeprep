@@ -4,6 +4,8 @@ const FILTERS_KEY = "finance-filters-v1";
 const REVIEW_KEY = "finance-review-v1";
 const CV_CHECKLIST_KEY = "finance-cv-checklist-v1";
 const GUIDE_OPEN_BLOC_KEY = "finance-guide-open-bloc-v1";
+const STUDY_MODE_KEY = "finance-study-mode-v1";
+const GUIDE_GOALS_KEY = "finance-guide-goals-v1";
 const INTERVIEW_SESSIONS_KEY = "finance-interview-sessions-v1";
 const MAX_INTERVIEW_SESSIONS = 10;
 
@@ -209,4 +211,33 @@ export function mergeRatingFromInterview(questionId: string, stars: number): Que
     saveRatings(ratings);
   }
   return ratings;
+}
+
+export type StudyMode = "lecture" | "entretien";
+
+export function loadStudyMode(): StudyMode {
+  const raw = readJson<unknown>(STUDY_MODE_KEY, "lecture");
+  return raw === "entretien" ? "entretien" : "lecture";
+}
+
+export function saveStudyMode(mode: StudyMode): void {
+  writeJson(STUDY_MODE_KEY, mode);
+}
+
+export function loadGuideGoals(): Record<string, boolean> {
+  const raw = readJson<unknown>(GUIDE_GOALS_KEY, {});
+  if (!raw || typeof raw !== "object") return {};
+  const out: Record<string, boolean> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (v === true) out[k] = true;
+  }
+  return out;
+}
+
+export function toggleGuideGoal(href: string): Record<string, boolean> {
+  const goals = loadGuideGoals();
+  if (goals[href]) delete goals[href];
+  else goals[href] = true;
+  writeJson(GUIDE_GOALS_KEY, goals);
+  return goals;
 }

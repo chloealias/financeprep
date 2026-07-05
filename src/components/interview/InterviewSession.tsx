@@ -23,6 +23,7 @@ import {
   type InterviewPackItem,
 } from "@/lib/interview-pack";
 import { buildInterviewMarkdown, computeWeakCategories } from "@/lib/interview-report";
+import { logDailyActivity } from "@/lib/daily-goal";
 import { loadSrsStore, recordGrade } from "@/lib/srs";
 import {
   loadRatings,
@@ -140,6 +141,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
       avgStars,
     };
     saveInterviewSession(record);
+    logDailyActivity(mode === "full" ? "sim" : "quiz", Math.round(durationMs / 60000) || 10);
     setAnswers(final);
     setPhase("done");
   };
@@ -470,18 +472,38 @@ function InterviewResults({
                   {a.label}
                 </div>
                 {a.question}
+                {a.itemKind === "question" && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <Link
+                      to="/"
+                      search={{ tab: "questions" }}
+                      className="text-xs text-primary font-medium underline"
+                    >
+                      Ouvrir la fiche
+                    </Link>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
-          <button
-            type="button"
-            onClick={addWeakToSrs}
-            disabled={srsAdded || weak.every((a) => !a.srsId)}
-            className="touch-target-bar gap-2 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
-          >
-            <Sparkles className="w-4 h-4" />
-            {srsAdded ? "Ajouté au SRS" : "Ajouter les ratées au SRS"}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={addWeakToSrs}
+              disabled={srsAdded || weak.every((a) => !a.srsId)}
+              className="touch-target-bar gap-2 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
+            >
+              <Sparkles className="w-4 h-4" />
+              {srsAdded ? "Ajouté au SRS" : "Ajouter les ratées au SRS"}
+            </button>
+            <Link
+              to="/flashcards"
+              search={{ mode: "flashcards" }}
+              className="touch-target-bar gap-2 px-4 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary/50"
+            >
+              Revoir en flashcards
+            </Link>
+          </div>
         </div>
       )}
 

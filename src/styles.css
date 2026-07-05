@@ -232,6 +232,15 @@
   animation: sector-focus-flash 600ms ease-out forwards;
 }
 
+@keyframes splash-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-in,
   .animate-out,

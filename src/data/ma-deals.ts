@@ -30,6 +30,8 @@ export type MaDeal = {
   interests: { side: string; text: string }[];
   contexte?: string;
   pointEntretien: string;
+  /** Angles pour structurer un pitch en entretien */
+  interviewAngles?: string[];
   ftUrl?: string;
   kind: "deal" | "trend";
 };
@@ -818,7 +820,19 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
 export const MA_DEALS: MaDeal[] = MA_DEALS_RAW.map((d) => ({
   ...d,
   sectorId: getSectorIdForSecteur(d.secteur),
+  interviewAngles:
+    "interviewAngles" in d && Array.isArray((d as MaDeal).interviewAngles)
+      ? (d as MaDeal).interviewAngles
+      : d.pointEntretien
+          .split(/(?<=[.!?])\s+/)
+          .map((s) => s.trim())
+          .filter((s) => s.length > 20)
+          .slice(0, 5),
 }));
+
+export function getDealInterviewAngles(deal: MaDeal): string[] {
+  return deal.interviewAngles?.length ? deal.interviewAngles : [deal.pointEntretien];
+}
 
 const uniqueBanks = [...new Set(MA_DEALS.flatMap((d) => d.banks))].sort((a, b) =>
   a.localeCompare(b, "fr"),

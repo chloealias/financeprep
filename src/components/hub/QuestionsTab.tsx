@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useRef } from "react";
+import React, { useMemo, useState, useEffect, useRef, useTransition } from "react";
 import {
   Search,
   ChevronRight,
@@ -9,6 +9,8 @@ import {
   Bookmark,
   BookmarkCheck,
   BookOpen,
+  Mic,
+  BookMarked,
 } from "lucide-react";
 import {
   DIFFICULTY_OPTIONS,
@@ -21,10 +23,19 @@ import {
   loadSavedFilters,
   saveSavedFilters,
   questionIdKey,
+  loadStudyMode,
+  saveStudyMode,
   type QuestionRatings,
   type SavedFilters,
+  type StudyMode,
 } from "@/lib/storage";
 import { Visual } from "@/components/interview/Visual";
+import { ClientOnly } from "@/components/hub/ClientOnly";
+import { QuestionDetailSkeleton } from "@/components/hub/QuestionDetailSkeleton";
+import { QuestionEnrichedPanel } from "@/components/hub/QuestionEnrichedPanel";
+import { Skeleton } from "@/components/ui/skeleton";
+import { syncRatingToSrs } from "@/lib/srs-sync";
+import { logDailyActivity } from "@/lib/daily-goal";
 import { StarRating } from "@/components/interview/StarRating";
 import { FilterRadioGroup } from "@/components/interview/FilterRadioGroup";
 import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
@@ -97,6 +108,14 @@ export function QuestionsTab({
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [showReviewOnly, setShowReviewOnly] = useState(false);
   const [filtersHydrated, setFiltersHydrated] = useState(false);
+  const [studyMode, setStudyMode] = useState<StudyMode>("lecture");
+  const [revealedKeys, setRevealedKeys] = useState<Set<string>>(new Set());
+  const [answerTimers, setAnswerTimers] = useState<Record<string, number>>({});
+  const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setStudyMode(loadStudyMode());
+  }, []);
 
   useEffect(() => {
     const saved = loadSavedFilters(sanitizeQuestionFilters, DEFAULT_QUESTION_FILTERS);
@@ -138,6 +157,42 @@ export function QuestionsTab({
       conceptCategory: "all",
     });
   }, [filtersHydrated, activeCategory, activeDifficulty, searchQuery, ratingFilter]);
+
+  useEffect(() => {
+    if (expandedQuestion === null) return;
+    if (studyMode !== "entretien") return;
+    const key = questionIdKey(expandedQuestion);
+    if (revealedKeys.has(key)) return;
+
+    setAnswerTimers((prev) => ({ ...prev, [key]: 75 }));
+    const interval = window.setInterval(() => {
+      setAnswerTimers((prev) => {
+        const t = prev[key];
+        if (t === undefined || t <= 0) return prev;
+        return { ...prev, [key]: t - 1 };
+      });
+    }, 1000);
+    return () => window.clearInterval(interval);
+  }, [expandedQuestion, studyMode, revealedKeys]);
+
+  const handleRating = (qid: string | number, value: number) => {
+    onUpdateRating(qid, value);
+    if (value > 0) {
+      syncRatingToSrs(qid, value);
+      logDailyActivity("lecture", 2);
+    }
+  };
+
+  const toggleStudyMode = (mode: StudyMode) => {
+    setStudyMode(mode);
+    saveStudyMode(mode);
+    setRevealedKeys(new Set());
+  };
+
+  const revealAnswer = (qid: string | number) => {
+    const key = questionIdKey(qid);
+    setRevealedKeys((prev) => new Set(prev).add(key));
+  };
 
   const categories = QUESTION_CATEGORIES;
   const difficulties = DIFFICULTY_OPTIONS;
@@ -201,6 +256,34 @@ export function QuestionsTab({
         title="Questions"
         description="131 questions d'entretien avec réponses modèles, filtres et auto-évaluation."
       />
+
+      <div className="flex flex-wrap gap-2 mb-6">
+        <button
+          type="button"
+          onClick={() => toggleStudyMode("lecture")}
+          className={`touch-target-bar gap-2 px-4 rounded-xl border-2 text-sm font-medium transition-colors ${
+            studyMode === "lecture"
+              ? "bg-primary text-primary-foreground border-primary"
+              : "border-border bg-card text-foreground hover:border-primary/40"
+          }`}
+        >
+          <BookMarked className="w-4 h-4" />
+          Lecture
+        </button>
+        <button
+          type="button"
+          onClick={() => toggleStudyMode("entretien")}
+          className={`touch-target-bar gap-2 px-4 rounded-xl border-2 text-sm font-medium transition-colors ${
+            studyMode === "entretien"
+              ? "bg-primary text-primary-foreground border-primary"
+              : "border-border bg-card text-foreground hover:border-primary/40"
+          }`}
+        >
+          <Mic className="w-4 h-4" />
+          Répondre d&apos;abord
+        </button>
+      </div>
+
       {/* Filtres */}
       <div className="bg-card rounded-2xl shadow-card border border-border p-4 sm:p-6 mb-6 sm:mb-8">
         <div className="hidden sm:flex items-center gap-2 mb-5">
@@ -478,7 +561,9 @@ export function QuestionsTab({
                         type="button"
                         onClick={() => {
                           if (!isExpanded) captureScroll();
-                          setExpandedQuestion(isExpanded ? null : q.id);
+                          startTransition(() => {
+                            setExpandedQuestion(isExpanded ? null : q.id);
+                          });
                         }}
                         className="w-full flex items-start gap-2 min-h-11 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         aria-expanded={isExpanded}
@@ -499,7 +584,7 @@ export function QuestionsTab({
                     <div className="hidden sm:flex flex-shrink-0 self-start pt-1">
                       <StarRating
                         value={userRating}
-                        onChange={(v) => onUpdateRating(q.id, v)}
+                        onChange={(v) => handleRating(q.id, v)}
                         size="sm"
                       />
                     </div>
@@ -507,7 +592,7 @@ export function QuestionsTab({
                   <div className="sm:hidden mt-2 pl-[3.25rem]">
                     <StarRating
                       value={userRating}
-                      onChange={(v) => onUpdateRating(q.id, v)}
+                      onChange={(v) => handleRating(q.id, v)}
                       size="sm"
                       compact
                     />
@@ -516,88 +601,68 @@ export function QuestionsTab({
 
                 {isExpanded && (
                   <div className="px-4 sm:px-6 pb-6 pt-2 border-t border-border bg-gradient-to-b from-muted/40 to-card">
-                    <div className="ml-0 sm:ml-16 mt-6 space-y-6">
-                      <div>
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="h-px w-6 bg-primary" />
-                          <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
-                            Explication
-                          </h4>
-                        </div>
-                        <p className="text-foreground leading-relaxed font-light">
-                          {q.explanation}
+                    {isPending ? (
+                      <QuestionDetailSkeleton />
+                    ) : studyMode === "entretien" && !revealedKeys.has(qKey) ? (
+                      <div className="ml-0 sm:ml-16 mt-6 space-y-4 text-center py-8">
+                        <p className="text-muted-foreground text-sm">
+                          Répondez à voix haute avant de révéler la solution.
                         </p>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <div className="h-px w-6 bg-primary" />
-                          <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
-                            Étapes de réponse
-                          </h4>
-                        </div>
-                        <ol className="space-y-3">
-                          {q.steps.map((step, i) => (
-                            <li
-                              key={i}
-                              className="flex gap-4 bg-card rounded-lg p-4 border border-border"
-                            >
-                              <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary text-primary-foreground font-serif text-sm flex items-center justify-center">
-                                {i + 1}
-                              </div>
-                              <p className="text-foreground leading-relaxed flex-1 pt-0.5">
-                                {step}
-                              </p>
-                            </li>
-                          ))}
-                        </ol>
-                      </div>
-
-                      {q.visual && (
-                        <div>
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="h-px w-6 bg-primary" />
-                            <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
-                              Visualisation
-                            </h4>
+                        {answerTimers[qKey] !== undefined && answerTimers[qKey] > 0 && (
+                          <div className="text-4xl font-serif text-primary tabular-nums">
+                            {answerTimers[qKey]}s
                           </div>
-                          <Visual type={q.visual} />
-                        </div>
-                      )}
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => revealAnswer(q.id)}
+                          className="touch-target-bar mx-auto px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90"
+                        >
+                          J&apos;ai répondu (à voix haute)
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="ml-0 sm:ml-16 mt-6 space-y-6">
+                        <QuestionEnrichedPanel
+                          questionId={q.id}
+                          explanation={q.explanation}
+                          steps={q.steps}
+                          tip={q.tip}
+                        />
 
-                      {q.tip && (
-                        <div className="bg-gradient-to-r from-indigo-900 to-blue-900 rounded-xl p-5 text-white relative overflow-hidden">
-                          <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl" />
-                          <div className="relative">
-                            <div className="flex items-center gap-2 mb-2">
-                              <span className="text-blue-200 text-xs uppercase tracking-[0.2em] font-medium">
-                                💡 Conseil de pro
-                              </span>
-                            </div>
-                            <p className="text-white font-light leading-relaxed">{q.tip}</p>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Notation grand format en fin de carte */}
-                      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl p-5">
-                        <div className="flex items-center justify-between flex-wrap gap-3">
+                        {q.visual && (
                           <div>
-                            <div className="text-amber-900 text-xs uppercase tracking-[0.2em] font-bold mb-1">
-                              Mon niveau sur cette question
+                            <div className="flex items-center gap-2 mb-3">
+                              <div className="h-px w-6 bg-primary" />
+                              <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
+                                Visualisation
+                              </h4>
                             </div>
-                            <div className="text-amber-700 text-sm">
-                              1 = à revoir | 3 = correct | 5 = je maîtrise totalement
-                            </div>
+                            <ClientOnly fallback={<Skeleton className="h-48 w-full rounded-xl" />}>
+                              <Visual type={q.visual} />
+                            </ClientOnly>
                           </div>
-                          <StarRating
-                            value={userRating}
-                            onChange={(v) => onUpdateRating(q.id, v)}
-                            size="lg"
-                          />
+                        )}
+
+                        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-xl p-5">
+                          <div className="flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                              <div className="text-amber-900 text-xs uppercase tracking-[0.2em] font-bold mb-1">
+                                Mon niveau sur cette question
+                              </div>
+                              <div className="text-amber-700 text-sm">
+                                1 = à revoir | 3 = correct | 5 = je maîtrise totalement
+                              </div>
+                            </div>
+                            <StarRating
+                              value={userRating}
+                              onChange={(v) => handleRating(q.id, v)}
+                              size="lg"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
               </div>

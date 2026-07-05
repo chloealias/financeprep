@@ -3,6 +3,7 @@ import { ChevronRight, Clock, Mic, RotateCcw, Sparkles, Star } from "lucide-reac
 import { questions } from "@/data/questions";
 import { concepts } from "@/data/concepts";
 import { countBuckets, loadSrsStore } from "@/lib/srs";
+import { getActivityHeatmap, getStreak } from "@/lib/daily-goal";
 import { loadInterviewSessions } from "@/lib/storage";
 import {
   AlertDialog,
@@ -131,6 +132,8 @@ export function ProgressPage({
     sessions.length > 0
       ? sessions.slice(0, 5).reduce((s, x) => s + x.avgStars, 0) / Math.min(5, sessions.length)
       : null;
+  const heatmap = typeof window !== "undefined" ? getActivityHeatmap(12) : [];
+  const streak = typeof window !== "undefined" ? getStreak() : 0;
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
@@ -297,6 +300,38 @@ export function ProgressPage({
             ))}
           </ul>
         )}
+      </section>
+
+      <section
+        aria-label="Activité récente"
+        className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-foreground font-serif text-xl">Activité (12 semaines)</h3>
+          {streak > 0 && (
+            <span className="text-sm text-primary font-medium">{streak} jour{streak > 1 ? "s" : ""} d&apos;affilée</span>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {heatmap.map((cell) => {
+            const level =
+              cell.count === 0 ? 0 : cell.count < 10 ? 1 : cell.count < 20 ? 2 : cell.count < 30 ? 3 : 4;
+            const colors = [
+              "bg-muted",
+              "bg-primary/20",
+              "bg-primary/40",
+              "bg-primary/60",
+              "bg-primary",
+            ];
+            return (
+              <div
+                key={cell.date}
+                title={`${cell.date} · ${cell.count} min`}
+                className={`w-2.5 h-2.5 rounded-sm ${colors[level]}`}
+              />
+            );
+          })}
+        </div>
       </section>
 
       {/* Vue d'ensemble compacte */}
