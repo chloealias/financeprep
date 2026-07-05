@@ -40,8 +40,8 @@ describe("ma-deals helpers", () => {
     expect(dealMatchesSector(deal!, "tmt")).toBe(false);
   });
 
-  it("has 17 deals", () => {
-    expect(MA_DEALS.length).toBe(17);
+  it("has 21 deals", () => {
+    expect(MA_DEALS.length).toBe(21);
   });
 
   it("getDealsForSector includes automotive", () => {

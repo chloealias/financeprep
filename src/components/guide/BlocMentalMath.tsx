@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { GuideIntro, GuideSectionTitle, guideCardClass } from "@/components/guide/guide-ui";
+import { GuideIntro, GuideSectionTitle } from "@/components/guide/guide-ui";
 
 type Drill = {
   prompt: string;
@@ -43,20 +43,20 @@ export function BlocMentalMath() {
 
       <div className="mb-8">
         <GuideSectionTitle>Trachtenberg — multiplier par 11</GuideSectionTitle>
-        <div className={guideCardClass}>
-          <p className="text-foreground text-sm mb-3">
+        <div className="space-y-3 text-sm">
+          <p className="text-foreground leading-relaxed">
             Pour <strong>AB × 11</strong> (deux chiffres) : unité = B ; milieu = A+B (retenue si
             ≥10) ; dizaine = A (+ retenue).
           </p>
-          <p className="text-muted-foreground text-sm font-light italic">
+          <p className="text-muted-foreground font-light italic leading-relaxed">
             Ex. 53 × 11 → unité 3 ; 5+3=8 ; dizaine 5 → <strong>583</strong>
           </p>
-        </div>
-        <div className={`${guideCardClass} mt-3`}>
-          <p className="text-foreground text-sm font-medium mb-1">×12 rapide</p>
-          <p className="text-muted-foreground text-sm font-light">
-            ×12 = ×10 + ×2. Ex. 45 × 12 = 450 + 90 = 540.
-          </p>
+          <div>
+            <p className="text-foreground font-medium mb-1">×12 rapide</p>
+            <p className="text-muted-foreground font-light leading-relaxed">
+              ×12 = ×10 + ×2. Ex. 45 × 12 = 450 + 90 = 540.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -81,23 +81,25 @@ export function BlocMentalMath() {
 
       <div className="mb-8">
         <GuideSectionTitle>Mini-entraînement</GuideSectionTitle>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {drills.map((d, i) => (
-            <div key={i} className={guideCardClass}>
-              <p className="text-foreground font-medium mb-2">{d.prompt}</p>
+            <div key={i}>
+              <p className="text-foreground font-medium">{d.prompt}</p>
               {!revealed[i] ? (
                 <button
                   type="button"
                   onClick={() => setRevealed((r) => ({ ...r, [i]: true }))}
-                  className="text-primary text-sm underline underline-offset-2 hover:text-primary/80"
+                  className="mt-1 text-primary text-sm underline underline-offset-2 hover:text-primary/80"
                 >
                   Voir méthode et réponse
                 </button>
               ) : (
-                <>
-                  <p className="text-muted-foreground text-sm font-light mb-1">{d.method}</p>
+                <div className="mt-1 space-y-1">
+                  <p className="text-muted-foreground text-sm font-light leading-relaxed">
+                    {d.method}
+                  </p>
                   <p className="text-emerald-800 text-sm font-semibold">→ {d.answer}</p>
-                </>
+                </div>
               )}
             </div>
           ))}

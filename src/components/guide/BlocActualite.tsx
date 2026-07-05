@@ -56,7 +56,7 @@ function DealSection({ title, children }: { title: string; children: ReactNode }
 }
 
 function AdvisorBlock({ deal }: { deal: MaDeal }) {
-  const { advisors } = deal;
+  const advisors = deal.advisors ?? {};
   const hasAdvisors =
     (advisors.sellSide?.length ?? 0) > 0 ||
     (advisors.buySide?.length ?? 0) > 0 ||

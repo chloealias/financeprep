@@ -815,6 +815,154 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     advisors: {},
     kind: "trend",
   },
+  {
+    id: "d19",
+    title: "Meta / Scale AI",
+    dates: "Annonce juin 2025",
+    type: "M&A",
+    secteur: "TMT / Intelligence Artificielle",
+    headlineEv: "~14,3 Md$ (49%)",
+    banks: [],
+    parties: [
+      {
+        label: "Cible",
+        text: "Scale AI — leader de l'annotation et de la préparation de données pour l'entraînement des modèles d'IA. Fondée par Alexandr Wang.",
+      },
+      {
+        label: "Acquéreur",
+        text: "Meta — prise de participation minoritaire d'environ 49%, volontairement non-contrôlante. Alexandr Wang rejoint Meta pour diriger les efforts « superintelligence ».",
+      },
+    ],
+    valorisation: [
+      { label: "Investissement", value: "~14,3 Md$ pour ~49%" },
+      { label: "Valorisation implicite Scale AI", value: "~29 Md$" },
+      { label: "Structure", value: "Participation minoritaire + acqui-hire des dirigeants" },
+    ],
+    interests: [
+      {
+        side: "Meta",
+        text: "Rattraper OpenAI, Google et Anthropic dans la course aux modèles frontière. La logique est d'acquérir du talent (Wang + équipe) et un accès privilégié aux données d'entraînement, sans prendre le contrôle juridique pour limiter le risque antitrust.",
+      },
+      {
+        side: "Scale AI",
+        text: "Accès à un capital massif et à l'écosystème Meta tout en restant nominalement indépendante. Les fondateurs et salariés obtiennent de la liquidité.",
+      },
+    ],
+    contexte:
+      "Illustration parfaite de la « quasi-acquisition » : participation minoritaire non-contrôlante + embauche des dirigeants clés. Ce montage vise à contourner le contrôle des concentrations (FTC/DOJ, Commission européenne), sur le même modèle que Microsoft/Inflection, Google/Character.AI et Amazon/Adept (voir tendance deal d20).",
+    pointEntretien:
+      "Savoir expliquer pourquoi les Big Tech privilégient des prises de participation minoritaires assorties d'acqui-hires plutôt que des acquisitions pleines : contournement du contrôle des concentrations tout en captant talent et technologie. Angle clé sur le risque réglementaire de l'IA.",
+    ftUrl: "https://www.ft.com/content/meta-scale-ai",
+    advisors: {},
+    kind: "deal",
+  },
+  {
+    id: "d20",
+    title: "Big Tech / IA — méga-investissements et acqui-hires",
+    dates: "Tendance 2024-2026",
+    type: "Tendance",
+    secteur: "TMT / Intelligence Artificielle",
+    headlineEv: "Tendance sectorielle",
+    banks: [],
+    parties: [
+      {
+        label: "Contexte",
+        text: "Faute de pouvoir acquérir directement les laboratoires d'IA (valorisations vertigineuses + risque antitrust), les hyperscalers déploient deux stratégies : des investissements géants dans les labos, et des « acqui-hires » qui vident les start-up de leurs talents via des accords de licence.",
+      },
+      {
+        label: "Exemples à citer",
+        text: "Investissements : Microsoft / OpenAI (~13 Md$), Amazon / Anthropic (~8 Md$), Google / Anthropic. Acqui-hires : Microsoft / Inflection (Mustafa Suleyman, ~650 M$ de licence), Google / Character.AI (~2,7 Md$ de licence, Noam Shazeer), Amazon / Adept, Meta / Scale AI (voir deal d19).",
+      },
+    ],
+    interests: [
+      {
+        side: "Hyperscalers (MSFT, Amazon, Google, Meta)",
+        text: "Sécuriser talent, modèles et volumes de calcul dans la course à l'IA générative, tout en gardant la structure sous le seuil du contrôle des concentrations. La contrepartie fréquente : un engagement de dépenses cloud (Azure, AWS, GCP) pris par le labo financé.",
+      },
+      {
+        side: "Régulateurs",
+        text: "FTC, DOJ, CMA et Commission européenne examinent ces montages (partenariats, participations, acqui-hires) comme de possibles concentrations déguisées et de potentiels verrous concurrentiels sur l'IA.",
+      },
+    ],
+    contexte:
+      "Thème M&A / TMT incontournable en entretien 2026 : la frontière entre partenariat, investissement et acquisition devient floue. Attention à la « circularité » : un même acteur (ex : Nvidia) peut être à la fois fournisseur, investisseur et bénéficiaire des dépenses.",
+    pointEntretien:
+      "Distinguer investissement stratégique, partenariat commercial et acqui-hire. Comprendre pourquoi ces structures échappent (ou non) au contrôle des concentrations. Savoir citer 3-4 exemples précis (Microsoft/OpenAI, Amazon/Anthropic, Google/Character.AI, Meta/Scale AI).",
+    advisors: {},
+    kind: "trend",
+  },
+  {
+    id: "d21",
+    title: "CoreWeave — IPO (infrastructure IA / GPU cloud)",
+    dates: "IPO mars 2025",
+    type: "M&A",
+    secteur: "TMT / Infrastructure IA & Cloud",
+    headlineEv: "~23 Md$ valorisation",
+    banks: ["Morgan Stanley", "Goldman Sachs", "JPMorgan"],
+    parties: [
+      {
+        label: "Entité",
+        text: "CoreWeave — hyperscaler spécialisé dans le cloud GPU, loue de la capacité de calcul Nvidia pour l'entraînement et l'inférence de modèles d'IA. IPO au Nasdaq.",
+      },
+    ],
+    valorisation: [
+      { label: "Valorisation IPO", value: "~23 Md$" },
+      { label: "Contexte", value: "Une des plus grandes IPO tech US de 2025" },
+      { label: "Nuance", value: "IPO calibrée sous la fourchette initiale (appétit prudent)" },
+    ],
+    interests: [
+      {
+        side: "Investisseurs",
+        text: "Exposition « pure-play » à la demande explosive de calcul IA, difficile à jouer autrement que via Nvidia. En contrepartie : modèle très capitalistique, dette lourde adossée aux GPU et forte concentration clients (Microsoft en tête).",
+      },
+      {
+        side: "CoreWeave",
+        text: "Lever des fonds pour financer un CapEx massif (data centers, GPU) et refinancer une dette importante. L'IPO offre une devise (actions) et de la visibilité.",
+      },
+    ],
+    contexte:
+      "L'infrastructure IA devient une classe d'actif à part entière. Débat sur la « circularité » Nvidia (à la fois investisseur, fournisseur de GPU et soutien à la demande) et sur la soutenabilité de la dette adossée à des GPU dont la valeur se déprécie vite.",
+    pointEntretien:
+      "Illustrer le financement de l'infrastructure IA : intensité capitalistique, dette adossée aux GPU, risque de concentration client. Citer MS/GS/JPM comme bookrunners. Savoir discuter la circularité Nvidia et le risque de dépréciation des GPU.",
+    ftUrl: "https://www.ft.com/content/coreweave-ipo",
+    advisors: {},
+    kind: "deal",
+  },
+  {
+    id: "d22",
+    title: "SpaceX / Starlink — perspectives d'IPO",
+    dates: "Spéculation 2025-2026",
+    type: "Tendance",
+    secteur: "TMT / Aérospatiale & Espace",
+    headlineEv: "~350 Md$+ (valorisation privée)",
+    banks: [],
+    parties: [
+      {
+        label: "Contexte",
+        text: "SpaceX valorisée autour de 350 Md$ via un tender offer fin 2024, l'une des sociétés privées les plus valorisées au monde. Une IPO éventuelle porterait probablement sur Starlink (internet par satellite) plutôt que sur SpaceX en entier.",
+      },
+      {
+        label: "Structure probable",
+        text: "Carve-out / spin-off de Starlink une fois ses flux de trésorerie prévisibles, afin de conserver le contrôle privé sur la partie lancement (Falcon, Starship). Elon Musk a répété qu'il n'y a pas d'urgence à coter.",
+      },
+    ],
+    interests: [
+      {
+        side: "SpaceX / Musk",
+        text: "Garder le contrôle et l'horizon long terme (Mars, Starship), financer les investissements sans la pression des marchés publics. La liquidité des salariés et investisseurs passe par des tender offers réguliers plutôt que par une cotation.",
+      },
+      {
+        side: "Investisseurs",
+        text: "Très forte demande pour s'exposer à SpaceX/Starlink ; en l'absence d'IPO, l'accès se fait via le marché secondaire (tender offers, fonds spécialisés) souvent avec décote/prime et liquidité limitée.",
+      },
+    ],
+    contexte:
+      "Cas d'école du « stay private longer » : les décacornes lèvent des montants massifs en privé et repoussent l'IPO. Rôle croissant des tender offers et des marchés secondaires pour la liquidité, en substitution partielle de l'introduction en bourse.",
+    pointEntretien:
+      "Savoir expliquer pourquoi SpaceX reste privée malgré sa valorisation (contrôle, financement via tender offers, pas de besoin de capitaux publics), la structure probable d'une IPO de Starlink en spin-off, et la tendance « stay private longer » avec le rôle des marchés secondaires.",
+    advisors: {},
+    kind: "trend",
+  },
 ];
 
 export const MA_DEALS: MaDeal[] = MA_DEALS_RAW.map((d) => ({
