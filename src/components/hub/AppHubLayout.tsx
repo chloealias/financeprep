@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { ListChecks, Library, BookMarked, Building2, Landmark, BarChart3 } from "lucide-react";
+import { ListChecks, Library, BookMarked, Building2, Landmark } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { AppTab, HubNavTab } from "@/lib/app-tabs";
 import { isHubNavTab } from "@/lib/app-tabs";
@@ -24,7 +24,6 @@ const pages: HubPage[] = [
   { id: "guide", label: "Guide", icon: BookMarked },
   { id: "secteurs", label: "Secteurs", icon: Building2 },
   { id: "banques", label: "Banques", icon: Landmark },
-  { id: "progress", label: "Progrès", icon: BarChart3 },
 ];
 
 type AppHubLayoutProps = {
@@ -80,7 +79,7 @@ export function AppHubLayout({
           </div>
 
           {masteredPct !== null && masteredPct > 0 && (
-            <div className="hidden sm:block mt-4 max-w-md">
+            <div className="mt-3 sm:mt-4 max-w-md">
               <div className="flex justify-between text-xs text-white/80 mb-1">
                 <span>Maîtrise questions</span>
                 <span className="tabular-nums">{masteredPct}%</span>
@@ -94,8 +93,8 @@ export function AppHubLayout({
             </div>
           )}
 
-          <nav className="hidden sm:block mt-8" aria-label="Navigation principale">
-            <div className="flex flex-wrap gap-2">
+          <nav className="hidden sm:block mt-6 sm:mt-8" aria-label="Navigation principale">
+            <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {pages.map((p) => {
                 const Icon = p.icon;
                 const isActive = navActivePage === p.id;

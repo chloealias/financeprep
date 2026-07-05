@@ -3,24 +3,20 @@ import { ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
 import { guideModules } from "@/data/guide-modules";
 import { GuideModuleLink } from "@/components/guide/guide-ui";
-import { TodayPlanWidget } from "@/components/hub/TodayPlanWidget";
 import { PageHeader } from "@/components/ui/page-header";
 import { getProfileMenuBadges } from "@/lib/profile-dashboard";
-import { loadGuideGoals, toggleGuideGoal } from "@/lib/storage";
 
 export function GuideTab() {
   const [srsDue, setSrsDue] = useState(0);
-  const [guideGoals, setGuideGoals] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     setSrsDue(getProfileMenuBadges().srsDue);
-    setGuideGoals(loadGuideGoals());
   }, []);
+
+  const [actualiteModule, ...otherModules] = guideModules;
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <TodayPlanWidget className="mb-10" />
-
       <PageHeader
         eyebrow="Méthodologie"
         title={
@@ -29,7 +25,17 @@ export function GuideTab() {
           </>
         }
         description="6 guides interactifs. Cliquez sur un module pour l'ouvrir en pleine page."
+        className="mb-8 sm:mb-10"
       />
+
+      <div className="mb-10">
+        <GuideModuleLink
+          to={actualiteModule.href}
+          tag={actualiteModule.tag}
+          title={actualiteModule.title}
+          icon={actualiteModule.icon}
+        />
+      </div>
 
       <Link
         to="/flashcards"
@@ -52,10 +58,6 @@ export function GuideTab() {
             <h3 className="type-card-title text-xl sm:text-2xl">
               Flashcards avec répétition espacée
             </h3>
-            <p className="text-primary-foreground/80 text-sm font-light mt-1 hidden sm:block">
-              Sessions de 20 cartes. L&apos;algorithme SM-2 fait revenir les cartes ratées plus
-              souvent.
-            </p>
           </div>
           <ChevronRight
             className="w-6 h-6 text-primary-foreground/70 group-hover:translate-x-1 transition-transform"
@@ -65,36 +67,14 @@ export function GuideTab() {
       </Link>
 
       <div className="space-y-6">
-        {guideModules.map((module) => (
-          <div key={module.href} className="space-y-2">
-            <GuideModuleLink
-              to={module.href}
-              tag={module.tag}
-              title={module.title}
-              icon={module.icon}
-            />
-            {module.learningGoals && module.learningGoals.length > 0 && (
-              <ul className="ml-4 sm:ml-6 space-y-1">
-                {module.learningGoals.map((goal) => {
-                  const goalKey = `${module.href}:${goal}`;
-                  const done = guideGoals[goalKey];
-                  return (
-                    <li key={goalKey}>
-                      <label className="flex items-start gap-2 text-sm text-muted-foreground cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={Boolean(done)}
-                          onChange={() => setGuideGoals(toggleGuideGoal(goalKey))}
-                          className="mt-0.5"
-                        />
-                        <span className={done ? "line-through opacity-70" : ""}>{goal}</span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
+        {otherModules.map((module) => (
+          <GuideModuleLink
+            key={module.href}
+            to={module.href}
+            tag={module.tag}
+            title={module.title}
+            icon={module.icon}
+          />
         ))}
       </div>
     </div>

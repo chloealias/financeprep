@@ -105,7 +105,7 @@ export function QuestionsTab({
   const wasExpandedQuestion = useRef<string | number | null>(null);
   const captureScroll = usePreserveScrollOnDetailClose(expandedQuestion !== null);
   const [ratingFilter, setRatingFilter] = useState(DEFAULT_QUESTION_FILTERS.ratingFilter);
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
   const [showReviewOnly, setShowReviewOnly] = useState(false);
   const [filtersHydrated, setFiltersHydrated] = useState(false);
   const [studyMode, setStudyMode] = useState<StudyMode>("lecture");
@@ -282,17 +282,58 @@ export function QuestionsTab({
           <Mic className="w-4 h-4" />
           Répondre d&apos;abord
         </button>
+        <button
+          type="button"
+          onClick={() => setShowFilters((v) => !v)}
+          onKeyDown={(e) => {
+            if (e.key === "Escape" && showFilters) {
+              e.preventDefault();
+              setShowFilters(false);
+            }
+          }}
+          aria-label={showFilters ? "Masquer les filtres" : "Afficher les filtres et recherche"}
+          aria-expanded={showFilters}
+          aria-controls="questions-filters-panel"
+          className={`touch-target-bar relative gap-2 px-4 rounded-xl border-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring ${
+            showFilters
+              ? "bg-primary text-primary-foreground border-primary"
+              : "border-border bg-card text-foreground hover:border-primary/40"
+          }`}
+        >
+          <Filter className="w-4 h-4" />
+          Filtres
+          {(activeCategory !== "all" ||
+            activeDifficulty !== "all" ||
+            ratingFilter !== "all" ||
+            searchQuery ||
+            showReviewOnly) && (
+            <span
+              className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full ${showFilters ? "bg-primary-foreground" : "bg-primary"}`}
+              aria-hidden="true"
+            />
+          )}
+        </button>
       </div>
 
       {/* Filtres */}
-      <div className="bg-card rounded-2xl shadow-card border border-border p-4 sm:p-6 mb-6 sm:mb-8">
-        <div className="hidden sm:flex items-center gap-2 mb-5">
-          <Filter className="w-4 h-4 text-primary" />
-          <h2 className="type-section-title">Filtres & recherche</h2>
-        </div>
+      {showFilters && (
+        <div
+          id="questions-filters-panel"
+          role="region"
+          aria-label="Filtres et recherche"
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setShowFilters(false);
+            }
+          }}
+          className="bg-card rounded-2xl shadow-card border border-border p-4 sm:p-6 mb-6 sm:mb-8"
+        >
+          <div className="flex items-center gap-2 mb-5">
+            <Filter className="w-4 h-4 text-primary" />
+            <h2 className="type-section-title">Filtres & recherche</h2>
+          </div>
 
-        <div className="flex items-center gap-2 mb-5 sm:mb-5">
-          <div className="relative flex-1">
+          <div className="relative mb-5">
             <label htmlFor="finance-search" className="sr-only">
               Rechercher une question ou un concept
             </label>
@@ -302,7 +343,10 @@ export function QuestionsTab({
             />
             <input
               id="finance-search"
-              type="search"
+              type="text"
+              role="searchbox"
+              inputMode="search"
+              enterKeyHint="search"
               placeholder="Rechercher..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -325,41 +369,7 @@ export function QuestionsTab({
               </button>
             )}
           </div>
-          <button
-            type="button"
-            onClick={() => setShowMobileFilters((v) => !v)}
-            onKeyDown={(e) => {
-              if (e.key === "Escape" && showMobileFilters) {
-                e.preventDefault();
-                setShowMobileFilters(false);
-              }
-            }}
-            aria-label={showMobileFilters ? "Masquer les filtres" : "Afficher les filtres"}
-            aria-expanded={showMobileFilters}
-            aria-controls="mobile-filters-panel"
-            className={`sm:hidden relative flex-shrink-0 w-12 h-12 rounded-lg border flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-ring ${showMobileFilters ? "bg-primary text-primary-foreground border-primary" : "bg-card text-foreground border-border"}`}
-          >
-            <Filter className="w-5 h-5" aria-hidden="true" />
-            {(activeCategory !== "all" || activeDifficulty !== "all" || ratingFilter !== "all") && (
-              <span
-                className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary"
-                aria-hidden="true"
-              />
-            )}
-          </button>
-        </div>
 
-        <div
-          id="mobile-filters-panel"
-          role="region"
-          aria-label="Filtres"
-          onKeyDown={(e) => {
-            if (e.key === "Escape" && showMobileFilters) {
-              setShowMobileFilters(false);
-            }
-          }}
-          className={`${showMobileFilters ? "block" : "hidden"} sm:block`}
-        >
           <FilterRadioGroup
             label="Catégorie"
             value={activeCategory}
@@ -416,33 +426,33 @@ export function QuestionsTab({
               </span>
             </button>
           </div>
-        </div>
 
-        <div className="mt-5 pt-5 border-t border-border flex items-center justify-between text-sm flex-wrap gap-2">
-          <span className="text-muted-foreground">
-            <span className="font-semibold text-foreground">{stats.filtered}</span> question
-            {stats.filtered > 1 ? "s" : ""} affichée{stats.filtered > 1 ? "s" : ""}
-          </span>
-          {(activeCategory !== "all" ||
-            activeDifficulty !== "all" ||
-            searchQuery ||
-            ratingFilter !== "all" ||
-            showReviewOnly) && (
-            <button
-              onClick={() => {
-                setActiveCategory("all");
-                setActiveDifficulty("all");
-                setSearchQuery("");
-                setRatingFilter("all");
-                setShowReviewOnly(false);
-              }}
-              className="touch-target-bar text-primary hover:text-primary/80 underline underline-offset-2"
-            >
-              Réinitialiser
-            </button>
-          )}
+          <div className="mt-5 pt-5 border-t border-border flex items-center justify-between text-sm flex-wrap gap-2">
+            <span className="text-muted-foreground">
+              <span className="font-semibold text-foreground">{stats.filtered}</span> question
+              {stats.filtered > 1 ? "s" : ""} affichée{stats.filtered > 1 ? "s" : ""}
+            </span>
+            {(activeCategory !== "all" ||
+              activeDifficulty !== "all" ||
+              searchQuery ||
+              ratingFilter !== "all" ||
+              showReviewOnly) && (
+              <button
+                onClick={() => {
+                  setActiveCategory("all");
+                  setActiveDifficulty("all");
+                  setSearchQuery("");
+                  setRatingFilter("all");
+                  setShowReviewOnly(false);
+                }}
+                className="touch-target-bar text-primary hover:text-primary/80 underline underline-offset-2"
+              >
+                Réinitialiser
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Questions */}
       <div className="space-y-4">
