@@ -241,7 +241,7 @@ export const acronymSections: AcronymSection[] = [
   {
     title: "Normes & régulateurs",
     items: [
-      { abbr: "IFRS", english: "International Financial Reporting Standards", french: "Normes EU" },
+      { abbr: "IFRS", english: "International Financial Reporting Standards", french: "Normes comptables internationales (IASB), adoptées en UE" },
       { abbr: "US GAAP", english: "Generally Accepted Accounting Principles", french: "Normes US" },
       { abbr: "AMF", english: "Autorité des Marchés Financiers", french: "Régulateur français" },
       { abbr: "DG COMP", french: "Direction concurrence, Commission européenne (antitrust UE)" },

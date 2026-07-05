@@ -19,7 +19,7 @@ export const PE_FUND_LIST: PeFundProfile[] = [
     id: "ardian",
     name: "Ardian",
     hq: "Paris",
-    aum: "~150 Md$ (2025)",
+    aum: "~200 Md$ (fin 2025)",
     strategies: ["Buyout", "Growth", "Infrastructure", "Private debt", "Secondaries"],
     ticketTypique: "Mid-cap à large cap EU — LBO €100M–2Md+",
     particularites: [

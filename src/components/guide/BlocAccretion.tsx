@@ -1,38 +1,13 @@
 import { useState } from "react";
 import { GuideSectionTitle } from "@/components/guide/guide-ui";
+import { INTERVIEW_ACCRETION_RULES, stockDealVerdict } from "@/lib/accretion-rules";
 
 export function BlocAccretion() {
   const [peAcq, setPeAcq] = useState(20);
   const [peTgt, setPeTgt] = useState(15);
 
-  const verdict = peAcq > peTgt ? "accretif" : peAcq < peTgt ? "dilutif" : "neutre";
-
-  const regles = [
-    {
-      label: "Paiement 100% cash",
-      texte:
-        "Toujours accretif si le rendement des bénéfices de la cible (1/P/E cible) dépasse le coût après impôt de la dette.",
-    },
-    {
-      label: "Échange d'actions pur",
-      texte: "Accretif ssi P/E acquéreur > P/E cible. La règle la plus testée en entretien M&A.",
-    },
-    {
-      label: "Mix cash + actions",
-      texte:
-        "Analyser la contribution marginale de chaque tranche. Le cash est moins dilutif que les actions si le coût de dette est bas.",
-    },
-    {
-      label: "Goodwill & PPA",
-      texte:
-        "L'amortissement des intangibles (Purchase Price Allocation) pèse sur l'EPS comptable mais pas sur le cash. Préciser la différence GAAP vs cash EPS.",
-    },
-    {
-      label: "Synergies",
-      texte:
-        'Un deal dilutif peut devenir accretif si les synergies sont suffisantes. Toujours demander : "accretif avec ou sans synergies ?"',
-    },
-  ];
+  const verdict = stockDealVerdict(peAcq, peTgt);
+  const regles = INTERVIEW_ACCRETION_RULES;
 
   return (
     <>

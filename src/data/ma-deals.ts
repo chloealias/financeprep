@@ -188,7 +188,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
   {
     id: "d03",
     title: "Goldman Sachs Alternatives / Mace Consult",
-    dates: "Annonce juil. 2025 — Closing 5 mars 2026",
+    dates: "Annonce juil. 2025 — Closing effectué 5 mars 2026",
     type: "Carve-out",
     secteur: "Industrie / Construction & Infrastructure",
     headlineEv: "EV non divulgué (~$1 Md rev.)",
@@ -233,7 +233,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
   {
     id: "d04",
     title: "UniCredit / Commerzbank",
-    dates: "Prise 9% sept. 2024 — Document d'offre 5 mai 2026 — Acceptation jusqu'au 16 juin 2026",
+    dates: "Prise 9 % sept. 2024 — Offre publiée 5 mai 2026 — Acceptation prolongée jusqu'au 3 juil. 2026 — Résultat final 8 juil. 2026",
     type: "OPA",
     secteur: "FIG — Banques",
     headlineEv: "~43 Md€ (capitalisation CBK)",
@@ -253,7 +253,11 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
       {
         label: "Calendrier",
-        text: "AGM Commerzbank : 20 mai 2026. Ex-date dividende (€1,10) : 21 mai. Période d'acceptation : 5 mai — 16 juin 2026.",
+        text: "Période régulière : 5 mai — 16 juin 2026. Prolongation légale : 20 juin — 3 juil. 2026. Résultat définitif publié le 8 juil. 2026.",
+      },
+      {
+        label: "Résultat offre",
+        text: "~12,5 % des actions Commerzbank remises à l'offre (juil. 2026). Participation free-float très faible (~1 % hors contreparties dérivées). État allemand (~12 %) a rejeté l'offre.",
       },
     ],
     valorisation: [
@@ -275,9 +279,9 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
     ],
     contexte:
-      "CEO Commerzbank : Bettina Orlopp. OPA hostile / échange d'actions. Résistance politique allemande forte.",
+      "CEO Commerzbank : Bettina Orlopp. OPA hostile / échange d'actions. Résistance politique allemande forte. Offre échouée à convaincre le free-float (décote ~14 % vs cours) ; UniCredit conserve ~28–30 % + dérivés (~42 % d'exposition économique totale). Clôture réglementaire ECB attendue 2027.",
     pointEntretien:
-      "Incontournable en FIG ou M&A européen. Expliquer : OPA progressive via total return swaps, seuil 30% en droit allemand, pourquoi les fusions bancaires cross-border échouent en Europe (pas d'union bancaire, résistance politique, exigences CET1).",
+      "Incontournable en FIG ou M&A européen. Expliquer : OPA progressive via total return swaps, seuil 30 % en droit allemand, échec relatif de l'offre (12,5 % tendered), pourquoi les fusions bancaires cross-border échouent en Europe (pas d'union bancaire, résistance politique, exigences CET1).",
     ftUrl: "https://www.ft.com/content/unicredit-commerzbank",
     kind: "deal",
   },
@@ -330,7 +334,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
   {
     id: "d06",
     title: "Kering Beauté / Creed → L'Oréal",
-    dates: "Annonce oct. 2025 — Closing 31 mars 2026",
+    dates: "Annonce oct. 2025 — Closing effectué 31 mars 2026",
     type: "M&A",
     secteur: "Retail / Luxe / FMCG",
     headlineEv: "4 Md€ cash",
@@ -435,7 +439,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
   {
     id: "d08",
     title: "Altice France — Cession SFR métropolitain",
-    dates: "Offre conjointe 17 avr. 2026 — Exclusivité prolongée jusqu'au 5 juin 2026",
+    dates: "Offre conjointe 17 avr. 2026 — MOU signé 6 juin 2026 — Accords définitifs attendus H2 2026 — Closing visé H2 2027",
     type: "Cessions",
     secteur: "TMT / Telecom",
     headlineEv: "20,35 Md€",
@@ -460,8 +464,8 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
         text: "Suite directe du deal 2 (restructuration dette). Une fois désendettée, mise en vente de l'essentiel des activités telecom. Le prix reflète une décote de distress vs valorisation pré-crise.",
       },
       {
-        side: "Acquéreur",
-        text: "Consortium en négociations exclusives pour les actifs SFR métropolitains (prolongation d'exclusivité au 5 juin 2026). Répartition indicative : B2B majoritairement Bouygues ; B2C et infra partagés entre les trois opérateurs.",
+        side: "Acquéreurs",
+        text: "Consortium Bouygues (~42 %), Free–iliad (~31 %) et Orange (~27 %) — MOU signé le 6 juin 2026. Bouygues prend ~52 % des revenus cédés ; répartition indicative du prix inchangée vs l'offre d'avril. Closing soumis à l'antitrust (France + UE).",
       },
     ],
     contexte:
@@ -474,7 +478,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
   {
     id: "d09",
     title: "Sanofi / Blueprint Medicines",
-    dates: "Annonce juin 2025 — OPA juil. 2025 — Closing en cours",
+    dates: "Annonce juin 2025 — Closing effectué 18 juil. 2025",
     type: "OPA",
     secteur: "Santé / Biopharma",
     headlineEv: "~$9,1-9,5 Md (equity value)",

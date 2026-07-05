@@ -7,7 +7,7 @@ export const concepts = [
       "L'EV, c'est la valeur de toute l'entreprise (actionnaires + banques). L'Equity Value, c'est seulement la part des actionnaires. On passe de l'un à l'autre avec la dette nette et quelques postes du bilan.",
     formula: "EV = Equity Value + Dette nette + Minoritaires + Provisions retraites − Associates",
     deepDive:
-      "Imaginez que vous achetez une maison : le prix total (toit + crédit) correspond à l'EV. Ce qu'il vous reste vraiment à payer après le crédit, c'est l'Equity Value.\n\nPourquoi utiliser l'EV en M&A ? Parce qu'on compare des entreprises avec des dettes différentes. L'EV/EBITDA regarde le business, pas la structure financière.\n\nLe pont EV → Equity Value (à connaître par cœur) :\n• On ajoute la dette (l'acheteur la reprend)\n• On ajoute les minoritaires et les provisions retraites (engagements réels)\n• On retire le cash (l'acheteur le récupère)\n• On retire les associates (parts non consolidées)\n\nEn entretien : oublier les minoritaires dans le pont reste une erreur éliminatoire.",
+      "Imaginez que vous achetez une maison : le prix total (toit + crédit) correspond à l'EV. Ce qu'il vous reste vraiment à payer après le crédit, c'est l'Equity Value.\n\nPourquoi utiliser l'EV en M&A ? Parce qu'on compare des entreprises avec des dettes différentes. L'EV/EBITDA regarde le business, pas la structure financière.\n\nPont Equity → EV (construction, à connaître par cœur) :\n• On ajoute la dette (l'acheteur la reprend)\n• On ajoute les minoritaires et les provisions retraites (engagements réels)\n• On retire le cash (l'acheteur le récupère)\n• On retire les associates (parts non consolidées)\n\nPont EV → Equity (pour obtenir le prix par action) : on fait l'inverse — on retire la dette, les minoritaires et les provisions, on ajoute le cash et les associates.\n\nEn entretien : oublier les minoritaires dans le pont reste une erreur éliminatoire.",
     table: {
       headers: ["Élément", "Logique", "Impact"],
       rows: [
@@ -335,7 +335,7 @@ export const concepts = [
       rows: [
         ["Date de référence", "Passée (3-6 mois avant)", "Date du closing"],
         ["Certitude du prix", "Élevée (dès signing)", "Faible (ajusté post-closing)"],
-        ["Risque entre signing et closing", "Vendeur", "Acheteur"],
+        ["Risque entre signing et closing", "Acheteur (ticking fee) ; leakage = vendeur", "Acheteur"],
         ["Compensation", "Ticking fee (intérêts)", "Aucun (réel)"],
         ["Complexité", "Plus simple, rapide", "Plus complexe, audit"],
         ["Litiges", "Limités", "Fréquents"],
