@@ -6,6 +6,7 @@ import type { BankProfile } from "@/data/bank-profiles";
 import { getDealsForBank } from "@/data/bank-profiles";
 import { getDealById } from "@/data/ma-deals";
 import { BankDealChip, SectorHubChip } from "@/components/deals/DealEntityChips";
+import { useT } from "@/hooks/useT";
 
 type BankPanelProps = {
   bank: BankProfile;
@@ -13,6 +14,7 @@ type BankPanelProps = {
 };
 
 export function BankPanel({ bank, onClose }: BankPanelProps) {
+  const { t } = useT();
   const [showReponse, setShowReponse] = useState(false);
 
   const emblematicDealSearch =
@@ -43,7 +45,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
         type="button"
         onClick={onClose}
         className="absolute top-4 right-4 sm:top-6 sm:right-6 touch-target rounded-full border border-border text-muted-foreground hover:text-primary hover:bg-muted transition-all"
-        aria-label="Fermer la fiche"
+        aria-label={t("hub.common.closeSheet")}
       >
         <X className="w-4 h-4" />
       </button>

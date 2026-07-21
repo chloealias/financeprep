@@ -5,8 +5,10 @@ import { guideModules } from "@/data/guide-modules";
 import { GuideModuleLink } from "@/components/guide/guide-ui";
 import { PageHeader } from "@/components/ui/page-header";
 import { getProfileMenuBadges } from "@/lib/profile-dashboard";
+import { useT } from "@/hooks/useT";
 
 export function GuideTab() {
+  const { t } = useT();
   const [srsDue, setSrsDue] = useState(0);
 
   useEffect(() => {
@@ -18,21 +20,17 @@ export function GuideTab() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <PageHeader
-        eyebrow="Méthodologie"
-        title={
-          <>
-            Le <span className="type-accent">guide complet</span>
-          </>
-        }
-        description="6 guides interactifs. Cliquez sur un module pour l'ouvrir en pleine page."
+        eyebrow={t("hub.guide.eyebrow")}
+        title={t("hub.guide.title")}
+        description={t("hub.guide.description")}
         className="mb-8 sm:mb-10"
       />
 
       <div className="mb-10">
         <GuideModuleLink
           to={actualiteModule.href}
-          tag={actualiteModule.tag}
-          title={actualiteModule.title}
+          tag={t(`guide.modules.${actualiteModule.id}.tag`)}
+          title={t(`guide.modules.${actualiteModule.id}.title`)}
           icon={actualiteModule.icon}
         />
       </div>
@@ -43,7 +41,7 @@ export function GuideTab() {
       >
         {srsDue > 0 && (
           <span className="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full bg-white/20 text-xs font-semibold">
-            {srsDue} SRS due
+            {t("hub.guide.flashcards.srsBadge", { count: srsDue })}
           </span>
         )}
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
@@ -53,10 +51,10 @@ export function GuideTab() {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-primary-foreground/70 text-xs uppercase tracking-[0.2em] font-semibold mb-1">
-              Nouveau · Entraînement actif
+              {t("hub.guide.flashcards.eyebrow")}
             </div>
             <h3 className="type-card-title text-xl sm:text-2xl">
-              Flashcards avec répétition espacée
+              {t("hub.guide.flashcards.title")}
             </h3>
           </div>
           <ChevronRight
@@ -71,8 +69,8 @@ export function GuideTab() {
           <GuideModuleLink
             key={module.href}
             to={module.href}
-            tag={module.tag}
-            title={module.title}
+            tag={t(`guide.modules.${module.id}.tag`)}
+            title={t(`guide.modules.${module.id}.title`)}
             icon={module.icon}
           />
         ))}

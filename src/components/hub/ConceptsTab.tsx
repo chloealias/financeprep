@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { ChevronRight } from "lucide-react";
 import { concepts } from "@/data/concepts";
-import { QUESTION_CATEGORIES, getCategoryLabel } from "@/lib/categories";
+import { getQuestionCategories, getCategoryLabel } from "@/lib/categories";
 import { ConceptCard } from "@/components/interview/ConceptCard";
 import { PageHeader } from "@/components/ui/page-header";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import { loadSavedFilters, saveSavedFilters, type SavedFilters } from "@/lib/storage";
+import { useT } from "@/hooks/useT";
 
 const ALLOWED_CATEGORIES = [
   "all",
@@ -19,6 +20,7 @@ const ALLOWED_CATEGORIES = [
 ];
 
 export function ConceptsTab() {
+  const { t } = useT();
   const [conceptCategory, setConceptCategory] = useState("all");
 
   useEffect(() => {
@@ -60,7 +62,7 @@ export function ConceptsTab() {
     [expandedConcept, captureScroll],
   );
 
-  const categories = QUESTION_CATEGORIES;
+  const categories = getQuestionCategories(t);
 
   const filteredConcepts = useMemo(
     () => concepts.filter((c) => conceptCategory === "all" || c.category === conceptCategory),
@@ -83,9 +85,9 @@ export function ConceptsTab() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
       <PageHeader
-        eyebrow="Référence"
-        title="Concepts essentiels"
-        description={`${concepts.length} fiches pédagogiques.`}
+        eyebrow={t("hub.concepts.eyebrow")}
+        title={t("hub.concepts.title")}
+        description={t("hub.concepts.description", { count: concepts.length })}
         className="mb-6 sm:mb-10"
       />
 
@@ -96,11 +98,11 @@ export function ConceptsTab() {
       >
         <div className="px-4 sm:px-6 lg:px-8 pt-3 pb-3 sm:pt-4 sm:pb-4">
           <div className="hidden sm:block type-label text-primary mb-3">
-            Filtrer par thématique
+            {t("hub.concepts.filterLabel")}
           </div>
           <div
             role="tablist"
-            aria-label="Filtrer les concepts par thématique"
+            aria-label={t("hub.concepts.filterAria")}
             className="flex gap-2 overflow-x-auto px-0 py-0 snap-x snap-mandatory scrollbar-hide"
             style={{ scrollbarWidth: "none" }}
           >
@@ -149,7 +151,7 @@ export function ConceptsTab() {
                   type="button"
                   onClick={() => goTo(activeIdx - 1)}
                   disabled={activeIdx === 0}
-                  aria-label="Concept précédent"
+                  aria-label={t("hub.concepts.prevAria")}
                   className="flex-shrink-0 touch-target rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                 >
                   <ChevronRight className="w-4 h-4 rotate-180" />
@@ -158,8 +160,8 @@ export function ConceptsTab() {
                   type="button"
                   onClick={() => setExpandedConcept(null)}
                   className="flex-1 min-w-0 touch-target-bar text-left gap-2 px-2 rounded-lg hover:bg-blue-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
-                  aria-label="Replier le concept ouvert"
-                  title="Replier"
+                  aria-label={t("hub.concepts.collapseAria")}
+                  title={t("hub.concepts.collapseTitle")}
                 >
                   <span className="tabular-nums text-blue-300 text-xs flex-shrink-0">
                     {activeIdx + 1}/{filteredConcepts.length}
@@ -170,7 +172,7 @@ export function ConceptsTab() {
                   type="button"
                   onClick={() => goTo(activeIdx + 1)}
                   disabled={activeIdx === filteredConcepts.length - 1}
-                  aria-label="Concept suivant"
+                  aria-label={t("hub.concepts.nextAria")}
                   className="flex-shrink-0 touch-target rounded-lg hover:bg-blue-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -194,7 +196,7 @@ export function ConceptsTab() {
             onNext={() =>
               i < filteredConcepts.length - 1 && setExpandedConcept(filteredConcepts[i + 1].id)
             }
-            getCategoryLabel={getCategoryLabel}
+            getCategoryLabel={(id) => getCategoryLabel(id, t)}
           />
         ))}
       </div>

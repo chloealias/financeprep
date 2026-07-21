@@ -2,6 +2,7 @@ import { getBankById } from "@/data/bank-profiles";
 import { BankLogo } from "@/components/banks/BankLogo";
 import { POPULAR_TARGET_BANK_IDS } from "@/lib/profile-personalization";
 import { isTargetBank, toggleTargetBank } from "@/lib/target-banks-storage";
+import { useT } from "@/hooks/useT";
 
 type TargetBankQuickPickProps = {
   targetIds: string[];
@@ -10,6 +11,7 @@ type TargetBankQuickPickProps = {
 };
 
 export function TargetBankQuickPick({ targetIds, onChange, onViewAll }: TargetBankQuickPickProps) {
+  const { t } = useT();
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap gap-2">
@@ -67,7 +69,7 @@ export function TargetBankQuickPick({ targetIds, onChange, onViewAll }: TargetBa
         onClick={onViewAll}
         className="text-sm text-primary hover:text-primary/80 font-medium underline-offset-2 hover:underline"
       >
-        Voir toutes les banques (action distincte) →
+        {t("profile.targetBanks.viewAll")}
       </button>
     </div>
   );

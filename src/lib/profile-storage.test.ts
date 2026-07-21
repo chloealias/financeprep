@@ -17,6 +17,7 @@ describe("profile-storage", () => {
     expect(p.avatarKind).toBe("icon");
     expect(p.bannerId).toBe("midnight");
     expect(p.accentThemeId).toBe("navy");
+    expect(p.locale).toBe("fr");
   });
 
   it("normalizes invalid accent theme id", () => {
@@ -45,7 +46,10 @@ describe("profile-storage", () => {
   });
 
   it("parseBackupPreview rejects invalid json", () => {
-    expect(parseBackupPreview("{")).toEqual({ ok: false, error: "Fichier JSON invalide." });
+    expect(parseBackupPreview("{")).toEqual({
+      ok: false,
+      error: "Fichier JSON invalide.",
+    });
   });
 
   it("parseBackupPreview reads backup metadata", () => {

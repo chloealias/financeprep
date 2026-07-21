@@ -20,6 +20,7 @@ import {
   type UserProfile,
 } from "@/lib/profile-storage";
 import { getTargetBankIds } from "@/lib/target-banks-storage";
+import { useT } from "@/hooks/useT";
 
 type OnboardingDialogProps = {
   open: boolean;
@@ -29,6 +30,7 @@ type OnboardingDialogProps = {
 type Step = 1 | 2 | 3;
 
 export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
+  const { t } = useT();
   const [step, setStep] = useState<Step>(1);
   const [profile, setProfile] = useState<UserProfile>(DEFAULT_PROFILE);
   const [targetRefresh, setTargetRefresh] = useState(0);
@@ -62,32 +64,32 @@ export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
       <DialogContent className="max-w-md sm:max-w-lg" onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl">
-            {step === 1 && "Bienvenue sur FinancePrep"}
-            {step === 2 && "Vos banques cibles"}
-            {step === 3 && "Votre plan du jour"}
+            {step === 1 && t("onboarding.step1.title")}
+            {step === 2 && t("onboarding.step2.title")}
+            {step === 3 && t("onboarding.step3.title")}
           </DialogTitle>
           <DialogDescription>
-            {step === 1 && "Personnalisez votre préparation en 3 étapes rapides."}
-            {step === 2 && "Sélectionnez 1 à 3 banques pour des packs d'entretien adaptés."}
-            {step === 3 && "Voici par où commencer aujourd'hui."}
+            {step === 1 && t("onboarding.step1.description")}
+            {step === 2 && t("onboarding.step2.description")}
+            {step === 3 && t("onboarding.step3.description")}
           </DialogDescription>
         </DialogHeader>
 
         {step === 1 && (
           <div className="space-y-4 py-2">
             <label className="block">
-              <span className="type-label mb-1 block">Prénom</span>
+              <span className="type-label mb-1 block">{t("onboarding.firstName.label")}</span>
               <input
                 type="text"
                 value={profile.firstName ?? ""}
                 onChange={(e) => setProfile((p) => ({ ...p, firstName: e.target.value }))}
-                placeholder="Alex"
+                placeholder={t("onboarding.firstName.placeholder")}
                 className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                 autoFocus
               />
             </label>
             <label className="block">
-              <span className="type-label mb-1 block">Date d&apos;entretien (optionnel)</span>
+              <span className="type-label mb-1 block">{t("onboarding.interviewDate.label")}</span>
               <input
                 type="date"
                 value={profile.interviewDate ?? ""}
@@ -124,9 +126,7 @@ export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
                 </div>
               </div>
             ))}
-            <p className="text-xs text-muted-foreground">
-              Retrouvez ces actions sur l&apos;onglet Guide et dans votre profil.
-            </p>
+            <p className="text-xs text-muted-foreground">{t("onboarding.step3.hint")}</p>
           </div>
         )}
 
@@ -145,7 +145,7 @@ export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
             onClick={skip}
             className="text-sm text-muted-foreground hover:text-foreground"
           >
-            Passer
+            {t("onboarding.skip")}
           </button>
           <div className="flex gap-2">
             {step > 1 && (
@@ -154,7 +154,7 @@ export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
                 onClick={() => setStep((s) => (s - 1) as Step)}
                 className="touch-target-bar px-4 rounded-lg border border-border text-sm font-medium"
               >
-                Retour
+                {t("onboarding.back")}
               </button>
             )}
             {step < 3 ? (
@@ -166,7 +166,7 @@ export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
                 }}
                 className="touch-target-bar gap-1 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium"
               >
-                Suivant
+                {t("onboarding.next")}
                 <ChevronRight className="w-4 h-4" />
               </button>
             ) : (
@@ -176,7 +176,7 @@ export function OnboardingDialog({ open, onComplete }: OnboardingDialogProps) {
                 onClick={finish}
                 className="touch-target-bar gap-1 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium"
               >
-                Commencer
+                {t("onboarding.start")}
                 <ChevronRight className="w-4 h-4" />
               </Link>
             )}

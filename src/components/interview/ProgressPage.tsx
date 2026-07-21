@@ -25,6 +25,7 @@ import {
   type SavedFilters,
 } from "@/lib/storage";
 import { PageHeader } from "@/components/ui/page-header";
+import { useT } from "@/hooks/useT";
 
 type ProgressCategory = {
   id: string;
@@ -66,6 +67,7 @@ export function ProgressPage({
   onPageChange,
   onQuestionsFiltersChange,
 }: ProgressPageProps) {
+  const { t, locale } = useT();
   const storageOk = typeof window !== "undefined" ? isStorageAvailable() : true;
   const totalQuestions = questions.length;
   const ratedCount = Object.keys(ratings).filter((k) => ratings[k] > 0).length;
@@ -138,22 +140,21 @@ export function ProgressPage({
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       {/* Header + barre globale */}
       <PageHeader
-        eyebrow="Suivi"
-        title="Progression"
-        description="Vos étoiles, filtres et liste à réviser sont enregistrés sur cet appareil (navigateur). Elles ne se synchronisent pas entre téléphone et ordinateur."
+        eyebrow={t("interview.progressPage.eyebrow")}
+        title={t("interview.progressPage.title")}
+        description={t("interview.progressPage.description")}
         className="mb-8 sm:mb-10"
       />
       {!storageOk && (
         <p className="-mt-6 mb-8 text-sm text-foreground bg-muted border border-border rounded-lg px-3 py-2">
-          Le stockage local est bloqué (navigation privée ou réglages du navigateur). Vos notes ne
-          pourront pas être conservées après fermeture de l’onglet.
+          {t("interview.progressPage.storageBlocked")}
         </p>
       )}
 
       <div className="mb-8 sm:mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
           <div className="flex items-baseline justify-between gap-3 mb-3">
             <span className="text-muted-foreground text-sm font-light">
-              Questions maîtrisées (≥ 4★)
+              {t("interview.progressPage.masteredLabel")}
             </span>
             <span className="text-foreground font-serif text-lg">
               <span className="text-2xl">{masteredCount}</span>
@@ -167,7 +168,7 @@ export function ProgressPage({
             aria-valuenow={masteredPct}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label={`${masteredPct} pour cent maîtrisé`}
+            aria-label={t("interview.progressPage.masteredPctAria", { pct: masteredPct })}
           >
             <div
               className="h-full bg-primary transition-all"
@@ -177,29 +178,31 @@ export function ProgressPage({
         </div>
 
       {/* Bloc Reprendre */}
-      <section aria-label="Reprendre votre travail" className="mb-10">
-        <h3 className="type-section-title mb-4">Reprendre où vous en êtes</h3>
+      <section aria-label={t("interview.progressPage.resumeSectionAria")} className="mb-10">
+        <h3 className="type-section-title mb-4">{t("interview.progressPage.resumeTitle")}</h3>
         <div className="grid sm:grid-cols-2 gap-3">
           <button
             type="button"
             onClick={() => goToFilter("weak")}
             disabled={weakCount === 0}
-            aria-label={`Reprendre les ${weakCount} questions à retravailler`}
+            aria-label={t("interview.progressPage.weakAria", { count: weakCount })}
             className="group text-left bg-primary hover:bg-primary/90 disabled:bg-muted disabled:cursor-not-allowed text-primary-foreground rounded-2xl p-5 transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <div className="text-xs uppercase tracking-[0.2em] text-primary-foreground/80 font-light mb-2">
-              À retravailler
+              {t("interview.progressPage.weakTitle")}
             </div>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <div className="font-serif text-2xl">
                   {weakCount}{" "}
                   <span className="text-base font-light text-primary-foreground/80">
-                    question{weakCount > 1 ? "s" : ""}
+                    {weakCount === 1
+                      ? t("interview.progressPage.questionSingular")
+                      : t("interview.progressPage.questionPlural")}
                   </span>
                 </div>
                 <div className="text-sm text-primary-foreground/85 font-light mt-1">
-                  Notées 1 ou 2 étoiles
+                  {t("interview.progressPage.weakSubtitle")}
                 </div>
               </div>
               <ChevronRight className="w-6 h-6 text-primary-foreground/80 group-hover:translate-x-1 transition-transform flex-shrink-0" />
@@ -210,22 +213,24 @@ export function ProgressPage({
             type="button"
             onClick={() => goToFilter("unrated")}
             disabled={unratedCount === 0}
-            aria-label={`Découvrir les ${unratedCount} questions non notées`}
+            aria-label={t("interview.progressPage.unratedAria", { count: unratedCount })}
             className="group text-left bg-card hover:bg-muted disabled:opacity-60 disabled:cursor-not-allowed text-foreground rounded-2xl p-5 border border-border transition-colors shadow-card focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-light mb-2">
-              À découvrir
+              {t("interview.progressPage.unratedTitle")}
             </div>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <div className="font-serif text-2xl">
                   {unratedCount}{" "}
                   <span className="text-base font-light text-muted-foreground">
-                    question{unratedCount > 1 ? "s" : ""}
+                    {unratedCount === 1
+                      ? t("interview.progressPage.questionSingular")
+                      : t("interview.progressPage.questionPlural")}
                   </span>
                 </div>
                 <div className="text-sm text-muted-foreground font-light mt-1">
-                  Pas encore notées
+                  {t("interview.progressPage.unratedSubtitle")}
                 </div>
               </div>
               <ChevronRight className="w-6 h-6 text-muted-foreground group-hover:translate-x-1 transition-transform flex-shrink-0" />
@@ -235,15 +240,17 @@ export function ProgressPage({
       </section>
 
       <section
-        aria-label="Entraînement actif"
+        aria-label={t("interview.progressPage.activeTrainingAria")}
         className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card"
       >
-        <h3 className="text-foreground font-serif text-xl mb-4">Entraînement actif</h3>
+        <h3 className="text-foreground font-serif text-xl mb-4">
+          {t("interview.progressPage.activeTrainingTitle")}
+        </h3>
         <div className="grid sm:grid-cols-3 gap-4 mb-4">
           <div className="rounded-xl bg-muted border border-border p-4">
             <div className="text-2xl font-serif text-foreground tabular-nums">{srsBuckets.due}</div>
             <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">
-              Cartes SRS dues
+              {t("interview.progressPage.srsDue")}
             </div>
           </div>
           <div className="rounded-xl bg-primary/10 border border-primary/20 p-4">
@@ -251,17 +258,17 @@ export function ProgressPage({
               {recentAvg !== null ? recentAvg.toFixed(1) : "—"}
             </div>
             <div className="text-xs uppercase tracking-wider text-primary mt-1">
-              Moy. 5 dernières simulations
+              {t("interview.progressPage.avgLastSims")}
             </div>
           </div>
           <div className="rounded-xl bg-muted border border-border p-4">
             <div className="text-sm font-medium text-foreground truncate">
               {lastSession
-                ? new Date(lastSession.startedAt).toLocaleDateString("fr-FR")
-                : "Aucune session"}
+                ? new Date(lastSession.startedAt).toLocaleDateString(locale)
+                : t("interview.progressPage.noSession")}
             </div>
             <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">
-              Dernière simulation
+              {t("interview.progressPage.lastSim")}
             </div>
           </div>
         </div>
@@ -271,21 +278,21 @@ export function ProgressPage({
             className="touch-target-bar gap-2 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
           >
             <Clock className="w-4 h-4" />
-            Mini-entretien
+            {t("interview.progressPage.miniInterview")}
           </Link>
           <Link
             to="/interview"
             className="touch-target-bar gap-2 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
           >
             <Mic className="w-4 h-4" />
-            Simulation 30 min
+            {t("interview.progressPage.sim30")}
           </Link>
           <Link
             to="/flashcards"
             className="touch-target-bar gap-2 px-4 rounded-xl border border-border text-foreground text-sm font-medium hover:bg-muted"
           >
             <Sparkles className="w-4 h-4" />
-            Flashcards SRS
+            {t("interview.progressPage.flashcardsSrs")}
           </Link>
         </div>
         {sessions.length > 0 && (
@@ -293,7 +300,13 @@ export function ProgressPage({
             {sessions.slice(0, 3).map((s) => (
               <li key={s.id} className="text-sm text-foreground flex justify-between gap-2">
                 <span>
-                  {s.mode === "full" ? "Simulation" : "Mini-entretien"} · {s.packSize} questions
+                  {t("interview.progressPage.sessionLine", {
+                    mode:
+                      s.mode === "full"
+                        ? t("interview.progressPage.modeFull")
+                        : t("interview.progressPage.modeMini"),
+                    packSize: s.packSize,
+                  })}
                 </span>
                 <span className="tabular-nums text-muted-foreground">{s.avgStars.toFixed(1)}★</span>
               </li>
@@ -303,13 +316,19 @@ export function ProgressPage({
       </section>
 
       <section
-        aria-label="Activité récente"
+        aria-label={t("interview.progressPage.activityAria")}
         className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card"
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-foreground font-serif text-xl">Activité (12 semaines)</h3>
+          <h3 className="text-foreground font-serif text-xl">
+            {t("interview.progressPage.activityTitle")}
+          </h3>
           {streak > 0 && (
-            <span className="text-sm text-primary font-medium">{streak} jour{streak > 1 ? "s" : ""} d&apos;affilée</span>
+            <span className="text-sm text-primary font-medium">
+              {streak === 1
+                ? t("interview.progressPage.streak", { streak })
+                : t("interview.progressPage.streakPlural", { streak })}
+            </span>
           )}
         </div>
         <div className="flex flex-wrap gap-1">
@@ -326,7 +345,7 @@ export function ProgressPage({
             return (
               <div
                 key={cell.date}
-                title={`${cell.date} · ${cell.count} min`}
+                title={t("interview.progressPage.heatmapTitle", { date: cell.date, count: cell.count })}
                 className={`w-2.5 h-2.5 rounded-sm ${colors[level]}`}
               />
             );
@@ -336,21 +355,23 @@ export function ProgressPage({
 
       {/* Vue d'ensemble compacte */}
       <section
-        aria-label="Vue d'ensemble"
+        aria-label={t("interview.progressPage.overviewAria")}
         className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card"
       >
-        <h3 className="text-foreground font-serif text-xl mb-5">Vue d'ensemble</h3>
+        <h3 className="text-foreground font-serif text-xl mb-5">
+          {t("interview.progressPage.overviewTitle")}
+        </h3>
         <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-6">
           <div>
             <div className="text-2xl sm:text-3xl font-serif text-foreground">{ratedCount}</div>
             <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mt-1">
-              Notées
+              {t("interview.progressPage.rated")}
             </div>
           </div>
           <div className="border-l border-border pl-4 sm:pl-6">
             <div className="text-2xl sm:text-3xl font-serif text-foreground">{masteredCount}</div>
             <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mt-1">
-              Maîtrisées
+              {t("interview.progressPage.mastered")}
             </div>
           </div>
           <div className="border-l border-border pl-4 sm:pl-6">
@@ -359,14 +380,14 @@ export function ProgressPage({
               {avgRating !== "—" && <Star className="w-4 h-4 fill-primary text-primary" />}
             </div>
             <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mt-1">
-              Moyenne
+              {t("interview.progressPage.average")}
             </div>
           </div>
         </div>
 
         <div className="space-y-1.5">
           <div className="text-xs uppercase tracking-wider text-muted-foreground font-light mb-2">
-            Répartition des notes
+            {t("interview.progressPage.ratingDist")}
           </div>
           {[5, 4, 3, 2, 1].map((r) => {
             const d = ratingDist.find((x) => x.rating === r);
@@ -400,11 +421,11 @@ export function ProgressPage({
 
       {/* Par catégorie */}
       <section
-        aria-label="Progression par catégorie"
+        aria-label={t("interview.progressPage.byCategoryAria")}
         className="mb-10 bg-card rounded-2xl border border-border shadow-card overflow-hidden"
       >
         <h3 className="text-foreground font-serif text-xl px-5 sm:px-6 pt-5 sm:pt-6 mb-3">
-          Par catégorie
+          {t("interview.progressPage.byCategoryTitle")}
         </h3>
         <ul className="divide-y divide-border">
           {byCategory.map((c) => {
@@ -417,7 +438,11 @@ export function ProgressPage({
                   onClick={() =>
                     applyQuestionFilters({ activeCategory: c.id, ratingFilter: "all" })
                   }
-                  aria-label={`Voir les questions de ${c.label}, ${c.mastered} sur ${c.total} maîtrisées`}
+                  aria-label={t("interview.progressPage.categoryAria", {
+                    label: c.label,
+                    mastered: c.mastered,
+                    total: c.total,
+                  })}
                   className="w-full text-left px-5 sm:px-6 py-4 hover:bg-muted transition-colors flex items-center gap-4 focus:outline-none focus-visible:bg-muted"
                 >
                   <div className="w-9 h-9 rounded-lg bg-muted border border-border flex items-center justify-center flex-shrink-0">
@@ -459,7 +484,7 @@ export function ProgressPage({
           className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-light underline underline-offset-4"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          Réinitialiser toutes mes notes
+          {t("interview.progressPage.reset")}
         </button>
       </div>
     </div>

@@ -30,9 +30,9 @@ import {
 import { applyProfileAccentTheme } from "@/lib/profile-cosmetics";
 import {
   DEFAULT_PROFILE,
-  EXPERIENCE_LEVEL_OPTIONS,
-  PROCESS_TYPE_OPTIONS,
   formatInterviewCountdown,
+  getExperienceLevelOptions,
+  getProcessTypeOptions,
   loadProfile,
   saveProfile,
   toggleProfileSector,
@@ -48,6 +48,8 @@ import {
   saveSavedFilters,
   type InterviewSessionRecord,
 } from "@/lib/storage";
+import { useT } from "@/hooks/useT";
+import { APP_LOCALES } from "@/lib/i18n/types";
 const defaultFilters = {
   activeCategory: "all",
   activeDifficulty: "all",
@@ -58,6 +60,7 @@ const defaultFilters = {
 
 export function ProfilePage() {
   const navigate = useNavigate();
+  const { t, locale } = useT();
   const [profile, setProfile] = useState<UserProfile>(DEFAULT_PROFILE);
   const [mounted, setMounted] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -94,7 +97,9 @@ export function ProfilePage() {
     void refreshKey;
     return getTargetBankIds();
   }, [mounted, refreshKey]);
-  const countdown = formatInterviewCountdown(dashboard?.daysUntil ?? null);
+  const countdown = formatInterviewCountdown(dashboard?.daysUntil ?? null, locale);
+  const experienceOptions = useMemo(() => getExperienceLevelOptions(locale), [locale]);
+  const processOptions = useMemo(() => getProcessTypeOptions(locale), [locale]);
 
   const persist = useCallback((next: UserProfile) => {
     const normalized = { ...next };
@@ -141,7 +146,7 @@ export function ProfilePage() {
         className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
-        Retour au guide
+        {t("profile.backToGuide")}
       </Link>
 
       <ProfileHero
@@ -161,12 +166,30 @@ export function ProfilePage() {
       />
 
       <section className="mb-8 rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-card">
-        <h2 className="type-section-title mb-4">Préférences entretien</h2>
-        <div className="grid sm:grid-cols-3 gap-4">
+        <h2 className="type-section-title mb-4">{t("profile.interviewPreferences")}</h2>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <label className="block">
-            <span className="type-label mb-1 block">
-              Entretien
-            </span>
+            <span className="type-label mb-1 block">{t("profile.language")}</span>
+            <div className="flex gap-2">
+              {APP_LOCALES.map((loc) => (
+                <button
+                  key={loc}
+                  type="button"
+                  onClick={() => update({ locale: loc })}
+                  className={`touch-target-bar flex-1 justify-center px-3 rounded-lg border-2 text-sm font-medium ${
+                    (profile.locale ?? "fr") === loc
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "border-border text-foreground"
+                  }`}
+                  aria-pressed={(profile.locale ?? "fr") === loc}
+                >
+                  {t(loc === "fr" ? "profile.language.fr" : "profile.language.en")}
+                </button>
+              ))}
+            </div>
+          </label>
+          <label className="block">
+            <span className="type-label mb-1 block">{t("profile.interviewDate")}</span>
             <input
               type="date"
               value={profile.interviewDate ?? ""}
@@ -175,15 +198,13 @@ export function ProfilePage() {
             />
           </label>
           <label className="block">
-            <span className="type-label mb-1 block">
-              Niveau
-            </span>
+            <span className="type-label mb-1 block">{t("profile.level")}</span>
             <select
               value={profile.experienceLevel ?? ""}
               onChange={(e) => update({ experienceLevel: e.target.value as ExperienceLevel })}
               className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-foreground"
             >
-              {EXPERIENCE_LEVEL_OPTIONS.map((o) => (
+              {experienceOptions.map((o) => (
                 <option key={o.id || "none"} value={o.id}>
                   {o.label}
                 </option>
@@ -191,15 +212,13 @@ export function ProfilePage() {
             </select>
           </label>
           <label className="block">
-            <span className="type-label mb-1 block">
-              Process
-            </span>
+            <span className="type-label mb-1 block">{t("profile.process")}</span>
             <select
               value={profile.processType ?? ""}
               onChange={(e) => update({ processType: e.target.value as ProcessType })}
               className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm text-foreground"
             >
-              {PROCESS_TYPE_OPTIONS.map((o) => (
+              {processOptions.map((o) => (
                 <option key={o.id || "none"} value={o.id}>
                   {o.label}
                 </option>
@@ -210,16 +229,18 @@ export function ProfilePage() {
       </section>
 
       <section className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
-        <h2 className="type-section-title mb-3">Objectifs</h2>
+        <h2 className="type-section-title mb-3">{t("profile.goals")}</h2>
 
         <p className="mb-4 text-xs text-muted-foreground">
           Simulations : {formatPackPersonalizationShort(packSummary)}
-          {!packSummary.hasBanks && " · ajoutez des banques"}
-          {!packSummary.hasSectors && " · choisissez des secteurs"}
+          {!packSummary.hasBanks && ` ${t("profile.addBanks")}`}
+          {!packSummary.hasSectors && ` ${t("profile.chooseSectors")}`}
         </p>
 
         <div className="mb-6">
-          <span className="text-sm font-medium text-foreground block mb-3">Banques cibles</span>
+          <span className="text-sm font-medium text-foreground block mb-3">
+            {t("profile.targetBanks")}
+          </span>
           <TargetBankQuickPick
             targetIds={targetIds}
             onChange={bumpRefresh}
@@ -232,7 +253,7 @@ export function ProfilePage() {
 
         <div className="mb-6">
           <span className="text-sm font-medium text-foreground block mb-2">
-            Secteurs d&apos;intérêt (max 3)
+            {t("profile.sectorsOfInterest")}
           </span>
           <div className="flex flex-wrap gap-2">
             {(Object.keys(SECTOR_DATA) as SectorId[]).map((id) => {
@@ -266,8 +287,8 @@ export function ProfilePage() {
                         ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     }`}
-                    aria-label={`Fiche ${SECTOR_DATA[id].name}`}
-                    title="Voir la fiche secteur"
+                    aria-label={t("profile.sectorSheetAria", { name: SECTOR_DATA[id].name })}
+                    title={t("profile.viewSectorSheet")}
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                   </Link>
@@ -279,7 +300,7 @@ export function ProfilePage() {
 
         <label className="block">
           <span className="text-sm font-medium text-foreground block mb-2">
-            Taille pack entretien par défaut
+            {t("profile.defaultPackSize")}
           </span>
           <div className="flex gap-2">
             {([5, 7] as const).map((s) => (
@@ -293,7 +314,7 @@ export function ProfilePage() {
                     : "border-border text-foreground"
                 }`}
               >
-                {s} questions
+                {t("profile.nQuestions", { count: s })}
               </button>
             ))}
           </div>
@@ -302,9 +323,9 @@ export function ProfilePage() {
 
       <section className="mb-10">
         <TodayPlanWidget showStreak className="mb-6" maxCards={3} compact />
-        <h2 className="type-section-title mb-4">Toutes les actions</h2>
+        <h2 className="type-section-title mb-4">{t("profile.allActions")}</h2>
         <ProfileTodayGrid
-          actions={getAllTodayActions(dashboard, profile)}
+          actions={getAllTodayActions(dashboard, profile, t)}
           onWeak={openWeakQuestions}
           onReview={() => {
             saveSavedFilters({ ...defaultFilters, ratingFilter: "all" });
@@ -315,20 +336,20 @@ export function ProfilePage() {
 
       <section className="mb-10 bg-card rounded-2xl border border-border p-5 sm:p-6 shadow-card">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="type-section-title">Activité</h2>
+          <h2 className="type-section-title">{t("profile.activity")}</h2>
           <Link
             to="/"
             search={{ tab: "progress" }}
             className="text-sm text-primary hover:text-primary/80 font-medium inline-flex items-center gap-1"
           >
-            Progression détaillée
+            {t("profile.detailedProgress")}
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
 
         <div className="mb-4">
           <div className="flex justify-between text-sm mb-2">
-            <span className="text-muted-foreground">Questions maîtrisées (≥ 4★)</span>
+            <span className="text-muted-foreground">{t("profile.masteredQuestions")}</span>
             <span className="text-foreground font-medium tabular-nums">
               {dashboard.masteredCount}/{dashboard.totalQuestions} · {dashboard.masteredPct}%
             </span>
@@ -342,7 +363,7 @@ export function ProfilePage() {
         </div>
 
         <p className="text-sm text-muted-foreground font-light mb-4">
-          {dashboard.lastSessionLabel ?? "Aucune simulation enregistrée pour l'instant."}
+          {dashboard.lastSessionLabel ?? t("profile.noSimulationYet")}
         </p>
 
         {sessions.length > 0 && (
@@ -369,11 +390,15 @@ export function ProfilePage() {
 }
 
 function SessionRow({ session }: { session: InterviewSessionRecord }) {
+  const { t, locale } = useT();
   return (
     <li className="flex flex-wrap items-center justify-between gap-2 text-sm text-foreground">
       <span>
-        {session.mode === "full" ? "Simulation" : "Mini"} ·{" "}
-        {new Date(session.startedAt).toLocaleString("fr-FR", {
+        {session.mode === "full"
+          ? t("profile.sessionMode.simulation")
+          : t("profile.sessionMode.mini")}{" "}
+        ·{" "}
+        {new Date(session.startedAt).toLocaleString(locale === "en" ? "en-GB" : "fr-FR", {
           day: "numeric",
           month: "short",
         })}{" "}
@@ -385,14 +410,14 @@ function SessionRow({ session }: { session: InterviewSessionRecord }) {
           onClick={() => downloadSessionReport(session)}
           className="touch-target-bar text-primary hover:text-primary/80 font-medium text-xs"
         >
-          Rapport
+          {t("profile.sessionReport")}
         </button>
         <Link
           to={session.mode === "full" ? "/interview" : "/flashcards"}
           search={session.mode === "full" ? undefined : { mode: "quiz" }}
           className="touch-target-bar text-primary hover:text-primary/80 font-medium text-xs"
         >
-          Refaire
+          {t("profile.sessionRedo")}
         </Link>
       </span>
     </li>

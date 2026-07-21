@@ -15,6 +15,7 @@ import {
 import { PageHeader } from "@/components/ui/page-header";
 import { defaultHomeSearch } from "@/lib/route-search";
 import { logDailyActivity } from "@/lib/daily-goal";
+import { useT } from "@/hooks/useT";
 
 type CardSource = "question" | "concept";
 
@@ -26,6 +27,7 @@ type Flashcard = {
   front: string;
   back: string;
   backSteps?: string[];
+  moreStepsRest?: number;
   hint?: string;
   hubQuestionId?: string;
 };
@@ -43,17 +45,15 @@ function buildAllCards(): Flashcard[] {
   const qCards: Flashcard[] = (questions as Array<(typeof questions)[number]>).map((q) => {
     const steps = (q!.steps ?? []) as string[];
     const { preview, rest } = summarizeSteps(steps);
-    const back =
-      preview +
-      (rest > 0 ? `\n\n… +${rest} étape${rest > 1 ? "s" : ""} (voir fiche complète)` : "");
     return {
       id: `q-${q!.id}`,
       source: "question",
       category: q!.category,
       difficulty: q!.difficulty,
       front: q!.question,
-      back: back || (q!.explanation ?? ""),
+      back: preview || (q!.explanation ?? ""),
       backSteps: steps,
+      moreStepsRest: rest > 0 ? rest : undefined,
       hint: q!.tip,
       hubQuestionId: String(q!.id),
     };
@@ -176,11 +176,12 @@ function FlashcardMenu({
   onStart: () => void;
   totalCards: number;
 }) {
+  const { t } = useT();
   const reviewable = counts.due + counts.fresh;
-  const scopes: { id: "all" | "questions" | "concepts"; label: string }[] = [
-    { id: "all", label: "Tout mélanger" },
-    { id: "questions", label: "Questions uniquement" },
-    { id: "concepts", label: "Notions uniquement" },
+  const scopes: { id: "all" | "questions" | "concepts"; labelKey: string }[] = [
+    { id: "all", labelKey: "flashcards.scope.all" },
+    { id: "questions", labelKey: "flashcards.scope.questions" },
+    { id: "concepts", labelKey: "flashcards.scope.concepts" },
   ];
 
   return (
@@ -191,32 +192,26 @@ function FlashcardMenu({
         className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
-        Retour
+        {t("flashcards.back")}
       </Link>
 
       <PageHeader
-        eyebrow="Entraînement actif"
-        title={
-          <>
-            Flashcards <span className="type-accent">spaced repetition</span>
-          </>
-        }
-        description="Algorithme SM-2 : les cartes ratées reviennent vite, celles que vous maîtrisez s'espacent dans le temps. 20 cartes par session, 5 minutes."
+        eyebrow={t("flashcards.menu.eyebrow")}
+        title={t("flashcards.menu.title")}
+        description={t("flashcards.menu.description")}
       />
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
-        <StatCard label="À revoir" value={counts.due} tone="alert" />
-        <StatCard label="Nouvelles" value={counts.fresh} tone="primary" />
-        <StatCard label="Programmées" value={counts.later} tone="neutral" />
-        <StatCard label="Maîtrisées" value={counts.mastered} tone="success" />
+        <StatCard label={t("flashcards.stat.due")} value={counts.due} tone="alert" />
+        <StatCard label={t("flashcards.stat.fresh")} value={counts.fresh} tone="primary" />
+        <StatCard label={t("flashcards.stat.later")} value={counts.later} tone="neutral" />
+        <StatCard label={t("flashcards.stat.mastered")} value={counts.mastered} tone="success" />
       </div>
 
       {/* Scope picker */}
       <div className="mb-8">
-        <div className="type-label text-primary mb-3">
-          Périmètre
-        </div>
+        <div className="type-label text-primary mb-3">{t("flashcards.scope.label")}</div>
         <div className="flex flex-wrap gap-2">
           {scopes.map((s) => (
             <button
@@ -229,11 +224,13 @@ function FlashcardMenu({
                   : "bg-card text-primary border-border hover:border-primary/40"
               }`}
             >
-              {s.label}
+              {t(s.labelKey)}
             </button>
           ))}
         </div>
-        <p className="text-muted-foreground text-xs mt-2">{totalCards} cartes dans ce périmètre.</p>
+        <p className="text-muted-foreground text-xs mt-2">
+          {t("flashcards.scope.count", { totalCards })}
+        </p>
       </div>
 
       {/* CTA */}
@@ -245,14 +242,13 @@ function FlashcardMenu({
       >
         <Sparkles className="w-5 h-5" />
         {reviewable === 0
-          ? "Aucune carte à réviser maintenant"
-          : `Démarrer la session (${Math.min(20, reviewable)} cartes)`}
+          ? t("flashcards.startEmpty")
+          : t("flashcards.start", { count: Math.min(20, reviewable) })}
       </button>
 
       {reviewable === 0 && counts.later > 0 && (
         <p className="text-muted-foreground text-sm mt-4 font-light">
-          Toutes les cartes sont déjà programmées pour plus tard. Revenez demain ou changez de
-          périmètre.
+          {t("flashcards.emptyLaterHint")}
         </p>
       )}
     </div>
@@ -301,7 +297,15 @@ function CardView({
   onGrade: (g: SrsGrade) => void;
   onAbort: () => void;
 }) {
+  const { t } = useT();
   const progress = (index / total) * 100;
+  const rest = card.moreStepsRest ?? 0;
+  const moreSteps =
+    rest > 0
+      ? rest === 1
+        ? t("flashcards.back.moreSteps", { rest })
+        : t("flashcards.back.moreStepsPlural", { rest })
+      : null;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
@@ -313,10 +317,10 @@ function CardView({
           className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
-          Quitter
+          {t("flashcards.quit")}
         </button>
         <div className="text-primary text-sm font-medium tabular-nums">
-          {index + 1} / {total}
+          {t("flashcards.progress", { current: index + 1, total })}
         </div>
       </div>
 
@@ -332,7 +336,8 @@ function CardView({
       <div className="bg-card rounded-2xl border-2 border-border shadow-card overflow-hidden min-h-[400px] flex flex-col">
         <div className="px-6 py-4 border-b border-border bg-muted/50 flex items-center justify-between">
           <span className="type-label text-primary font-semibold">
-            {card.source === "question" ? "Question" : "Notion"} · {getCategoryLabel(card.category)}
+            {card.source === "question" ? t("flashcards.badge.question") : t("flashcards.badge.concept")}{" "}
+            · {getCategoryLabel(card.category)}
           </span>
           {card.difficulty && (
             <span className="text-xs font-medium py-1 px-2.5 rounded bg-card border border-border text-primary capitalize">
@@ -342,21 +347,16 @@ function CardView({
         </div>
 
         <div className="flex-1 px-6 py-8 flex flex-col">
-          <div className="type-label text-primary mb-3">
-            Recto
-          </div>
-          <h2 className="type-page-title leading-snug mb-6">
-            {card.front}
-          </h2>
+          <div className="type-label text-primary mb-3">{t("flashcards.front")}</div>
+          <h2 className="type-page-title leading-snug mb-6">{card.front}</h2>
 
           {revealed && (
             <>
               <div className="border-t border-dashed border-border my-4" />
-              <div className="type-label text-primary mb-3">
-                Verso
-              </div>
+              <div className="type-label text-primary mb-3">{t("flashcards.backLabel")}</div>
               <p className="text-foreground leading-relaxed font-light text-base sm:text-lg whitespace-pre-line">
                 {card.back}
+                {moreSteps ? `\n\n${moreSteps}` : ""}
               </p>
               {card.hubQuestionId && (
                 <Link
@@ -364,13 +364,16 @@ function CardView({
                   search={{ tab: "questions" }}
                   className="inline-block mt-4 text-sm text-primary hover:text-primary/80 font-medium underline"
                 >
-                  Réponse modèle complète dans Questions →
+                  {t("flashcards.fullAnswerLink")}
                 </Link>
               )}
               {card.hint && (
                 <div className="mt-5 rounded-lg bg-primary text-primary-foreground px-4 py-3">
                   <div className="text-primary-foreground/70 text-xs uppercase tracking-[0.2em] font-medium mb-1">
-                    💡 {card.source === "concept" ? "Formule" : "Conseil"}
+                    💡{" "}
+                    {card.source === "concept"
+                      ? t("flashcards.hint.formula")
+                      : t("flashcards.hint.tip")}
                   </div>
                   <p className="text-sm font-light leading-relaxed">{card.hint}</p>
                 </div>
@@ -389,29 +392,29 @@ function CardView({
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
           >
             <Eye className="w-5 h-5" />
-            Révéler la réponse
+            {t("flashcards.reveal")}
           </button>
         ) : (
           <div className="grid grid-cols-3 gap-3">
             <GradeButton
               tone="red"
               icon={<AlertTriangle className="w-5 h-5" />}
-              label="À revoir"
-              sub="10 min"
+              label={t("flashcards.grade.again")}
+              sub={t("flashcards.grade.againSub")}
               onClick={() => onGrade("again")}
             />
             <GradeButton
               tone="blue"
               icon={<RotateCcw className="w-5 h-5" />}
-              label="Correct"
-              sub="bientôt"
+              label={t("flashcards.grade.good")}
+              sub={t("flashcards.grade.goodSub")}
               onClick={() => onGrade("good")}
             />
             <GradeButton
               tone="emerald"
               icon={<CheckCircle2 className="w-5 h-5" />}
-              label="Maîtrisé"
-              sub="plus tard"
+              label={t("flashcards.grade.easy")}
+              sub={t("flashcards.grade.easySub")}
               onClick={() => onGrade("easy")}
             />
           </div>
@@ -466,6 +469,7 @@ function SessionDone({
   onRestart: () => void;
   onBackToMenu: () => void;
 }) {
+  const { t } = useT();
   const successRate = total > 0 ? Math.round(((stats.good + stats.easy) / total) * 100) : 0;
 
   return (
@@ -473,23 +477,27 @@ function SessionDone({
       <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary text-primary-foreground mb-6">
         <CheckCircle2 className="w-10 h-10" />
       </div>
-      <h1 className="type-display mb-3">Session terminée</h1>
+      <h1 className="type-display mb-3">{t("flashcards.done.title")}</h1>
       <p className="type-body-muted mb-10">
-        {total} cartes révisées · {successRate}% de réussite
+        {t("flashcards.done.summary", { total, successRate })}
       </p>
 
       <div className="grid grid-cols-3 gap-3 mb-10">
         <div className="rounded-xl border-2 border-red-200 bg-red-50 px-3 py-4">
           <div className="text-3xl font-serif text-red-900">{stats.again}</div>
-          <div className="text-xs uppercase tracking-wider text-red-700 mt-1">À revoir</div>
+          <div className="text-xs uppercase tracking-wider text-red-700 mt-1">
+            {t("flashcards.done.again")}
+          </div>
         </div>
         <div className="rounded-xl border-2 border-primary/20 bg-primary/10 px-3 py-4">
           <div className="text-3xl font-serif text-foreground">{stats.good}</div>
-          <div className="type-label text-primary mt-1">Correct</div>
+          <div className="type-label text-primary mt-1">{t("flashcards.done.good")}</div>
         </div>
         <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50 px-3 py-4">
           <div className="text-3xl font-serif text-emerald-900">{stats.easy}</div>
-          <div className="text-xs uppercase tracking-wider text-emerald-700 mt-1">Maîtrisé</div>
+          <div className="text-xs uppercase tracking-wider text-emerald-700 mt-1">
+            {t("flashcards.done.easy")}
+          </div>
         </div>
       </div>
 
@@ -500,14 +508,14 @@ function SessionDone({
           className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
         >
           <Sparkles className="w-4 h-4" />
-          Nouvelle session
+          {t("flashcards.done.newSession")}
         </button>
         <button
           type="button"
           onClick={onBackToMenu}
           className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-card border-2 border-border text-foreground font-medium hover:border-primary/40 transition-colors"
         >
-          Retour au menu
+          {t("flashcards.done.backToMenu")}
         </button>
       </div>
     </div>

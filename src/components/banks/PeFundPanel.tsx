@@ -5,6 +5,7 @@ import { PeFundLogo } from "@/components/banks/PeFundLogo";
 import type { PeFundProfile } from "@/data/pe-fund-profiles";
 import { getDealById } from "@/data/ma-deals";
 import { SectorHubChip } from "@/components/deals/DealEntityChips";
+import { useT } from "@/hooks/useT";
 
 type PeFundPanelProps = {
   fund: PeFundProfile;
@@ -12,6 +13,7 @@ type PeFundPanelProps = {
 };
 
 export function PeFundPanel({ fund, onClose }: PeFundPanelProps) {
+  const { t } = useT();
   const [showReponse, setShowReponse] = useState(false);
   const emblematicDeal = fund.emblematicDealId ? getDealById(fund.emblematicDealId) : undefined;
 
@@ -30,7 +32,7 @@ export function PeFundPanel({ fund, onClose }: PeFundPanelProps) {
         type="button"
         onClick={onClose}
         className="absolute top-4 right-4 sm:top-6 sm:right-6 touch-target rounded-full border border-border text-muted-foreground hover:text-primary hover:bg-muted transition-all"
-        aria-label="Fermer la fiche"
+        aria-label={t("hub.common.closeSheet")}
       >
         <X className="w-4 h-4" />
       </button>

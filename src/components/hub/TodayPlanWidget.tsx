@@ -16,6 +16,7 @@ import { loadProfile } from "@/lib/profile-storage";
 import { getPrioritizedTodayActions, type TodayAction, type TodayActionId } from "@/lib/today-plan";
 import { getStreak } from "@/lib/daily-goal";
 import { saveSavedFilters } from "@/lib/storage";
+import { useT } from "@/hooks/useT";
 
 const defaultFilters = {
   activeCategory: "all",
@@ -48,6 +49,7 @@ export function TodayPlanWidget({
   showStreak = true,
   className = "",
 }: TodayPlanWidgetProps) {
+  const { t } = useT();
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
 
@@ -62,12 +64,12 @@ export function TodayPlanWidget({
     const dashboard = getProfileDashboard();
     const profile = loadProfile();
     return {
-      actions: getPrioritizedTodayActions(dashboard, profile, maxCards),
+      actions: getPrioritizedTodayActions(dashboard, profile, maxCards, t),
       interviewPlan: dashboard.interviewPlan,
       streak: getStreak(),
       masteredPct: dashboard.masteredPct,
     };
-  }, [mounted, maxCards]);
+  }, [mounted, maxCards, t]);
 
   const handleAction = (action: TodayAction) => {
     if (action.onClickKey === "weak") {
@@ -98,7 +100,7 @@ export function TodayPlanWidget({
     <section className={className}>
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <div>
-          <h2 className="type-section-title">Aujourd&apos;hui</h2>
+          <h2 className="type-section-title">{t("hub.today.title")}</h2>
           {interviewPlan && (
             <p className="text-sm text-muted-foreground font-light mt-1 max-w-xl">{interviewPlan}</p>
           )}
@@ -107,17 +109,19 @@ export function TodayPlanWidget({
           {showStreak && streak > 0 && (
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
               <Flame className="w-4 h-4" aria-hidden="true" />
-              {streak} jour{streak > 1 ? "s" : ""}
+              {t("hub.today.streakDays", { count: streak, s: streak === 1 ? "" : "s" })}
             </span>
           )}
           {!compact && (
-            <span className="text-muted-foreground tabular-nums">{masteredPct}% maîtrisé</span>
+            <span className="text-muted-foreground tabular-nums">
+              {t("hub.today.masteredPct", { pct: masteredPct })}
+            </span>
           )}
           <Link
             to="/profil"
             className="text-primary hover:text-primary/80 font-medium inline-flex items-center gap-1 text-sm"
           >
-            Profil
+            {t("hub.today.profileLink")}
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>

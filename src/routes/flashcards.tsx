@@ -5,6 +5,7 @@ import { FlashcardSession } from "@/components/flashcards/FlashcardSession";
 import { QuizSession } from "@/components/flashcards/QuizSession";
 import { PageHeader } from "@/components/ui/page-header";
 import { validateFlashcardsSearch, defaultHomeSearch } from "@/lib/route-search";
+import { useT } from "@/hooks/useT";
 
 export const Route = createFileRoute("/flashcards")({
   validateSearch: validateFlashcardsSearch,
@@ -47,6 +48,7 @@ function FlashcardsPage() {
 }
 
 function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
+  const { t } = useT();
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
       <Link
@@ -55,33 +57,31 @@ function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
         className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
-        Retour au guide
+        {t("routes.flashcards.back")}
       </Link>
 
       <PageHeader
-        eyebrow="Entraînement actif"
-        title={
-          <>
-            Comment veux-tu <span className="type-accent">t&apos;entraîner</span> ?
-          </>
-        }
+        eyebrow={t("routes.flashcards.eyebrow")}
+        title={t("routes.flashcards.heading")}
       />
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <ToolCard
           onClick={() => onPick("flashcards")}
           icon={<Sparkles className="w-7 h-7" />}
-          tag="Mémoire long terme"
-          title="Flashcards SRS"
-          description="Sessions de 20 cartes. L'algorithme SM-2 fait revenir les cartes ratées plus souvent."
+          tag={t("routes.flashcards.srs.tag")}
+          title={t("routes.flashcards.srs.title")}
+          description={t("routes.flashcards.srs.description")}
+          cta={t("routes.flashcards.cta.start")}
           accent="from-primary to-primary/80"
         />
         <ToolCard
           onClick={() => onPick("quiz")}
           icon={<Clock className="w-7 h-7" />}
-          tag="5 questions type entretien"
-          title="Mini-entretien"
-          description="Pack structuré : CV, technique, actu M&A, sectoriel. Timer par question et rapport."
+          tag={t("routes.flashcards.quiz.tag")}
+          title={t("routes.flashcards.quiz.title")}
+          description={t("routes.flashcards.quiz.description")}
+          cta={t("routes.flashcards.cta.start")}
           accent="from-primary to-primary/80"
         />
         <Link
@@ -95,18 +95,20 @@ function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
               </div>
               <div>
                 <div className="text-xs uppercase tracking-[0.2em] font-semibold opacity-80">
-                  Simulation complète
+                  {t("routes.flashcards.interview.tag")}
                 </div>
-                <div className="text-xl font-serif mt-0.5">Entretien 30 min</div>
+                <div className="text-xl font-serif mt-0.5">
+                  {t("routes.flashcards.interview.title")}
+                </div>
               </div>
             </div>
           </div>
           <div className="px-6 py-5">
             <p className="text-foreground text-sm font-light leading-relaxed">
-              Briefing, pack 5 ou 7 questions, timer global 30 min, historique et rapport.
+              {t("routes.flashcards.interview.description")}
             </p>
             <div className="mt-4 text-primary text-sm font-semibold group-hover:translate-x-1 transition-transform">
-              Démarrer →
+              {t("routes.flashcards.cta.start")}
             </div>
           </div>
         </Link>
@@ -121,6 +123,7 @@ function ToolCard({
   tag,
   title,
   description,
+  cta,
   accent,
 }: {
   onClick: () => void;
@@ -128,13 +131,14 @@ function ToolCard({
   tag: string;
   title: string;
   description: string;
+  cta: string;
   accent: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-    className="group text-left rounded-2xl bg-card border-2 border-border hover:border-primary/40 shadow-card hover:shadow-card-elevated transition-all overflow-hidden"
+      className="group text-left rounded-2xl bg-card border-2 border-border hover:border-primary/40 shadow-card hover:shadow-card-elevated transition-all overflow-hidden"
     >
       <div className={`px-6 py-5 bg-gradient-to-br ${accent} text-primary-foreground`}>
         <div className="flex items-center gap-3">
@@ -150,7 +154,7 @@ function ToolCard({
       <div className="px-6 py-5">
         <p className="text-foreground text-sm font-light leading-relaxed">{description}</p>
         <div className="mt-4 text-primary text-sm font-semibold group-hover:translate-x-1 transition-transform">
-          Démarrer →
+          {cta}
         </div>
       </div>
     </button>

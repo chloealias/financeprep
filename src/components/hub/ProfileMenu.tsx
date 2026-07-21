@@ -7,6 +7,7 @@ import { getProfileMenuBadges } from "@/lib/profile-dashboard";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { getTargetBankIds } from "@/lib/target-banks-storage";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useT } from "@/hooks/useT";
 import type { AppTab } from "@/lib/app-tabs";
 
 type ProfileMenuProps = {
@@ -43,6 +44,7 @@ function ProfileMenuPanel({
 }
 
 export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuProps) {
+  const { t } = useT();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -116,7 +118,9 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
         className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-foreground hover:bg-muted"
       >
         <ProfileAvatar profile={profile} size="sm" />
-        <span className="font-medium truncate">{profile.firstName?.trim() || "Profil"}</span>
+        <span className="font-medium truncate">
+          {profile.firstName?.trim() || t("hub.profile.fallbackName")}
+        </span>
       </Link>
       <button
         type="button"
@@ -128,7 +132,7 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
         className="w-full touch-target-bar gap-3 px-3 text-left text-sm text-foreground hover:bg-muted"
       >
         <BarChart3 className="w-4 h-4 text-primary" />
-        Progression
+        {t("hub.profile.menu.progress")}
       </button>
     </>
   );
@@ -159,7 +163,7 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
         ref={triggerRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
-        aria-label="Profil"
+        aria-label={t("hub.profile.triggerAria")}
         aria-expanded={open}
         aria-haspopup="menu"
         className="touch-target rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"

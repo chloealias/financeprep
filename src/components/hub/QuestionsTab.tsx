@@ -13,10 +13,9 @@ import {
   BookMarked,
 } from "lucide-react";
 import {
-  DIFFICULTY_OPTIONS,
-  QUESTION_CATEGORIES,
-  RATING_FILTER_OPTIONS,
-  getCategoryLabel,
+  getDifficultyOptions,
+  getQuestionCategories,
+  getRatingFilterOptions,
 } from "@/lib/categories";
 import { questions } from "@/data/questions";
 import {
@@ -42,6 +41,7 @@ import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
 import { PageHeader } from "@/components/ui/page-header";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
+import { useT } from "@/hooks/useT";
 
 const ALLOWED_CATEGORIES = [
   "all",
@@ -96,6 +96,7 @@ export function QuestionsTab({
   onToggleReview,
   filtersKey = 0,
 }: QuestionsTabProps) {
+  const { t } = useT();
   const [activeCategory, setActiveCategory] = useState(DEFAULT_QUESTION_FILTERS.activeCategory);
   const [activeDifficulty, setActiveDifficulty] = useState(
     DEFAULT_QUESTION_FILTERS.activeDifficulty,
@@ -194,9 +195,9 @@ export function QuestionsTab({
     setRevealedKeys((prev) => new Set(prev).add(key));
   };
 
-  const categories = QUESTION_CATEGORIES;
-  const difficulties = DIFFICULTY_OPTIONS;
-  const ratingFilters = RATING_FILTER_OPTIONS;
+  const categories = getQuestionCategories(t);
+  const difficulties = getDifficultyOptions(t);
+  const ratingFilters = getRatingFilterOptions(t);
 
   const filteredQuestions = useMemo(() => {
     return questions.filter((q) => {

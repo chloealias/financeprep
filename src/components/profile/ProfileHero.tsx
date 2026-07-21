@@ -2,6 +2,7 @@ import { Calendar, Palette } from "lucide-react";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { ProfileBanner } from "@/components/profile/ProfileBanner";
 import type { UserProfile } from "@/lib/profile-storage";
+import { useT } from "@/hooks/useT";
 
 type ProfileHeroProps = {
   profile: UserProfile;
@@ -18,6 +19,8 @@ export function ProfileHero({
   onChange,
   onOpenAppearance,
 }: ProfileHeroProps) {
+  const { t } = useT();
+
   return (
     <section className="mb-4 rounded-2xl overflow-hidden border border-border shadow-card">
       <ProfileBanner bannerId={profile.bannerId} className="relative">
@@ -29,7 +32,7 @@ export function ProfileHero({
         <button
           type="button"
           onClick={onOpenAppearance}
-          aria-label="Personnaliser l'apparence"
+          aria-label={t("profile.hero.customizeAppearanceAria")}
           className="absolute top-3 left-3 z-20 bg-black/25 backdrop-blur rounded-full p-2 text-white hover:bg-black/40 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
         >
           <Palette className="w-4 h-4" />
@@ -52,17 +55,17 @@ export function ProfileHero({
                 type="text"
                 value={profile.firstName ?? ""}
                 onChange={(e) => onChange({ firstName: e.target.value })}
-                placeholder="Prénom"
+                placeholder={t("profile.hero.firstName")}
                 className="w-full text-2xl font-serif text-white bg-transparent border-0 border-b border-white/35 focus:border-white/80 focus:outline-none placeholder:text-white/50 drop-shadow-sm"
-                aria-label="Prénom"
+                aria-label={t("profile.hero.firstName")}
               />
               <input
                 type="text"
                 value={profile.targetRole ?? ""}
                 onChange={(e) => onChange({ targetRole: e.target.value })}
-                placeholder="Poste visé"
+                placeholder={t("profile.hero.targetRole")}
                 className="w-full text-sm text-white/90 bg-transparent border-0 focus:outline-none placeholder:text-white/50 drop-shadow-sm"
-                aria-label="Poste visé"
+                aria-label={t("profile.hero.targetRole")}
               />
             </div>
           </div>

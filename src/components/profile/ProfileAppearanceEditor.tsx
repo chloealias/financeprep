@@ -13,6 +13,7 @@ import {
   type ProfileIconId,
 } from "@/lib/profile-cosmetics";
 import type { UserProfile } from "@/lib/profile-storage";
+import { useT } from "@/hooks/useT";
 
 type ProfileAppearanceEditorProps = {
   profile: UserProfile;
@@ -25,6 +26,7 @@ export function ProfileAppearanceEditor({
   onChange,
   showAppPreview = true,
 }: ProfileAppearanceEditorProps) {
+  const { t } = useT();
   const [avatarTab, setAvatarTab] = useState<AvatarKind>(profile.avatarKind ?? "icon");
 
   const selectIcon = (id: ProfileIconId) => {
@@ -46,19 +48,15 @@ export function ProfileAppearanceEditor({
 
   return (
     <>
-      <p className="text-xs text-muted-foreground mb-4">
-        Personnalisez l&apos;avatar, la bannière et la couleur d&apos;accent principale.
-      </p>
+      <p className="text-xs text-muted-foreground mb-4">{t("profile.appearance.intro")}</p>
 
       {showAppPreview && (
         <div className="mb-6">
-          <p className="type-label mb-2">
-            Aperçu header
-          </p>
+          <p className="type-label mb-2">{t("profile.appearance.headerPreview")}</p>
           <ProfileBanner bannerId={profile.bannerId} className="h-16 rounded-xl overflow-hidden">
             <div className="absolute inset-0 flex items-center justify-end px-4 gap-3">
               <span className="text-white/90 text-sm font-medium hidden sm:inline">
-                Finance Interview
+                {t("profile.appearance.brandPreview")}
               </span>
               <ProfileAvatar profile={profile} size="sm" className="border-2 border-white/50" />
             </div>
@@ -67,7 +65,7 @@ export function ProfileAppearanceEditor({
       )}
 
       <div className="mb-6">
-        <h3 className="type-section-title text-lg mb-3">Icône de profil</h3>
+        <h3 className="type-section-title text-lg mb-3">{t("profile.appearance.profileIcon")}</h3>
         <div className="flex gap-1 p-1 bg-muted rounded-lg mb-3 max-w-xs">
           <button
             type="button"
@@ -76,7 +74,7 @@ export function ProfileAppearanceEditor({
               avatarTab === "icon" ? "bg-card shadow-sm text-foreground" : "text-muted-foreground"
             }`}
           >
-            Icônes finance
+            {t("profile.appearance.financeIcons")}
           </button>
           <button
             type="button"
@@ -91,17 +89,18 @@ export function ProfileAppearanceEditor({
             }`}
           >
             <Sparkles className="w-3 h-3" />
-            Style unique
+            {t("profile.appearance.uniqueStyle")}
           </button>
         </div>
 
         {avatarTab === "icon" ? (
           <>
             <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
-              {PROFILE_ICONS.map(({ id, label, Icon, bg, fg }) => {
+              {PROFILE_ICONS.map(({ id, Icon, bg, fg }) => {
                 const selected =
                   (profile.avatarKind ?? "icon") !== "pattern" &&
                   (profile.avatarId ?? "landmark") === id;
+                const label = t(`profile.cosmetics.icon.${id}`);
                 return (
                   <button
                     key={id}
@@ -124,7 +123,7 @@ export function ProfileAppearanceEditor({
 
             <div className="mt-4">
               <h4 className="text-xs font-medium text-foreground mb-2">
-                Couleur de l&apos;icône (optionnel)
+                {t("profile.appearance.iconColorOptional")}
               </h4>
               <div className="flex flex-wrap gap-2">
                 {PROFILE_ICON_COLORS.map((opt) => {
@@ -148,7 +147,7 @@ export function ProfileAppearanceEditor({
                           borderColor: opt.id === "default" ? "var(--border)" : "transparent",
                         }}
                       />
-                      {opt.label}
+                      {t(`profile.cosmetics.iconColor.${opt.id}`)}
                     </button>
                   );
                 })}
@@ -164,14 +163,14 @@ export function ProfileAppearanceEditor({
               className="touch-target-bar gap-2 px-3 rounded-lg border border-border text-sm text-foreground hover:bg-muted"
             >
               <RefreshCw className="w-4 h-4" />
-              Nouveau motif
+              {t("profile.appearance.newPattern")}
             </button>
           </div>
         )}
       </div>
 
       <div className="mb-6">
-        <h3 className="type-section-title text-lg mb-3">Couleur d&apos;accent</h3>
+        <h3 className="type-section-title text-lg mb-3">{t("profile.appearance.accentColor")}</h3>
         <div className="flex flex-wrap gap-2">
           {PROFILE_ACCENT_THEMES.map((theme) => {
             const selected = (profile.accentThemeId ?? "navy") === theme.id;
@@ -191,7 +190,7 @@ export function ProfileAppearanceEditor({
                   className="h-3.5 w-3.5 rounded-full border border-black/10"
                   style={{ backgroundColor: theme.primary }}
                 />
-                {theme.label}
+                {t(`profile.cosmetics.accent.${theme.id}`)}
               </button>
             );
           })}
@@ -200,10 +199,10 @@ export function ProfileAppearanceEditor({
 
       <div>
         <h3 className="type-section-title text-lg mb-3">
-          Bannière de l&apos;app ({PROFILE_BANNERS.length} thèmes)
+          {t("profile.appearance.appBanner", { count: PROFILE_BANNERS.length })}
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
-          {PROFILE_BANNERS.map(({ id, label, className }) => {
+          {PROFILE_BANNERS.map(({ id, className }) => {
             const selected = (profile.bannerId ?? "midnight") === id;
             return (
               <button
@@ -216,7 +215,7 @@ export function ProfileAppearanceEditor({
                 aria-pressed={selected}
               >
                 <span className="absolute bottom-1 left-2 text-xs font-medium text-white/90 drop-shadow">
-                  {label}
+                  {t(`profile.cosmetics.banner.${id}`)}
                 </span>
               </button>
             );

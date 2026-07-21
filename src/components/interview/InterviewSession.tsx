@@ -32,6 +32,7 @@ import {
   type InterviewSessionAnswer,
   type InterviewSessionRecord,
 } from "@/lib/storage";
+import { useT } from "@/hooks/useT";
 
 export type InterviewSessionMode = "mini" | "full";
 
@@ -68,6 +69,7 @@ function itemTip(item: InterviewPackItem): string | undefined {
 }
 
 export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: Props) {
+  const { t } = useT();
   const ratings = useMemo(() => (typeof window !== "undefined" ? loadRatings() : {}), []);
   const srsStore = useMemo(() => (typeof window !== "undefined" ? loadSrsStore() : {}), []);
 
@@ -218,7 +220,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
           className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" />
-          Quitter
+          {t("interview.quit")}
         </button>
         <div className="flex items-center gap-2">
           <div
@@ -233,12 +235,12 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
           </div>
           {globalLimitMs ? (
             <span className="text-xs text-muted-foreground font-medium tabular-nums">
-              Global {formatTime(remainingGlobal)}
+              {t("interview.globalTimer", { time: formatTime(remainingGlobal) })}
             </span>
           ) : null}
         </div>
         <span className="text-muted-foreground text-sm font-medium tabular-nums">
-          {index + 1} / {total}
+          {t("interview.progress", { current: index + 1, total })}
         </span>
       </div>
 
@@ -273,7 +275,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
             <>
               <div className="border-t border-dashed border-border my-4" />
               <div className="text-primary text-xs uppercase tracking-wider font-medium mb-3">
-                Réponse modèle
+                {t("interview.modelAnswer")}
               </div>
               <ol className="space-y-3">
                 {itemSteps(current).map((step, i) => (
@@ -288,7 +290,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
               {itemTip(current) && (
                 <div className="mt-5 rounded-lg bg-primary text-primary-foreground px-4 py-3">
                   <div className="text-primary-foreground/80 text-xs uppercase tracking-[0.2em] font-medium mb-1">
-                    Conseil
+                    {t("interview.tip")}
                   </div>
                   <p className="text-sm font-light leading-relaxed">{itemTip(current)}</p>
                 </div>
@@ -320,13 +322,13 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
           >
             <Eye className="w-5 h-5" />
-            Voir la réponse modèle
+            {t("interview.revealAnswer")}
           </button>
         ) : (
           <div className="space-y-5">
             <div className="bg-card rounded-xl border border-border p-5">
               <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3">
-                Auto-évaluation (1–5)
+                {t("interview.selfEval")}
               </div>
               <StarRating value={stars} onChange={setStars} size="lg" />
             </div>
@@ -338,7 +340,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                   onChange={(e) => setStructureOk(e.target.checked)}
                   className="mt-1"
                 />
-                <span className="text-sm text-foreground">Structure claire (Pyramid / STAR)</span>
+                <span className="text-sm text-foreground">{t("interview.structureOk")}</span>
               </label>
               <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-border bg-card cursor-pointer hover:border-primary/40">
                 <input
@@ -347,7 +349,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                   onChange={(e) => setNumbersOk(e.target.checked)}
                   className="mt-1"
                 />
-                <span className="text-sm text-foreground">Chiffres et précision corrects</span>
+                <span className="text-sm text-foreground">{t("interview.numbersOk")}</span>
               </label>
             </div>
             <button
@@ -357,7 +359,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-primary text-primary-foreground font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <CheckCircle2 className="w-5 h-5" />
-              {index + 1 >= total ? "Terminer la session" : "Question suivante"}
+              {index + 1 >= total ? t("interview.finishSession") : t("interview.nextQuestion")}
             </button>
           </div>
         )}
@@ -381,6 +383,7 @@ function InterviewResults({
   onRestart: () => void;
   onBack: () => void;
 }) {
+  const { t } = useT();
   const [copied, setCopied] = useState(false);
   const [srsAdded, setSrsAdded] = useState(false);
 
@@ -436,14 +439,14 @@ function InterviewResults({
         </div>
         <div className="text-7xl font-serif text-foreground mb-2 tabular-nums">{scorePct}%</div>
         <p className="text-muted-foreground font-light">
-          Note moyenne {avg.toFixed(1)} / 5 · {rated.length} réponses notées
+          {t("interview.results.avgNote", { avg: avg.toFixed(1), count: rated.length })}
         </p>
       </div>
 
       {weakCats.length > 0 && (
         <div className="mb-8 rounded-xl bg-primary/10 border-2 border-primary/20 p-5">
           <div className="text-foreground text-xs uppercase tracking-[0.2em] font-bold mb-2">
-            Catégories à retravailler
+            {t("interview.results.weakCategories")}
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {weakCats.map((w) => (
@@ -451,7 +454,10 @@ function InterviewResults({
                 key={w.cat}
                 className="px-3 py-1 rounded-full bg-card border border-border text-foreground text-sm font-medium"
               >
-                {getCategoryLabel(w.cat)} · {w.avg.toFixed(1)}★
+                {t("interview.results.weakCategoryBadge", {
+                  category: getCategoryLabel(w.cat),
+                  avg: w.avg.toFixed(1),
+                })}
               </span>
             ))}
           </div>
@@ -460,7 +466,9 @@ function InterviewResults({
 
       {weak.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-serif text-foreground mb-4">À revoir ({weak.length})</h2>
+          <h2 className="text-xl font-serif text-foreground mb-4">
+            {t("interview.results.toReview", { count: weak.length })}
+          </h2>
           <ul className="space-y-2 mb-4">
             {weak.map((a, i) => (
               <li
@@ -478,7 +486,7 @@ function InterviewResults({
                       search={{ tab: "questions" }}
                       className="text-xs text-primary font-medium underline"
                     >
-                      Ouvrir la fiche
+                      {t("interview.results.openCard")}
                     </Link>
                   </div>
                 )}
@@ -493,14 +501,14 @@ function InterviewResults({
               className="touch-target-bar gap-2 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
             >
               <Sparkles className="w-4 h-4" />
-              {srsAdded ? "Ajouté au SRS" : "Ajouter les ratées au SRS"}
+              {srsAdded ? t("interview.results.addedToSrs") : t("interview.results.addToSrs")}
             </button>
             <Link
               to="/flashcards"
               search={{ mode: "flashcards" }}
               className="touch-target-bar gap-2 px-4 rounded-lg border border-border text-sm font-medium text-foreground hover:border-primary/50"
             >
-              Revoir en flashcards
+              {t("interview.results.reviewFlashcards")}
             </Link>
           </div>
         </div>
@@ -508,19 +516,19 @@ function InterviewResults({
 
       <div className="mb-8 flex flex-wrap gap-3">
         <Link to="/cv" className="text-sm text-primary hover:text-primary/80 font-medium underline">
-          Guide CV
+          {t("interview.results.guideCv")}
         </Link>
         <Link
           to="/pyramid"
           className="text-sm text-primary hover:text-primary/80 font-medium underline"
         >
-          Pyramid + STAR
+          {t("interview.results.pyramidStar")}
         </Link>
         <Link
           to="/actualite"
           className="text-sm text-primary hover:text-primary/80 font-medium underline"
         >
-          Actualité &amp; macro →
+          {t("interview.results.actualite")}
         </Link>
       </div>
 
@@ -531,7 +539,7 @@ function InterviewResults({
           className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90"
         >
           <Copy className="w-4 h-4" />
-          {copied ? "Copié !" : "Copier le rapport"}
+          {copied ? t("interview.results.copied") : t("interview.results.copyReport")}
         </button>
         <button
           type="button"
@@ -539,14 +547,14 @@ function InterviewResults({
           className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-card border-2 border-border text-foreground font-medium hover:border-primary/50"
         >
           <RotateCcw className="w-4 h-4" />
-          Recommencer
+          {t("interview.results.restart")}
         </button>
         <button
           type="button"
           onClick={onBack}
           className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-card border-2 border-border text-foreground font-medium hover:border-primary/50"
         >
-          Retour au menu
+          {t("interview.results.backToMenu")}
         </button>
       </div>
     </div>
@@ -564,6 +572,7 @@ export function InterviewSessionSetup({
   onStart: () => void;
   onBack: () => void;
 }) {
+  const { t } = useT();
   const ratings = useMemo(() => (typeof window !== "undefined" ? loadRatings() : {}), []);
   const srsStore = useMemo(() => (typeof window !== "undefined" ? loadSrsStore() : {}), []);
   const pack = useMemo(
@@ -580,15 +589,17 @@ export function InterviewSessionSetup({
         className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
-        Retour
+        {t("interview.setup.back")}
       </button>
       <h1 className="text-4xl font-serif text-foreground mb-3">
-        {mode === "full" ? "Simulation d'entretien" : "Mini-entretien"}
+        {mode === "full" ? t("interview.setup.fullTitle") : t("interview.setup.miniTitle")}
       </h1>
       <p className="text-muted-foreground font-light mb-6 max-w-2xl">
-        {packSize} questions type entretien · ~{totalMin} min au total (timer par question). Pack :
-        ouverture CV, technique, actualité M&A, sectoriel
-        {packSize === 7 ? ", + fit." : "."}
+        {t("interview.setup.description", {
+          packSize,
+          totalMin,
+          fitSuffix: packSize === 7 ? t("interview.setup.fitSuffix") : ".",
+        })}
       </p>
       <ul className="mb-8 space-y-2">
         {pack.map((item, i) => (
@@ -598,7 +609,7 @@ export function InterviewSessionSetup({
           >
             <span className="text-foreground font-medium">{packItemLabel(item)}</span>
             <span className="text-muted-foreground tabular-nums">
-              {Math.round(item.secondsLimit / 60)} min
+              {t("interview.setup.itemDuration", { minutes: Math.round(item.secondsLimit / 60) })}
             </span>
           </li>
         ))}
@@ -609,7 +620,7 @@ export function InterviewSessionSetup({
         className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-medium text-lg"
       >
         <Clock className="w-5 h-5" />
-        Démarrer
+        {t("interview.setup.start")}
       </button>
     </div>
   );

@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { useT } from "@/hooks/useT";
 
 export function StarRating({
   value,
@@ -11,6 +12,7 @@ export function StarRating({
   size?: "sm" | "md" | "lg";
   compact?: boolean;
 }) {
+  const { t } = useT();
   const sizeClass = size === "sm" ? "w-4 h-4" : size === "lg" ? "w-7 h-7" : "w-5 h-5";
   const touchClass = compact
     ? "inline-flex items-center justify-center min-h-8 min-w-8"
@@ -25,7 +27,7 @@ export function StarRating({
             onChange(star === value ? 0 : star);
           }}
           className={`${touchClass} transition-transform hover:scale-110`}
-          aria-label={`Noter ${star} étoiles`}
+          aria-label={t("interview.starRating.aria", { star })}
         >
           <Star
             className={`${sizeClass} ${star <= value ? "fill-amber-400 text-amber-400" : "text-blue-200"}`}

@@ -12,6 +12,8 @@ import {
   type ProfileIconColorId,
 } from "@/lib/profile-cosmetics";
 import { notifyProfileUpdated } from "@/lib/profile-events";
+import { t } from "@/lib/i18n/t";
+import { DEFAULT_LOCALE, normalizeLocale, type AppLocale } from "@/lib/i18n/types";
 import { validateTargetBankIds } from "@/lib/profile-personalization";
 import { isValidSectorId, SECTOR_IDS, type SectorId } from "@/lib/sectors";
 import { loadSrsStore, resetSrs, type SrsStore } from "@/lib/srs";
@@ -54,6 +56,8 @@ export type UserProfile = {
   processType?: ProcessType;
   sectorIds?: SectorId[];
   defaultPackSize?: 5 | 7;
+  /** UI language. Defaults to French until the user picks English. */
+  locale?: AppLocale;
   avatarKind?: "icon" | "pattern";
   avatarId?: string;
   avatarPatternSeed?: number;
@@ -71,6 +75,7 @@ export const DEFAULT_PROFILE: UserProfile = {
   processType: "",
   sectorIds: [],
   defaultPackSize: 5,
+  locale: DEFAULT_LOCALE,
   avatarKind: "icon",
   avatarId: "landmark",
   avatarPatternSeed: 42,
@@ -79,21 +84,63 @@ export const DEFAULT_PROFILE: UserProfile = {
   accentThemeId: "navy",
 };
 
+export const EXPERIENCE_LEVEL_IDS: ExperienceLevel[] = [
+  "",
+  "stagiaire",
+  "junior",
+  "reconversion",
+];
+
+export const PROCESS_TYPE_IDS: ProcessType[] = ["", "stage", "off-cycle", "full-time"];
+
 export const CV_CHECKLIST_TOTAL = 6;
 
-export const EXPERIENCE_LEVEL_OPTIONS: { id: ExperienceLevel; label: string }[] = [
-  { id: "", label: "Non précisé" },
-  { id: "stagiaire", label: "Stagiaire" },
-  { id: "junior", label: "Junior / analyst" },
-  { id: "reconversion", label: "Reconversion" },
-];
+const EXPERIENCE_LABEL_KEYS: Record<ExperienceLevel, string> = {
+  "": "profileStorage.experience.unspecified",
+  stagiaire: "profileStorage.experience.stagiaire",
+  junior: "profileStorage.experience.junior",
+  reconversion: "profileStorage.experience.reconversion",
+};
 
-export const PROCESS_TYPE_OPTIONS: { id: ProcessType; label: string }[] = [
-  { id: "", label: "Non précisé" },
-  { id: "stage", label: "Stage été" },
-  { id: "off-cycle", label: "Off-cycle" },
-  { id: "full-time", label: "Full-time" },
-];
+const PROCESS_LABEL_KEYS: Record<ProcessType, string> = {
+  "": "profileStorage.process.unspecified",
+  stage: "profileStorage.process.stage",
+  "off-cycle": "profileStorage.process.offCycle",
+  "full-time": "profileStorage.process.fullTime",
+};
+
+/** @deprecated Prefer getExperienceLevelOptions(locale) for localized labels. */
+export const EXPERIENCE_LEVEL_OPTIONS: { id: ExperienceLevel; label: string }[] =
+  EXPERIENCE_LEVEL_IDS.map((id) => ({
+    id,
+    label: t(DEFAULT_LOCALE, EXPERIENCE_LABEL_KEYS[id]),
+  }));
+
+/** @deprecated Prefer getProcessTypeOptions(locale) for localized labels. */
+export const PROCESS_TYPE_OPTIONS: { id: ProcessType; label: string }[] = PROCESS_TYPE_IDS.map(
+  (id) => ({
+    id,
+    label: t(DEFAULT_LOCALE, PROCESS_LABEL_KEYS[id]),
+  }),
+);
+
+export function getExperienceLevelOptions(
+  locale: AppLocale = DEFAULT_LOCALE,
+): { id: ExperienceLevel; label: string }[] {
+  return EXPERIENCE_LEVEL_IDS.map((id) => ({
+    id,
+    label: t(locale, EXPERIENCE_LABEL_KEYS[id]),
+  }));
+}
+
+export function getProcessTypeOptions(
+  locale: AppLocale = DEFAULT_LOCALE,
+): { id: ProcessType; label: string }[] {
+  return PROCESS_TYPE_IDS.map((id) => ({
+    id,
+    label: t(locale, PROCESS_LABEL_KEYS[id]),
+  }));
+}
 
 function readJson<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
@@ -130,14 +177,15 @@ export function normalizeProfile(raw: unknown): UserProfile {
     firstName: typeof o.firstName === "string" ? o.firstName.trim() : "",
     targetRole: typeof o.targetRole === "string" ? o.targetRole.trim() : "",
     interviewDate: typeof o.interviewDate === "string" ? o.interviewDate : "",
-    experienceLevel: EXPERIENCE_LEVEL_OPTIONS.some((x) => x.id === o.experienceLevel)
+    experienceLevel: EXPERIENCE_LEVEL_IDS.includes(o.experienceLevel as ExperienceLevel)
       ? (o.experienceLevel as ExperienceLevel)
       : "",
-    processType: PROCESS_TYPE_OPTIONS.some((x) => x.id === o.processType)
+    processType: PROCESS_TYPE_IDS.includes(o.processType as ProcessType)
       ? (o.processType as ProcessType)
       : "",
     sectorIds: normalizeSectorIds(o.sectorIds),
     defaultPackSize: pack === 7 ? 7 : 5,
+    locale: normalizeLocale(o.locale),
     avatarKind: normalizeAvatarKind(o.avatarKind),
     avatarId: normalizeAvatarId(o.avatarId),
     avatarPatternSeed: normalizePatternSeed(o.avatarPatternSeed ?? randomPatternSeed()),
@@ -173,11 +221,14 @@ export function daysUntilInterview(isoDate: string | undefined, now = new Date()
   return Math.ceil(diff / (24 * 60 * 60 * 1000));
 }
 
-export function formatInterviewCountdown(days: number | null): string | null {
+export function formatInterviewCountdown(
+  days: number | null,
+  locale: AppLocale = DEFAULT_LOCALE,
+): string | null {
   if (days === null) return null;
-  if (days < 0) return `J+${Math.abs(days)}`;
-  if (days === 0) return "Jour J";
-  return `J-${days}`;
+  if (days < 0) return t(locale, "profileStorage.countdown.past", { days: Math.abs(days) });
+  if (days === 0) return t(locale, "profileStorage.countdown.today");
+  return t(locale, "profileStorage.countdown.future", { days });
 }
 
 export type FinancePrepBackup = {
@@ -243,9 +294,15 @@ export function parseBackupPreview(
 ): { ok: true; preview: BackupPreview } | { ok: false; error: string } {
   try {
     const raw = JSON.parse(json) as FinancePrepBackup;
-    if (raw.version !== 1) return { ok: false, error: "Version de sauvegarde non supportée." };
+    if (raw.version !== 1) {
+      return { ok: false, error: t(DEFAULT_LOCALE, "profileStorage.backup.unsupportedVersion") };
+    }
     const profile = normalizeProfile(raw.profile);
-    const label = profile.firstName?.trim() || profile.targetRole?.trim() || "Profil sans nom";
+    const locale = profile.locale ?? DEFAULT_LOCALE;
+    const label =
+      profile.firstName?.trim() ||
+      profile.targetRole?.trim() ||
+      t(locale, "profileStorage.backup.unnamedProfile");
     return {
       ok: true,
       preview: {
@@ -260,14 +317,16 @@ export function parseBackupPreview(
       },
     };
   } catch {
-    return { ok: false, error: "Fichier JSON invalide." };
+    return { ok: false, error: t(DEFAULT_LOCALE, "profileStorage.backup.invalidJson") };
   }
 }
 
 export function importBackup(json: string): ImportResult {
   try {
     const raw = JSON.parse(json) as FinancePrepBackup;
-    if (raw.version !== 1) return { ok: false, error: "Version de sauvegarde non supportée." };
+    if (raw.version !== 1) {
+      return { ok: false, error: t(DEFAULT_LOCALE, "profileStorage.backup.unsupportedVersion") };
+    }
 
     saveProfile(normalizeProfile(raw.profile));
     if (raw.ratings) saveRatings(raw.ratings);
@@ -284,7 +343,7 @@ export function importBackup(json: string): ImportResult {
 
     return { ok: true };
   } catch {
-    return { ok: false, error: "Fichier JSON invalide." };
+    return { ok: false, error: t(DEFAULT_LOCALE, "profileStorage.backup.invalidJson") };
   }
 }
 

@@ -13,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SectorPanelContent } from "@/components/sectors/SectorPanel";
+import { useT } from "@/hooks/useT";
 
 type SectorDetailDialogProps = {
   sectorId: SectorId;
@@ -22,12 +23,13 @@ type SectorDetailDialogProps = {
 };
 
 function SectorDetailCloseButton({ onClose }: { onClose: () => void }) {
+  const { t } = useT();
   return (
     <button
       type="button"
       onClick={onClose}
       className="absolute top-0 right-0 z-10 touch-target rounded-full border border-border bg-card text-muted-foreground hover:text-primary hover:bg-muted transition-all shadow-sm"
-      aria-label="Fermer la fiche"
+      aria-label={t("hub.common.closeSheet")}
     >
       <X className="w-4 h-4" />
     </button>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getQuestionEnrichment } from "@/data/questions-enriched";
 import { AcronymText } from "@/components/interview/AcronymText";
+import { useT } from "@/hooks/useT";
 
 type Tab = "steps" | "junior" | "senior" | "mistakes";
 
@@ -17,6 +18,7 @@ export function QuestionEnrichedPanel({
   steps,
   tip,
 }: QuestionEnrichedPanelProps) {
+  const { t } = useT();
   const enrichment = getQuestionEnrichment(questionId);
   const hasEnrichment = Boolean(
     enrichment?.answerJunior ||
@@ -33,7 +35,7 @@ export function QuestionEnrichedPanel({
           <div className="flex items-center gap-2 mb-3">
             <div className="h-px w-6 bg-primary" />
             <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
-              Explication
+              {t("hub.enriched.explanation")}
             </h4>
           </div>
           <p className="text-foreground leading-relaxed font-light">
@@ -47,29 +49,29 @@ export function QuestionEnrichedPanel({
   }
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: "steps", label: "Étapes" },
-    ...(enrichment?.answerJunior ? [{ id: "junior" as const, label: "Junior" }] : []),
-    ...(enrichment?.answerSenior ? [{ id: "senior" as const, label: "Senior" }] : []),
+    { id: "steps", label: t("hub.enriched.tab.steps") },
+    ...(enrichment?.answerJunior ? [{ id: "junior" as const, label: t("hub.enriched.tab.junior") }] : []),
+    ...(enrichment?.answerSenior ? [{ id: "senior" as const, label: t("hub.enriched.tab.senior") }] : []),
     ...(enrichment?.commonMistakes?.length
-      ? [{ id: "mistakes" as const, label: "Pièges" }]
+      ? [{ id: "mistakes" as const, label: t("hub.enriched.tab.mistakes") }]
       : []),
   ];
 
   return (
     <>
       <div className="flex flex-wrap gap-2 mb-4">
-        {tabs.map((t) => (
+        {tabs.map((item) => (
           <button
-            key={t.id}
+            key={item.id}
             type="button"
-            onClick={() => setTab(t.id)}
+            onClick={() => setTab(item.id)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider border transition-colors ${
-              tab === t.id
+              tab === item.id
                 ? "bg-primary text-primary-foreground border-primary"
                 : "bg-card text-foreground border-border hover:border-primary/40"
             }`}
           >
-            {t.label}
+            {item.label}
           </button>
         ))}
       </div>
@@ -106,7 +108,7 @@ export function QuestionEnrichedPanel({
       {enrichment?.followUp && (
         <div className="mt-4 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm">
           <span className="text-xs uppercase tracking-wider font-semibold text-primary">
-            Relance interviewer
+            {t("hub.enriched.followUp")}
           </span>
           <p className="mt-1 text-foreground font-light">
             <AcronymText text={enrichment.followUp} />
@@ -119,12 +121,13 @@ export function QuestionEnrichedPanel({
 }
 
 function StepsList({ steps }: { steps: string[] }) {
+  const { t } = useT();
   return (
     <div>
       <div className="flex items-center gap-2 mb-4">
         <div className="h-px w-6 bg-primary" />
         <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
-          Étapes de réponse
+          {t("hub.enriched.stepsTitle")}
         </h4>
       </div>
       <ol className="space-y-3">
@@ -144,13 +147,14 @@ function StepsList({ steps }: { steps: string[] }) {
 }
 
 function TipBlock({ tip }: { tip: string }) {
+  const { t } = useT();
   return (
     <div className="bg-gradient-to-r from-indigo-900 to-blue-900 rounded-xl p-5 text-white relative overflow-hidden mt-6">
       <div className="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl" />
       <div className="relative">
         <div className="flex items-center gap-2 mb-2">
           <span className="text-blue-200 text-xs uppercase tracking-[0.2em] font-medium">
-            Conseil de pro
+            {t("hub.enriched.tip")}
           </span>
         </div>
         <p className="text-white font-light leading-relaxed">

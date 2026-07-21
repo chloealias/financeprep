@@ -4,12 +4,14 @@ import { ArrowLeft, Clock, Triangle, User } from "lucide-react";
 import { getTargetBankNames, loadProfile } from "@/lib/profile-storage";
 import { InterviewSession, InterviewSessionSetup } from "@/components/interview/InterviewSession";
 import { PageHeader } from "@/components/ui/page-header";
+import { useT } from "@/hooks/useT";
 
 const THIRTY_MIN_MS = 30 * 60 * 1000;
 
 type Phase = "briefing" | "setup" | "playing";
 
 export function InterviewSimulator({ onBack }: { onBack: () => void }) {
+  const { t } = useT();
   const [phase, setPhase] = useState<Phase>("briefing");
   const [packSize, setPackSize] = useState<5 | 7>(() =>
     typeof window !== "undefined" ? (loadProfile().defaultPackSize ?? 5) : 5,
@@ -25,24 +27,25 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
           className="touch-target-bar gap-2 text-primary hover:text-primary/80 text-sm font-medium mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          Retour
+          {t("interview.simulator.back")}
         </button>
 
         <PageHeader
-          eyebrow="Simulation"
+          eyebrow={t("interview.simulator.eyebrow")}
           title={
             <>
-              Entretien <span className="type-accent">30 min</span>
+              {t("interview.simulator.titlePrefix")}{" "}
+              <span className="type-accent">{t("interview.simulator.titleAccent")}</span>
             </>
           }
-          description="Pack structuré type vrai entretien : CV, technique, actualité M&A, sectoriel. Timer par question + limite globale 30 minutes."
+          description={t("interview.simulator.description")}
           className="mb-8"
         />
 
         {targetBankNames.length > 0 && (
           <div className="mb-6 rounded-xl bg-primary/10 border border-primary/20 p-4 text-sm text-foreground">
-            <strong>Banques cibles :</strong> {targetBankNames.join(", ")} — personnalisez vos
-            exemples fit et deals en conséquence.
+            <strong>{t("interview.simulator.targetBanks")}</strong>{" "}
+            {t("interview.simulator.targetBanksHint", { banks: targetBankNames.join(", ") })}
           </div>
         )}
 
@@ -53,8 +56,10 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
           >
             <User className="w-6 h-6 text-primary flex-shrink-0" />
             <div>
-              <div className="font-medium text-foreground">Guide CV</div>
-              <p className="text-sm text-muted-foreground font-light">Timer 2 min · checklist</p>
+              <div className="font-medium text-foreground">{t("interview.simulator.guideCv")}</div>
+              <p className="text-sm text-muted-foreground font-light">
+                {t("interview.simulator.guideCvDesc")}
+              </p>
             </div>
           </Link>
           <Link
@@ -63,15 +68,19 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
           >
             <Triangle className="w-6 h-6 text-primary flex-shrink-0" />
             <div>
-              <div className="font-medium text-foreground">Pyramid + STAR</div>
-              <p className="text-sm text-muted-foreground font-light">Structurer vos réponses</p>
+              <div className="font-medium text-foreground">
+                {t("interview.simulator.pyramidStar")}
+              </div>
+              <p className="text-sm text-muted-foreground font-light">
+                {t("interview.simulator.pyramidStarDesc")}
+              </p>
             </div>
           </Link>
         </div>
 
         <div className="mb-8">
           <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3">
-            Taille du pack
+            {t("interview.simulator.packSize")}
           </div>
           <div className="grid grid-cols-2 gap-3">
             {([5, 7] as const).map((s) => (
@@ -86,7 +95,9 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
                 }`}
               >
                 <div className="text-2xl font-serif">{s}</div>
-                <div className="text-xs uppercase tracking-wider mt-1 opacity-80">questions</div>
+                <div className="text-xs uppercase tracking-wider mt-1 opacity-80">
+                  {t("interview.simulator.questions")}
+                </div>
               </button>
             ))}
           </div>
@@ -98,7 +109,7 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
           className="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-primary text-primary-foreground font-medium text-lg shadow-lg hover:bg-primary/90"
         >
           <Clock className="w-5 h-5" />
-          Continuer vers le pack
+          {t("interview.simulator.continue")}
         </button>
       </div>
     );

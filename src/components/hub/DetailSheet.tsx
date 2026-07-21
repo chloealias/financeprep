@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle } from "@/components/ui/drawer";
 import { ClientOnly } from "@/components/hub/ClientOnly";
 import { cn } from "@/lib/utils";
+import { useT } from "@/hooks/useT";
 
 type DetailSheetProps = {
   open: boolean;
@@ -20,18 +21,20 @@ export function DetailSheet({
   returnFocusRef,
   contentClassName,
 }: DetailSheetProps) {
+  const { t } = useT();
   const contentRef = useRef<HTMLDivElement>(null);
+  const closeLabel = t("hub.common.closeSheet");
 
   useEffect(() => {
     if (!open) return;
     const timer = window.setTimeout(() => {
       const closeBtn = contentRef.current?.querySelector<HTMLElement>(
-        'button[aria-label="Fermer la fiche"]',
+        `button[aria-label="${CSS.escape(closeLabel)}"]`,
       );
       closeBtn?.focus();
     }, 100);
     return () => window.clearTimeout(timer);
-  }, [open]);
+  }, [open, closeLabel]);
 
   useEffect(() => {
     if (open) return;
@@ -44,7 +47,7 @@ export function DetailSheet({
         <DrawerContent className="md:hidden">
           <DrawerTitle className="sr-only">{title}</DrawerTitle>
           <DrawerDescription className="sr-only">
-            Fiche détaillée — faites glisser vers le bas ou appuyez sur Échap pour fermer.
+            {t("hub.detailSheet.description")}
           </DrawerDescription>
           <div
             ref={contentRef}

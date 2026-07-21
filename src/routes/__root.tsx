@@ -10,23 +10,26 @@ import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { defaultHomeSearch } from "@/lib/route-search";
+import { LocaleProvider } from "@/components/i18n/LocaleProvider";
+import { useT } from "@/hooks/useT";
 
 function NotFoundComponent() {
+  const { t } = useT();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page introuvable</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Cette page n&apos;existe pas ou a été déplacée.
-        </p>
+        <h2 className="mt-4 text-xl font-semibold text-foreground">
+          {t("routes.root.notFound.title")}
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">{t("routes.root.notFound.body")}</p>
         <div className="mt-6">
           <Link
             to="/"
             search={defaultHomeSearch()}
             className="touch-target-bar justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Retour à l&apos;accueil
+            {t("routes.root.notFound.cta")}
           </Link>
         </div>
       </div>
@@ -37,16 +40,15 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const { t } = useT();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Impossible de charger la page
+          {t("routes.root.error.title")}
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Une erreur s&apos;est produite. Vous pouvez réessayer ou revenir à l&apos;accueil.
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">{t("routes.root.error.body")}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -55,14 +57,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="touch-target-bar justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Réessayer
+            {t("routes.root.error.retry")}
           </button>
           <Link
             to="/"
             search={defaultHomeSearch()}
             className="touch-target-bar justify-center rounded-md border border-input bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"
           >
-            Retour à l&apos;accueil
+            {t("routes.root.error.home")}
           </Link>
         </div>
       </div>
@@ -143,5 +145,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return <Outlet />;
+  return (
+    <LocaleProvider>
+      <Outlet />
+    </LocaleProvider>
+  );
 }

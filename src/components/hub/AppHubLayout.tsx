@@ -10,6 +10,7 @@ import { ProfileMenu } from "@/components/hub/ProfileMenu";
 import { ProfileBanner } from "@/components/profile/ProfileBanner";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { getProfileDashboard } from "@/lib/profile-dashboard";
+import { useT } from "@/hooks/useT";
 
 type HubPage = {
   id: HubNavTab;
@@ -17,14 +18,6 @@ type HubPage = {
   icon: LucideIcon;
   count?: number;
 };
-
-const pages: HubPage[] = [
-  { id: "questions", label: "Questions", icon: ListChecks, count: questions.length },
-  { id: "concepts", label: "Notions", icon: Library, count: concepts.length },
-  { id: "guide", label: "Guide", icon: BookMarked },
-  { id: "secteurs", label: "Secteurs", icon: Building2 },
-  { id: "banques", label: "Banques", icon: Landmark },
-];
 
 type AppHubLayoutProps = {
   activePage: AppTab;
@@ -39,9 +32,23 @@ export function AppHubLayout({
   hasProgress,
   children,
 }: AppHubLayoutProps) {
+  const { t } = useT();
   const navActivePage = isHubNavTab(activePage) ? activePage : null;
   const { profile } = useUserProfile();
   const [masteredPct, setMasteredPct] = useState<number | null>(null);
+
+  const pages: HubPage[] = [
+    {
+      id: "questions",
+      label: t("hub.layout.nav.questions"),
+      icon: ListChecks,
+      count: questions.length,
+    },
+    { id: "concepts", label: t("hub.layout.nav.concepts"), icon: Library, count: concepts.length },
+    { id: "guide", label: t("hub.layout.nav.guide"), icon: BookMarked },
+    { id: "secteurs", label: t("hub.layout.nav.sectors"), icon: Building2 },
+    { id: "banques", label: t("hub.layout.nav.banks"), icon: Landmark },
+  ];
 
   useEffect(() => {
     setMasteredPct(getProfileDashboard().masteredPct);
@@ -53,7 +60,7 @@ export function AppHubLayout({
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-card focus:text-foreground focus:rounded-lg focus:shadow-lg focus:ring-2 focus:ring-ring"
       >
-        Aller au contenu
+        {t("hub.layout.skipToContent")}
       </a>
       <ProfileBanner
         bannerId={profile.bannerId}
@@ -65,15 +72,15 @@ export function AppHubLayout({
             <button
               type="button"
               onClick={() => onPageChange("questions")}
-              aria-label="Finance Interview. Retour aux questions."
+              aria-label={t("hub.layout.homeAria")}
               className="sm:hidden flex-1 min-w-0 text-left rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
             >
               <h1 className="font-medium text-white text-xl tracking-tight truncate m-0 drop-shadow-sm">
-                Finance Interview
+                {t("hub.layout.brand")}
               </h1>
             </button>
             <h1 className="hidden sm:block flex-1 text-4xl lg:text-5xl font-medium text-white tracking-tight leading-tight m-0 drop-shadow-sm">
-              Finance Interview
+              {t("hub.layout.brand")}
             </h1>
             <ProfileMenu onPageChange={onPageChange} hasProgress={hasProgress} />
           </div>
@@ -81,7 +88,7 @@ export function AppHubLayout({
           {masteredPct !== null && masteredPct > 0 && (
             <div className="mt-3 sm:mt-4 max-w-md">
               <div className="flex justify-between text-xs text-white/80 mb-1">
-                <span>Maîtrise questions</span>
+                <span>{t("hub.layout.masteryLabel")}</span>
                 <span className="tabular-nums">{masteredPct}%</span>
               </div>
               <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
@@ -93,7 +100,7 @@ export function AppHubLayout({
             </div>
           )}
 
-          <nav className="hidden sm:block mt-6 sm:mt-8" aria-label="Navigation principale">
+          <nav className="hidden sm:block mt-6 sm:mt-8" aria-label={t("hub.layout.nav.aria")}>
             <div className="flex flex-nowrap gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {pages.map((p) => {
                 const Icon = p.icon;
@@ -128,7 +135,7 @@ export function AppHubLayout({
 
       <nav
         className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-card/95 backdrop-blur-lg border-t border-border shadow-[0_-4px_20px_-4px_rgba(30,58,138,0.15)] pb-[env(safe-area-inset-bottom)]"
-        aria-label="Navigation mobile"
+        aria-label={t("hub.layout.nav.mobileAria")}
       >
         <div className="flex items-stretch justify-around">
           {pages.map((p) => {
@@ -172,9 +179,7 @@ export function AppHubLayout({
         <div className="text-center">
           <div className="inline-flex items-center gap-3 mb-3">
             <div className="h-px w-12 bg-primary" />
-            <span className="type-eyebrow text-xs">
-              Bonne préparation
-            </span>
+            <span className="type-eyebrow text-xs">{t("hub.layout.footer.eyebrow")}</span>
             <div className="h-px w-12 bg-primary" />
           </div>
           <p className="text-muted-foreground text-sm font-light italic">

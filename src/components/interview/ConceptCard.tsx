@@ -10,6 +10,7 @@ import { concepts } from "@/data/concepts";
 import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import { loadStudyMode, type StudyMode } from "@/lib/storage";
+import { useT } from "@/hooks/useT";
 
 type Concept = (typeof concepts)[number];
 
@@ -34,6 +35,7 @@ export function ConceptCard({
   onPrev,
   onNext,
 }: ConceptCardProps) {
+  const { t } = useT();
   const cardRef = React.useRef<HTMLDivElement | null>(null);
   const wasExpanded = React.useRef(isExpanded);
   const [studyMode, setStudyMode] = useState<StudyMode>("lecture");
@@ -101,7 +103,7 @@ export function ConceptCard({
           )}
           {!isExpanded && studyMode === "entretien" && (
             <p className="text-muted-foreground mt-1.5 text-sm italic">
-              Mode entretien — répondez avant d&apos;ouvrir
+              {t("interview.concept.entretienHint")}
             </p>
           )}
         </div>
@@ -120,14 +122,14 @@ export function ConceptCard({
             <div className="ml-0 sm:ml-16 mt-6 text-center py-8 space-y-4">
               <Mic className="w-8 h-8 text-primary mx-auto" />
               <p className="text-sm text-muted-foreground">
-                Expliquez cette notion à voix haute, puis révélez la définition.
+                {t("interview.concept.revealPrompt")}
               </p>
               <button
                 type="button"
                 onClick={() => setRevealed(true)}
                 className="touch-target-bar px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium"
               >
-                J&apos;ai répondu
+                {t("interview.concept.iAnswered")}
               </button>
             </div>
           ) : (
@@ -137,7 +139,7 @@ export function ConceptCard({
               <div className="flex items-center gap-2 mb-2">
                 <div className="h-px w-6 bg-primary" />
                 <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
-                  L&apos;essentiel
+                  {t("interview.concept.essentials")}
                 </h4>
               </div>
               <p className="text-foreground leading-relaxed font-light">
@@ -151,7 +153,7 @@ export function ConceptCard({
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-primary" />
                   <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
-                    Formule clé
+                    {t("interview.concept.keyFormula")}
                   </h4>
                 </div>
                 <div className="bg-muted border border-border rounded-lg p-3 sm:p-4">
@@ -168,7 +170,7 @@ export function ConceptCard({
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-primary" />
                   <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
-                    Pour bien comprendre
+                    {t("interview.concept.understand")}
                   </h4>
                 </div>
                 <p className="text-foreground leading-relaxed font-light whitespace-pre-line">
@@ -183,7 +185,7 @@ export function ConceptCard({
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-primary" />
                   <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
-                    Tableau de référence
+                    {t("interview.concept.refTable")}
                   </h4>
                 </div>
                 <div className="bg-card border border-border rounded-lg overflow-x-auto -mx-4 sm:mx-0">
@@ -223,7 +225,7 @@ export function ConceptCard({
                       hash="indicateurs-macro"
                       className="text-primary font-medium hover:text-primary/80 underline"
                     >
-                      Voir les niveaux macro actuels (taux, spreads, marchés) →
+                      {t("interview.concept.macroLink")}
                     </Link>
                   </p>
                 )}
@@ -236,7 +238,7 @@ export function ConceptCard({
                 <div className="flex items-center gap-2 mb-2">
                   <div className="h-px w-6 bg-primary" />
                   <h4 className="text-foreground font-semibold text-xs uppercase tracking-wider">
-                    Schéma
+                    {t("interview.concept.diagram")}
                   </h4>
                 </div>
                 <ClientOnly fallback={<Skeleton className="h-48 w-full rounded-xl" />}>
@@ -250,7 +252,7 @@ export function ConceptCard({
               <div className="bg-muted border border-border rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-foreground text-xs uppercase tracking-[0.2em] font-bold">
-                    Pièges à éviter
+                    {t("interview.concept.pitfalls")}
                   </span>
                 </div>
                 <ul className="space-y-1.5">
@@ -273,11 +275,11 @@ export function ConceptCard({
                 type="button"
                 onClick={onPrev}
                 disabled={index === 0}
-                aria-label="Concept précédent"
+                aria-label={t("interview.concept.prevAria")}
                 className="touch-target-bar gap-1.5 text-primary hover:text-primary/80 disabled:text-muted-foreground disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-border hover:border-primary/50 disabled:border-border bg-card transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <ChevronRight className="w-4 h-4 rotate-180" />
-                <span className="hidden sm:inline">Précédent</span>
+                <span className="hidden sm:inline">{t("interview.concept.prev")}</span>
               </button>
               <button
                 type="button"
@@ -287,16 +289,16 @@ export function ConceptCard({
                 <span className="tabular-nums text-primary text-xs">
                   {index + 1}/{total}
                 </span>
-                <span>Replier</span>
+                <span>{t("interview.concept.collapse")}</span>
               </button>
               <button
                 type="button"
                 onClick={onNext}
                 disabled={index === total - 1}
-                aria-label="Concept suivant"
+                aria-label={t("interview.concept.nextAria")}
                 className="touch-target-bar gap-1.5 text-primary hover:text-primary/80 disabled:text-muted-foreground disabled:cursor-not-allowed text-sm font-light px-3 rounded-lg border border-border hover:border-primary/50 disabled:border-border bg-card transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
-                <span className="hidden sm:inline">Suivant</span>
+                <span className="hidden sm:inline">{t("interview.concept.next")}</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

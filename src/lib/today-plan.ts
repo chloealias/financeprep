@@ -1,14 +1,10 @@
 import type { ProfileDashboard } from "@/lib/profile-dashboard";
 import type { UserProfile } from "@/lib/profile-storage";
+import type { TranslateFn } from "@/lib/i18n/t";
+import { createTranslator } from "@/lib/i18n/t";
+import { DEFAULT_LOCALE } from "@/lib/i18n/types";
 
-export type TodayActionId =
-  | "srs"
-  | "quiz"
-  | "simulation"
-  | "weak"
-  | "cv"
-  | "review"
-  | "deal";
+export type TodayActionId = "srs" | "quiz" | "simulation" | "weak" | "cv" | "review" | "deal";
 
 export type TodayAction = {
   id: TodayActionId;
@@ -26,6 +22,7 @@ export type TodayAction = {
 function buildAllActions(
   dashboard: ProfileDashboard,
   profile: UserProfile,
+  translate: TranslateFn = createTranslator(DEFAULT_LOCALE),
 ): TodayAction[] {
   const { todayHighlights } = dashboard;
   const packSize = profile.defaultPackSize ?? 5;
@@ -33,9 +30,9 @@ function buildAllActions(
   return [
     {
       id: "srs",
-      title: "Flashcards SRS",
-      stat: `${dashboard.srsDue} due`,
-      desc: "Révision SRS",
+      title: translate("todayPlan.srs.title"),
+      stat: translate("todayPlan.srs.stat", { count: dashboard.srsDue }),
+      desc: translate("todayPlan.srs.desc"),
       href: "/flashcards",
       search: dashboard.srsDue > 0 ? { mode: "flashcards" } : undefined,
       highlight: dashboard.srsDue > 0 || todayHighlights.has("srs"),
@@ -43,18 +40,20 @@ function buildAllActions(
     },
     {
       id: "simulation",
-      title: "Simulation 30 min",
-      stat: dashboard.suggestSimulation ? "Recommandé" : "À jour",
-      desc: "Timer 30 min",
+      title: translate("todayPlan.simulation.title"),
+      stat: dashboard.suggestSimulation
+        ? translate("todayPlan.simulation.stat.recommended")
+        : translate("todayPlan.simulation.stat.upToDate"),
+      desc: translate("todayPlan.simulation.desc"),
       href: "/interview",
       highlight: dashboard.suggestSimulation || todayHighlights.has("simulation"),
       priority: dashboard.suggestSimulation ? 90 : 30,
     },
     {
       id: "weak",
-      title: "Questions faibles",
+      title: translate("todayPlan.weak.title"),
       stat: `${dashboard.weakCount}`,
-      desc: "Notes 1–2★",
+      desc: translate("todayPlan.weak.desc"),
       onClickKey: "weak",
       highlight: todayHighlights.has("weak"),
       disabled: dashboard.weakCount === 0,
@@ -62,9 +61,12 @@ function buildAllActions(
     },
     {
       id: "quiz",
-      title: "Mini-entretien",
-      stat: dashboard.weakCount > 0 ? `${dashboard.weakCount} faiblesses` : "Pack structuré",
-      desc: `${packSize} questions`,
+      title: translate("todayPlan.quiz.title"),
+      stat:
+        dashboard.weakCount > 0
+          ? translate("todayPlan.quiz.stat.weaknesses", { count: dashboard.weakCount })
+          : translate("todayPlan.quiz.stat.pack"),
+      desc: translate("todayPlan.quiz.desc", { packSize }),
       href: "/flashcards",
       search: { mode: "quiz" },
       highlight: todayHighlights.has("quiz"),
@@ -72,12 +74,14 @@ function buildAllActions(
     },
     {
       id: "deal",
-      title: "Actualité M&A",
-      stat: dashboard.suggestedDealTitle ? "Deal suggéré" : "Fiches deals",
+      title: translate("todayPlan.deal.title"),
+      stat: dashboard.suggestedDealTitle
+        ? translate("todayPlan.deal.stat.suggested")
+        : translate("todayPlan.deal.stat.default"),
       desc: dashboard.suggestedDealTitle
         ? dashboard.suggestedDealTitle.slice(0, 42) +
           (dashboard.suggestedDealTitle.length > 42 ? "…" : "")
-        : "Derniers deals et tendances",
+        : translate("todayPlan.deal.desc.default"),
       href: "/actualite",
       search: dashboard.suggestedDealId ? { deal: dashboard.suggestedDealId } : undefined,
       highlight: Boolean(dashboard.suggestedDealId),
@@ -85,18 +89,21 @@ function buildAllActions(
     },
     {
       id: "cv",
-      title: "Checklist CV",
-      stat: `${dashboard.cvChecked}/${dashboard.cvTotal}`,
-      desc: "Walk me through CV",
+      title: translate("todayPlan.cv.title"),
+      stat: translate("todayPlan.cv.stat", {
+        checked: dashboard.cvChecked,
+        total: dashboard.cvTotal,
+      }),
+      desc: translate("todayPlan.cv.desc"),
       href: "/cv",
       highlight: todayHighlights.has("cv"),
       priority: todayHighlights.has("cv") ? 60 : 35,
     },
     {
       id: "review",
-      title: "À réviser",
+      title: translate("todayPlan.review.title"),
       stat: `${dashboard.reviewCount}`,
-      desc: "Signets",
+      desc: translate("todayPlan.review.desc"),
       onClickKey: "review",
       highlight: todayHighlights.has("review"),
       disabled: dashboard.reviewCount === 0,
@@ -110,8 +117,9 @@ export function getPrioritizedTodayActions(
   dashboard: ProfileDashboard,
   profile: UserProfile,
   limit = 3,
+  translate?: TranslateFn,
 ): TodayAction[] {
-  return buildAllActions(dashboard, profile)
+  return buildAllActions(dashboard, profile, translate)
     .filter((a) => !a.disabled)
     .sort((a, b) => b.priority - a.priority)
     .slice(0, limit);
@@ -121,16 +129,9 @@ export function getPrioritizedTodayActions(
 export function getAllTodayActions(
   dashboard: ProfileDashboard,
   profile: UserProfile,
+  translate?: TranslateFn,
 ): TodayAction[] {
-  const order: TodayActionId[] = [
-    "srs",
-    "quiz",
-    "deal",
-    "simulation",
-    "weak",
-    "cv",
-    "review",
-  ];
-  const byId = new Map(buildAllActions(dashboard, profile).map((a) => [a.id, a]));
+  const order: TodayActionId[] = ["srs", "quiz", "deal", "simulation", "weak", "cv", "review"];
+  const byId = new Map(buildAllActions(dashboard, profile, translate).map((a) => [a.id, a]));
   return order.map((id) => byId.get(id)!).filter(Boolean);
 }

@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ProfileAppearanceEditor } from "@/components/profile/ProfileAppearanceEditor";
 import type { UserProfile } from "@/lib/profile-storage";
+import { useT } from "@/hooks/useT";
 
 type AppearanceDialogProps = {
   open: boolean;
@@ -11,13 +12,16 @@ type AppearanceDialogProps = {
 
 /** Modale apparence — ne rien rendre dans le DOM tant qu’elle est fermée. */
 export function AppearanceDialog({ open, onOpenChange, profile, onChange }: AppearanceDialogProps) {
+  const { t } = useT();
   if (!open) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="font-serif text-foreground">Apparence</DialogTitle>
+          <DialogTitle className="font-serif text-foreground">
+            {t("profile.appearance.title")}
+          </DialogTitle>
         </DialogHeader>
         <ProfileAppearanceEditor profile={profile} onChange={onChange} showAppPreview />
       </DialogContent>
