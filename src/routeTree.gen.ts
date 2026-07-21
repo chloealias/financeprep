@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as MentalMathRouteImport } from './routes/mental-math'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as InterviewRouteImport } from './routes/interview'
 import { Route as GlossaireRouteImport } from './routes/glossaire'
 import { Route as FlashcardsRouteImport } from './routes/flashcards'
@@ -21,6 +22,9 @@ import { Route as ActualiteRouteImport } from './routes/actualite'
 import { Route as AccretionRouteImport } from './routes/accretion'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SecteurSectorIdRouteImport } from './routes/secteur/$sectorId'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const PyramidRoute = PyramidRouteImport.update({
   id: '/pyramid',
@@ -35,6 +39,11 @@ const ProfilRoute = ProfilRouteImport.update({
 const MentalMathRoute = MentalMathRouteImport.update({
   id: '/mental-math',
   path: '/mental-math',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InterviewRoute = InterviewRouteImport.update({
@@ -82,6 +91,24 @@ const SecteurSectorIdRoute = SecteurSectorIdRouteImport.update({
   path: '/secteur/$sectorId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -92,10 +119,14 @@ export interface FileRoutesByFullPath {
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/interview': typeof InterviewRoute
+  '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/secteur/$sectorId': typeof SecteurSectorIdRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -106,10 +137,14 @@ export interface FileRoutesByTo {
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/interview': typeof InterviewRoute
+  '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/secteur/$sectorId': typeof SecteurSectorIdRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -121,10 +156,14 @@ export interface FileRoutesById {
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
   '/interview': typeof InterviewRoute
+  '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/secteur/$sectorId': typeof SecteurSectorIdRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -137,10 +176,14 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/glossaire'
     | '/interview'
+    | '/mcp'
     | '/mental-math'
     | '/profil'
     | '/pyramid'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/secteur/$sectorId'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -151,10 +194,14 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/glossaire'
     | '/interview'
+    | '/mcp'
     | '/mental-math'
     | '/profil'
     | '/pyramid'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/secteur/$sectorId'
+    | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
@@ -165,10 +212,14 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/glossaire'
     | '/interview'
+    | '/mcp'
     | '/mental-math'
     | '/profil'
     | '/pyramid'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/secteur/$sectorId'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -180,10 +231,14 @@ export interface RootRouteChildren {
   FlashcardsRoute: typeof FlashcardsRoute
   GlossaireRoute: typeof GlossaireRoute
   InterviewRoute: typeof InterviewRoute
+  McpRoute: typeof McpRoute
   MentalMathRoute: typeof MentalMathRoute
   ProfilRoute: typeof ProfilRoute
   PyramidRoute: typeof PyramidRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   SecteurSectorIdRoute: typeof SecteurSectorIdRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -207,6 +262,13 @@ declare module '@tanstack/react-router' {
       path: '/mental-math'
       fullPath: '/mental-math'
       preLoaderRoute: typeof MentalMathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/interview': {
@@ -272,6 +334,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SecteurSectorIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -284,10 +367,15 @@ const rootRouteChildren: RootRouteChildren = {
   FlashcardsRoute: FlashcardsRoute,
   GlossaireRoute: GlossaireRoute,
   InterviewRoute: InterviewRoute,
+  McpRoute: McpRoute,
   MentalMathRoute: MentalMathRoute,
   ProfilRoute: ProfilRoute,
   PyramidRoute: PyramidRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   SecteurSectorIdRoute: SecteurSectorIdRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
