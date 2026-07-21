@@ -197,7 +197,7 @@ export function BankHubPage() {
     if (!selectedBankId) return;
     if (!visibleBankIds.has(selectedBankId)) {
       navigate({
-        search: (prev) => ({
+        search: (_prev: import("@/lib/route-search").HomeSearch) => ({
           tab: "banques",
           bank: undefined,
         }),
@@ -209,7 +209,7 @@ export function BankHubPage() {
     if (!selectedPeId) return;
     if (!filteredPeFunds.some((f) => f.id === selectedPeId)) {
       navigate({
-        search: (prev) => ({
+        search: (_prev: import("@/lib/route-search").HomeSearch) => ({
           tab: "banques",
           pe: undefined,
         }),
