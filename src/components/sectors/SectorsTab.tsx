@@ -11,7 +11,7 @@ const IsometricMap = lazy(() =>
 );
 
 export function SectorsTab() {
-  const { sector: sectorFromUrl } = Route.useSearch();
+  const { sector: sectorFromUrl } = Route.useSearch() as { sector?: SectorId };
   const navigate = Route.useNavigate();
   const lastTriggerRef = useRef<HTMLElement | null>(null);
 
