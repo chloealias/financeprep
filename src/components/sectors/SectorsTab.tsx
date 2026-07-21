@@ -28,7 +28,7 @@ export function SectorsTab() {
       captureScroll();
     }
     navigate({
-      search: (prev) => ({
+      search: (prev: import("@/lib/route-search").HomeSearch) => ({
         ...prev,
         tab: "secteurs",
         sector: id,
@@ -38,7 +38,7 @@ export function SectorsTab() {
 
   const handleClose = () => {
     navigate({
-      search: (prev) => ({
+      search: (prev: import("@/lib/route-search").HomeSearch) => ({
         ...prev,
         tab: prev.tab ?? "secteurs",
         sector: undefined,
@@ -49,7 +49,7 @@ export function SectorsTab() {
   useEffect(() => {
     if (sectorFromUrl && !SECTOR_DATA[sectorFromUrl]) {
       navigate({
-        search: (prev) => ({ ...prev, sector: undefined }),
+        search: (prev: import("@/lib/route-search").HomeSearch) => ({ ...prev, sector: undefined }),
       });
     }
   }, [sectorFromUrl, navigate]);
