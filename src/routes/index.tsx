@@ -15,7 +15,7 @@ function HomePage() {
 
   const onPageChange = (page: AppTab) => {
     navigate({
-      search: (prev) => ({
+      search: (prev: import("@/lib/route-search").HomeSearch) => ({
         tab: page,
         bank: page === "banques" ? prev.bank : undefined,
         sector: undefined,
