@@ -271,7 +271,7 @@ export function BlocActualite() {
     const bankId = bankName === "all" ? undefined : getBankIdByName(bankName);
     setFilterBanque(bankName);
     navigate({
-      search: (prev) => ({
+      search: (prev: import("@/lib/route-search").ActualiteSearch) => ({
         deal: prev.deal,
         bank: bankId,
         sector: prev.sector,
@@ -282,7 +282,7 @@ export function BlocActualite() {
   const setSectorFilter = (sectorId: string) => {
     setFilterSector(sectorId);
     navigate({
-      search: (prev) => ({
+      search: (prev: import("@/lib/route-search").ActualiteSearch) => ({
         deal: prev.deal,
         bank: prev.bank,
         sector: sectorId === "all" ? undefined : (sectorId as SectorId),
@@ -303,10 +303,10 @@ export function BlocActualite() {
 
   const toggleDeal = (id: string) => {
     if (openDeal === id) {
-      navigate({ search: (prev) => ({ deal: undefined, bank: prev.bank, sector: prev.sector }) });
+      navigate({ search: (prev: import("@/lib/route-search").ActualiteSearch) => ({ deal: undefined, bank: prev.bank, sector: prev.sector }) });
     } else {
       if (!openDeal) captureScroll();
-      navigate({ search: (prev) => ({ deal: id, bank: prev.bank, sector: prev.sector }) });
+      navigate({ search: (prev: import("@/lib/route-search").ActualiteSearch) => ({ deal: id, bank: prev.bank, sector: prev.sector }) });
     }
   };
 
