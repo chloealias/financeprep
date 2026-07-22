@@ -13,7 +13,6 @@ import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as MentalMathRouteImport } from './routes/mental-math'
 import { Route as McpRouteImport } from './routes/mcp'
-import { Route as InterviewRouteImport } from './routes/interview'
 import { Route as GlossaireRouteImport } from './routes/glossaire'
 import { Route as FlashcardsRouteImport } from './routes/flashcards'
 import { Route as ExcelRouteImport } from './routes/excel'
@@ -44,11 +43,6 @@ const MentalMathRoute = MentalMathRouteImport.update({
 const McpRoute = McpRouteImport.update({
   id: '/mcp',
   path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InterviewRoute = InterviewRouteImport.update({
-  id: '/interview',
-  path: '/interview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlossaireRoute = GlossaireRouteImport.update({
@@ -118,7 +112,6 @@ export interface FileRoutesByFullPath {
   '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
-  '/interview': typeof InterviewRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
@@ -136,7 +129,6 @@ export interface FileRoutesByTo {
   '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
-  '/interview': typeof InterviewRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
@@ -155,7 +147,6 @@ export interface FileRoutesById {
   '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
   '/glossaire': typeof GlossaireRoute
-  '/interview': typeof InterviewRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
@@ -175,7 +166,6 @@ export interface FileRouteTypes {
     | '/excel'
     | '/flashcards'
     | '/glossaire'
-    | '/interview'
     | '/mcp'
     | '/mental-math'
     | '/profil'
@@ -193,7 +183,6 @@ export interface FileRouteTypes {
     | '/excel'
     | '/flashcards'
     | '/glossaire'
-    | '/interview'
     | '/mcp'
     | '/mental-math'
     | '/profil'
@@ -211,7 +200,6 @@ export interface FileRouteTypes {
     | '/excel'
     | '/flashcards'
     | '/glossaire'
-    | '/interview'
     | '/mcp'
     | '/mental-math'
     | '/profil'
@@ -230,7 +218,6 @@ export interface RootRouteChildren {
   ExcelRoute: typeof ExcelRoute
   FlashcardsRoute: typeof FlashcardsRoute
   GlossaireRoute: typeof GlossaireRoute
-  InterviewRoute: typeof InterviewRoute
   McpRoute: typeof McpRoute
   MentalMathRoute: typeof MentalMathRoute
   ProfilRoute: typeof ProfilRoute
@@ -269,13 +256,6 @@ declare module '@tanstack/react-router' {
       path: '/mcp'
       fullPath: '/mcp'
       preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/interview': {
-      id: '/interview'
-      path: '/interview'
-      fullPath: '/interview'
-      preLoaderRoute: typeof InterviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/glossaire': {
@@ -366,7 +346,6 @@ const rootRouteChildren: RootRouteChildren = {
   ExcelRoute: ExcelRoute,
   FlashcardsRoute: FlashcardsRoute,
   GlossaireRoute: GlossaireRoute,
-  InterviewRoute: InterviewRoute,
   McpRoute: McpRoute,
   MentalMathRoute: MentalMathRoute,
   ProfilRoute: ProfilRoute,

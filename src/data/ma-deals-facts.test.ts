@@ -11,10 +11,15 @@ const VERIFIED_DEAL_FACTS: Record<
   },
   d03: {
     mustInclude: ["5 mars 2026", "Goldman Sachs Alternatives"],
+    mustNotInclude: ["75% stake", "75 %"],
   },
   d04: {
-    mustInclude: ["3 juil. 2026", "12,5 %", "Commerzbank"],
-    mustNotInclude: ["Acceptation jusqu'au 16 juin 2026"],
+    mustInclude: ["3 juil. 2026", "17,60 %", "Commerzbank"],
+    mustNotInclude: ["Acceptation jusqu'au 16 juin 2026", "12,5 %"],
+  },
+  d05: {
+    mustInclude: ["Magellan Partners Group", "Shift4", "Bambora"],
+    mustNotInclude: ["MeTS → Shift4", "Worldline North America (en cours)"],
   },
   d06: {
     mustInclude: ["4 Md€", "31 mars 2026", "Creed"],
@@ -60,8 +65,8 @@ describe("ma-deals verified facts", () => {
   }
 
   it("closed deals do not use stale 'en cours' wording", () => {
-    for (const id of ["d03", "d06", "d09"]) {
-      expect(dealText(id)).not.toMatch(/en cours/i);
+    for (const id of ["d03", "d05", "d06", "d09"]) {
+      expect(dealText(id)).not.toMatch(/\ben cours\b/i);
     }
   });
 });

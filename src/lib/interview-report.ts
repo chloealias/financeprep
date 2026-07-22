@@ -28,7 +28,7 @@ export function buildInterviewMarkdown(
 ): string {
   const date = new Date(session.startedAt).toLocaleString("fr-FR");
   const lines: string[] = [
-    `# Rapport entretien — ${session.mode === "full" ? "Simulation 30 min" : "Mini-entretien"}`,
+    `# Rapport entretien — ${session.mode === "full" ? "Entraînement 30 min" : "Entraînement chronométré"}`,
     "",
     `- **Date :** ${date}`,
     `- **Durée :** ${Math.round(session.durationMs / 60000)} min`,

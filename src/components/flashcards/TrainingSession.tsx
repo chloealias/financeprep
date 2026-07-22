@@ -9,14 +9,19 @@ import { useT } from "@/hooks/useT";
 const THIRTY_MIN_MS = 30 * 60 * 1000;
 
 type Phase = "briefing" | "setup" | "playing";
+type TimeLimit = "none" | "30min";
 
-export function InterviewSimulator({ onBack }: { onBack: () => void }) {
+export function TrainingSession({ onBack }: { onBack: () => void }) {
   const { t } = useT();
   const [phase, setPhase] = useState<Phase>("briefing");
   const [packSize, setPackSize] = useState<5 | 7>(() =>
     typeof window !== "undefined" ? (loadProfile().defaultPackSize ?? 5) : 5,
   );
+  const [timeLimit, setTimeLimit] = useState<TimeLimit>("none");
   const targetBankNames = typeof window !== "undefined" ? getTargetBankNames() : [];
+
+  const mode = timeLimit === "30min" ? "full" : "mini";
+  const globalLimitMs = timeLimit === "30min" ? THIRTY_MIN_MS : undefined;
 
   if (phase === "briefing") {
     return (
@@ -31,14 +36,14 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
         </button>
 
         <PageHeader
-          eyebrow={t("interview.simulator.eyebrow")}
+          eyebrow={t("routes.flashcards.training.tag")}
           title={
             <>
-              {t("interview.simulator.titlePrefix")}{" "}
-              <span className="type-accent">{t("interview.simulator.titleAccent")}</span>
+              {t("routes.flashcards.training.titlePrefix")}{" "}
+              <span className="type-accent">{t("routes.flashcards.training.titleAccent")}</span>
             </>
           }
-          description={t("interview.simulator.description")}
+          description={t("routes.flashcards.training.description")}
           className="mb-8"
         />
 
@@ -78,7 +83,7 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
           </Link>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3">
             {t("interview.simulator.packSize")}
           </div>
@@ -103,6 +108,33 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
           </div>
         </div>
 
+        <div className="mb-8">
+          <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3">
+            {t("routes.flashcards.training.timeLimit")}
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {(
+              [
+                { id: "none" as const, label: t("routes.flashcards.training.timeNone") },
+                { id: "30min" as const, label: t("routes.flashcards.training.time30") },
+              ] as const
+            ).map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setTimeLimit(opt.id)}
+                className={`px-4 py-4 rounded-xl border-2 font-medium transition-colors ${
+                  timeLimit === opt.id
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card text-foreground border-border hover:border-primary/50"
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <button
           type="button"
           onClick={() => setPhase("setup")}
@@ -118,7 +150,7 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
   if (phase === "setup") {
     return (
       <InterviewSessionSetup
-        mode="full"
+        mode={mode}
         packSize={packSize}
         onStart={() => setPhase("playing")}
         onBack={() => setPhase("briefing")}
@@ -128,9 +160,9 @@ export function InterviewSimulator({ onBack }: { onBack: () => void }) {
 
   return (
     <InterviewSession
-      mode="full"
+      mode={mode}
       packSize={packSize}
-      globalLimitMs={THIRTY_MIN_MS}
+      globalLimitMs={globalLimitMs}
       onBack={() => setPhase("setup")}
     />
   );

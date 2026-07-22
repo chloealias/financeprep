@@ -63,7 +63,14 @@ export function formatPackPersonalizationText(summary: PackPersonalizationSummar
   return parts.join(" · ");
 }
 
-export type TodayHighlightKey = "srs" | "quiz" | "simulation" | "cv" | "weak" | "review";
+export type TodayHighlightKey =
+  | "srs"
+  | "training"
+  | "quiz"
+  | "simulation"
+  | "cv"
+  | "weak"
+  | "review";
 
 export function getTodayHighlightKeys(profile: UserProfile): Set<TodayHighlightKey> {
   const keys = new Set<TodayHighlightKey>();
@@ -71,15 +78,15 @@ export function getTodayHighlightKeys(profile: UserProfile): Set<TodayHighlightK
     keys.add("cv");
     keys.add("srs");
   } else if (profile.experienceLevel === "junior" || profile.experienceLevel === "stagiaire") {
-    keys.add("simulation");
+    keys.add("training");
     keys.add("weak");
   }
   if (profile.processType === "full-time") {
-    keys.add("simulation");
+    keys.add("training");
   }
   if (profile.processType === "stage") {
     keys.add("srs");
-    keys.add("quiz");
+    keys.add("training");
   }
   return keys;
 }
@@ -90,16 +97,16 @@ export function getInterviewPlanMessage(
 ): string | null {
   if (daysUntil === null || daysUntil < 0) return null;
   if (daysUntil === 0) {
-    return `Jour J : simulation 30 min si pas faite récemment, ${ctx.srsDue} cartes SRS dues, revoyez vos faiblesses.`;
+    return `Jour J : entraînement chronométré si pas fait récemment, ${ctx.srsDue} cartes SRS dues, revoyez vos faiblesses.`;
   }
   if (daysUntil <= 3) {
-    return `J-${daysUntil} : priorité simulation 30 min, ${ctx.weakCount} question(s) faible(s), ${ctx.srsDue} cartes SRS.`;
+    return `J-${daysUntil} : priorité entraînement chronométré (30 min), ${ctx.weakCount} question(s) faible(s), ${ctx.srsDue} cartes SRS.`;
   }
   if (daysUntil <= 7) {
-    return `J-${daysUntil} : mini-entretien + flashcards SRS (${ctx.srsDue} dues)${ctx.suggestSimulation ? " · simulation recommandée" : ""}.`;
+    return `J-${daysUntil} : entraînement chronométré + flashcards SRS (${ctx.srsDue} dues)${ctx.suggestSimulation ? " · session 30 min recommandée" : ""}.`;
   }
   if (daysUntil <= 14) {
-    return `J-${daysUntil} : checklist CV, puis simulation ou mini-entretien selon votre rythme.`;
+    return `J-${daysUntil} : checklist CV, puis entraînement chronométré selon votre rythme.`;
   }
   return null;
 }
@@ -107,7 +114,7 @@ export function getInterviewPlanMessage(
 export type AdaptivePlanAction = {
   label: string;
   href: string;
-  search?: { mode?: "flashcards" | "quiz"; tab?: string };
+  search?: { mode?: "flashcards" | "training" | "quiz"; tab?: string };
   priority: number;
   doneToday?: boolean;
 };
@@ -131,8 +138,9 @@ export function getAdaptivePlanActions(
   if (daysUntil !== null && daysUntil >= 0 && daysUntil <= 3) {
     if (ctx.suggestSimulation) {
       actions.push({
-        label: "Simulation 30 min",
-        href: "/interview",
+        label: "Entraînement chronométré",
+        href: "/flashcards",
+        search: { mode: "training" },
         priority: 95,
       });
     }
@@ -147,21 +155,18 @@ export function getAdaptivePlanActions(
     actions.push({ label: "Checklist CV", href: "/cv", priority: 80 });
   } else if (daysUntil !== null && daysUntil <= 7) {
     actions.push({
-      label: "Mini-entretien",
+      label: "Entraînement chronométré",
       href: "/flashcards",
-      search: { mode: "quiz" },
+      search: { mode: "training" },
       priority: 85,
     });
-    if (ctx.suggestSimulation) {
-      actions.push({ label: "Simulation 30 min", href: "/interview", priority: 80 });
-    }
     actions.push({ label: "Actualité M&A", href: "/actualite", priority: 70 });
   } else if (daysUntil !== null && daysUntil <= 14) {
     actions.push({ label: "Checklist CV", href: "/cv", priority: 75 });
     actions.push({
-      label: "Mini-entretien ou simulation",
+      label: "Entraînement chronométré",
       href: "/flashcards",
-      search: { mode: "quiz" },
+      search: { mode: "training" },
       priority: 70,
     });
   } else {

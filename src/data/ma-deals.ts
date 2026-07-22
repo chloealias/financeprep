@@ -203,7 +203,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
       {
         label: "Acquéreur",
-        text: "Goldman Sachs Alternatives (Private Equity) — 75% stake.",
+        text: "Goldman Sachs Alternatives (Private Equity) — participation majoritaire (% non communiqué publiquement).",
       },
       {
         label: "Vendeur",
@@ -260,7 +260,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
       {
         label: "Résultat offre",
-        text: "~12,5 % des actions Commerzbank remises à l'offre (juil. 2026). Participation free-float très faible (~1 % hors contreparties dérivées). État allemand (~12 %) a rejeté l'offre.",
+        text: "17,60 % des actions Commerzbank remises à l'offre (juil. 2026). Participation free-float très faible (~1 % hors contreparties dérivées). État allemand (~12 %) a rejeté l'offre.",
       },
     ],
     valorisation: [
@@ -293,14 +293,14 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
     contexte:
       "CEO Commerzbank : Bettina Orlopp. OPA hostile / échange d'actions. Résistance politique allemande forte. Offre échouée à convaincre le free-float (décote ~14 % vs cours) ; UniCredit conserve ~28–30 % + dérivés (~42 % d'exposition économique totale). Clôture réglementaire ECB attendue 2027. Goldman Sachs conseille la défense de Commerzbank ; Rothschild conseille l'État allemand sur sa participation résiduelle.",
     pointEntretien:
-      "Incontournable en FIG ou M&A européen. Expliquer : OPA progressive via total return swaps, seuil 30 % en droit allemand, échec relatif de l'offre (12,5 % tendered), pourquoi les fusions bancaires cross-border échouent en Europe (pas d'union bancaire, résistance politique, exigences CET1).",
+      "Incontournable en FIG ou M&A européen. Expliquer : OPA progressive via total return swaps, seuil 30 % en droit allemand, échec relatif de l'offre (17,60 % tendered), pourquoi les fusions bancaires cross-border échouent en Europe (pas d'union bancaire, résistance politique, exigences CET1).",
     ftUrl: "https://www.ft.com/content/unicredit-commerzbank",
     kind: "deal",
   },
   {
     id: "d05",
     title: "Worldline — Programme de cessions d'actifs",
-    dates: "Programme lancé 2024, cessions en cours 2025-2026",
+    dates: "Programme lancé 2024 — MeTS clos 1er juin 2026, North America (Bambora) clos 2 mars 2026",
     type: "Cessions",
     secteur: "TMT / Fintech / Payments",
     headlineEv: "MeTS ~410 M€ EV",
@@ -316,7 +316,7 @@ const MA_DEALS_RAW: Omit<MaDeal, "sectorId">[] = [
       },
       {
         label: "Principales cessions",
-        text: "MeTS → Shift4 (~410 M€ EV) ; Worldline North America (en cours) ; Cetrel (Luxembourg), PaymentIQ, MS India, autres actifs IFRS 5.",
+        text: "MeTS → Magellan Partners Group (~410 M€ EV, closing 1er juin 2026) ; Worldline North America (Bambora) → Shift4 (~70 M€ EV, closing 2 mars 2026) ; Cetrel (Luxembourg), PaymentIQ, MS India, autres actifs IFRS 5.",
       },
     ],
     valorisation: [

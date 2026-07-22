@@ -518,16 +518,16 @@ export const concepts = [
     simple:
       "En droit français, l'OPA vise le contrôle (30 %), l'OPE la sortie de cotation, le squeeze-out force les minoritaires à vendre une fois le seuil atteint. Complète la distinction fusion vs acquisition.",
     formula:
-      "OPA : seuil 30 % (déclenchement)  |  OPE : sortie de marché  |  Squeeze-out : 90 % + 95 % des droits de vote",
+      "OPA : seuil 30 % (déclenchement)  |  OPE : sortie de marché  |  Squeeze-out : seuil de 90 % du capital ou des droits de vote (loi PACTE, 2019)",
     deepDive:
-      "Fusion vs acquisition (rappel) :\n• Acquisition : contrôle d'une entité par une autre (majorité des actions)\n• Fusion : combinaison juridique (absorption ou création)\n• En pratique, la plupart des « fusions » annoncées sont des acquisitions avec prime de contrôle\n\nOPA (Offre Publique d'Achat) :\n• Déclenchée quand un acquéreur franchit 30 % du capital ou des droits de vote (seuil de déclenchement)\n• Objectif : prendre le contrôle ; prix avec prime (souvent 20-40 % vs cours)\n• Régulation AMF : calendrier, document d'offre, délai d'acceptation\n• Exemple app : UniCredit / Commerzbank (OPA hostile, seuil allemand 30 %)\n\nOPE (Offre Publique d'Échange) :\n• Offre visant la sortie de cotation (delisting)\n• Souvent après une OPA réussie quand l'acquéreur détient >90 %\n• Les actionnaires restants échangent leurs titres contre une indemnité\n\nSqueeze-out (retait obligatoire) :\n• Permet à l'acquéreur de forcer l'achat des minoritaires après OPA/OPE\n• Seuils légaux (France) : 90 % du capital et 95 % des droits de vote détenus\n• Évite les actionnaires « dormants » qui bloquent la simplification\n\nPour l'entretien : maîtriser le séquençage OPA → seuils → OPE → squeeze-out, et citer un deal récent (Commerzbank, Sanofi Blueprint tender).",
+      "Fusion vs acquisition (rappel) :\n• Acquisition : contrôle d'une entité par une autre (majorité des actions)\n• Fusion : combinaison juridique (absorption ou création)\n• En pratique, la plupart des « fusions » annoncées sont des acquisitions avec prime de contrôle\n\nOPA (Offre Publique d'Achat) :\n• Déclenchée quand un acquéreur franchit 30 % du capital ou des droits de vote (seuil de déclenchement)\n• Objectif : prendre le contrôle ; prix avec prime (souvent 20-40 % vs cours)\n• Régulation AMF : calendrier, document d'offre, délai d'acceptation\n• Exemple app : UniCredit / Commerzbank (OPA hostile, seuil allemand 30 %)\n\nOPE (Offre Publique d'Échange) :\n• Offre visant la sortie de cotation (delisting)\n• Souvent après une OPA réussie quand l'acquéreur détient >90 %\n• Les actionnaires restants échangent leurs titres contre une indemnité\n\nSqueeze-out (retrait obligatoire) :\n• Permet à l'acquéreur de forcer l'achat des minoritaires après OPA/OPE\n• Seuils légaux (France) : 90 % du capital ou des droits de vote (loi PACTE, 2019 — anciennement 95 %)\n• Évite les actionnaires « dormants » qui bloquent la simplification\n\nPour l'entretien : maîtriser le séquençage OPA → seuils → OPE → squeeze-out, et citer un deal récent (Commerzbank, Sanofi Blueprint tender).",
     table: {
       headers: ["Mécanisme", "Objectif", "Seuil clé", "Exemple type"],
       rows: [
         ["OPA", "Prendre le contrôle", "30 % déclenchement (FR)", "UniCredit/CBK"],
         ["OPA amicale", "Accord conseil cible", "Négocié", "L'Oréal/Aesop"],
         ["OPE", "Sortir de la cote", "Post-90 %", "Delisting post-LBO"],
-        ["Squeeze-out", "Forcer les minoritaires", "90 % / 95 % votes", "Simplification groupe"],
+        ["Squeeze-out", "Forcer les minoritaires", "90 % capital ou votes", "Simplification groupe"],
         ["Fusion", "Entités combinées", "Accord 2/3 AG", "UBS/CS (urgence)"],
         ["Acquisition", "Achat de contrôle", "Variable", "Majorité des deals"],
       ],

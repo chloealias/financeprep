@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, Clock, Mic, RotateCcw, Sparkles, Star } from "lucide-react";
+import { ChevronRight, Clock, RotateCcw, Sparkles, Star } from "lucide-react";
 import { questions } from "@/data/questions";
 import { concepts } from "@/data/concepts";
 import { countBuckets, loadSrsStore } from "@/lib/srs";
@@ -275,20 +275,15 @@ export function ProgressPage({
         <div className="flex flex-wrap gap-3">
           <Link
             to="/flashcards"
+            search={{ mode: "training" }}
             className="touch-target-bar gap-2 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
           >
             <Clock className="w-4 h-4" />
-            {t("interview.progressPage.miniInterview")}
-          </Link>
-          <Link
-            to="/interview"
-            className="touch-target-bar gap-2 px-4 rounded-xl bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
-          >
-            <Mic className="w-4 h-4" />
-            {t("interview.progressPage.sim30")}
+            {t("interview.progressPage.training")}
           </Link>
           <Link
             to="/flashcards"
+            search={{ mode: "flashcards" }}
             className="touch-target-bar gap-2 px-4 rounded-xl border border-border text-foreground text-sm font-medium hover:bg-muted"
           >
             <Sparkles className="w-4 h-4" />

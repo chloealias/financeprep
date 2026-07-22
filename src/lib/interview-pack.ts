@@ -89,8 +89,6 @@ export const FIT_QUESTION_IDS = new Set([
   "58",
   "59",
   "67",
-  "87",
-  "89",
   "123",
   "124",
   "125",

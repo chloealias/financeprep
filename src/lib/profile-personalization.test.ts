@@ -29,7 +29,7 @@ describe("profile-personalization", () => {
   it("returns interview plan for J-7", () => {
     const msg = getInterviewPlanMessage(5, { srsDue: 3, weakCount: 2, suggestSimulation: true });
     expect(msg).toContain("J-5");
-    expect(msg).toContain("mini-entretien");
+    expect(msg).toContain("entraînement chronométré");
   });
 
   it("highlights cards by experience level", () => {

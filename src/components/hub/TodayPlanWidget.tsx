@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Clock,
   Flame,
-  Mic,
   Newspaper,
   Sparkles,
 } from "lucide-react";
@@ -28,8 +27,7 @@ const defaultFilters = {
 
 const ICONS: Record<TodayActionId, React.ReactNode> = {
   srs: <Sparkles className="w-5 h-5" />,
-  quiz: <Clock className="w-5 h-5" />,
-  simulation: <Mic className="w-5 h-5" />,
+  training: <Clock className="w-5 h-5" />,
   weak: <BarChart3 className="w-5 h-5" />,
   cv: <Calendar className="w-5 h-5" />,
   review: <Bookmark className="w-5 h-5" />,

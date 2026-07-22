@@ -56,11 +56,12 @@ export function validateActualiteSearch(search: Record<string, unknown>): Actual
 }
 
 export type FlashcardsSearch = {
-  mode?: "flashcards" | "quiz";
+  /** `quiz` kept for backwards-compatible deep links → training. */
+  mode?: "flashcards" | "training" | "quiz";
 };
 
 export function validateFlashcardsSearch(search: Record<string, unknown>): FlashcardsSearch {
   const mode = typeof search.mode === "string" ? search.mode : undefined;
-  if (mode === "flashcards" || mode === "quiz") return { mode };
+  if (mode === "flashcards" || mode === "training" || mode === "quiz") return { mode };
   return {};
 }

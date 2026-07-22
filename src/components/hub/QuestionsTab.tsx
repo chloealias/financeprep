@@ -255,7 +255,7 @@ export function QuestionsTab({
       <PageHeader
         eyebrow="Entraînement"
         title="Questions"
-        description="131 questions d'entretien avec réponses modèles, filtres et auto-évaluation."
+        description={`${questions.length} questions d'entretien avec réponses modèles, filtres et auto-évaluation.`}
       />
 
       <div className="flex flex-wrap gap-2 mb-6">

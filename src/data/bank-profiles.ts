@@ -113,7 +113,7 @@ export const BANK_LIST: BankProfile[] = [
     dealEmblematique: {
       titre: "Goldman Sachs Alternatives / Mace Consult",
       texte:
-        "GS Alternatives acquiert 75% de Mace Consult (carve-out consulting infra, ~$1 Md rev.). Illustre le bras PE du groupe, distinct de l'Investment Banking classique.",
+        "GS Alternatives acquiert une participation majoritaire (% non communiqué publiquement) de Mace Consult (carve-out consulting infra, ~$1 Md rev.). Illustre le bras PE du groupe, distinct de l'Investment Banking classique.",
     },
     emblematicDealId: "d03",
     questionPiège: "GS est-elle une banque d'affaires ou un fonds de private equity ?",

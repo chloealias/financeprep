@@ -8,7 +8,6 @@ import {
   ChevronRight,
   Clock,
   ExternalLink,
-  Mic,
   Newspaper,
   Sparkles,
 } from "lucide-react";
@@ -413,8 +412,8 @@ function SessionRow({ session }: { session: InterviewSessionRecord }) {
           {t("profile.sessionReport")}
         </button>
         <Link
-          to={session.mode === "full" ? "/interview" : "/flashcards"}
-          search={session.mode === "full" ? undefined : { mode: "quiz" }}
+          to="/flashcards"
+          search={{ mode: "training" }}
           className="touch-target-bar text-primary hover:text-primary/80 font-medium text-xs"
         >
           {t("profile.sessionRedo")}
@@ -435,8 +434,7 @@ function ProfileTodayGrid({
 }) {
   const ICONS: Record<TodayActionId, React.ReactNode> = {
     srs: <Sparkles className="w-5 h-5" />,
-    quiz: <Clock className="w-5 h-5" />,
-    simulation: <Mic className="w-5 h-5" />,
+    training: <Clock className="w-5 h-5" />,
     weak: <BarChart3 className="w-5 h-5" />,
     cv: <Calendar className="w-5 h-5" />,
     review: <Bookmark className="w-5 h-5" />,

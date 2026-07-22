@@ -4,7 +4,7 @@ import type { TranslateFn } from "@/lib/i18n/t";
 import { createTranslator } from "@/lib/i18n/t";
 import { DEFAULT_LOCALE } from "@/lib/i18n/types";
 
-export type TodayActionId = "srs" | "quiz" | "simulation" | "weak" | "cv" | "review" | "deal";
+export type TodayActionId = "srs" | "training" | "weak" | "cv" | "review" | "deal";
 
 export type TodayAction = {
   id: TodayActionId;
@@ -12,7 +12,7 @@ export type TodayAction = {
   stat: string;
   desc: string;
   href?: string;
-  search?: { mode?: "flashcards" | "quiz"; deal?: string };
+  search?: { mode?: "flashcards" | "training" | "quiz"; deal?: string };
   onClickKey?: "weak" | "review";
   highlight: boolean;
   disabled?: boolean;
@@ -39,15 +39,20 @@ function buildAllActions(
       priority: dashboard.srsDue > 0 ? 100 : 40,
     },
     {
-      id: "simulation",
-      title: translate("todayPlan.simulation.title"),
+      id: "training",
+      title: translate("todayPlan.training.title"),
       stat: dashboard.suggestSimulation
-        ? translate("todayPlan.simulation.stat.recommended")
-        : translate("todayPlan.simulation.stat.upToDate"),
-      desc: translate("todayPlan.simulation.desc"),
-      href: "/interview",
-      highlight: dashboard.suggestSimulation || todayHighlights.has("simulation"),
-      priority: dashboard.suggestSimulation ? 90 : 30,
+        ? translate("todayPlan.training.stat.recommended")
+        : translate("todayPlan.training.stat.pack", { packSize }),
+      desc: translate("todayPlan.training.desc"),
+      href: "/flashcards",
+      search: { mode: "training" },
+      highlight:
+        dashboard.suggestSimulation ||
+        todayHighlights.has("training") ||
+        todayHighlights.has("simulation") ||
+        todayHighlights.has("quiz"),
+      priority: dashboard.suggestSimulation ? 90 : 70,
     },
     {
       id: "weak",
@@ -58,19 +63,6 @@ function buildAllActions(
       highlight: todayHighlights.has("weak"),
       disabled: dashboard.weakCount === 0,
       priority: dashboard.weakCount > 0 ? 85 : 20,
-    },
-    {
-      id: "quiz",
-      title: translate("todayPlan.quiz.title"),
-      stat:
-        dashboard.weakCount > 0
-          ? translate("todayPlan.quiz.stat.weaknesses", { count: dashboard.weakCount })
-          : translate("todayPlan.quiz.stat.pack"),
-      desc: translate("todayPlan.quiz.desc", { packSize }),
-      href: "/flashcards",
-      search: { mode: "quiz" },
-      highlight: todayHighlights.has("quiz"),
-      priority: 70,
     },
     {
       id: "deal",
@@ -131,7 +123,7 @@ export function getAllTodayActions(
   profile: UserProfile,
   translate?: TranslateFn,
 ): TodayAction[] {
-  const order: TodayActionId[] = ["srs", "quiz", "deal", "simulation", "weak", "cv", "review"];
+  const order: TodayActionId[] = ["srs", "training", "deal", "weak", "cv", "review"];
   const byId = new Map(buildAllActions(dashboard, profile, translate).map((a) => [a.id, a]));
   return order.map((id) => byId.get(id)!).filter(Boolean);
 }
