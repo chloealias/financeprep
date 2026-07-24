@@ -1,13 +1,47 @@
-export const concepts = [
+export type ConceptExample = {
+  label: string;
+  body: string;
+};
+
+export type Concept = {
+  id: string;
+  category: string;
+  title: string;
+  simple: string;
+  intuition?: string;
+  steps?: string[];
+  example?: ConceptExample;
+  formula?: string;
+  interview?: string;
+  /** Fallback for sheets not yet migrated to structured blocks */
+  deepDive?: string;
+  table?: { headers: string[]; rows: string[][] };
+  visual?: string;
+  pitfalls?: string[];
+};
+
+export const concepts: Concept[] = [
   {
     id: "c1",
     category: "valuation",
     title: "Enterprise Value vs Equity Value",
     simple:
       "L'EV, c'est la valeur de toute l'entreprise (actionnaires + banques). L'Equity Value, c'est seulement la part des actionnaires. On passe de l'un à l'autre avec la dette nette et quelques postes du bilan.",
-    formula: "EV = Equity Value + Dette nette + Minoritaires + Provisions retraites − Associates",
-    deepDive:
-      "Imaginez que vous achetez une maison : le prix total (toit + crédit) correspond à l'EV. Ce qu'il vous reste vraiment à payer après le crédit, c'est l'Equity Value.\n\nPourquoi utiliser l'EV en M&A ? Parce qu'on compare des entreprises avec des dettes différentes. L'EV/EBITDA regarde le business, pas la structure financière.\n\nPont Equity → EV (construction, à connaître par cœur) :\n• On ajoute la dette (l'acheteur la reprend)\n• On ajoute les minoritaires et les provisions retraites (engagements réels)\n• On retire le cash (l'acheteur le récupère)\n• On retire les associates (parts non consolidées)\n\nPont EV → Equity (pour obtenir le prix par action) : on fait l'inverse — on retire la dette, les minoritaires et les provisions, on ajoute le cash et les associates.\n\nEn entretien : oublier les minoritaires dans le pont reste une erreur éliminatoire.",
+    intuition:
+      "Imaginez une maison : le prix total (toit + crédit) correspond à l'EV. Ce qu'il vous reste vraiment à payer après le crédit, c'est l'Equity Value.",
+    formula:
+      "EV = Equity Value + Dette nette\n  + Minoritaires + Provisions retraites − Associates",
+    steps: [
+      "Pourquoi l'EV en M&A ? Pour comparer des entreprises avec des dettes différentes : l'EV/EBITDA regarde le business, pas la structure financière.",
+      "Pont Equity → EV : on ajoute la dette (l'acheteur la reprend), les minoritaires et les provisions retraites ; on retire le cash et les associates.",
+      "Pont EV → Equity (prix par action) : on fait l'inverse — on retire dette, minoritaires et provisions ; on ajoute cash et associates.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Equity Value 800, dette nette 200, minoritaires 50, cash déjà netté dans la dette nette → EV ≈ 800 + 200 + 50 = 1 050. Oublier les +50 minoritaires fausse tout le pont.",
+    },
+    interview:
+      "Le pont Equity ↔ EV doit sortir par cœur. Oublier les minoritaires reste une erreur éliminatoire.",
     table: {
       headers: ["Élément", "Logique", "Impact"],
       rows: [
@@ -33,9 +67,22 @@ export const concepts = [
     title: "Le DCF (Discounted Cash Flow)",
     simple:
       "Le DCF estime la valeur d'une entreprise en additionnant ses flux de trésorerie futurs, ramenés à aujourd'hui. Un euro demain vaut moins qu'un euro aujourd'hui : on les « actualise » avec le WACC.",
-    formula: "EV = Σ (FCFFₜ / (1+WACC)ᵗ) + Valeur Terminale / (1+WACC)ⁿ",
-    deepDive:
-      "Le DCF répond à une question simple : combien vaut l'entreprise si on projette ses cash futurs ?\n\nLes 6 étapes :\n1. Projeter les FCFF (cash généré par l'activité) sur 5 à 10 ans\n2. Calculer le WACC (taux d'actualisation)\n3. Actualiser chaque flux : plus il est loin, moins il compte\n4. Calculer la valeur terminale (cash après la période de projection)\n5. Sommer le tout = EV\n6. Retirer la dette nette pour obtenir l'Equity Value\n\nExemple express : FCFF an 1 = 100, WACC = 10 %. Valeur actualisée de ce seul flux = 100 / 1,10 ≈ 91. Un flux identique dans 5 ans ne vaut plus que ~62. La valeur terminale (souvent 60-80 % de l'EV) amplifie cet effet — d'où les sensibilités WACC / g.",
+    intuition:
+      "Combien vaut l'entreprise si on projette ses cash futurs et qu'on les ramène à aujourd'hui ? C'est toute la logique du DCF.",
+    formula: "EV = Σ FCFF(t) / (1+WACC)^t\n  + VT / (1+WACC)^n",
+    steps: [
+      "Projeter les FCFF (cash généré par l'activité) sur 5 à 10 ans.",
+      "Calculer le WACC, le taux d'actualisation.",
+      "Actualiser chaque flux : plus il est loin, moins il compte.",
+      "Calculer la valeur terminale (cash après la période de projection).",
+      "Sommer le tout = EV, puis retirer la dette nette pour l'Equity Value.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "FCFF an 1 = 100, WACC = 10 %. Valeur actualisée ≈ 100 / 1,10 ≈ 91. Le même flux dans 5 ans ne vaut plus que ~62. La valeur terminale (souvent 60–80 % de l'EV) amplifie cet effet — d'où les sensibilités WACC / g.",
+    },
+    interview:
+      "Savoir dérouler les 5–6 étapes à l'oral, et expliquer pourquoi on teste plusieurs couples WACC / g.",
     table: {
       headers: ["Composant", "Formule", "Ordre de grandeur"],
       rows: [
@@ -61,9 +108,21 @@ export const concepts = [
     title: "Le WACC (Coût Moyen Pondéré du Capital)",
     simple:
       "Le WACC est le taux moyen exigé par ceux qui financent l'entreprise : actionnaires (Ke) et prêteurs (Kd). C'est le taux d'actualisation du DCF.",
-    formula: "WACC = (E/V) × Ke + (D/V) × Kd × (1−t)",
-    deepDive:
-      "Le WACC mélange deux sources de financement :\n\n• Ke (coût des fonds propres) : ce que veulent les actionnaires. On le calcule avec le CAPM : Ke = taux sans risque + β × prime de risque marché.\n• Kd (coût de la dette) : ce que coûte l'emprunt. On multiplie par (1 − taux d'IS) car les intérêts sont déductibles.\n\nLes pondérations E/V et D/V se font en valeur de marché, pas en valeur comptable.\n\nPour le beta : on prend des comparables, on les « délévre » (on enlève l'effet de leur dette), on prend la médiane, puis on « relève » avec la structure cible de la société analysée.\n\nExemple : Equity 700 M€, Dette 300 M€ → V = 1 000 M€. Ke = 10 %, Kd = 5 %, IS = 25 %.\nWACC = 70 % × 10 % + 30 % × 5 % × (1 − 25 %) = 7 % + 1,125 % = 8,125 %.\nC'est ce taux qu'on utilise pour actualiser les FCFF dans le DCF.",
+    intuition:
+      "Deux financeurs, deux exigences : les actionnaires veulent Ke, les banques Kd. Le WACC est la moyenne pondérée — et c'est avec ce taux qu'on actualise les FCFF.",
+    formula: "WACC = (E/V) × Ke + (D/V) × Kd × (1 − t)",
+    steps: [
+      "Ke (fonds propres) : CAPM = taux sans risque + β × prime de risque marché.",
+      "Kd (dette) : coût de l'emprunt, multiplié par (1 − taux d'IS) car les intérêts sont déductibles.",
+      "Pondérer E/V et D/V en valeur de marché, jamais en comptable.",
+      "Pour le beta : comparables → déléverage → médiane → releverage à la structure cible.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Equity 700 M€, Dette 300 M€ → V = 1 000. Ke = 10 %, Kd = 5 %, IS = 25 %. WACC = 70 % × 10 % + 30 % × 5 % × 0,75 = 7 % + 1,125 % = 8,125 %.",
+    },
+    interview:
+      "Citez toujours valeur de marché, (1−t) sur la dette, et le parcours unlever / relever du beta.",
     table: {
       headers: ["Composant", "Source", "Niveau typique (2026)"],
       rows: [
@@ -90,9 +149,22 @@ export const concepts = [
     title: "Les 3 états financiers et leur liaison",
     simple:
       "Trois documents à connaître : le compte de résultat (gains et pertes sur une période), le bilan (photo à un instant T), le tableau de flux (entrées et sorties de cash). Ils sont liés entre eux.",
-    formula: "Net Income (P&L) → Equity (Bilan) | Δ Bilan → Flux | Cash final (CFS) → Cash (Bilan)",
-    deepDive:
-      "Comment les trois se parlent :\n\n1. Le résultat net du compte de résultat augmente les capitaux propres au bilan.\n2. Ce même résultat net est le point de départ du tableau de flux (méthode indirecte).\n3. Les variations du bilan (stocks, créances, immos, dettes…) alimentent les flux d'exploitation, d'investissement et de financement.\n4. La variation totale de trésorerie au tableau de flux explique la variation du cash au bilan.\n\nSi tout boucle, votre modèle est cohérent. En entretien, savoir expliquer un exemple chiffré (CAPEX, emprunt, dividende) montre une vraie maîtrise.",
+    intuition:
+      "Ce ne sont pas trois silos : le résultat net, le bilan et le cash se parlent. Si la boucle ferme, le modèle est cohérent.",
+    formula:
+      "Résultat net (P&L)  →  Equity (Bilan)\nΔ Bilan  →  Flux (CFS)\nCash final (CFS)  →  Cash (Bilan)",
+    steps: [
+      "Le résultat net du P&L augmente les capitaux propres au bilan.",
+      "Ce même résultat net démarre le tableau de flux (méthode indirecte).",
+      "Les variations du bilan (stocks, créances, immos, dettes…) alimentent CFO, CFI et CFF.",
+      "La variation de trésorerie du CFS explique la variation du cash au bilan.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "CAPEX 100 € : bilan Immo +100 / Cash −100, flux CFI −100, puis D&A ~20 € en P&L l'année suivante. Emprunt 200 € : Cash +200 / Dette +200, CFF +200 — aucun impact direct sur le résultat net.",
+    },
+    interview:
+      "Savoir dérouler un exemple chiffré (CAPEX, emprunt, dividende) sur les trois états montre une vraie maîtrise.",
     table: {
       headers: ["Action", "Impact P&L", "Impact Bilan", "Impact Flux"],
       rows: [
@@ -122,9 +194,22 @@ export const concepts = [
     title: "Le BFR et le Cycle de Conversion du Cash",
     simple:
       "Le BFR, c'est le cash « bloqué » dans l'activité courante : stocks + créances clients − dettes fournisseurs. Plus il est élevé, plus il faut financer la croissance.",
-    formula: "BFR = Stocks + Créances clients − Dettes fournisseurs (± autres opérationnels)",
-    deepDive:
-      "Pour lire le BFR en jours, trois indicateurs :\n\n• DSO (délai clients) = créances / CA × 365\n• DIO (délai stocks) = stocks / coût des ventes × 365\n• DPO (délai fournisseurs) = dettes fournisseurs / coût des ventes × 365\n\nLe Cycle de Conversion du Cash (CCC) = DIO + DSO − DPO.\n\nUn CCC négatif est rare mais puissant : les fournisseurs financent les clients (ex. grande distribution). Un CCC élevé signifie beaucoup de cash immobilisé avant d'être payé par les clients.\n\nEn modélisation : quand le CA augmente, le BFR augmente aussi — il faut le prévoir dans le DCF.",
+    intuition:
+      "Plus le BFR est haut, plus il faut financer la croissance. Un CCC négatif (rare) signifie que les fournisseurs financent vos clients — comme en grande distribution.",
+    formula:
+      "BFR = Stocks + Créances clients − Dettes fournisseurs\nCCC = DIO + DSO − DPO",
+    steps: [
+      "DSO (délai clients) = créances / CA × 365.",
+      "DIO (délai stocks) = stocks / coût des ventes × 365.",
+      "DPO (délai fournisseurs) = dettes fournisseurs / coût des ventes × 365.",
+      "CCC = DIO + DSO − DPO : temps pendant lequel le cash est immobilisé.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Industrie classique : DSO 60 + DIO 60 − DPO 60 = CCC 60 jours. Retail type Amazon : DSO 5 + DIO 30 − DPO 80 = CCC −45 jours — le fournisseur finance le cycle.",
+    },
+    interview:
+      "En modélisation : quand le CA augmente, le BFR augmente aussi — il faut le prévoir dans le DCF.",
     table: {
       headers: ["Secteur", "DSO", "DIO", "DPO", "CCC"],
       rows: [
@@ -150,10 +235,21 @@ export const concepts = [
     title: "Le LBO (Leveraged Buy-Out)",
     simple:
       "Un LBO, c'est acheter une entreprise surtout avec de la dette. Une société holding emprunte, achète la cible, puis la dette est remboursée avec le cash généré par l'entreprise.",
-    formula:
-      "TRI = (Equity Exit / Equity Entry)^(1/n) − 1     |    MOIC = Equity Exit / Equity Entry",
-    deepDive:
-      "Structure type : 30 à 50 % en fonds propres (equity du fonds PE), 50 à 70 % en dette.\n\nLe fonds crée une holding qui emprunte et achète la cible. La dette est remboursée grâce aux dividendes remontant de la cible. Horizon classique : 4 à 7 ans.\n\nExemple : cible à EV 100. Equity 40 + dette 60. Après 5 ans, EV sortie 150, dette remboursée à 20 → equity exit 130. MOIC = 130/40 = 3,25× ; TRI ≈ 27 %.\n\nTrois leviers pour gagner de l'argent :\n1. Faire croître l'EBITDA (opérationnel, acquisitions)\n2. Revendre à un multiple plus élevé (dépend du marché)\n3. Rembourser la dette (à EV constant, l'equity augmente mécaniquement)\n\nAujourd'hui, environ la moitié du TRI vient de la performance opérationnelle, pas seulement du désendettement.",
+    intuition:
+      "Le fonds met une partie d'equity, les banques le reste. La holding emprunte, achète, et rembourse avec le cash de la cible — horizon classique 4 à 7 ans.",
+    formula: "TRI = (Equity Exit / Equity Entry)^(1/n) − 1\nMOIC = Equity Exit / Equity Entry",
+    steps: [
+      "Structure type : 30–50 % equity (fonds PE), 50–70 % dette.",
+      "Créer une holding qui emprunte et achète la cible ; rembourser via les cash-flows / dividendes remontés.",
+      "Trois leviers de gain : croître l'EBITDA, revendre à un multiple plus élevé, rembourser la dette.",
+      "Aujourd'hui, environ la moitié du TRI vient de la perf opérationnelle, pas seulement du désendettement.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "EV 100 : Equity 40 + Dette 60. Après 5 ans, EV sortie 150, dette remboursée à 20 → equity exit 130. MOIC = 130/40 = 3,25× ; TRI ≈ 27 %.",
+    },
+    interview:
+      "Expliquer structure, horizon et les trois leviers — et ne pas oublier BFR / CAPEX dans le business plan.",
     table: {
       headers: ["Composant", "% typique", "Coût", "Rang"],
       rows: [
@@ -178,10 +274,21 @@ export const concepts = [
     title: "Les trois leviers de création de valeur en LBO",
     simple:
       "Le gain d'un LBO vient de trois sources : l'EBITDA qui monte, le multiple de revente qui monte, et la dette qu'on rembourse. Savoir lequel compte le plus dans votre modèle est essentiel.",
+    intuition:
+      "Trois façons de gagner : faire mieux tourner le business, revendre plus cher, ou rembourser la dette. Aujourd'hui, c'est surtout l'opérationnel qui compte.",
     formula:
-      "Δ Equity Value = Δ EBITDA × Multiple_entrée + EBITDA_sortie × Δ Multiple + Δ Dette nette",
-    deepDive:
-      "Levier 1 — Croissance de l'EBITDA :\nAugmenter les ventes, les marges, ou faire des acquisitions (build-ups). C'est le levier le plus difficile mais le plus valorisé aujourd'hui (~50 % du TRI).\n\nLevier 2 — Expansion du multiple :\nRevendre plus cher qu'au moment de l'achat. Dépend surtout du marché : peu contrôlable (~15-20 % du TRI).\n\nLevier 3 — Désendettement :\nUtiliser le cash de la cible pour rembourser la dette. À EV constant, moins de dette = plus d'equity pour le fonds. C'était le levier dominant avant 2008 ; aujourd'hui ~30-35 % du TRI.\n\nExemple (5 ans) : entrée à EV 800 (EBITDA 100 × 8×), dette nette 500 → equity entry 300.\nSortie : EBITDA 130, multiple 9× → EV 1 170. Dette nette remboursée à 200 → equity exit 970.\n• Gain EBITDA (à 8×) : +30 × 8 = +240\n• Gain multiple : 130 × (+1×) = +130\n• Gain désendettement : +300\nTotal +670 sur l'equity (proche de 970 − 300).\n\nEn entretien : expliquer lequel domine dans un deal montre que vous comprenez le modèle économique.",
+      "Δ Equity = Δ EBITDA × Multiple_entrée\n  + EBITDA_sortie × Δ Multiple\n  + Δ Dette nette",
+    steps: [
+      "Levier 1 — Croissance EBITDA (~50 % du TRI) : ventes, marges, build-ups. Le plus dur, le plus valorisé.",
+      "Levier 2 — Expansion du multiple (~15–20 %) : revendre plus cher. Peu contrôlable, dépend du marché.",
+      "Levier 3 — Désendettement (~30–35 %) : cash → remboursement dette. À EV constant, l'equity monte.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Entrée EV 800 (EBITDA 100 × 8×), dette 500 → equity 300. Sortie : EBITDA 130 × 9× = EV 1 170, dette 200 → equity 970. Gains : EBITDA +240, multiple +130, désendettement +300.",
+    },
+    interview:
+      "Expliquer lequel des trois leviers domine dans un deal montre que vous comprenez le modèle économique.",
     table: {
       headers: ["Levier", "% TRI typique (2026)", "% TRI années 2000", "Difficulté"],
       rows: [
@@ -204,9 +311,21 @@ export const concepts = [
     title: "Multiples de valorisation (EV/EBITDA, P/E, EV/Sales)",
     simple:
       "Un multiple compare la valeur d'une entreprise à un indicateur (EBITDA, ventes, bénéfice). On regarde ce que paient des entreprises similaires pour estimer un prix.",
-    formula: "Multiple = Valeur (EV ou Eq.V) / Métrique (EBITDA, Sales, EPS, BV)",
-    deepDive:
-      "Comment lire les multiples les plus courants :\n\n• EV/EBITDA : le standard en M&A. On compare des entreprises indépendamment de leur dette.\n• EV/Sales : utile quand l'entreprise n'est pas encore rentable (startups).\n• P/E : utile en bourse, mais mélange dette et fiscalité — moins comparable en M&A.\n• P/B : standard pour les banques (la dette fait partie du métier).\n\nExemple : médiane des comps = 8× EV/EBITDA. Cible avec EBITDA 50 M€ → EV indicative = 400 M€. Si la dette nette est 120, Equity Value ≈ 280 M€.\n\nMéthode : choisir 5 à 10 comparables proches (secteur, taille, géographie), calculer leurs multiples, prendre la médiane, l'appliquer à la cible. Toujours croiser plusieurs multiples.",
+    intuition:
+      "Si des sociétés proches se paient 8× l'EBITDA, appliquer ce multiple à la cible donne une première idée de prix — à croiser avec d'autres méthodes.",
+    formula: "Multiple = Valeur (EV ou Eq.V)\n  / Métrique (EBITDA, Sales, EPS, BV)",
+    steps: [
+      "EV/EBITDA : standard M&A, compare indépendamment de la dette.",
+      "EV/Sales : utile si pas encore rentable (startups).",
+      "P/E : utile en bourse, moins comparable en M&A (dette + fiscalité).",
+      "Méthode : 5–10 comps → médiane → appliquer à la cible → croiser plusieurs multiples.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Médiane comps = 8× EV/EBITDA. Cible EBITDA 50 M€ → EV ≈ 400 M€. Dette nette 120 → Equity Value ≈ 280 M€.",
+    },
+    interview:
+      "Toujours préciser LTM vs NTM, et dire si vous citez la médiane ou la moyenne.",
     table: {
       headers: ["Multiple", "Cas d'usage", "Mid-cap industrie", "Tech/SaaS", "Banques"],
       rows: [
@@ -233,10 +352,22 @@ export const concepts = [
     title: "Quality of Earnings (QoE)",
     simple:
       "La QoE cherche l'EBITDA « normal », celui qu'on peut reproduire chaque année. On retire les éléments exceptionnels pour voir la vraie performance de l'entreprise.",
+    intuition:
+      "Le prix M&A se base souvent sur multiple × EBITDA. Chaque million d'EBITDA en plus à 8× = 8 M€ de valeur — d'où la chasse aux add-backs.",
     formula:
-      "EBITDA ajusté = EBITDA reporté ± Add-backs (non récurrents, non opérationnels, non cash)",
-    deepDive:
-      "Pourquoi c'est central en due diligence : le prix M&A se base souvent sur un multiple × EBITDA. Chaque million d'EBITDA en plus à 8× = 8 M€ de valeur en plus.\n\nUn add-back positif augmente l'EBITDA ajusté. Exemples acceptés :\n• Coûts de restructuration (plan social unique)\n• Frais M&A ou litiges exceptionnels\n• Management fees d'un actionnaire sortant\n\nUn add-back négatif retire un gain exceptionnel (vente d'actif, gain de change).\n\nRègle pratique : chaque add-back doit être documenté (facture, contrat). Au-delà de 15-20 % de l'EBITDA reporté, les acheteurs deviennent méfiants.",
+      "EBITDA ajusté = EBITDA reporté\n  ± Add-backs (non récurrents, non opérationnels, non cash)",
+    steps: [
+      "Add-back positif : retire une charge exceptionnelle (restructuration, frais M&A, litige unique).",
+      "Add-back négatif : retire un gain exceptionnel (vente d'actif, gain de change).",
+      "Chaque ligne doit être documentée (facture, contrat).",
+      "Au-delà de 15–20 % de l'EBITDA reporté, les acheteurs deviennent méfiants.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "EBITDA reporté 40 M€ + plan social unique 2 M€ + honoraires M&A 1 M€ → EBITDA ajusté 43 M€. À 8×, +3 M€ d'EBITDA = +24 M€ d'EV.",
+    },
+    interview:
+      "Savoir distinguer add-backs « one-shot » et charges qui se répètent chaque année.",
     table: {
       headers: ["Type d'add-back", "Exemple", "Impact EBITDA", "Acceptation marché"],
       rows: [
@@ -262,9 +393,22 @@ export const concepts = [
     title: "Net Debt et Debt-like items",
     simple:
       "La dette nette détermine combien l'acheteur paie vraiment (Equity Value = EV − dette nette). Chaque ligne négociée peut valoir des millions.",
-    formula: "Net Debt = Dette financière − Cash + Debt-like items − Cash-like items",
-    deepDive:
-      "Principe : tout ce que l'acheteur devra payer après le closing, en dehors du BFR courant, ressemble à de la dette.\n\nDette classique : emprunts bancaires, obligations, crédit tiré.\n\nCash qui ne réduit pas la dette nette :\n• Cash bloqué à l'étranger\n• Cash minimum nécessaire pour faire tourner l'activité\n\nDebt-like (traités comme de la dette) :\n• Provisions retraites non financées\n• Earn-outs déjà dus sur d'anciennes acquisitions\n• Dividendes promis mais pas encore payés\n• Parfois le leasing IFRS 16 (selon le marché)\n\nExemple : EV négocié = 100 M€. Emprunts 40, cash disponible 10, provisions retraites 5, earn-out dû 3.\nDette nette = 40 − 10 + 5 + 3 = 38 M€.\nEquity Value (ce que paient les actionnaires vendeurs) = 100 − 38 = 62 M€.\nChaque million de debt-like négocié en trop = 1 M€ de moins pour le vendeur.\n\nEn SPA, la définition précise de la dette nette est négociée ligne par ligne.",
+    intuition:
+      "Tout ce que l'acheteur devra payer après le closing, hors BFR courant, ressemble à de la dette — et réduit le prix payé aux vendeurs.",
+    formula:
+      "Net Debt = Dette financière − Cash\n  + Debt-like − Cash-like",
+    steps: [
+      "Dette classique : emprunts, obligations, RCF tirée.",
+      "Cash « vrai » seulement : pas le cash bloqué ni le minimum opérationnel.",
+      "Debt-like : provisions retraites, earn-outs dus, dividendes promis, parfois leasing IFRS 16.",
+      "En SPA, chaque ligne de dette nette se négocie une par une.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "EV 100. Emprunts 40, cash dispo 10, retraites 5, earn-out dû 3 → dette nette 38. Equity Value = 100 − 38 = 62 M€. Chaque million de debt-like = 1 M€ de moins pour le vendeur.",
+    },
+    interview:
+      "Ne jamais mettre le BFR opérationnel dans la dette nette (double comptage avec le locked box / completion).",
     table: {
       headers: ["Élément", "Catégorie", "Logique"],
       rows: [
@@ -295,10 +439,23 @@ export const concepts = [
     title: "Process M&A — du teaser au closing",
     simple:
       "Une vente d'entreprise suit en général 7 à 8 étapes sur 6 à 12 mois : préparation, recherche d'acheteurs, offres, due diligence, négociation, signature, closing.",
+    intuition:
+      "Ce n'est pas un sprint : 6 à 12 mois, avec un moment clé — signing ≠ closing (souvent 3 à 6 mois entre les deux).",
     formula:
-      "Préparation → Marketing → 1er tour → DD → 2nd tour → Signing → Closing → Post-closing",
-    deepDive:
-      "Côté vendeur (sell-side) :\n1. Préparation : rédaction de l'Information Memorandum (IM) et d'une due diligence vendeur (VDD)\n2. Marketing : teaser anonyme, puis IM sous NDA\n3. 1er tour : les acheteurs envoient des offres indicatives (non engageantes)\n4. Short-list (4-6) : accès à la dataroom, due diligence approfondie\n5. 2nd tour : offres fermes (engageantes) + commentaires sur le contrat (SPA)\n6. Signing : signature du SPA — engagement juridique\n7. Closing : paiement effectif (après autorisations antitrust, financement…)\n\nSigning ≠ closing : il peut s'écouler 3 à 6 mois entre les deux.",
+      "Préparation → Marketing → 1er tour → DD\n  → 2nd tour → Signing → Closing → Post-closing",
+    steps: [
+      "Préparation : IM + VDD (due diligence vendeur).",
+      "Marketing : teaser anonyme, puis IM sous NDA.",
+      "1er tour : offres indicatives non engageantes.",
+      "Short-list + dataroom / DD approfondie, puis offres fermes + mark-up SPA.",
+      "Signing (engagement juridique) puis Closing (paiement après conditions).",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Deal mid-cap typique : M0–M2 préparation, M3–M4 1er tour, M4–M6 DD, M7 signing, M9–M12 closing après antitrust / financement.",
+    },
+    interview:
+      "Ne jamais confondre signing et closing — et mentionner la clause MAC et locked box vs completion.",
     table: {
       headers: ["Phase", "Durée", "Livrable clé", "Acteur principal"],
       rows: [
@@ -326,10 +483,21 @@ export const concepts = [
     title: "Locked Box vs Completion Accounts",
     simple:
       "Deux façons de fixer le prix final. Locked box : prix figé sur un bilan passé. Completion accounts : prix ajusté au closing selon la dette nette et le BFR réels.",
+    intuition:
+      "Locked box = certitude tôt (Europe / PE). Completion = précision au closing, mais plus de litiges (US).",
     formula:
-      "Locked Box: Prix fixé à T-passé + intérêts | Completion: Prix ajusté avec Net Debt/BFR au closing",
-    deepDive:
-      "Locked box (fréquent en Europe / PE) :\n• Le prix est calculé sur des comptes d'une date passée (ex. il y a 3 mois)\n• Entre cette date et le closing, le vendeur ne doit pas « vider » la société (pas de dividendes cachés = leakage)\n• L'acheteur paie une compensation (ticking fee) pour le délai\n• Avantage : prix connu tôt, moins de litiges\n\nCompletion accounts (fréquent aux US) :\n• Le prix est recalculé au closing avec la dette nette et le BFR réels\n• Plus juste économiquement, mais plus de débats et d'audits après coup\n\nExemple : Equity Value locked box = 80 M€ au 31/12. Closing le 30/06, ticking fee 5 % / an → ~2 M€ d'intérêts. Prix payé ≈ 82 M€, figé dès le signing (sauf leakage).\nEn completion : même base 80 M€, mais si la dette nette au closing est 5 M€ plus haute que prévu, le prix tombe à 75 M€ — d'où les litiges d'audit.\n\nEn résumé : locked box = simplicité et certitude ; completion = précision mais complexité.",
+      "Locked Box : prix figé à T-passé + ticking fee\nCompletion : prix ajusté Net Debt / BFR au closing",
+    steps: [
+      "Locked box : comptes d'une date passée ; interdiction de « vider » la société (leakage) ; ticking fee pour le délai.",
+      "Completion : recalcul dette nette et BFR au closing — plus juste, plus d'audits post-deal.",
+      "Choisir selon stabilité de la cible et pratique régionale.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Equity locked box 80 M€ au 31/12, closing 30/06, ticking 5 %/an → ~2 M€. Prix ≈ 82 M€ figé. En completion, +5 M€ de dette nette imprévue → prix 75 M€.",
+    },
+    interview:
+      "Résumer en une phrase : locked box = simplicité ; completion = précision mais complexité.",
     table: {
       headers: ["Critère", "Locked Box", "Completion Accounts"],
       rows: [
@@ -356,9 +524,22 @@ export const concepts = [
     title: "Synergies — types et valorisation",
     simple:
       "Les synergies, c'est la valeur en plus créée après la fusion : économies de coûts, ventes croisées, etc. Elles expliquent souvent pourquoi l'acheteur paie une prime.",
-    formula: "NPV Synergies = Σ (Synergies × (1−t) − Coûts d'intégration) / (1+WACC)ᵗ",
-    deepDive:
-      "Quatre familles :\n\n1. Coûts (les plus fiables, 70-90 % de réalisation) : fermer un doublon de siège, mutualiser les achats, fusionner les systèmes IT.\n2. Revenus (plus risqué, 50-65 %) : vendre les produits de B aux clients de A. Prend plus de temps.\n3. Fiscales : utiliser des déficits reportables de la cible.\n4. Financières : WACC plus bas grâce à la taille (effet modeste).\n\nExemple : synergies de coûts annoncées 20 M€/an, coûts d'intégration 30 M€ an 1, IS 25 %, WACC 8 %. NPV ≈ valeur actualisée des 20 × (1−25 %) nets des coûts — typiquement ce qui justifie une partie de la prime payée.\n\nNe pas oublier : les revenus mettent 3 à 5 ans ; les coûts, 1 à 2 ans. Coûts d'intégration souvent 1 à 2× les synergies annuelles.",
+    intuition:
+      "Les synergies de coûts sont les plus crédibles ; les synergies de revenus se vendent bien en pitch mais se réalisent moins souvent.",
+    formula:
+      "NPV Synergies = Σ (Synergies × (1−t)\n  − Coûts d'intégration) / (1+WACC)^t",
+    steps: [
+      "Coûts (70–90 % de réalisation) : doublons, achats, IT — délai 1–2 ans.",
+      "Revenus (50–65 %) : cross-sell — délai 3–5 ans, plus risqué.",
+      "Fiscales / financières : déficits, WACC — effets plus modestes.",
+      "Toujours netter des coûts d'intégration (souvent 1–2× les synergies annuelles).",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Synergies coûts 20 M€/an, coûts d'intégration 30 M€ an 1, IS 25 %, WACC 8 %. La NPV de ces flux nets justifie une partie de la prime payée.",
+    },
+    interview:
+      "Ne jamais annoncer 100 % des synergies dès l'an 1 — et distinguer brutes vs nettes.",
     table: {
       headers: ["Type", "Exemple", "Taux de réalisation", "Délai"],
       rows: [
@@ -386,9 +567,22 @@ export const concepts = [
     title: "CAPM et calcul du Beta",
     simple:
       "Le CAPM estime ce que demandent les actionnaires : Ke = taux sans risque + β × prime de risque. Le beta mesure si l'action bouge plus ou moins que le marché.",
-    formula: "Ke = Rf + β × (Rm − Rf) + primes spécifiques (size, country, illiquidity)",
-    deepDive:
-      "Lire le beta :\n• β = 1 : l'action suit le marché\n• β > 1 : plus volatile (secteur cyclique)\n• β < 1 : plus stable (secteur défensif)\n\nEn pratique, on ne calcule pas le beta de la cible directement. On prend des comparables cotés, on retire l'effet de leur dette (déléverage), on prend la médiane, puis on réapplique la dette cible (releverage).\n\nFormule de déléverage : β_unlevered = β_levered / (1 + (1−t) × D/E)\n\nExemple CAPM : Rf = 3,5 %, β = 1,2, ERP = 5,5 % → Ke = 3,5 % + 1,2 × 5,5 % = 10,1 %.\nC'est le rendement minimal exigé par les actionnaires ; on le branche ensuite dans le WACC.\n\nPour les mid-caps non cotées, on ajoute souvent une prime de taille (5-10 %).",
+    intuition:
+      "β = 1 suit le marché ; β > 1 plus volatile ; β < 1 plus stable. On ne prend presque jamais le beta « brut » de la cible.",
+    formula:
+      "Ke = Rf + β × (Rm − Rf)\n  + primes (size, country, illiquidity)",
+    steps: [
+      "Prendre des comparables cotés.",
+      "Déléverage : β_u = β_l / (1 + (1−t) × D/E).",
+      "Médiane des β unlevered, puis releverage à la structure cible.",
+      "Brancher Ke dans le WACC ; ajouter une prime de taille pour les mid-caps non cotées.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Rf 3,5 %, β 1,2, ERP 5,5 % → Ke = 3,5 % + 1,2 × 5,5 % = 10,1 %.",
+    },
+    interview:
+      "Citez toujours le parcours unlever / relever — utiliser un beta levered tel quel est une faute classique.",
     table: {
       headers: ["Secteur", "β unlevered typique", "β levered (typique)", "Caractère"],
       rows: [
@@ -418,9 +612,21 @@ export const concepts = [
     title: "EBITDA — utilité et limites",
     simple:
       "L'EBITDA mesure la rentabilité opérationnelle avant intérêts, impôts et amortissements. C'est l'indicateur le plus utilisé en M&A, mais ce n'est pas du cash.",
-    formula: "EBITDA = Résultat d'exploitation + Amortissements + Dépréciations",
-    deepDive:
-      "Pourquoi tout le monde l'utilise :\n• On compare des entreprises avec des dettes différentes (avant intérêts)\n• On compare des pays avec des fiscalités différentes (avant impôts)\n• On neutralise les choix d'amortissement (avant D&A)\n\nMais attention, l'EBITDA n'est pas du cash :\n• Il ignore les investissements (CAPEX) — critique en industrie lourde\n• Il ignore le BFR — une forte croissance « mange » du cash\n• Il ignore les intérêts — énormes en LBO\n\nEn pratique : toujours regarder l'EBITDA avec le cash flow opérationnel et le CAPEX. Un EBITDA qui monte mais un cash qui baisse est un signal d'alerte.",
+    intuition:
+      "On l'aime parce qu'il compare des dettes et fiscalités différentes — mais il ignore CAPEX, BFR et intérêts.",
+    formula: "EBITDA = Résultat d'exploitation\n  + Amortissements + Dépréciations",
+    steps: [
+      "Avant intérêts → comparable entre structures de dette.",
+      "Avant impôts → comparable entre pays.",
+      "Avant D&A → neutralise les choix d'amortissement.",
+      "Toujours croiser avec CFO et CAPEX : EBITDA ↑ + cash ↓ = alerte.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "EBITDA 80 M€ mais CAPEX 40 et ΔBFR +25 → le cash opérationnel est bien plus bas que l'EBITDA ne le laisse croire.",
+    },
+    interview:
+      "Dire « EBITDA n'est pas du cash » et expliquer IFRS 16 (loyers → amort + intérêts).",
     table: {
       headers: ["Métrique", "Inclut", "Exclut", "Usage"],
       rows: [
@@ -461,10 +667,22 @@ export const concepts = [
     title: "DDM — Gordon, 2 étapes et H-model",
     simple:
       "Le DDM valorise une action en additionnant les dividendes futurs, ramenés à aujourd'hui. Utile pour les banques, assurances et utilities, où les dividendes sont stables et plus lisibles que les free cash flows.",
+    intuition:
+      "Quand le dividende est prévisible (banques, utilities), actualiser les dividendes peut être plus clair qu'un DCF classique.",
     formula:
-      "Gordon : P₀ = D₁ / (Ke − g)  |  2 étapes : Σ Dₜ/(1+Ke)ᵗ + Pₙ/(1+Ke)ⁿ  |  H-model : P₀ = D₀(1+gₗ)/(Ke−gₗ) + D₀·H·(gₛ−gₗ)/(Ke−gₗ)",
-    deepDive:
-      "Quand l'utiliser :\n• Banques, assurances, utilities, REITs : politique de dividende explicite, payout ratio stable\n• Complément au DCF : si le DDM et le DCF divergent, vérifier g, Ke et la politique de distribution\n\n1. Gordon Growth (croissance constante) :\n• Hypothèse : dividende croît à g constant, g < Ke\n• D₁ = D₀ × (1+g) ou EPS × payout\n• Limite : ne convient qu'aux sociétés matures à croissance stable\n\nExemple Gordon : dividende attendu l'an prochain D₁ = 2 €, Ke = 8 %, g = 2 % → P₀ = 2 / (0,08 − 0,02) = 33,3 € par action.\nSi g monte à 3 %, P₀ = 40 € — d'où la sensibilité extrême à g.\n\n2. Modèle à 2 étapes :\n• Phase 1 (ex. 5 ans) : dividendes projetés explicitement\n• Phase 2 : Gordon sur le dividende terminal Dₙ₊₁\n• Standard pour une banque en transition de payout\n\n3. H-model (croissance décroissante) :\n• La croissance passe linéairement de gₛ (court terme) à gₗ (long terme) sur 2H années\n• Évite le « cliff » du passage brutal au Gordon\n• Très utilisé en FIG pour les utilities en phase de hausse de dividende\n\nLien CAPM : Ke vient du CAPM (c14). Le beta des utilities est bas (0,5-0,7) → Ke plus bas → valorisation plus sensible à g.",
+      "Gordon : P0 = D1 / (Ke − g)\n2 étapes : Σ Dt/(1+Ke)^t + Pn/(1+Ke)^n",
+    steps: [
+      "Gordon : croissance constante g < Ke — sociétés matures seulement.",
+      "2 étapes : projection explicite puis Gordon terminal — banques en transition.",
+      "H-model : g décline linéairement de gs à gl — évite le cliff brutal.",
+      "Ke vient du CAPM ; le DDM donne directement l'Equity Value.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "D1 = 2 €, Ke = 8 %, g = 2 % → P0 = 2 / 0,06 = 33,3 €. Si g = 3 %, P0 = 40 € — sensibilité extrême à g.",
+    },
+    interview:
+      "Ne jamais appliquer Gordon à une tech sans dividende ; rappeler g < Ke sinon le modèle casse.",
     table: {
       headers: ["Modèle", "Hypothèse clé", "Secteur type", "Piège"],
       rows: [
@@ -488,10 +706,22 @@ export const concepts = [
     title: "Process IPO — book-building, greenshoe, lock-up",
     simple:
       "Une IPO, c'est l'entrée en Bourse d'une société privée. On fixe le prix via le book-building (carnets d'ordres des investisseurs). La greenshoe aide à stabiliser le cours ; le lock-up empêche les insiders de tout vendre tout de suite.",
+    intuition:
+      "Le marché « vote » le prix pendant le book-building. Greenshoe et lock-up évitent que les premiers jours de cotation partent en vrille.",
     formula:
-      "Flottant = Actions vendues / Capital post-IPO  |  Greenshoe = +15 % max (option de sur-allocation)",
-    deepDive:
-      "Étapes clés (6 à 9 mois typiques) :\n1. Préparation : audit IFRS/US GAAP, gouvernance, choix place (NYSE, Euronext…), rédaction du prospectus (S-1 / document de base AMF)\n2. Due diligence et roadshow : rencontres investisseurs institutionnels\n3. Book-building : les investisseurs soumissionnent un prix et une quantité ; le syndicat fixe le prix final dans la fourchette indicative\n4. Pricing & allocation : priorité aux institutionnels (book) ; retail via souscription\n5. Trading day : première cotation\n\nMécanismes à connaître :\n• Greenshoe (~15 %) : imaginez que la demande dépasse l'offre. Les banques peuvent « livrer » jusqu'à 15 % d'actions en plus et racheter sur le marché si le cours baisse — ça amortit les à-coups des premiers jours.\n• Lock-up (90-180 jours) : fondateurs et fonds PE s'engagent à ne pas vendre. Sans ça, une vague de ventes dès J+1 ferait chuter le titre.\n• Dual track : process IPO parallèle à une vente M&A — le vendeur maximise la tension concurrentielle.\n\nLien deal : Lineage Logistics (2024) — plus grande IPO US depuis 2021, cold storage REIT, book-building institutionnel massif.",
+      "Flottant = Actions vendues / Capital post-IPO\nGreenshoe = +15 % max (sur-allocation)",
+    steps: [
+      "Préparation : audit, prospectus, choix de place (6–9 mois).",
+      "Roadshow puis book-building : ordres prix × quantité.",
+      "Pricing & allocation, première cotation.",
+      "Greenshoe (~15 %) pour stabiliser ; lock-up 90–180 jours pour les insiders.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Dual track : IPO parallèle à un process M&A pour maximiser la tension. Lineage Logistics (2024) — grosse IPO US cold storage, book institutionnel massif.",
+    },
+    interview:
+      "Distinguer prix d'offre et premier cours (pop) ; citer greenshoe et lock-up sans les confondre.",
     table: {
       headers: ["Élément", "Rôle", "Durée / taille", "Pour qui"],
       rows: [
@@ -517,10 +747,22 @@ export const concepts = [
     title: "Squeeze-out, OPA et OPE",
     simple:
       "OPA : offre en cash pour prendre le contrôle (seuil 30 % en France). OPE : même logique, mais on paie en titres (échange d'actions). Squeeze-out : une fois à 90 %, on peut forcer les minoritaires restants à vendre. Pour sortir de la cote, c'est plutôt l'OPR puis le squeeze-out.",
+    intuition:
+      "OPA = cash, OPE = titres, squeeze-out = forcer à 90 %. L'OPE seule ne sort pas de la cote — c'est l'OPR + squeeze-out.",
     formula:
-      "OPA : seuil 30 % (déclenchement)  |  OPE : contrepartie en titres  |  Squeeze-out : 90 % du capital ou des droits de vote (loi PACTE, 2019)",
-    deepDive:
-      "Fusion vs acquisition (rappel) :\n• Acquisition : contrôle d'une entité par une autre (majorité des actions)\n• Fusion : combinaison juridique (absorption ou création)\n• En pratique, la plupart des « fusions » annoncées sont des acquisitions avec prime de contrôle\n\nOPA (Offre Publique d'Achat) :\n• Déclenchée quand un acquéreur franchit 30 % du capital ou des droits de vote\n• Contrepartie en cash ; prix avec prime (souvent 20-40 % vs cours)\n• Exemple : UniCredit / Commerzbank (OPA hostile)\n\nOPE (Offre Publique d'Échange) :\n• Même objectif de contrôle, mais les actionnaires de la cible reçoivent des actions de l'acquéreur (pas du cash)\n• Utile quand l'acheteur veut conserver sa trésorerie ou partager le risque\n• Ce n'est pas, en soi, une sortie de cotation\n\nOPR (Offre Publique de Retrait) + squeeze-out :\n• Après une OPA/OPE réussie à ≥ 90 %, l'acquéreur peut lancer un retrait obligatoire\n• Squeeze-out : force l'achat des minoritaires restants (seuil 90 % capital ou votes, loi PACTE)\n• C'est cette séquence qui mène au delisting, pas l'OPE seule\n\nPour l'entretien : OPA = cash, OPE = titres, squeeze-out = forcer à 90 %. Citer un deal récent (Commerzbank, Sanofi Blueprint).",
+      "OPA / OPE : seuil 30 % (déclenchement FR)\nSqueeze-out : 90 % capital ou votes (PACTE)",
+    steps: [
+      "OPA : contrôle payé en cash, prime souvent 20–40 % vs cours.",
+      "OPE : contrôle payé en actions de l'acquéreur — conserve la trésorerie.",
+      "À ≥ 90 % : OPR puis squeeze-out pour forcer les minoritaires / delisting.",
+      "Acquisition = contrôle ; fusion = combinaison juridique (souvent « fusion » = acquisition + prime).",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "UniCredit / Commerzbank : OPA hostile cash. Après une offre réussie à 90 %, squeeze-out possible pour simplifier le capital.",
+    },
+    interview:
+      "Ne jamais confondre OPE (échange) et OPR/delisting — citer un deal récent aide.",
     table: {
       headers: ["Mécanisme", "Objectif", "Seuil clé", "Exemple type"],
       rows: [
@@ -545,10 +787,22 @@ export const concepts = [
     title: "Earn-out, Vendor Loan et Revenue-based pricing",
     simple:
       "Trois façons d'ajuster le prix après le closing : earn-out (je te paie si tu performes), vendor loan (je te paie plus tard avec intérêts), revenue-based pricing (le prix suit le CA).",
+    intuition:
+      "Quand vendeur et acheteur ne sont pas d'accord sur la valeur, on décale une partie du prix dans le futur — sous conditions ou avec intérêts.",
     formula:
-      "Prix total = Upfront + Earn-out conditionnel + Vendor Loan (différé)  |  RBP : Prix = f(CA futur)",
-    deepDive:
-      "Earn-out (complément de prix conditionnel) :\n• Payé si objectifs atteints (EBITDA, CA, jalons produit) sur 1-5 ans\n• Usage : désaccord vendeur/acheteur sur la valeur, management qui reste\n• Risque vendeur : l'acquéreur peut « gérer » les KPIs (allocation de coûts groupe)\n• Protection : bonne foi, comptabilité séparée, plafonds/planchers\n\nVendor Loan (crédit-vendeur) :\n• Le vendeur finance une partie du prix (paiement différé, souvent 10-30 %)\n• Subordonné à la dette bancaire ; taux négocié (souvent 4-8 %)\n• Alignement : le vendeur garde un intérêt économique dans le succès\n• Hiérarchie défaut : Senior > Mezz > Vendor Loan > Equity\n\nRevenue-based pricing (RBP) :\n• Le prix varie selon le chiffre d'affaires futur (royalty, % du CA sur N années)\n• Fréquent en tech/SaaS early-stage où l'EBITDA n'est pas pertinent\n• Avantage acheteur : paie seulement si le CA se matérialise\n• Risque vendeur : dépendance à la politique commerciale post-deal\n\nComparaison rapide :\n• Earn-out = « je te paie si tu performes »\n• Vendor loan = « je te paie plus tard, avec intérêts »\n• RBP = « je t'indexe sur ton CA »\n\nSouvent combinés : upfront 70 % + earn-out 20 % + vendor loan 10 %.",
+      "Prix = Upfront + Earn-out + Vendor Loan\nRBP : Prix = f(CA futur)",
+    steps: [
+      "Earn-out : payé si KPIs atteints (1–5 ans) — risque de « management » des KPIs par l'acheteur.",
+      "Vendor loan : crédit-vendeur différé (10–30 %), subordonné, taux ~4–8 %.",
+      "RBP : indexation sur le CA — fréquent en SaaS early-stage.",
+      "Souvent combinés : ex. upfront 70 % + earn-out 20 % + vendor loan 10 %.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Deal 100 : 70 cash au closing, 20 earn-out sur EBITDA an 2–3, 10 vendor loan sur 3 ans à 6 %. Le vendeur reste exposé à la performance.",
+    },
+    interview:
+      "Distinguer earn-out passé (debt-like en Net Debt) et earn-out futur (composante de prix).",
     table: {
       headers: ["Mécanisme", "Déclencheur", "Qui porte le risque", "Litiges"],
       rows: [
@@ -572,10 +826,23 @@ export const concepts = [
     title: "Pont Net Income → Free Cash Flow",
     simple:
       "Le pont relie le résultat net comptable au cash réellement disponible. C'est la base du DCF : on part du P&L, on retire les éléments non-cash et on intègre les investissements.",
+    intuition:
+      "Le résultat net n'est pas du cash. On ajoute le non-cash, on retire BFR et CAPEX, puis on ajuste les intérêts pour obtenir le FCFF.",
     formula:
-      "FCFF = Net Income + D&A − ΔBFR − CAPEX + Intérêts×(1−t)  |  ou : FCFF = EBIT×(1−t) + D&A − CAPEX − ΔBFR",
-    deepDive:
-      "Méthode indirecte (la plus demandée en entretien) :\n\n1. Net Income (point de départ — compte de résultat)\n2. + D&A (charges non-cash : amortissements, dépréciations)\n3. +/− Δ BFR (hausse du BFR = consommation de cash)\n4. − CAPEX (investissements en immobilisations)\n5. = Cash flow opérationnel avant intérêts (proche du CFO)\n\nPour obtenir le FCFF (cash disponible pour tous les financeurs) :\n6. + Intérêts × (1 − taux d'IS) (retraitement dette → vision « entreprise »)\n7. = FCFF (utilisé dans le DCF avec le WACC)\n\nExemple chiffré : NI 50, D&A 20, ΔBFR +15 (hausse), CAPEX 25, intérêts 8, IS 25 %.\nFCFF = 50 + 20 − 15 − 25 + 8 × 0,75 = 30 + 6 = 36.\nMalgré un résultat net de 50, le cash « entreprise » n'est que 36 — le BFR et le CAPEX ont mangé la différence.\n\nVariante FCFE (cash aux actionnaires uniquement) :\nFCFE = Net Income + D&A − ΔBFR − CAPEX − Remboursement dette net + Nouveaux emprunts\n\nEn modélisation : ce pont doit boucler avec le tableau de flux (c4).",
+      "FCFF = NI + D&A − ΔBFR − CAPEX + Int.(1−t)\nou : EBIT×(1−t) + D&A − CAPEX − ΔBFR",
+    steps: [
+      "Partir du Net Income.",
+      "+ D&A (non-cash).",
+      "− Δ BFR (hausse = sortie de cash).",
+      "− CAPEX.",
+      "+ Intérêts × (1−t) pour passer en vision « entreprise » = FCFF.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "NI 50 + D&A 20 − ΔBFR 15 − CAPEX 25 + 8 × 0,75 = 36. Malgré un NI de 50, le cash « entreprise » n'est que 36.",
+    },
+    interview:
+      "Ne pas confondre FCFF (WACC) et FCFE (Ke) — et faire boucler le pont avec les 3 états.",
     table: {
       headers: ["Étape", "Impact cash", "Non-cash ?", "Oubli fréquent"],
       rows: [
@@ -601,10 +868,22 @@ export const concepts = [
     title: "Football Field — synthèse de valorisation",
     simple:
       "Le football field est un graphique qui empile les fourchettes de valorisation de chaque méthode (DCF, comps, transactions, LBO). On ne défend pas un prix unique : on montre la zone où les méthodes se rejoignent.",
+    intuition:
+      "La valorisation n'est pas une science exacte. On montre où DCF, comps et deals se chevauchent — c'est la zone « défendable ».",
     formula:
-      "Fair value = zone de chevauchement des méthodes retenues  |  Largeur barre = sensibilité de la méthode",
-    deepDive:
-      "Pourquoi l'utiliser :\n• Montre que la valorisation n'est pas une science exacte\n• Permet au client/board de voir la convergence (ou divergence) des approches\n• Standard dans les fairness opinions et pitch books\n\nMéthodes typiquement affichées :\n1. DCF (fourchette via sensibilités WACC × g)\n2. Trading comps (cours boursiers des comparables)\n3. Precedent transactions (deals récents avec prime de contrôle)\n4. LBO (prix max qu'un PE peut payer à TRI 20-25 %)\n5. 52-week high/low ou objectifs brokers (cotées)\n\nExemple de lecture : DCF 90-120, trading comps 95-110, deal comps 100-130, LBO 85-105.\nLa zone commune ~100-105 = fourchette « défendable » à présenter au board. Une barre DCF très large (ex. 70-150) signale des hypothèses trop sensibles.\n\nBonnes pratiques pitch :\n• 4-5 méthodes bien construites > 8 méthodes bâclées\n• Exclure le LBO pour une utility mature (peu pertinent)\n• Toujours dater la valorisation (les multiples bougent vite)\n• Expliquer pourquoi une méthode est exclue plutôt que de la minorer",
+      "Fair value = zone de chevauchement\nLargeur barre = sensibilité de la méthode",
+    steps: [
+      "Afficher 4–5 méthodes : DCF, trading comps, deal comps, LBO (± DDM / brokers).",
+      "Chaque barre = fourchette (sensibilités), pas un point.",
+      "Lire la zone commune comme fourchette board.",
+      "Exclure les méthodes non pertinentes plutôt que de les minorer.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "DCF 90–120, trading 95–110, deals 100–130, LBO 85–105 → zone commune ~100–105. Une barre DCF 70–150 signale des hypothèses trop sensibles.",
+    },
+    interview:
+      "Ne jamais présenter un prix unique ; dater la valorisation et justifier les exclusions.",
     table: {
       headers: ["Méthode", "Borne basse", "Borne haute", "Quand exclure"],
       rows: [
@@ -630,10 +909,22 @@ export const concepts = [
     title: "Restructuring et Distressed M&A",
     simple:
       "Quand la dette dépasse la valeur de l'entreprise, les actionnaires ne valent plus grand-chose. On restructure la dette (souvent en donnant des actions aux créanciers) ou on vend les actifs à prix « distressed ».",
+    intuition:
+      "Si EV < dette totale, l'equity vaut 0. Les créanciers deviennent les vrais décideurs.",
     formula:
-      "Valeur récupérable < Dette totale → equity worthless  |  Debt-for-equity : créanciers deviennent actionnaires",
-    deepDive:
-      "Fil conducteur :\n1. L'entreprise ne peut plus servir sa dette (cash insuffisant, covenants cassés)\n2. EV < dette totale → l'equity vaut théoriquement 0\n3. Les créanciers deviennent les vrais décideurs\n4. Soit on convertit la dette en actions (debt-for-equity), soit on vend les actifs\n\nExemple simple : EV « going concern » 80, dette 120 → equity = 0. Les créanciers senior (80) récupèrent toute la valeur ; les juniors et l'ancien equity sont dilués ou effacés.\n\nMécanismes par juridiction :\n• US — Chapter 11 : protection judiciaire, plan de réorganisation, DIP financing, debt-for-equity. Equity existant souvent effacé\n• UK — Scheme of arrangement : vote des classes de créanciers (75 % en valeur)\n• France — Mandat ad hoc, conciliation, sauvegarde, redressement judiciaire. Altice France = cas d'école\n\nDistressed M&A : vente d'actifs (souvent sans reprendre toute la dette), prix décoté vs going concern.\n\nLien deal : Altice France (d02) — restructuration €24 Md, cession SFR métropolitain, advisors distincts par camp de créanciers.",
+      "EV < Dette totale → equity ≈ 0\nDebt-for-equity : créanciers → actionnaires",
+    steps: [
+      "Cash insuffisant / covenants cassés → détresse.",
+      "Waterfall : senior récupère d'abord, juniors et equity dilués ou effacés.",
+      "Debt-for-equity ou vente d'actifs distressed (souvent sans toute la dette).",
+      "Connaître Chapter 11 (US), scheme (UK), sauvegarde / conciliation (FR).",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "EV going concern 80, dette 120 → equity = 0. Seniors (80) prennent toute la valeur ; juniors et ancien equity sont effacés ou dilués.",
+    },
+    interview:
+      "Ne jamais valoriser l'equity comme en going concern ; citer la waterfall des créanciers.",
     table: {
       headers: ["Mécanisme", "Juridiction", "Qui perd", "Qui gagne"],
       rows: [
@@ -659,9 +950,22 @@ export const concepts = [
     title: "IFRS vs US GAAP — 10 différences clés",
     simple:
       "IFRS (Europe) et US GAAP (États-Unis) sont deux « langages » comptables. Ils divergent surtout sur le leasing, la R&D et quelques postes de cash. En M&A, ça change l'EBITDA, la dette nette et donc le prix.",
-    formula: "Écart comptable → retraitement en QoE / Net Debt → impact EBITDA, FCF et multiples",
-    deepDive:
-      "Quand citer en entretien :\n• Transaction Services : retraitements IFRS 16, goodwill, provisions, classification cash\n• Audit / Big Four : normes en détail (IAS vs ASC)\n• M&A cross-border US/EU : toujours préciser sous quelle norme sont les comptes de la cible\n\nExemple IFRS 16 : un loyer annuel de 10 M€. Avant : charge EBITDA −10. Après IFRS 16 : le loyer disparaît de l'EBITDA (remplacé par amortissement + intérêts) → EBITDA +10, mais on ajoute ~40-60 M€ de dette de leasing au bilan. Multiples et dette nette changent d'un coup — d'où les retraitements en SPA.\n\nLes 10 différences majeures sont dans le tableau. L'écart le plus négocié reste le leasing IFRS 16 (debt-like) et les add-backs liés à la SBC.\n\nRappel : groupes cotés US → US GAAP ; mid-caps EU → IFRS. Les dual-listings imposent des rapprochements.",
+    intuition:
+      "Même business, deux normes → EBITDA et dette nette différents. IFRS 16 (leasing) est l'écart le plus négocié en SPA.",
+    formula:
+      "Écart comptable → retraitement QoE / Net Debt\n→ impact EBITDA, FCF, multiples",
+    steps: [
+      "Identifier la norme des comptes (US GAAP vs IFRS).",
+      "Retraiter les écarts clés : leasing, R&D, SBC, classification cash.",
+      "IFRS 16 : loyer sort de l'EBITDA, dette de leasing entre au bilan.",
+      "Appliquer ensuite QoE / Net Debt comme d'habitude.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Loyer 10 M€/an. Avant : EBITDA −10. Après IFRS 16 : EBITDA +10, mais +40–60 M€ de dette leasing. Multiples et Net Debt changent d'un coup.",
+    },
+    interview:
+      "En deal cross-border US/EU, toujours préciser sous quelle norme sont les comptes de la cible.",
     table: {
       headers: ["Thème", "IFRS", "US GAAP", "Impact M&A"],
       rows: [

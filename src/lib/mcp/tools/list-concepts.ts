@@ -30,7 +30,15 @@ export default defineTool({
       simple: c.simple,
       formula: c.formula ?? null,
       ...(includeDeepDive
-        ? { deepDive: c.deepDive ?? null, table: c.table ?? null, pitfalls: c.pitfalls ?? [] }
+        ? {
+            intuition: c.intuition ?? null,
+            steps: c.steps ?? null,
+            example: c.example ?? null,
+            interview: c.interview ?? null,
+            deepDive: c.deepDive ?? null,
+            table: c.table ?? null,
+            pitfalls: c.pitfalls ?? [],
+          }
         : {}),
     }));
 
