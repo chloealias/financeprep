@@ -13,8 +13,6 @@ import { Route } from "@/routes/index";
 import { GuideChipButton } from "@/components/guide/guide-ui";
 import { BankPanel } from "@/components/banks/BankPanel";
 import { BankLogo } from "@/components/banks/BankLogo";
-import { PeFundPanel } from "@/components/banks/PeFundPanel";
-import { PeFundLogo } from "@/components/banks/PeFundLogo";
 import { DetailSheet } from "@/components/hub/DetailSheet";
 import { PageHeader } from "@/components/ui/page-header";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -25,7 +23,6 @@ import {
   getDealsForBank,
   type BankProfile,
 } from "@/data/bank-profiles";
-import { getPeFundById, PE_FUND_LIST, type PeFundProfile } from "@/data/pe-fund-profiles";
 import {
   BANK_CATEGORY_FILTERS,
   BANK_CATEGORY_IDS,
@@ -48,12 +45,6 @@ function matchesSearch(bank: BankProfile, query: string): boolean {
   return bank.name.toLowerCase().includes(q);
 }
 
-function matchesPeSearch(fund: PeFundProfile, query: string): boolean {
-  const q = query.trim().toLowerCase();
-  if (!q) return true;
-  return fund.name.toLowerCase().includes(q);
-}
-
 function bankPassesHubFilters(
   bank: BankProfile,
   opts: {
@@ -68,16 +59,8 @@ function bankPassesHubFilters(
 }
 
 export function BankHubPage() {
-  const { bank: bankFromUrl, pe: peFromUrl } = Route.useSearch();
+  const { bank: bankFromUrl } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const [hubView, setHubViewState] = useState<"conseil" | "pe">(() =>
-    peFromUrl ? "pe" : "conseil",
-  );
-
-  useEffect(() => {
-    if (peFromUrl) setHubViewState("pe");
-    else if (bankFromUrl) setHubViewState("conseil");
-  }, [peFromUrl, bankFromUrl]);
   const panelRef = useRef<HTMLDivElement>(null);
   const lastTriggerRef = useRef<HTMLButtonElement>(null);
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -94,12 +77,9 @@ export function BankHubPage() {
 
   const targetIdSet = useMemo(() => new Set(targetIds), [targetIds]);
 
-  const selectedBankId =
-    hubView === "conseil" && bankFromUrl && getBankById(bankFromUrl) ? bankFromUrl : null;
+  const selectedBankId = bankFromUrl && getBankById(bankFromUrl) ? bankFromUrl : null;
   const selectedBank = selectedBankId ? getBankById(selectedBankId) : null;
-  const selectedPeId = hubView === "pe" && peFromUrl && getPeFundById(peFromUrl) ? peFromUrl : null;
-  const selectedPe = selectedPeId ? getPeFundById(selectedPeId) : null;
-  const detailOpen = selectedBankId !== null || selectedPeId !== null;
+  const detailOpen = selectedBankId !== null;
   const captureScroll = usePreserveScrollOnDetailClose(detailOpen);
 
   const visibleCategories = useMemo(() => {
@@ -140,21 +120,6 @@ export function BankHubPage() {
         ...prev,
         tab: "banques",
         bank: next,
-        pe: undefined,
-      }),
-    });
-  };
-
-  const handleSelectPe = (id: string, trigger?: HTMLButtonElement | null) => {
-    if (trigger) lastTriggerRef.current = trigger;
-    const next = selectedPeId === id ? undefined : id;
-    if (next && !selectedPeId) captureScroll();
-    navigate({
-      search: (prev: HomeSearch): HomeSearch => ({
-        ...prev,
-        tab: "banques",
-        pe: next,
-        bank: undefined,
       }),
     });
   };
@@ -165,27 +130,9 @@ export function BankHubPage() {
         ...prev,
         tab: prev.tab ?? "banques",
         bank: undefined,
-        pe: undefined,
       }),
     });
   }, [navigate]);
-
-  const setHubView = (view: "conseil" | "pe") => {
-    setHubViewState(view);
-    navigate({
-      search: (prev: HomeSearch): HomeSearch => ({
-        ...prev,
-        tab: "banques",
-        bank: undefined,
-        pe: undefined,
-      }),
-    });
-  };
-
-  const filteredPeFunds = useMemo(
-    () => PE_FUND_LIST.filter((f) => matchesPeSearch(f, searchQuery)),
-    [searchQuery],
-  );
 
   const handleToggleTarget = (id: string, e: MouseEvent) => {
     e.stopPropagation();
@@ -197,25 +144,13 @@ export function BankHubPage() {
     if (!selectedBankId) return;
     if (!visibleBankIds.has(selectedBankId)) {
       navigate({
-        search: (_prev: import("@/lib/route-search").HomeSearch) => ({
+        search: (_prev: HomeSearch) => ({
           tab: "banques",
           bank: undefined,
         }),
       });
     }
   }, [selectedBankId, visibleBankIds, navigate]);
-
-  useEffect(() => {
-    if (!selectedPeId) return;
-    if (!filteredPeFunds.some((f) => f.id === selectedPeId)) {
-      navigate({
-        search: (_prev: import("@/lib/route-search").HomeSearch) => ({
-          tab: "banques",
-          pe: undefined,
-        }),
-      });
-    }
-  }, [selectedPeId, filteredPeFunds, navigate]);
 
   useEffect(() => {
     if (!detailOpen || isMobile || !panelRef.current) return;
@@ -242,57 +177,38 @@ export function BankHubPage() {
             Fiches <span className="type-accent">banques</span>
           </>
         }
-        description={
-          hubView === "conseil"
-            ? `${BANK_LIST.length} banques de conseil et groupes intégrés — fiches pour préparer vos entretiens M&A.`
-            : `${PE_FUND_LIST.length} fonds PE majeurs en France — stratégie, deals et questions piège.`
-        }
+        description={`${BANK_LIST.length} banques de conseil et groupes intégrés — fiches pour préparer vos entretiens M&A.`}
         className="max-w-2xl"
       />
 
       <div className="flex flex-wrap gap-2 mb-4">
-        <GuideChipButton
-          size="sm"
-          active={hubView === "conseil"}
-          onClick={() => setHubView("conseil")}
-        >
-          Conseil & banques
-        </GuideChipButton>
-        <GuideChipButton size="sm" active={hubView === "pe"} onClick={() => setHubView("pe")}>
-          Fonds PE France
-        </GuideChipButton>
+        {BANK_CATEGORY_FILTERS.map(({ id, label }) => (
+          <GuideChipButton
+            key={id}
+            size="sm"
+            active={categoryFilter === id && !targetsOnly}
+            onClick={() => {
+              setCategoryFilter(id);
+              setTargetsOnly(false);
+            }}
+          >
+            {label}
+          </GuideChipButton>
+        ))}
+        {showTargetsChip && (
+          <GuideChipButton
+            size="sm"
+            active={targetsOnly}
+            onClick={() => setTargetsOnly((v) => !v)}
+          >
+            Mes banques ({targetIds.length})
+          </GuideChipButton>
+        )}
       </div>
-
-      {hubView === "conseil" && (
-        <div className="flex flex-wrap gap-2 mb-4">
-          {BANK_CATEGORY_FILTERS.map(({ id, label }) => (
-            <GuideChipButton
-              key={id}
-              size="sm"
-              active={categoryFilter === id && !targetsOnly}
-              onClick={() => {
-                setCategoryFilter(id);
-                setTargetsOnly(false);
-              }}
-            >
-              {label}
-            </GuideChipButton>
-          ))}
-          {showTargetsChip && (
-            <GuideChipButton
-              size="sm"
-              active={targetsOnly}
-              onClick={() => setTargetsOnly((v) => !v)}
-            >
-              Mes banques ({targetIds.length})
-            </GuideChipButton>
-          )}
-        </div>
-      )}
 
       <div className="mb-8 relative max-w-md">
         <label htmlFor="bank-search" className="sr-only">
-          {hubView === "conseil" ? "Rechercher une banque" : "Rechercher un fonds PE"}
+          Rechercher une banque
         </label>
         <Search
           className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
@@ -308,47 +224,7 @@ export function BankHubPage() {
         />
       </div>
 
-      {hubView === "pe" ? (
-        filteredPeFunds.length === 0 ? (
-          <p className="text-muted-foreground text-sm font-light italic text-center py-8">
-            Aucun fonds ne correspond à votre recherche.
-          </p>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            {filteredPeFunds.map((fund) => (
-              <Fragment key={fund.id}>
-                <div
-                  className={`relative rounded-xl border transition-all ${
-                    selectedPeId === fund.id
-                      ? "border-primary bg-primary/10 shadow-sm"
-                      : "border-border bg-card/80 hover:border-primary/30 hover:bg-card"
-                  }`}
-                >
-                  <button
-                    type="button"
-                    onClick={(e) => handleSelectPe(fund.id, e.currentTarget)}
-                    className="w-full text-left px-4 py-3 flex gap-3 items-start"
-                  >
-                    <PeFundLogo fundId={fund.id} fundName={fund.name} size="sm" expandable />
-                    <div className="min-w-0 flex-1">
-                      <span className="font-serif text-foreground text-base">{fund.name}</span>
-                      <div className="text-primary text-xs mt-0.5">{fund.aum}</div>
-                      <p className="text-muted-foreground text-xs font-light mt-1 line-clamp-2">
-                        {fund.ticketTypique}
-                      </p>
-                    </div>
-                  </button>
-                </div>
-                {selectedPeId === fund.id && selectedPe && !isMobile && (
-                  <div ref={panelRef} className="col-span-1 sm:col-span-2 lg:col-span-3">
-                    <PeFundPanel fund={selectedPe} onClose={handleClose} />
-                  </div>
-                )}
-              </Fragment>
-            ))}
-          </div>
-        )
-      ) : sections.length === 0 ? (
+      {sections.length === 0 ? (
         <p className="text-muted-foreground text-sm font-light italic text-center py-8">
           Aucune banque ne correspond à votre recherche.
         </p>
@@ -439,7 +315,7 @@ export function BankHubPage() {
         </div>
       )}
 
-      {isMobile && selectedBank && hubView === "conseil" && (
+      {isMobile && selectedBank && (
         <DetailSheet
           open
           onOpenChange={(open) => {
@@ -449,19 +325,6 @@ export function BankHubPage() {
           returnFocusRef={lastTriggerRef}
         >
           <BankPanel bank={selectedBank} onClose={handleClose} />
-        </DetailSheet>
-      )}
-
-      {isMobile && selectedPe && hubView === "pe" && (
-        <DetailSheet
-          open
-          onOpenChange={(open) => {
-            if (!open) handleClose();
-          }}
-          title={`Fiche ${selectedPe.name}`}
-          returnFocusRef={lastTriggerRef}
-        >
-          <PeFundPanel fund={selectedPe} onClose={handleClose} />
         </DetailSheet>
       )}
     </div>

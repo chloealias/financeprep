@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { getBankById, getBankIdByName, getDealsForBank, isValidBankId } from "@/data/bank-profiles";
+import {
+  BANK_LIST,
+  getBankById,
+  getBankIdByName,
+  getDealsForBank,
+  isValidBankId,
+} from "@/data/bank-profiles";
 
 describe("bank-profiles helpers", () => {
   it("isValidBankId", () => {
@@ -36,6 +42,13 @@ describe("bank-profiles helpers", () => {
   it("financing banks can use bank filter link type", () => {
     const socgen = getBankById("societe-generale");
     expect(socgen?.emblematicLinkType).toBe("bank");
+  });
+
+  it("every bank has websiteUrl and valeurs", () => {
+    for (const bank of BANK_LIST) {
+      expect(bank.websiteUrl.startsWith("http"), bank.id).toBe(true);
+      expect(bank.valeurs.length, bank.id).toBeGreaterThanOrEqual(3);
+    }
   });
 
   it("includes European boutiques and banks", () => {

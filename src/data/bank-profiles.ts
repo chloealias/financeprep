@@ -9,6 +9,10 @@ export type BankProfile = {
   name: string;
   category: string;
   hq: string;
+  /** Page About / Values / Purpose sur le site officiel */
+  websiteUrl: string;
+  /** Valeurs / principes officiels (libellés du site) */
+  valeurs: string[];
   tagline: string;
   divisions: string[];
   particularites: string[];
@@ -31,6 +35,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Rothschild & Co",
     category: "Elite boutique (advisory)",
     hq: "Paris / Londres",
+    websiteUrl: "https://www.rothschildandco.com/en/about-us/",
+    valeurs: ["Thoughtful", "Creative", "Principled"],
     tagline: "Conseil M&A et restructuring indépendant, référence en Europe",
     divisions: ["M&A", "Restructuring", "Debt advisory", "Equity advisory", "Wealth management"],
     particularites: [
@@ -62,6 +68,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Lazard",
     category: "Elite boutique",
     hq: "New York / Paris",
+    websiteUrl: "https://www.lazard.com/about-lazard/",
+    valeurs: ["Excellence", "Empowerment", "Ownership"],
     tagline: "La référence historique du conseil indépendant mondial",
     divisions: ["M&A", "Restructuring", "Capital markets advisory", "Asset management"],
     particularites: [
@@ -92,6 +100,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Goldman Sachs",
     category: "Bulge bracket",
     hq: "New York",
+    websiteUrl: "https://www.goldmansachs.com/our-firm/purpose-and-values",
+    valeurs: ["Partnership", "Client service", "Integrity", "Excellence"],
     tagline: "La « firme la plus prestigieuse » — M&A, markets, PE",
     divisions: [
       "Investment Banking",
@@ -126,6 +136,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Morgan Stanley",
     category: "Bulge bracket",
     hq: "New York",
+    websiteUrl: "https://www.morganstanley.com/about-us",
+    valeurs: ["Do the right thing", "Put clients first", "Lead with exceptional ideas", "Commit to diversity and inclusion", "Give back"],
     tagline: "Banque d'investissement globale, force en ECM et M&A tech",
     divisions: ["IBD (M&A, ECM, DCM)", "Wealth Management", "Investment Management"],
     particularites: [
@@ -154,6 +166,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "JPMorgan",
     category: "Bulge bracket",
     hq: "New York",
+    websiteUrl: "https://www.jpmorganchase.com/about",
+    valeurs: ["Exceptional client service", "Operational excellence", "Integrity, fairness and responsibility", "Great team and winning culture"],
     tagline: "Plus grande banque US — universal banking + IB de premier plan",
     divisions: ["Corporate & Investment Bank", "Commercial Banking", "Asset Management"],
     particularites: [
@@ -181,6 +195,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Bank of America",
     category: "Bulge bracket",
     hq: "Charlotte / New York",
+    websiteUrl: "https://careers.bankofamerica.com/en-us/company/values",
+    valeurs: ["Deliver together", "Act responsibly", "Realize the power of our people", "Trust the team"],
     tagline: "Universal bank US — conseil et financement à grande échelle",
     divisions: ["Global Banking (IB)", "Markets", "Wealth Management"],
     particularites: [
@@ -209,6 +225,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Citigroup",
     category: "Bulge bracket",
     hq: "New York",
+    websiteUrl: "https://www.citigroup.com/global/about-us",
+    valeurs: ["Common Purpose", "Responsible Finance", "Ingenuity", "Leadership"],
     tagline: "Banque globale — réseau international le plus étendu",
     divisions: ["Banking (M&A, DCM, Lev Fin)", "Markets", "Services"],
     particularites: [
@@ -236,6 +254,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Barclays",
     category: "Bulge bracket (UK/Europe)",
     hq: "Londres",
+    websiteUrl: "https://home.barclays/who-we-are/",
+    valeurs: ["Respect", "Integrity", "Service", "Excellence", "Stewardship"],
     tagline: "Banque britannique majeure — force Lev Fin et European M&A",
     divisions: ["Corporate & Investment Bank", "UK consumer bank"],
     particularites: [
@@ -263,6 +283,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "BNP Paribas",
     category: "Banque française (universal)",
     hq: "Paris",
+    websiteUrl: "https://group.bnpparibas/en/group/about-us/company-purpose",
+    valeurs: ["Au service des clients et du monde", "Éthique", "Finance durable", "Engagement"],
     tagline: "1re banque eurozone — leader M&A et financement en France",
     divisions: ["Corporate & Institutional Banking", "Retail", "AM"],
     particularites: [
@@ -291,6 +313,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Société Générale",
     category: "Banque française (universal)",
     hq: "Paris",
+    websiteUrl: "https://www.societegenerale.com/en/societe-generale-group/identity/values",
+    valeurs: ["Team spirit", "Innovation", "Responsibility", "Commitment"],
     tagline: "Acteur intégré CIB — equity derivatives et financement",
     divisions: ["Global Banking & Investor Solutions", "Retail"],
     particularites: [
@@ -320,6 +344,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "HSBC",
     category: "Banque globale (UK/Asia)",
     hq: "Londres / Hong Kong",
+    websiteUrl: "https://www.hsbc.com/who-we-are/our-purpose",
+    valeurs: ["We value difference", "We succeed together", "We take responsibility", "We get it done"],
     tagline: "Pivot Europe-Asie — trade finance et cross-border",
     divisions: ["Global Banking & Markets", "Wealth", "Retail"],
     particularites: [
@@ -348,6 +374,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "UBS",
     category: "Banque suisse globale",
     hq: "Zurich",
+    websiteUrl: "https://www.ubs.com/global/en/our-firm/our-culture.html",
+    valeurs: ["Client centricity", "Sustainable impact", "Accountability with integrity"],
     tagline: "Wealth + IB — force M&A suisse et cross-border",
     divisions: ["Global Banking", "Global Wealth Management", "Asset Management"],
     particularites: [
@@ -374,6 +402,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Deutsche Bank",
     category: "Banque allemande (universal)",
     hq: "Francfort",
+    websiteUrl: "https://www.db.com/company/en/what-we-stand-for.htm",
+    valeurs: ["Integrity", "Sustainable performance", "Client centricity", "Innovation", "Discipline", "Partnership"],
     tagline: "Leader allemand — restructuring et European corporates",
     divisions: ["Corporate Bank", "Investment Bank", "Private Bank"],
     particularites: [
@@ -401,6 +431,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Evercore",
     category: "Elite boutique (US / Europe)",
     hq: "New York / Londres / Paris",
+    websiteUrl: "https://www.evercore.com/about/",
+    valeurs: ["Client first", "Excellence", "Integrity", "Partnership"],
     tagline: "Conseil M&A indépendant — référence sell-side luxe et cross-border Europe",
     divisions: ["M&A advisory", "Restructuring", "Equities advisory", "Private capital advisory"],
     particularites: [
@@ -430,6 +462,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Centerview Partners",
     category: "Elite boutique (US / Europe)",
     hq: "New York / Londres",
+    websiteUrl: "https://www.centerviewpartners.com/",
+    valeurs: ["Independence", "Client focus", "Excellence", "Discretion"],
     tagline: "Boutique premium — sell-side stratégique sur les plus grands mandats consumer",
     divisions: ["M&A advisory", "Restructuring"],
     particularites: [
@@ -459,6 +493,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Houlihan Lokey",
     category: "Elite boutique (restructuring)",
     hq: "Los Angeles / Londres / Paris",
+    websiteUrl: "https://hl.com/about-us/",
+    valeurs: ["Integrity", "Excellence", "Collaboration", "Client service"],
     tagline: "N°1 mondial du restructuring — référence créanciers holdco et situations spéciales",
     divisions: ["Financial restructuring", "M&A", "Financial advisory", "Corporate finance"],
     particularites: [
@@ -487,6 +523,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Credit Suisse",
     category: "Banque suisse (intégrée à UBS)",
     hq: "Zurich (legacy)",
+    websiteUrl: "https://www.ubs.com/global/en/our-firm/our-culture.html",
+    valeurs: ["Client centricity", "Sustainable impact", "Accountability with integrity"],
     tagline: "Legacy Credit Suisse — intégrée à UBS (mars 2023) — toujours testée en entretien",
     divisions: ["Investment Banking (legacy)", "Wealth Management (legacy)", "Asset Management"],
     particularites: [
@@ -518,6 +556,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Mediobanca",
     category: "Banque d'investissement italienne",
     hq: "Milan",
+    websiteUrl: "https://www.mediobanca.com/en/about-us/identity.html",
+    valeurs: ["Indépendance", "Excellence", "Intégrité", "Orientation client"],
     tagline: "Champion italien du conseil M&A et du corporate banking",
     divisions: ["CIB (M&A, ECM, DCM)", "Wealth management", "Consumer credit (via Compass)"],
     particularites: [
@@ -546,6 +586,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Natixis",
     category: "Banque française (Groupe BPCE)",
     hq: "Paris",
+    websiteUrl: "https://www.natixis.com/natixis/en/about-us-c_5134.html",
+    valeurs: ["Esprit d'équipe", "Innovation", "Impact durable", "Exigence"],
     tagline: "CIB du Groupe BPCE — M&A, financement et asset management",
     divisions: [
       "Global Banking (M&A, DCM, Lev Fin)",
@@ -577,6 +619,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Crédit Agricole CIB",
     category: "Banque française (universal)",
     hq: "Paris / Montrouge",
+    websiteUrl: "https://www.ca-cib.com/about-us",
+    valeurs: ["Proximité", "Responsabilité", "Solidarité"],
     tagline: "Bras CIB du Crédit Agricole — financement et conseil corporate Europe",
     divisions: ["Investment Banking", "Global Markets", "Securities services"],
     particularites: [
@@ -606,6 +650,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Jefferies",
     category: "Investment bank (mid-market / growth)",
     hq: "New York / Londres",
+    websiteUrl: "https://www.jefferies.com/About-Us/Overview/default.aspx",
+    valeurs: ["Client focus", "Entrepreneurial culture", "Excellence", "Integrity"],
     tagline: "Banque d'investissement indépendante — mid-cap, growth et special situations",
     divisions: ["Investment Banking", "Equities", "Fixed income", "Jefferies Financial Services"],
     particularites: [
@@ -634,6 +680,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Macquarie",
     category: "Banque australienne (infra & alternatives)",
     hq: "Sydney / Londres",
+    websiteUrl: "https://www.macquarie.com/au/en/about/company/what-we-stand-for.html",
+    valeurs: ["Opportunity", "Accountability", "Integrity"],
     tagline: "Leader mondial infrastructure et asset management — forte présence Europe",
     divisions: [
       "Macquarie Asset Management",
@@ -666,6 +714,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Oddo BHF",
     category: "Groupe financier indépendant (France / Allemagne)",
     hq: "Paris / Francfort",
+    websiteUrl: "https://www.oddo-bhf.com/en/p/about-us-group",
+    valeurs: ["Indépendance", "Excellence", "Proximité client", "Responsabilité"],
     tagline: "Banque franco-allemande indépendante — M&A mid-cap et corporate brokerage",
     divisions: ["Corporate & Investment Banking", "Private banking", "Asset management"],
     particularites: [
@@ -692,6 +742,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Moelis & Company",
     category: "Elite boutique (advisory US)",
     hq: "New York / Paris",
+    websiteUrl: "https://www.moelis.com/about/",
+    valeurs: ["Client first", "Excellence", "Integrity", "Collaboration"],
     tagline: "Conseil indépendant — M&A, restructuring et capital solutions",
     divisions: ["M&A", "Restructuring", "Capital markets advisory", "Private funds advisory"],
     particularites: [
@@ -719,6 +771,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "PJT Partners",
     category: "Elite boutique (restructuring & M&A)",
     hq: "New York / Londres",
+    websiteUrl: "https://pjtpartners.com/firm/",
+    valeurs: ["Excellence", "Integrity", "Client service", "Partnership"],
     tagline: "Spin-off de Blackstone Advisory — leader restructuring, M&A stratégique",
     divisions: [
       "Restructuring & Special Situations",
@@ -750,6 +804,8 @@ export const BANK_LIST: BankProfile[] = [
     name: "Perella Weinberg Partners",
     category: "Elite boutique (M&A stratégique)",
     hq: "New York / Londres / Paris",
+    websiteUrl: "https://pwpartners.com/",
+    valeurs: ["Independence", "Excellence", "Integrity", "Client focus"],
     tagline: "Conseil M&A indépendant — fondé par d'anciens banquiers Lazard",
     divisions: ["M&A advisory", "Restructuring", "Capital markets & financing advisory"],
     particularites: [

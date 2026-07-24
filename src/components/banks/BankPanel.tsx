@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, ExternalLink, X } from "lucide-react";
 import { BankLogo } from "@/components/banks/BankLogo";
 import type { BankProfile } from "@/data/bank-profiles";
 import { getDealsForBank } from "@/data/bank-profiles";
@@ -59,6 +59,32 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
           <h3 className="text-2xl sm:text-3xl font-serif text-foreground">{bank.name}</h3>
           <p className="text-muted-foreground text-sm font-light mt-1">{bank.hq}</p>
           <p className="text-foreground text-sm mt-1">{bank.tagline}</p>
+          <a
+            href={bank.websiteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 mt-2 text-sm text-primary hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+          >
+            Site de la banque
+            <ExternalLink className="w-3.5 h-3.5" aria-hidden />
+          </a>
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
+          <div className="h-px w-4 bg-primary/70" />
+          Valeurs
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {bank.valeurs.map((v) => (
+            <span
+              key={v}
+              className="text-sm text-foreground bg-muted px-3 py-1.5 rounded-lg font-light"
+            >
+              {v}
+            </span>
+          ))}
         </div>
       </div>
 

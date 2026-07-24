@@ -27,6 +27,8 @@ export default defineTool({
       category: b.category,
       categoryId: b.categoryId,
       hq: b.hq,
+      websiteUrl: b.websiteUrl,
+      valeurs: b.valeurs,
       tagline: b.tagline,
       divisions: b.divisions,
       particularites: b.particularites,
