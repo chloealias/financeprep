@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { acronymSections } from "@/data/acronyms";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useT } from "@/hooks/useT";
 
 type AcronymMatch = {
   abbr: string;
@@ -87,6 +88,7 @@ type AcronymTextProps = {
 };
 
 export function AcronymText({ text, className }: AcronymTextProps) {
+  const { locale } = useT();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const parts = useMemo((): AcronymPart[] => {
@@ -128,10 +130,25 @@ export function AcronymText({ text, className }: AcronymTextProps) {
               </button>
             </PopoverTrigger>
             <PopoverContent className="space-y-1" side="top" collisionPadding={12}>
-              {p.english && (
-                <p className="text-xs font-medium text-muted-foreground leading-snug">{p.english}</p>
+              {locale === "en" ? (
+                <>
+                  <p className="text-sm text-foreground leading-snug">
+                    {p.english ?? p.french}
+                  </p>
+                  {p.english && (
+                    <p className="text-xs text-muted-foreground leading-snug">{p.french}</p>
+                  )}
+                </>
+              ) : (
+                <>
+                  {p.english && (
+                    <p className="text-xs font-medium text-muted-foreground leading-snug">
+                      {p.english}
+                    </p>
+                  )}
+                  <p className="text-sm text-foreground leading-snug">{p.french}</p>
+                </>
               )}
-              <p className="text-sm text-foreground leading-snug">{p.french}</p>
             </PopoverContent>
           </Popover>
         ) : (

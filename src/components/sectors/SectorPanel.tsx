@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import type { SectorId } from "@/lib/sectors";
-import { SECTOR_DATA } from "@/data/sector-data";
+import { getSectorData } from "@/data/sector-data";
 import { getDealById } from "@/data/ma-deals";
 import { BankDealChip } from "@/components/deals/DealEntityChips";
+import { useT } from "@/hooks/useT";
 
 type SectorPanelContentProps = {
   sectorId: SectorId;
@@ -18,9 +19,12 @@ export function SectorPanelContent({
   highlightFlash = false,
   embedded = false,
 }: SectorPanelContentProps) {
+  const { t, locale } = useT();
   const [showReponse, setShowReponse] = useState(false);
-  const data = SECTOR_DATA[sectorId];
-  const emblematicDeal = data.emblematicDealId ? getDealById(data.emblematicDealId) : undefined;
+  const data = getSectorData(locale)[sectorId];
+  const emblematicDeal = data.emblematicDealId
+    ? getDealById(data.emblematicDealId, locale)
+    : undefined;
   const emblematicBanks = emblematicDeal?.banks.slice(0, 6) ?? [];
 
   useEffect(() => {
@@ -42,7 +46,7 @@ export function SectorPanelContent({
             }`
       }`}
       role="region"
-      aria-label={`Fiche sectorielle ${data.name}`}
+      aria-label={t("hub.sectors.panel.regionAria", { name: data.name })}
     >
       {!embedded && (
         <div className="flex items-center gap-4 mb-8">
@@ -59,39 +63,32 @@ export function SectorPanelContent({
       )}
 
       <section
-        aria-label="Panorama du secteur"
+        aria-label={t("hub.sectors.panel.panoramaAria")}
         className="mb-8 rounded-2xl border border-border bg-gradient-to-br from-muted to-muted/70 p-5 sm:p-6"
       >
         <div className="text-xs uppercase tracking-wider text-primary font-medium mb-4 flex items-center gap-2">
           <div className="h-px w-4 bg-primary" />
-          Panorama — à connaître par cœur
+          {t("hub.sectors.panel.panoramaTitle")}
         </div>
         <p className="text-xs text-muted-foreground font-light mb-4 -mt-2">
-          Ordres de grandeur indicatifs (Dealogic, rapports sectoriels) — à citer en entretien, pas
-          comme données temps réel.
+          {t("hub.sectors.panel.panoramaDisclaimer")}
         </p>
         <div className="grid sm:grid-cols-2 gap-4 mb-5">
           <div className="bg-card/80 rounded-xl border border-border p-4">
-            <div className="type-label text-primary mb-1">
-              Taille du marché
-            </div>
+            <div className="type-label text-primary mb-1">{t("hub.sectors.panel.marketSize")}</div>
             <p className="text-foreground text-sm font-light leading-relaxed">
               {data.panorama.tailleMarche}
             </p>
           </div>
           <div className="bg-card/80 rounded-xl border border-border p-4">
-            <div className="type-label text-primary mb-1">
-              Volume M&A
-            </div>
+            <div className="type-label text-primary mb-1">{t("hub.sectors.panel.maVolume")}</div>
             <p className="text-foreground text-sm font-light leading-relaxed">
               {data.panorama.volumeMa}
             </p>
           </div>
         </div>
         <div className="mb-4">
-          <div className="type-label text-primary mb-2">
-            Acteurs majeurs
-          </div>
+          <div className="type-label text-primary mb-2">{t("hub.sectors.panel.majorPlayers")}</div>
           <div className="flex flex-wrap gap-2">
             {data.panorama.acteursMajeurs.map((acteur, i) => (
               <span
@@ -104,9 +101,7 @@ export function SectorPanelContent({
           </div>
         </div>
         <div>
-          <div className="type-label text-primary mb-2">
-            Segments clés
-          </div>
+          <div className="type-label text-primary mb-2">{t("hub.sectors.panel.keySegments")}</div>
           <div className="flex flex-wrap gap-2">
             {data.panorama.segmentsCles.map((seg, i) => (
               <span
@@ -125,7 +120,7 @@ export function SectorPanelContent({
           <div>
             <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
               <div className="h-px w-4 bg-primary/70" />
-              KPIs clés
+              {t("hub.sectors.panel.kpis")}
             </div>
             <div className="space-y-1.5">
               {data.kpis.map((kpi, i) => (
@@ -139,7 +134,7 @@ export function SectorPanelContent({
           <div>
             <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
               <div className="h-px w-4 bg-primary/70" />
-              Multiples typiques
+              {t("hub.sectors.panel.multiples")}
             </div>
             <div className="space-y-2">
               {data.multiples.map((m, i) => (
@@ -157,15 +152,15 @@ export function SectorPanelContent({
         <div>
           <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
             <div className="h-px w-4 bg-primary/70" />
-            Dynamiques actuelles
+            {t("hub.sectors.panel.trends")}
           </div>
           <div className="space-y-2.5">
-            {data.tendances.map((t, i) => (
+            {data.tendances.map((tendance, i) => (
               <div key={i} className="flex gap-3 bg-muted rounded-lg px-3 py-2.5">
                 <div className="text-primary text-xs font-mono mt-0.5 flex-shrink-0">
                   {String(i + 1).padStart(2, "0")}
                 </div>
-                <span className="text-foreground text-sm font-light">{t}</span>
+                <span className="text-foreground text-sm font-light">{tendance}</span>
               </div>
             ))}
           </div>
@@ -175,14 +170,14 @@ export function SectorPanelContent({
           <div>
             <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
               <div className="h-px w-4 bg-primary/70" />
-              Deal emblématique
+              {t("hub.sectors.panel.emblematicDeal")}
             </div>
             {data.emblematicDealId ? (
               <Link
                 to="/actualite"
                 search={{ deal: data.emblematicDealId }}
                 className="block bg-primary rounded-xl p-4 text-primary-foreground hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                aria-label={`Voir le deal ${data.deal.titre} dans Actualité M&A`}
+                aria-label={t("hub.sectors.panel.viewDealAria", { deal: data.deal.titre })}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
@@ -210,12 +205,12 @@ export function SectorPanelContent({
               search={{ sector: sectorId }}
               className="inline-block mt-3 text-primary text-xs hover:text-primary/80 underline underline-offset-2"
             >
-              Voir tous les deals {data.name} dans Actualité M&A
+              {t("hub.sectors.panel.allDealsLink", { name: data.name })}
             </Link>
             {emblematicBanks.length > 0 && (
               <div className="mt-3">
                 <div className="text-xs uppercase tracking-wider text-primary font-medium mb-2">
-                  Banques sur ce deal
+                  {t("hub.sectors.panel.banksOnDeal")}
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {emblematicBanks.map((b) => (
@@ -229,7 +224,7 @@ export function SectorPanelContent({
           <div>
             <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
               <div className="h-px w-4 bg-primary/70" />
-              Question piège
+              {t("hub.sectors.panel.trickyQuestion")}
             </div>
             <div className="bg-muted border border-border rounded-xl p-4 mb-2">
               <p className="text-foreground text-sm font-light italic">
@@ -242,12 +237,12 @@ export function SectorPanelContent({
                 onClick={() => setShowReponse(true)}
                 className="w-full text-center text-primary text-xs underline underline-offset-2 hover:text-primary/80 transition-colors py-1"
               >
-                Voir la réponse attendue
+                {t("hub.sectors.panel.showAnswer")}
               </button>
             ) : (
               <div className="bg-primary/10 border border-primary/20 rounded-xl p-4">
                 <div className="text-primary text-xs font-semibold uppercase tracking-wider mb-1">
-                  Réponse
+                  {t("hub.sectors.panel.answer")}
                 </div>
                 <p className="text-foreground text-sm font-light">{data.reponse}</p>
                 <button
@@ -255,7 +250,7 @@ export function SectorPanelContent({
                   onClick={() => setShowReponse(false)}
                   className="text-primary/80 text-xs underline mt-2"
                 >
-                  Masquer
+                  {t("hub.sectors.panel.hide")}
                 </button>
               </div>
             )}

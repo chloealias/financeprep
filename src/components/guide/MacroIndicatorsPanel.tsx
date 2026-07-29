@@ -1,26 +1,29 @@
-import { MACRO_SNAPSHOT } from "@/data/macro-indicators";
+import { getMacroSnapshot } from "@/data/macro-indicators";
 import { GuideSectionTitle } from "@/components/guide/guide-ui";
-
-function formatUpdatedAt(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-}
+import { useT } from "@/hooks/useT";
+import { formatDate } from "@/lib/i18n/format";
 
 export function MacroIndicatorsPanel() {
-  const { quarter, updatedAt, sources, indicators } = MACRO_SNAPSHOT;
+  const { t, locale } = useT();
+  const { quarter, updatedAt, sources, indicators } = getMacroSnapshot(locale);
 
   return (
     <section id="indicateurs-macro" className="scroll-mt-24 mb-8 min-w-0">
-      <GuideSectionTitle>Indicateurs macro à connaître</GuideSectionTitle>
+      <GuideSectionTitle>{t("guide.macro.title")}</GuideSectionTitle>
       <p className="text-muted-foreground text-xs font-light mb-4 break-words">
-        Dernière MAJ : {quarter} · {formatUpdatedAt(updatedAt)}
+        {t("guide.macro.lastUpdate", {
+          quarter,
+          date: formatDate(updatedAt, locale, {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }),
+        })}
         {sources.length > 0 && (
-          <span className="text-primary"> — Sources : {sources.join(", ")}</span>
+          <span className="text-primary">
+            {" "}
+            {t("guide.macro.sources", { sources: sources.join(", ") })}
+          </span>
         )}
       </p>
 
@@ -38,9 +41,7 @@ export function MacroIndicatorsPanel() {
             </div>
             {row.interviewNote && (
               <p className="mt-1.5 text-muted-foreground font-light leading-snug border-t border-border pt-1.5">
-                <span className="text-primary type-label">
-                  Entretien ·{" "}
-                </span>
+                <span className="text-primary type-label">{t("guide.macro.interviewPrefix")} </span>
                 {row.interviewNote}
               </p>
             )}
@@ -59,9 +60,17 @@ export function MacroIndicatorsPanel() {
           </colgroup>
           <thead className="bg-primary text-primary-foreground">
             <tr>
-              {["Indicateur", "Niveau", "Évol.", "En entretien"].map((h) => (
-                <th key={h} className="px-2 py-2 text-left uppercase tracking-wider font-semibold">
-                  {h}
+              {[
+                "guide.macro.col.indicator",
+                "guide.macro.col.level",
+                "guide.macro.col.change",
+                "guide.macro.col.interview",
+              ].map((key) => (
+                <th
+                  key={key}
+                  className="px-2 py-2 text-left uppercase tracking-wider font-semibold"
+                >
+                  {t(key)}
                 </th>
               ))}
             </tr>

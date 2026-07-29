@@ -1,66 +1,22 @@
 import { GuideIntro, GuideSectionTitle } from "@/components/guide/guide-ui";
+import { getGuidePyramid } from "@/data/guide/pyramid";
+import { useT } from "@/hooks/useT";
 
 export function BlocPyramid() {
-  const starCards = [
-    {
-      letter: "S",
-      label: "Situation",
-      quoi: "Le contexte en 1-2 phrases maximum",
-      erreur: "Trop long — 30 sec max",
-      exemple:
-        "J'étais en stage M&A chez X, durant la phase de due diligence d'une acquisition dans le retail",
-    },
-    {
-      letter: "T",
-      label: "Tâche",
-      quoi: "Votre rôle et objectif spécifique",
-      erreur: "Confondre Tâche et Action — la tâche c'est CE QUE vous deviez faire, pas comment",
-      exemple:
-        "J'étais responsable de la revue du BFR historique et de la normalisation des EBITDA",
-    },
-    {
-      letter: "A",
-      label: "Action",
-      quoi: "CE QUE VOUS avez fait — toujours 'je', pas 'nous'",
-      erreur: "Utiliser 'nous' — l'interviewer veut savoir VOTRE contribution personnelle",
-      exemple:
-        "J'ai construit un modèle de BFR mensuel sur 3 ans, identifié 2 ajustements non récurrents représentant 800k€ d'EBITDA normalisé",
-    },
-    {
-      letter: "R",
-      label: "Résultat",
-      quoi: "Impact mesurable. Toujours chiffrer si possible.",
-      erreur: "Terminer sans résultat — 'j'ai fait X' sans dire ce que ça a produit",
-      exemple:
-        "L'analyse a été intégrée au mémo d'acquisition. Le client a réduit son offre de 5% en conséquence.",
-    },
-  ];
-
-  const matrix = [
-    { q: "Pourquoi la finance ?", pyramid: true, star: false },
-    { q: "Parlez d'une difficulté", pyramid: false, star: true },
-    { q: "Quelle est votre valeur ajoutée ?", pyramid: true, star: false },
-    { q: "Travail en équipe — exemple ?", pyramid: false, star: true },
-    { q: "Expliquez-moi un concept", pyramid: true, star: false },
-    { q: "Une décision difficile ?", pyramid: false, star: true },
-    { q: "Pourquoi notre banque ?", pyramid: true, star: false },
-  ];
+  const { t, locale } = useT();
+  const content = getGuidePyramid(locale);
 
   return (
     <>
-      <GuideIntro>
-        Ces deux frameworks structurent toutes vos réponses — techniques ET comportementales. Les
-        maîtriser, c&apos;est paraître deux fois plus clair que les autres candidats, à niveau de
-        connaissance égal.
-      </GuideIntro>
+      <GuideIntro>{content.intro}</GuideIntro>
 
       <div className="mb-8">
-        <GuideSectionTitle>Pyramid Principle</GuideSectionTitle>
+        <GuideSectionTitle>{t("guide.pyramid.section.pyramid")}</GuideSectionTitle>
         <svg
           viewBox="0 0 500 300"
           className="w-full h-auto max-w-lg mx-auto mb-6"
           role="img"
-          aria-label="Pyramide : conclusion en premier, puis arguments, puis preuves"
+          aria-label={t("guide.pyramid.svgLabel")}
         >
           <defs>
             <clipPath id="pyramid-tier-top">
@@ -82,7 +38,7 @@ export function BlocPyramid() {
               dominantBaseline="middle"
               fontWeight="bold"
             >
-              CONCLUSION
+              {content.svg.conclusion}
             </text>
             <text
               x="250"
@@ -92,7 +48,7 @@ export function BlocPyramid() {
               textAnchor="middle"
               dominantBaseline="middle"
             >
-              D'abord
+              {content.svg.conclusionHint}
             </text>
           </g>
           <polygon
@@ -109,7 +65,7 @@ export function BlocPyramid() {
             dominantBaseline="middle"
             fontWeight="bold"
           >
-            ARGUMENTS CLÉS
+            {content.svg.arguments}
           </text>
           <text
             x="250"
@@ -119,7 +75,7 @@ export function BlocPyramid() {
             textAnchor="middle"
             dominantBaseline="middle"
           >
-            2-3 raisons principales
+            {content.svg.argumentsHint}
           </text>
           <polygon
             points="92,200 408,200 485,285 15,285"
@@ -135,7 +91,7 @@ export function BlocPyramid() {
             dominantBaseline="middle"
             fontWeight="bold"
           >
-            PREUVES &amp; EXEMPLES
+            {content.svg.evidence}
           </text>
           <text
             x="250"
@@ -145,45 +101,44 @@ export function BlocPyramid() {
             textAnchor="middle"
             dominantBaseline="middle"
           >
-            Chiffres, cas concrets, anecdotes
+            {content.svg.evidenceHint}
           </text>
         </svg>
         <div className="bg-primary text-primary-foreground rounded-xl p-5 mb-6">
           <div className="text-primary-foreground/80 text-xs uppercase tracking-[0.2em] mb-2">
-            Règle d'or
+            {t("guide.pyramid.goldenRule")}
           </div>
-          <p className="font-light">
-            Ne jamais commencer par le contexte. Commencer par la réponse. Le contexte vient ensuite
-            pour justifier.
-          </p>
+          <p className="font-light">{content.goldenRuleBody}</p>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="bg-red-50 border border-red-200 rounded-xl p-4">
             <div className="text-red-700 text-xs font-semibold uppercase tracking-wider mb-2">
-              ❌ Sans Pyramid
+              {t("guide.pyramid.withoutPyramid")}
             </div>
-            <p className="text-red-800 text-sm font-light italic">
-              "J'ai toujours été intéressé par les chiffres... Au lycée j'aimais les maths... En L3
-              j'ai fait un cours de compta..."
-            </p>
+            <p className="text-red-800 text-sm font-light italic">{content.withoutExample}</p>
           </div>
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
             <div className="text-emerald-700 text-xs font-semibold uppercase tracking-wider mb-2">
-              ✅ Avec Pyramid
+              {t("guide.pyramid.withPyramid")}
             </div>
             <p className="text-emerald-800 text-sm font-light italic space-y-2">
               <span className="block">
-                <span className="font-semibold not-italic text-emerald-900">Conclusion —</span> « La
-                finance me permet de comprendre comment les entreprises créent de la valeur — c'est
-                ce qui me passionne. »
+                <span className="font-semibold not-italic text-emerald-900">
+                  {content.withExample.conclusionLabel}
+                </span>{" "}
+                {content.withExample.conclusion}
               </span>
               <span className="block">
-                <span className="font-semibold not-italic text-emerald-900">Arguments —</span> «
-                Premièrement… Deuxièmement… »
+                <span className="font-semibold not-italic text-emerald-900">
+                  {content.withExample.argumentsLabel}
+                </span>{" "}
+                {content.withExample.arguments}
               </span>
               <span className="block">
-                <span className="font-semibold not-italic text-emerald-900">Preuve —</span> « C'est
-                notamment ce que j'ai fait chez X où… »
+                <span className="font-semibold not-italic text-emerald-900">
+                  {content.withExample.evidenceLabel}
+                </span>{" "}
+                {content.withExample.evidence}
               </span>
             </p>
           </div>
@@ -191,9 +146,9 @@ export function BlocPyramid() {
       </div>
 
       <div className="mb-8">
-        <GuideSectionTitle>Framework STAR</GuideSectionTitle>
+        <GuideSectionTitle>{t("guide.pyramid.section.star")}</GuideSectionTitle>
         <div className="grid md:grid-cols-2 gap-4">
-          {starCards.map((card) => (
+          {content.starCards.map((card) => (
             <div key={card.letter} className="bg-card border-2 border-border rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-lg bg-primary text-primary-foreground font-serif text-xl flex items-center justify-center">
@@ -214,24 +169,30 @@ export function BlocPyramid() {
       </div>
 
       <div>
-        <GuideSectionTitle>Quand utiliser quoi ?</GuideSectionTitle>
+        <GuideSectionTitle>{t("guide.pyramid.section.matrix")}</GuideSectionTitle>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-primary text-primary-foreground">
-                <th className="text-left px-4 py-3 rounded-tl-lg font-medium">Question</th>
-                <th className="px-4 py-3 font-medium text-center">Pyramid</th>
-                <th className="px-4 py-3 rounded-tr-lg font-medium text-center">STAR</th>
+                <th className="text-left px-4 py-3 rounded-tl-lg font-medium">
+                  {t("guide.pyramid.table.question")}
+                </th>
+                <th className="px-4 py-3 font-medium text-center">
+                  {t("guide.pyramid.table.pyramid")}
+                </th>
+                <th className="px-4 py-3 rounded-tr-lg font-medium text-center">
+                  {t("guide.pyramid.table.star")}
+                </th>
               </tr>
             </thead>
             <tbody>
-              {matrix.map((row, i) => (
+              {content.matrix.map((row, i) => (
                 <tr key={i} className={i % 2 === 0 ? "bg-muted" : "bg-card"}>
                   <td className="px-4 py-3 text-foreground">{row.q}</td>
                   <td className="px-4 py-3 text-center">
                     {row.pyramid ? (
                       <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">
-                        ✓ Oui
+                        {t("guide.pyramid.table.yes")}
                       </span>
                     ) : (
                       <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">
@@ -242,7 +203,7 @@ export function BlocPyramid() {
                   <td className="px-4 py-3 text-center">
                     {row.star ? (
                       <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded text-xs font-medium">
-                        ✓ Oui
+                        {t("guide.pyramid.table.yes")}
                       </span>
                     ) : (
                       <span className="bg-slate-100 text-slate-400 px-2 py-0.5 rounded text-xs">
@@ -258,43 +219,32 @@ export function BlocPyramid() {
       </div>
 
       <div className="mt-10 mb-8">
-        <GuideSectionTitle>Gagner du temps / gérer un blanc</GuideSectionTitle>
-        <p className="text-muted-foreground text-sm font-light mb-4">
-          Un silence de 3 secondes paraît long en entretien. Ces réflexes achètent du temps sans
-          perdre en crédibilité — en combinant avec Pyramid (conclusion d&apos;abord).
-        </p>
+        <GuideSectionTitle>{t("guide.pyramid.section.timeBuying")}</GuideSectionTitle>
+        <p className="text-muted-foreground text-sm font-light mb-4">{content.timeBuyingIntro}</p>
         <div className="grid sm:grid-cols-2 gap-4 mb-4">
           <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
             <div className="text-xs uppercase tracking-wider text-emerald-700 font-semibold mb-2">
-              Phrases utiles
+              {t("guide.pyramid.usefulPhrases")}
             </div>
             <ul className="text-foreground text-sm space-y-2 list-disc list-inside">
-              <li>« Si je reformule bien, vous me demandez… »</li>
-              <li>« Je vais structurer ma réponse en trois points. »</li>
-              <li>« En synthèse : [conclusion]. Détail : … »</li>
-              <li>« Puis-je prendre quelques secondes pour organiser ma pensée ? »</li>
-              <li>« Côté chiffres, l&apos;ordre de grandeur est… » (avant le calcul exact)</li>
+              {content.usefulPhrases.map((phrase) => (
+                <li key={phrase}>{phrase}</li>
+              ))}
             </ul>
           </div>
           <div className="bg-rose-50 border border-rose-200 rounded-xl p-4">
             <div className="text-xs uppercase tracking-wider text-rose-700 font-semibold mb-2">
-              À éviter
+              {t("guide.pyramid.toAvoid")}
             </div>
             <ul className="text-foreground text-sm space-y-2 list-disc list-inside">
-              <li>Silence total sans annoncer la structure</li>
-              <li>Inventer un chiffre pour « remplir »</li>
-              <li>« Je ne sais pas » sans proposer une piste</li>
-              <li>Partir dans le détail avant la conclusion</li>
+              {content.avoidPhrases.map((phrase) => (
+                <li key={phrase}>{phrase}</li>
+              ))}
             </ul>
           </div>
         </div>
-        <p className="text-muted-foreground text-xs font-light italic">
-          Règle : même sous pression, donner une conclusion en 10 secondes — puis approfondir ou
-          demander une précision.
-        </p>
+        <p className="text-muted-foreground text-xs font-light italic">{content.timeBuyingRule}</p>
       </div>
     </>
   );
 }
-
-// =====================================================

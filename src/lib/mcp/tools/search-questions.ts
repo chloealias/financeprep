@@ -1,6 +1,7 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { questions } from "@/data/questions";
+import { getQuestions } from "@/data/questions";
+import { DEFAULT_LOCALE, type AppLocale } from "@/lib/i18n/types";
 
 export default defineTool({
   name: "search_questions",
@@ -10,27 +11,32 @@ export default defineTool({
   inputSchema: {
     query: z
       .string()
-      .describe("Free-text keyword matched against the question text and model answer. Use empty string to match all.")
+      .describe(
+        "Free-text keyword matched against the question text and model answer. Use empty string to match all.",
+      )
       .default(""),
     category: z
       .string()
       .optional()
-      .describe("Optional category filter (e.g. 'valuation', 'dcf', 'ma', 'lbo', 'accounting', 'ts', 'fit')."),
+      .describe(
+        "Optional category filter (e.g. 'valuation', 'dcf', 'ma', 'lbo', 'accounting', 'ts', 'fit').",
+      ),
     difficulty: z
       .string()
       .optional()
       .describe("Optional difficulty filter (e.g. 'basique', 'intermédiaire', 'avancé')."),
-    limit: z
-      .number()
-      .int()
-      .describe("Max number of results. Use 20 by default.")
-      .default(20),
+    locale: z
+      .enum(["fr", "en"])
+      .optional()
+      .describe("Content locale. Defaults to French."),
+    limit: z.number().int().describe("Max number of results. Use 20 by default.").default(20),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: ({ query, category, difficulty, limit }) => {
+  handler: ({ query, category, difficulty, locale, limit }) => {
     const q = query.trim().toLowerCase();
-    const results = questions
-      .filter((item: any) => {
+    const contentLocale = (locale ?? DEFAULT_LOCALE) as AppLocale;
+    const results = getQuestions(contentLocale)
+      .filter((item) => {
         if (category && item.category !== category) return false;
         if (difficulty && item.difficulty !== difficulty) return false;
         if (!q) return true;
@@ -40,7 +46,7 @@ export default defineTool({
         return hay.includes(q);
       })
       .slice(0, Math.max(1, Math.min(limit, 100)))
-      .map((item: any) => ({
+      .map((item) => ({
         id: item.id,
         category: item.category,
         difficulty: item.difficulty,

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, RotateCcw, CheckCircle2, AlertTriangle, Sparkles, Eye } from "lucide-react";
-import { questions } from "@/data/questions";
-import { concepts } from "@/data/concepts";
+import { getQuestions } from "@/data/questions";
+import { getConcepts } from "@/data/concepts";
 import { getCategoryLabel } from "@/lib/categories";
 import {
   buildQueue,
@@ -17,6 +17,8 @@ import { AcronymText } from "@/components/interview/AcronymText";
 import { defaultHomeSearch } from "@/lib/route-search";
 import { logDailyActivity } from "@/lib/daily-goal";
 import { useT } from "@/hooks/useT";
+import type { AppLocale } from "@/lib/i18n/types";
+import type { Question } from "@/data/questions";
 
 type CardSource = "question" | "concept";
 
@@ -42,30 +44,32 @@ function summarizeSteps(steps: string[], max = 3): { preview: string; rest: numb
   return { preview, rest: Math.max(0, steps.length - max) };
 }
 
-function buildAllCards(): Flashcard[] {
-  const qCards: Flashcard[] = (questions as Array<(typeof questions)[number]>).map((q) => {
-    const steps = (q!.steps ?? []) as string[];
+function buildAllCards(locale: AppLocale): Flashcard[] {
+  const questions = getQuestions(locale);
+  const qCards: Flashcard[] = questions.map((q: Question) => {
+    const steps = q.steps ?? [];
     const { preview, rest } = summarizeSteps(steps);
     return {
-      id: `q-${q!.id}`,
-      source: "question",
-      category: q!.category,
-      difficulty: q!.difficulty,
-      front: q!.question,
-      back: preview || (q!.explanation ?? ""),
+      id: `q-${q.id}`,
+      source: "question" as const,
+      category: q.category,
+      difficulty: q.difficulty,
+      front: q.question,
+      back: preview || q.explanation || "",
       backSteps: steps,
       moreStepsRest: rest > 0 ? rest : undefined,
-      hint: q!.tip,
-      hubQuestionId: String(q!.id),
+      hint: q.tip,
+      hubQuestionId: String(q.id),
     };
   });
-  const cCards: Flashcard[] = (concepts as Array<(typeof concepts)[number]>).map((c) => ({
-    id: `c-${c!.id}`,
-    source: "concept",
-    category: c!.category,
-    front: c!.title,
-    back: c!.simple,
-    hint: c!.formula,
+  const concepts = getConcepts(locale);
+  const cCards: Flashcard[] = concepts.map((c) => ({
+    id: `c-${c.id}`,
+    source: "concept" as const,
+    category: c.category,
+    front: c.title,
+    back: c.simple,
+    hint: c.formula,
   }));
   return [...qCards, ...cCards];
 }
@@ -73,7 +77,8 @@ function buildAllCards(): Flashcard[] {
 type Mode = "menu" | "session" | "done";
 
 export function FlashcardSession() {
-  const allCards = useMemo(() => buildAllCards(), []);
+  const { locale } = useT();
+  const allCards = useMemo(() => buildAllCards(locale), [locale]);
 
   const [store, setStore] = useState<SrsStore>({});
   const [mode, setMode] = useState<Mode>("menu");

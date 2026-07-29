@@ -17,16 +17,16 @@ import { DetailSheet } from "@/components/hub/DetailSheet";
 import { PageHeader } from "@/components/ui/page-header";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
-  BANK_LIST,
+  getBankProfiles,
   getBankById,
   getBanksByCategory,
   getDealsForBank,
   type BankProfile,
 } from "@/data/bank-profiles";
 import {
-  BANK_CATEGORY_FILTERS,
   BANK_CATEGORY_IDS,
-  BANK_CATEGORY_META,
+  getBankCategoryFilters,
+  getBankCategoryMeta,
   type BankCategoryFilter,
 } from "@/lib/bank-categories";
 import {
@@ -38,6 +38,8 @@ import {
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import type { HomeSearch } from "@/lib/route-search";
+import { useT } from "@/hooks/useT";
+import { pluralSuffix } from "@/lib/i18n/t";
 
 function matchesSearch(bank: BankProfile, query: string): boolean {
   const q = query.trim().toLowerCase();
@@ -59,6 +61,7 @@ function bankPassesHubFilters(
 }
 
 export function BankHubPage() {
+  const { t, locale } = useT();
   const { bank: bankFromUrl } = Route.useSearch();
   const navigate = Route.useNavigate();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -77,10 +80,11 @@ export function BankHubPage() {
 
   const targetIdSet = useMemo(() => new Set(targetIds), [targetIds]);
 
-  const selectedBankId = bankFromUrl && getBankById(bankFromUrl) ? bankFromUrl : null;
-  const selectedBank = selectedBankId ? getBankById(selectedBankId) : null;
+  const selectedBankId = bankFromUrl && getBankById(bankFromUrl, locale) ? bankFromUrl : null;
+  const selectedBank = selectedBankId ? getBankById(selectedBankId, locale) : null;
   const detailOpen = selectedBankId !== null;
   const captureScroll = usePreserveScrollOnDetailClose(detailOpen);
+  const bankProfiles = getBankProfiles(locale);
 
   const visibleCategories = useMemo(() => {
     if (categoryFilter !== "all") return [categoryFilter];
@@ -94,22 +98,22 @@ export function BankHubPage() {
 
   const visibleBankIds = useMemo(() => {
     const ids = new Set<string>();
-    for (const bank of BANK_LIST) {
+    for (const bank of bankProfiles) {
       if (bankPassesHubFilters(bank, filterOpts)) ids.add(bank.id);
     }
     return ids;
-  }, [filterOpts]);
+  }, [filterOpts, bankProfiles]);
 
   const sections = useMemo(() => {
     return visibleCategories
       .map((categoryId) => {
-        const banks = getBanksByCategory(categoryId).filter((b) =>
+        const banks = getBanksByCategory(categoryId, locale).filter((b) =>
           bankPassesHubFilters(b, filterOpts),
         );
         return { categoryId, banks };
       })
       .filter((s) => s.banks.length > 0);
-  }, [visibleCategories, filterOpts]);
+  }, [visibleCategories, filterOpts, locale]);
 
   const handleSelectBank = (id: string, trigger?: HTMLButtonElement | null) => {
     if (trigger) lastTriggerRef.current = trigger;
@@ -167,22 +171,24 @@ export function BankHubPage() {
   }, [detailOpen, handleClose]);
 
   const showTargetsChip = targetIds.length > 0;
+  const categoryFilters = useMemo(() => getBankCategoryFilters(t), [t]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <PageHeader
-        eyebrow="Ciblage entretien"
+        eyebrow={t("hub.banks.eyebrow")}
         title={
           <>
-            Fiches <span className="type-accent">banques</span>
+            {t("hub.banks.titlePrefix")}{" "}
+            <span className="type-accent">{t("hub.banks.titleAccent")}</span>
           </>
         }
-        description={`${BANK_LIST.length} banques de conseil et groupes intégrés — fiches pour préparer vos entretiens M&A.`}
+        description={t("hub.banks.description", { count: bankProfiles.length })}
         className="max-w-2xl"
       />
 
       <div className="flex flex-wrap gap-2 mb-4">
-        {BANK_CATEGORY_FILTERS.map(({ id, label }) => (
+        {categoryFilters.map(({ id, label }) => (
           <GuideChipButton
             key={id}
             size="sm"
@@ -196,19 +202,15 @@ export function BankHubPage() {
           </GuideChipButton>
         ))}
         {showTargetsChip && (
-          <GuideChipButton
-            size="sm"
-            active={targetsOnly}
-            onClick={() => setTargetsOnly((v) => !v)}
-          >
-            Mes banques ({targetIds.length})
+          <GuideChipButton size="sm" active={targetsOnly} onClick={() => setTargetsOnly((v) => !v)}>
+            {t("hub.banks.myBanks", { count: targetIds.length })}
           </GuideChipButton>
         )}
       </div>
 
       <div className="mb-8 relative max-w-md">
         <label htmlFor="bank-search" className="sr-only">
-          Rechercher une banque
+          {t("hub.banks.searchLabel")}
         </label>
         <Search
           className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
@@ -219,14 +221,14 @@ export function BankHubPage() {
           type="search"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Rechercher par nom…"
+          placeholder={t("hub.banks.searchPlaceholder")}
           className="w-full rounded-lg border border-border bg-card/80 pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
         />
       </div>
 
       {sections.length === 0 ? (
         <p className="text-muted-foreground text-sm font-light italic text-center py-8">
-          Aucune banque ne correspond à votre recherche.
+          {t("hub.banks.empty")}
         </p>
       ) : (
         <div className="space-y-10 mb-6 md:mt-0">
@@ -234,13 +236,13 @@ export function BankHubPage() {
             <section key={categoryId}>
               <div className="mb-4">
                 <h3 className="text-lg font-serif text-foreground">
-                  {BANK_CATEGORY_META[categoryId].label}
+                  {getBankCategoryMeta(categoryId, t).label}
                   <span className="text-muted-foreground text-sm font-light ml-2">
                     ({banks.length})
                   </span>
                 </h3>
                 <p className="text-muted-foreground text-sm font-light mt-1">
-                  {BANK_CATEGORY_META[categoryId].description}
+                  {getBankCategoryMeta(categoryId, t).description}
                 </p>
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -260,9 +262,7 @@ export function BankHubPage() {
                           type="button"
                           onClick={(e) => handleToggleTarget(bank.id, e)}
                           className="absolute top-1 right-1 z-10 touch-target rounded-full text-muted-foreground hover:text-primary hover:bg-muted transition-colors"
-                          aria-label={
-                            isFav ? "Retirer des banques cibles" : "Ajouter aux banques cibles"
-                          }
+                          aria-label={t(isFav ? "hub.banks.target.remove" : "hub.banks.target.add")}
                         >
                           <Star className={`w-4 h-4 ${isFav ? "fill-primary text-primary" : ""}`} />
                         </button>
@@ -290,7 +290,10 @@ export function BankHubPage() {
                                   onClick={(e) => e.stopPropagation()}
                                   className="text-xs font-medium uppercase tracking-wide text-primary bg-primary/10 hover:bg-primary/20 px-1.5 py-0.5 rounded transition-colors"
                                 >
-                                  {dealCount} deal{dealCount > 1 ? "s" : ""}
+                                  {t("hub.banks.dealCount", {
+                                    count: dealCount,
+                                    s: pluralSuffix(dealCount, locale),
+                                  })}
                                 </Link>
                               )}
                             </div>
@@ -321,7 +324,7 @@ export function BankHubPage() {
           onOpenChange={(open) => {
             if (!open) handleClose();
           }}
-          title={`Fiche ${selectedBank.name}`}
+          title={t("hub.banks.sheetTitle", { name: selectedBank.name })}
           returnFocusRef={lastTriggerRef}
         >
           <BankPanel bank={selectedBank} onClose={handleClose} />

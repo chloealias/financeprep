@@ -1,6 +1,7 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { concepts } from "@/data/concepts";
+import { getConcepts } from "@/data/concepts";
+import { DEFAULT_LOCALE, type AppLocale } from "@/lib/i18n/types";
 
 export default defineTool({
   name: "list_concepts",
@@ -10,20 +11,25 @@ export default defineTool({
   inputSchema: {
     id: z.string().optional().describe("If provided, return only the concept with this id (e.g. 'c1')."),
     category: z.string().optional().describe("Optional category filter."),
+    locale: z
+      .enum(["fr", "en"])
+      .optional()
+      .describe("Content locale. Defaults to French."),
     includeDeepDive: z
       .boolean()
       .describe("Include the long-form explanation and tables. Set to false for a compact list.")
       .default(false),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: ({ id, category, includeDeepDive }) => {
-    const filtered = concepts.filter((c: any) => {
+  handler: ({ id, category, locale, includeDeepDive }) => {
+    const contentLocale = (locale ?? DEFAULT_LOCALE) as AppLocale;
+    const filtered = getConcepts(contentLocale).filter((c) => {
       if (id && c.id !== id) return false;
       if (category && c.category !== category) return false;
       return true;
     });
 
-    const results = filtered.map((c: any) => ({
+    const results = filtered.map((c) => ({
       id: c.id,
       category: c.category,
       title: c.title,

@@ -18,8 +18,8 @@ export function QuestionEnrichedPanel({
   steps,
   tip,
 }: QuestionEnrichedPanelProps) {
-  const { t } = useT();
-  const enrichment = getQuestionEnrichment(questionId);
+  const { t, locale } = useT();
+  const enrichment = getQuestionEnrichment(questionId, locale);
   const hasEnrichment = Boolean(
     enrichment?.answerJunior ||
       enrichment?.answerSenior ||

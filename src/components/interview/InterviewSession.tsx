@@ -70,13 +70,13 @@ function itemTip(item: InterviewPackItem): string | undefined {
 }
 
 export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: Props) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const ratings = useMemo(() => (typeof window !== "undefined" ? loadRatings() : {}), []);
   const srsStore = useMemo(() => (typeof window !== "undefined" ? loadSrsStore() : {}), []);
 
   const pack = useMemo(
-    () => buildInterviewPack({ ratings, srsStore, size: packSize }),
-    [ratings, srsStore, packSize],
+    () => buildInterviewPack({ ratings, srsStore, size: packSize, locale }),
+    [ratings, srsStore, packSize, locale],
   );
 
   const [phase, setPhase] = useState<Phase>("playing");
@@ -168,7 +168,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
     const ans: SessionAnswer = {
       itemKind: current.kind,
       itemId,
-      label: packItemLabel(current),
+      label: packItemLabel(current, t),
       category: packItemCategory(current),
       question: itemQuestion(current),
       stars,
@@ -210,7 +210,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
 
   const progress = (index / total) * 100;
   const danger = remainingQ < 30_000;
-  const guideLinks = getPackItemGuideLinks(current);
+  const guideLinks = getPackItemGuideLinks(current, t);
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
@@ -254,7 +254,7 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
         <span className="text-xs font-medium uppercase tracking-wider text-primary bg-primary/10 py-1 px-2.5 rounded border border-primary/20">
-          {packItemLabel(current)}
+          {packItemLabel(current, t)}
         </span>
         {current.kind === "question" && (
           <>
@@ -388,7 +388,7 @@ function InterviewResults({
   onRestart: () => void;
   onBack: () => void;
 }) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const [copied, setCopied] = useState(false);
   const [srsAdded, setSrsAdded] = useState(false);
 
@@ -408,7 +408,7 @@ function InterviewResults({
     avgStars: avg,
   };
 
-  const markdown = buildInterviewMarkdown(session, weakCats);
+  const markdown = buildInterviewMarkdown(session, weakCats, locale);
 
   const copyReport = async () => {
     try {
@@ -577,12 +577,12 @@ export function InterviewSessionSetup({
   onStart: () => void;
   onBack: () => void;
 }) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const ratings = useMemo(() => (typeof window !== "undefined" ? loadRatings() : {}), []);
   const srsStore = useMemo(() => (typeof window !== "undefined" ? loadSrsStore() : {}), []);
   const pack = useMemo(
-    () => buildInterviewPack({ ratings, srsStore, size: packSize }),
-    [ratings, srsStore, packSize],
+    () => buildInterviewPack({ ratings, srsStore, size: packSize, locale }),
+    [ratings, srsStore, packSize, locale],
   );
   const totalMin = Math.ceil(packTotalSeconds(pack) / 60);
 
@@ -612,7 +612,7 @@ export function InterviewSessionSetup({
             key={i}
             className="flex justify-between gap-4 text-sm bg-card rounded-lg border border-border px-4 py-3"
           >
-            <span className="text-foreground font-medium">{packItemLabel(item)}</span>
+            <span className="text-foreground font-medium">{packItemLabel(item, t)}</span>
             <span className="text-muted-foreground tabular-nums">
               {t("interview.setup.itemDuration", { minutes: Math.round(item.secondsLimit / 60) })}
             </span>

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { CheckCircle2, RotateCcw } from "lucide-react";
 import type { Exercise, ExerciseVariant } from "@/data/exercise-types";
-import { EXERCISE_THEME_LABELS } from "@/data/exercise-types";
+import { getExerciseThemeLabel } from "@/data/exercise-types";
 import { checkNumericAnswer } from "@/lib/exercise-check";
 import { AcronymText } from "@/components/interview/AcronymText";
 import { useT } from "@/hooks/useT";
@@ -39,9 +39,7 @@ export function ExercisePlayer({ exercise, solved, onSolved }: ExercisePlayerPro
       resetAttempt(variantIndex);
       return;
     }
-    const candidates = exercise.variants
-      .map((_, i) => i)
-      .filter((i) => i !== variantIndex);
+    const candidates = exercise.variants.map((_, i) => i).filter((i) => i !== variantIndex);
     const next = candidates[Math.floor(Math.random() * candidates.length)] ?? 0;
     resetAttempt(next);
   };
@@ -85,7 +83,7 @@ export function ExercisePlayer({ exercise, solved, onSolved }: ExercisePlayerPro
       <div className="flex items-center gap-2 flex-wrap mb-2">
         <span className="text-xs font-semibold text-primary tabular-nums">{exercise.id}</span>
         <span className="text-xs text-muted-foreground">
-          {EXERCISE_THEME_LABELS[exercise.theme]}
+          {getExerciseThemeLabel(exercise.theme, t)}
         </span>
         {solved && (
           <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400">
@@ -145,9 +143,7 @@ export function ExercisePlayer({ exercise, solved, onSolved }: ExercisePlayerPro
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border text-sm font-medium hover:bg-muted"
           >
             <RotateCcw className="w-3.5 h-3.5" aria-hidden />
-            {hasOtherVariants
-              ? t("hub.exercises.retryOther")
-              : t("hub.exercises.retrySame")}
+            {hasOtherVariants ? t("hub.exercises.retryOther") : t("hub.exercises.retrySame")}
           </button>
         )}
 
@@ -240,9 +236,9 @@ function VariantInput({
             if (e.key === "Enter") {
               e.preventDefault();
               (
-                e.currentTarget.closest("article")?.querySelector("[data-check]") as
-                  | HTMLButtonElement
-                  | null
+                e.currentTarget
+                  .closest("article")
+                  ?.querySelector("[data-check]") as HTMLButtonElement | null
               )?.click();
             }
           }}
@@ -281,7 +277,5 @@ function VariantInput({
     );
   }
 
-  return (
-    <p className="text-sm text-muted-foreground italic">{t("hub.exercises.openHint")}</p>
-  );
+  return <p className="text-sm text-muted-foreground italic">{t("hub.exercises.openHint")}</p>;
 }

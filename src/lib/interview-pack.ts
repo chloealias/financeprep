@@ -1,11 +1,15 @@
-import { questions } from "@/data/questions";
-import { MA_DEALS, type MaDeal } from "@/data/ma-deals";
-import { SECTOR_DATA } from "@/data/sector-data";
+import { getQuestions } from "@/data/questions";
+import { getMaDeals, type MaDeal } from "@/data/ma-deals";
+import { getSectorData } from "@/data/sector-data";
 import { SECTOR_IDS, type SectorId } from "@/lib/sectors";
 import { shuffle, type SrsStore } from "@/lib/srs";
 import { getTargetBankNames, loadProfile, type UserProfile } from "@/lib/profile-storage";
 import { questionIdKey, type QuestionRatings } from "@/lib/storage";
 import { dealMatchesBank } from "@/data/bank-profiles";
+import type { TranslateFn } from "@/lib/i18n/t";
+import { createTranslator } from "@/lib/i18n/t";
+import { DEFAULT_LOCALE, type AppLocale } from "@/lib/i18n/types";
+import type { Question } from "@/data/questions";
 
 export type InterviewSlot = "opening" | "fit" | "technical" | "actu" | "sector" | "brainteaser";
 
@@ -20,18 +24,30 @@ export const SLOT_SECONDS: Record<InterviewSlot, number> = {
   brainteaser: 240,
 };
 
-export const CV_OPENING = {
-  id: "opening-cv",
-  question: "Walk me through your CV",
-  steps: [
-    "Structure en 2 minutes max : formation → expériences (ordre chronologique inverse) → pourquoi ce poste maintenant.",
-    "Fil directeur : une phrase qui relie tout le parcours (secteur, géographie, type de deals visé).",
-    "Chaque expérience : contexte (1 phrase) → votre rôle → 1 chiffre ou résultat concret.",
-    "Terminer par : « C'est pourquoi ce poste chez [banque] est la suite logique de mon parcours. »",
-  ],
-  tip: "Préparer avec le timer 2 min du guide CV. Éviter de lire le CV — raconter une histoire.",
-  guideHref: "/cv" as const,
+const defaultT = createTranslator(DEFAULT_LOCALE);
+
+export type CvOpening = {
+  id: string;
+  question: string;
+  steps: string[];
+  tip: string;
+  guideHref: "/cv";
 };
+
+export function getCvOpening(translate: TranslateFn = defaultT): CvOpening {
+  return {
+    id: "opening-cv",
+    question: translate("interviewPack.cv.question"),
+    steps: [
+      translate("interviewPack.cv.step1"),
+      translate("interviewPack.cv.step2"),
+      translate("interviewPack.cv.step3"),
+      translate("interviewPack.cv.step4"),
+    ],
+    tip: translate("interviewPack.cv.tip"),
+    guideHref: "/cv",
+  };
+}
 
 export type BaseQuestionFields = {
   id: string;
@@ -46,7 +62,7 @@ export type OpeningPackItem = {
   kind: "opening";
   slot: "opening";
   secondsLimit: number;
-} & typeof CV_OPENING;
+} & CvOpening;
 
 export type QuestionPackItem = {
   kind: "question";
@@ -85,18 +101,9 @@ export type PackGuideLink = {
 
 export type InterviewPackItem = OpeningPackItem | QuestionPackItem | DealPackItem | SectorPackItem;
 
-export const FIT_QUESTION_IDS = new Set([
-  "58",
-  "59",
-  "67",
-  "123",
-  "124",
-  "125",
-  "129",
-  "130",
-]);
+export const FIT_QUESTION_IDS = new Set(["58", "59", "67", "123", "124", "125", "129", "130"]);
 
-type RawQuestion = (typeof questions)[number];
+type RawQuestion = Question;
 
 function rawQuestionForSlot(q: RawQuestion) {
   return {
@@ -244,25 +251,29 @@ function pickFitQuestion(
   };
 }
 
-function buildDealItem(deal: MaDeal): DealPackItem {
+function buildDealItem(deal: MaDeal, translate: TranslateFn): DealPackItem {
   return {
     kind: "deal",
     slot: "actu",
     secondsLimit: SLOT_SECONDS.actu,
     dealId: deal.id,
     dealTitle: deal.title,
-    question: `Actualité M&A — ${deal.title}`,
+    question: translate("interviewPack.deal.question", { title: deal.title }),
     steps: [
       deal.pointEntretien,
-      deal.headlineEv ? `Valorisation / taille : ${deal.headlineEv}` : "",
+      deal.headlineEv ? translate("interviewPack.deal.valuation", { value: deal.headlineEv }) : "",
       deal.contexte ?? "",
     ].filter(Boolean),
-    tip: "Structure : contexte → logique stratégique → valorisation → ce que vous en retiendriez pour un client.",
+    tip: translate("interviewPack.deal.tip"),
   };
 }
 
-function buildSectorItem(sectorId: SectorId): SectorPackItem {
-  const s = SECTOR_DATA[sectorId];
+function buildSectorItem(
+  sectorId: SectorId,
+  translate: TranslateFn,
+  locale: AppLocale = DEFAULT_LOCALE,
+): SectorPackItem {
+  const s = getSectorData(locale)[sectorId];
   return {
     kind: "sector",
     slot: "sector",
@@ -271,19 +282,28 @@ function buildSectorItem(sectorId: SectorId): SectorPackItem {
     sectorName: s.name,
     emblematicDealId: s.emblematicDealId,
     question: s.question,
-    steps: [s.reponse, `Secteur : ${s.tag} — ${s.panorama.tailleMarche}`],
-    tip: "Relier la réponse à un deal récent du secteur si possible.",
+    steps: [
+      s.reponse,
+      translate("interviewPack.sector.context", {
+        tag: s.tag,
+        marketSize: s.panorama.tailleMarche,
+      }),
+    ],
+    tip: translate("interviewPack.sector.tip"),
   };
 }
 
-export function getPackItemGuideLinks(item: InterviewPackItem): PackGuideLink[] {
+export function getPackItemGuideLinks(
+  item: InterviewPackItem,
+  translate: TranslateFn = defaultT,
+): PackGuideLink[] {
   if (item.kind === "opening") {
-    return [{ label: "Ouvrir le guide CV →", to: item.guideHref }];
+    return [{ label: translate("interviewPack.link.cvGuide"), to: item.guideHref }];
   }
   if (item.kind === "deal") {
     return [
       {
-        label: "Voir la fiche deal dans Actualité M&A →",
+        label: translate("interviewPack.link.dealSheet"),
         to: "/actualite",
         search: { deal: item.dealId },
       },
@@ -292,14 +312,14 @@ export function getPackItemGuideLinks(item: InterviewPackItem): PackGuideLink[] 
   if (item.kind === "sector") {
     const links: PackGuideLink[] = [
       {
-        label: "Fiche secteur →",
+        label: translate("interviewPack.link.sectorSheet"),
         to: "/",
         search: { tab: "secteurs", sector: item.sectorId },
       },
     ];
     if (item.emblematicDealId) {
       links.push({
-        label: "Deal emblématique du secteur →",
+        label: translate("interviewPack.link.emblematicDeal"),
         to: "/actualite",
         search: { deal: item.emblematicDealId },
       });
@@ -317,10 +337,15 @@ export type BuildInterviewPackOptions = {
   preferredSectorIds?: SectorId[];
   /** Noms de banques cibles pour biaiser les deals actu. */
   targetBankNames?: string[];
+  /** Langue des libellés générés (question d'ouverture, deals, sectoriel). */
+  locale?: AppLocale;
 };
 
-export function pickDealForPack(bankNames: string[]): MaDeal | undefined {
-  const base = MA_DEALS.filter((d) => d.kind === "deal" && d.pointEntretien.length > 20);
+export function pickDealForPack(
+  bankNames: string[],
+  locale: AppLocale = DEFAULT_LOCALE,
+): MaDeal | undefined {
+  const base = getMaDeals(locale).filter((d) => d.kind === "deal" && d.pointEntretien.length > 20);
   if (bankNames.length > 0) {
     const matched = base.filter((d) => bankNames.some((name) => dealMatchesBank(d, name)));
     if (matched.length > 0) return pickOne(matched);
@@ -335,6 +360,8 @@ function pickSectorForPack(preferred: SectorId[]): SectorId {
 
 export function buildInterviewPack(options: BuildInterviewPackOptions = {}): InterviewPackItem[] {
   const profile = typeof window !== "undefined" ? loadProfile() : null;
+  const locale = options.locale ?? DEFAULT_LOCALE;
+  const translate = createTranslator(locale);
   const bankNames = options.targetBankNames ?? getTargetBankNames();
   const sectors =
     options.preferredSectorIds ??
@@ -343,14 +370,14 @@ export function buildInterviewPack(options: BuildInterviewPackOptions = {}): Int
 
   const packSize = options.size ?? profile?.defaultPackSize ?? 5;
   const { ratings = {}, srsStore = {} } = options;
-  const pool = questions as RawQuestion[];
+  const pool = getQuestions(locale) as RawQuestion[];
   const excludeIds = new Set<string>();
 
   const opening: OpeningPackItem = {
     kind: "opening",
     slot: "opening",
     secondsLimit: SLOT_SECONDS.opening,
-    ...CV_OPENING,
+    ...getCvOpening(translate),
   };
 
   const pack: InterviewPackItem[] = [opening];
@@ -377,26 +404,26 @@ export function buildInterviewPack(options: BuildInterviewPackOptions = {}): Int
     }
   }
 
-  const deal = pickDealForPack(bankNames);
-  if (deal) pack.push(buildDealItem(deal));
+  const deal = pickDealForPack(bankNames, locale);
+  if (deal) pack.push(buildDealItem(deal, translate));
 
-  pack.push(buildSectorItem(pickSectorForPack(sectors)));
+  pack.push(buildSectorItem(pickSectorForPack(sectors), translate, locale));
 
   return pack.slice(0, packSize === 7 ? 7 : 5);
 }
 
-export function packItemLabel(item: InterviewPackItem): string {
+export function packItemLabel(item: InterviewPackItem, translate: TranslateFn = defaultT): string {
   switch (item.kind) {
     case "opening":
-      return "Ouverture CV";
+      return translate("interviewPack.label.opening");
     case "question":
-      if (item.slot === "fit") return "Fit / comportemental";
-      if (item.slot === "technical") return "Technique";
+      if (item.slot === "fit") return translate("interviewPack.label.fit");
+      if (item.slot === "technical") return translate("interviewPack.label.technical");
       return item.slot;
     case "deal":
-      return "Actualité M&A";
+      return translate("interviewPack.label.deal");
     case "sector":
-      return `Sectoriel · ${item.sectorName}`;
+      return translate("interviewPack.label.sector", { name: item.sectorName });
   }
 }
 

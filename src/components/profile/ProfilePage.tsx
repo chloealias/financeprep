@@ -14,7 +14,7 @@ import {
 import { TodayPlanWidget, TodayActionCard } from "@/components/hub/TodayPlanWidget";
 import { defaultHomeSearch } from "@/lib/route-search";
 import { getAllTodayActions, type TodayAction, type TodayActionId } from "@/lib/today-plan";
-import { SECTOR_DATA } from "@/data/sector-data";
+import { getSectorData } from "@/data/sector-data";
 import { AppearanceDialog } from "@/components/profile/AppearanceDialog";
 import { ProfileHero } from "@/components/profile/ProfileHero";
 import { ProfileDataSection } from "@/components/profile/ProfileDataSection";
@@ -48,6 +48,7 @@ import {
   type InterviewSessionRecord,
 } from "@/lib/storage";
 import { useT } from "@/hooks/useT";
+import { formatDateTime } from "@/lib/i18n/format";
 import { APP_LOCALES } from "@/lib/i18n/types";
 const defaultFilters = {
   activeCategory: "all",
@@ -83,9 +84,9 @@ export function ProfilePage() {
   const dashboard = useMemo(() => {
     if (!mounted) return null;
     void refreshKey;
-    return getProfileDashboard();
-  }, [mounted, refreshKey]);
-  const packSummary = useMemo(() => describePackPersonalization(profile), [profile]);
+    return getProfileDashboard(locale);
+  }, [mounted, refreshKey, locale]);
+  const packSummary = useMemo(() => describePackPersonalization(profile, locale), [profile, locale]);
   const sessions = useMemo(() => {
     if (!mounted) return [];
     void refreshKey;
@@ -231,7 +232,9 @@ export function ProfilePage() {
         <h2 className="type-section-title mb-3">{t("profile.goals")}</h2>
 
         <p className="mb-4 text-xs text-muted-foreground">
-          Simulations : {formatPackPersonalizationShort(packSummary)}
+          {t("profile.simulationsSummary", {
+            summary: formatPackPersonalizationShort(packSummary, t),
+          })}
           {!packSummary.hasBanks && ` ${t("profile.addBanks")}`}
           {!packSummary.hasSectors && ` ${t("profile.chooseSectors")}`}
         </p>
@@ -255,8 +258,9 @@ export function ProfilePage() {
             {t("profile.sectorsOfInterest")}
           </span>
           <div className="flex flex-wrap gap-2">
-            {(Object.keys(SECTOR_DATA) as SectorId[]).map((id) => {
+            {(Object.keys(getSectorData(locale)) as SectorId[]).map((id) => {
               const selected = (profile.sectorIds ?? []).includes(id);
+              const sectorName = getSectorData(locale)[id].name;
               return (
                 <div
                   key={id}
@@ -276,7 +280,7 @@ export function ProfilePage() {
                     className="touch-target-bar px-3"
                     aria-pressed={selected}
                   >
-                    {SECTOR_DATA[id].name}
+                    {sectorName}
                   </button>
                   <Link
                     to="/"
@@ -286,7 +290,7 @@ export function ProfilePage() {
                         ? "text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted"
                     }`}
-                    aria-label={t("profile.sectorSheetAria", { name: SECTOR_DATA[id].name })}
+                    aria-label={t("profile.sectorSheetAria", { name: sectorName })}
                     title={t("profile.viewSectorSheet")}
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -397,7 +401,7 @@ function SessionRow({ session }: { session: InterviewSessionRecord }) {
           ? t("profile.sessionMode.simulation")
           : t("profile.sessionMode.mini")}{" "}
         ·{" "}
-        {new Date(session.startedAt).toLocaleString(locale === "en" ? "en-GB" : "fr-FR", {
+        {formatDateTime(session.startedAt, locale, {
           day: "numeric",
           month: "short",
         })}{" "}
@@ -406,7 +410,7 @@ function SessionRow({ session }: { session: InterviewSessionRecord }) {
       <span className="flex gap-2">
         <button
           type="button"
-          onClick={() => downloadSessionReport(session)}
+          onClick={() => downloadSessionReport(session, locale)}
           className="touch-target-bar text-primary hover:text-primary/80 font-medium text-xs"
         >
           {t("profile.sessionReport")}

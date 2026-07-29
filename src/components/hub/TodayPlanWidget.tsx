@@ -47,7 +47,7 @@ export function TodayPlanWidget({
   showStreak = true,
   className = "",
 }: TodayPlanWidgetProps) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
 
@@ -59,7 +59,7 @@ export function TodayPlanWidget({
     if (!mounted) {
       return { actions: [] as TodayAction[], interviewPlan: null, streak: 0, masteredPct: 0 };
     }
-    const dashboard = getProfileDashboard();
+    const dashboard = getProfileDashboard(locale);
     const profile = loadProfile();
     return {
       actions: getPrioritizedTodayActions(dashboard, profile, maxCards, t),
@@ -67,7 +67,7 @@ export function TodayPlanWidget({
       streak: getStreak(),
       masteredPct: dashboard.masteredPct,
     };
-  }, [mounted, maxCards, t]);
+  }, [mounted, maxCards, t, locale]);
 
   const handleAction = (action: TodayAction) => {
     if (action.onClickKey === "weak") {
@@ -100,7 +100,9 @@ export function TodayPlanWidget({
         <div>
           <h2 className="type-section-title">{t("hub.today.title")}</h2>
           {interviewPlan && (
-            <p className="text-sm text-muted-foreground font-light mt-1 max-w-xl">{interviewPlan}</p>
+            <p className="text-sm text-muted-foreground font-light mt-1 max-w-xl">
+              {interviewPlan}
+            </p>
           )}
         </div>
         <div className="flex items-center gap-3 text-sm">
@@ -125,9 +127,7 @@ export function TodayPlanWidget({
         </div>
       </div>
 
-      <div
-        className={`grid gap-3 ${compact ? "sm:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-3"}`}
-      >
+      <div className={`grid gap-3 ${compact ? "sm:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
         {actions.map((action) => (
           <TodayActionCard
             key={action.id}

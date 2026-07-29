@@ -1,9 +1,4 @@
-export type QuestionEnrichment = {
-  answerJunior?: string;
-  answerSenior?: string;
-  commonMistakes?: string[];
-  followUp?: string;
-};
+import type { QuestionEnrichment } from "./types";
 
 /** Enriched coaching content for pilot questions (by id). */
 export const QUESTION_ENRICHMENTS: Record<number, QuestionEnrichment> = {
@@ -220,7 +215,3 @@ export const QUESTION_ENRICHMENTS: Record<number, QuestionEnrichment> = {
   },
 };
 
-export function getQuestionEnrichment(id: string | number): QuestionEnrichment | undefined {
-  const n = typeof id === "number" ? id : Number(id);
-  return Number.isFinite(n) ? QUESTION_ENRICHMENTS[n] : undefined;
-}

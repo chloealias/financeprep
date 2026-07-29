@@ -11,6 +11,7 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { defaultHomeSearch } from "@/lib/route-search";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider";
+import { documentLocale, documentTranslator } from "@/lib/i18n/route-head";
 import { useT } from "@/hooks/useT";
 
 function NotFoundComponent() {
@@ -72,57 +73,46 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const SHARE_IMAGE_URL =
+  "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ff221957-ef99-400d-8632-c3cab079622b/id-preview-2f9b0169--0e6fe215-6b60-453a-8dd2-46037b9e114c.lovable.app-1778586796895.png";
+
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1, viewport-fit=cover",
-      },
-      { name: "theme-color", content: "#1e3a8a" },
-      { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "mobile-web-app-capable", content: "yes" },
-      { title: "FinancePrep" },
-      {
-        name: "description",
-        content:
-          "Préparez vos entretiens en finance : questions, notions, fiches banques et secteurs, actualité M&A et guides CV.",
-      },
-      { name: "author", content: "FinancePrep" },
-      { property: "og:title", content: "FinancePrep" },
-      {
-        property: "og:description",
-        content:
-          "Préparez vos entretiens en finance : questions, notions, fiches banques et secteurs, actualité M&A et guides CV.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "FinancePrep" },
-      {
-        name: "twitter:description",
-        content:
-          "Préparez vos entretiens en finance : questions, notions, fiches banques et secteurs, actualité M&A et guides CV.",
-      },
-      {
-        property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ff221957-ef99-400d-8632-c3cab079622b/id-preview-2f9b0169--0e6fe215-6b60-453a-8dd2-46037b9e114c.lovable.app-1778586796895.png",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ff221957-ef99-400d-8632-c3cab079622b/id-preview-2f9b0169--0e6fe215-6b60-453a-8dd2-46037b9e114c.lovable.app-1778586796895.png",
-      },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-    ],
-  }),
+  head: () => {
+    const translate = documentTranslator();
+    const title = translate("routes.root.title");
+    const description = translate("routes.root.description");
+
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1, viewport-fit=cover",
+        },
+        { name: "theme-color", content: "#1e3a8a" },
+        { name: "apple-mobile-web-app-capable", content: "yes" },
+        { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+        { name: "mobile-web-app-capable", content: "yes" },
+        { title },
+        { name: "description", content: description },
+        { name: "author", content: "FinancePrep" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+        { property: "og:image", content: SHARE_IMAGE_URL },
+        { name: "twitter:image", content: SHARE_IMAGE_URL },
+      ],
+      links: [
+        {
+          rel: "stylesheet",
+          href: appCss,
+        },
+      ],
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -131,7 +121,7 @@ export const Route = createRootRoute({
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang={documentLocale()}>
       <head>
         <HeadContent />
       </head>

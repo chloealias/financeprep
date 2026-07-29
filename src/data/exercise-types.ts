@@ -56,6 +56,7 @@ export const EXERCISE_THEMES: ExerciseTheme[] = [
   "working-capital",
 ];
 
+/** @deprecated Prefer getExerciseThemeLabel(theme, t) for localized labels. */
 export const EXERCISE_THEME_LABELS: Record<ExerciseTheme, string> = {
   leverage: "Leverage Math",
   accretion: "Accretion / Dilution",
@@ -65,3 +66,21 @@ export const EXERCISE_THEME_LABELS: Record<ExerciseTheme, string> = {
   merger: "Merger Consequences",
   "working-capital": "Working Capital",
 };
+
+const THEME_I18N_KEYS: Record<ExerciseTheme, string> = {
+  leverage: "hub.exercises.theme.leverage",
+  accretion: "hub.exercises.theme.accretion",
+  "paper-lbo": "hub.exercises.theme.paper-lbo",
+  dcf: "hub.exercises.theme.dcf",
+  "football-field": "hub.exercises.theme.football-field",
+  merger: "hub.exercises.theme.merger",
+  "working-capital": "hub.exercises.theme.working-capital",
+};
+
+/** Localized theme label via the app translator. */
+export function getExerciseThemeLabel(
+  theme: ExerciseTheme,
+  translate: (key: string) => string,
+): string {
+  return translate(THEME_I18N_KEYS[theme]);
+}

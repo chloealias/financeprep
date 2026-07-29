@@ -2,6 +2,7 @@ import { useState, type MouseEvent } from "react";
 import { BANK_LOGO_PATH, getBankBrand } from "@/data/bank-brand";
 import { ImageLightbox } from "@/components/ui/image-lightbox";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useT } from "@/hooks/useT";
 
 const SIZE_CLASS = {
   sm: "w-10 h-10 rounded-lg",
@@ -31,12 +32,13 @@ export function BankLogo({
   className = "",
   expandable = false,
 }: BankLogoProps) {
+  const { t } = useT();
   const [failed, setFailed] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { initials, color, logoOnDark, logoScale = 1 } = getBankBrand(bankId);
   const padClass = logoScale > 1 ? { sm: "p-0.5", md: "p-1", lg: "p-1" }[size] : PAD_CLASS[size];
-  const label = bankName ?? "Logo banque";
+  const label = bankName ?? t("hub.banks.logo.fallbackAlt");
   const canExpand = expandable && isMobile && !failed;
 
   const containerClass = `flex items-center justify-center flex-shrink-0 overflow-hidden shadow-sm border border-slate-200/80 ${SIZE_CLASS[size]} ${padClass} ${logoOnDark ? "" : "bg-white"} ${canExpand ? "" : className}`;
@@ -64,7 +66,7 @@ export function BankLogo({
               setLightboxOpen(true);
             }}
             className={`touch-target rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${className}`}
-            aria-label={`Agrandir le logo ${label}`}
+            aria-label={t("hub.banks.logo.expandAria", { name: label })}
           >
             {logoContent}
           </button>

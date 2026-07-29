@@ -1,23 +1,34 @@
 import type { InterviewSessionAnswer, InterviewSessionRecord } from "@/lib/storage";
 import { getCategoryLabel } from "@/lib/categories";
-import { SECTOR_DATA } from "@/data/sector-data";
+import { getSectorData } from "@/data/sector-data";
 import type { SectorId } from "@/lib/sectors";
+import type { TranslateFn } from "@/lib/i18n/t";
+import { createTranslator } from "@/lib/i18n/t";
+import { formatDateTime } from "@/lib/i18n/format";
+import { DEFAULT_LOCALE, type AppLocale } from "@/lib/i18n/types";
 
-function answerResourceLink(a: InterviewSessionAnswer): string | null {
+function answerResourceLink(
+  a: InterviewSessionAnswer,
+  translate: TranslateFn,
+  locale: AppLocale = DEFAULT_LOCALE,
+): string | null {
   if (a.itemKind === "deal") {
-    return `[Fiche deal — ${a.label}](/actualite?deal=${encodeURIComponent(a.itemId)})`;
+    const label = translate("interviewReport.link.dealSheet", { label: a.label });
+    return `[${label}](/actualite?deal=${encodeURIComponent(a.itemId)})`;
   }
   if (a.itemKind === "sector") {
     const sectorId = a.itemId as SectorId;
-    const emblematic = SECTOR_DATA[sectorId]?.emblematicDealId;
-    const sectorLink = `[Fiche secteur — ${a.label}](/?tab=secteurs&sector=${encodeURIComponent(a.itemId)})`;
+    const emblematic = getSectorData(locale)[sectorId]?.emblematicDealId;
+    const label = translate("interviewReport.link.sectorSheet", { label: a.label });
+    const sectorLink = `[${label}](/?tab=secteurs&sector=${encodeURIComponent(a.itemId)})`;
     if (emblematic) {
-      return `${sectorLink} · [Deal emblématique](/actualite?deal=${encodeURIComponent(emblematic)})`;
+      const dealLabel = translate("interviewReport.link.emblematicDeal");
+      return `${sectorLink} · [${dealLabel}](/actualite?deal=${encodeURIComponent(emblematic)})`;
     }
     return sectorLink;
   }
   if (a.itemKind === "opening") {
-    return "[Guide CV](/cv)";
+    return `[${translate("interviewReport.link.cvGuide")}](/cv)`;
   }
   return null;
 }
@@ -25,59 +36,73 @@ function answerResourceLink(a: InterviewSessionAnswer): string | null {
 export function buildInterviewMarkdown(
   session: InterviewSessionRecord,
   weakCategories: { cat: string; avg: number }[],
+  locale: AppLocale = DEFAULT_LOCALE,
 ): string {
-  const date = new Date(session.startedAt).toLocaleString("fr-FR");
+  const translate = createTranslator(locale);
+  const sep = translate("interviewReport.labelSeparator");
+  const date = formatDateTime(session.startedAt, locale);
+  const mode = translate(
+    session.mode === "full" ? "interviewReport.mode.full" : "interviewReport.mode.mini",
+  );
   const lines: string[] = [
-    `# Rapport entretien — ${session.mode === "full" ? "Entraînement 30 min" : "Entraînement chronométré"}`,
+    `# ${translate("interviewReport.title", { mode })}`,
     "",
-    `- **Date :** ${date}`,
-    `- **Durée :** ${Math.round(session.durationMs / 60000)} min`,
-    `- **Questions :** ${session.packSize}`,
-    `- **Note moyenne :** ${session.avgStars.toFixed(1)} / 5`,
+    `- **${translate("interviewReport.date")}${sep}** ${date}`,
+    `- **${translate("interviewReport.duration")}${sep}** ${Math.round(session.durationMs / 60000)} min`,
+    `- **${translate("interviewReport.questions")}${sep}** ${session.packSize}`,
+    `- **${translate("interviewReport.avgScore")}${sep}** ${session.avgStars.toFixed(1)} / 5`,
     "",
-    "## Réponses",
+    `## ${translate("interviewReport.answersHeading")}`,
     "",
   ];
 
+  const yes = translate("interviewReport.yes");
+  const no = translate("interviewReport.no");
+
   for (const a of session.answers) {
-    const struct = a.structureOk ? "oui" : "non";
-    const nums = a.numbersOk ? "oui" : "non";
-    const resource = answerResourceLink(a);
+    const struct = a.structureOk ? yes : no;
+    const nums = a.numbersOk ? yes : no;
+    const resource = answerResourceLink(a, translate, locale);
     lines.push(
       `### ${a.label}`,
       "",
-      `**Question :** ${a.question}`,
+      `**${translate("interviewReport.questionLabel")}${sep}** ${a.question}`,
       "",
-      `- Note : ${a.stars}/5`,
-      `- Structure (Pyramid/STAR) : ${struct}`,
-      `- Chiffres / précision : ${nums}`,
-      `- Temps : ${Math.round(a.timeMs / 1000)}s`,
+      `- ${translate("interviewReport.score")}${sep} ${a.stars}/5`,
+      `- ${translate("interviewReport.structure")}${sep} ${struct}`,
+      `- ${translate("interviewReport.numbers")}${sep} ${nums}`,
+      `- ${translate("interviewReport.time")}${sep} ${Math.round(a.timeMs / 1000)}s`,
     );
     if (resource) {
-      lines.push(`- Ressource : ${resource}`);
+      lines.push(`- ${translate("interviewReport.resource")}${sep} ${resource}`);
     }
     lines.push("");
   }
 
   if (weakCategories.length > 0) {
-    lines.push("## Points faibles", "");
+    lines.push(`## ${translate("interviewReport.weakHeading")}`, "");
     for (const w of weakCategories) {
-      lines.push(`- ${getCategoryLabel(w.cat)} (moy. ${w.avg.toFixed(1)}★)`);
+      lines.push(
+        `- ${translate("interviewReport.weakLine", {
+          label: getCategoryLabel(w.cat, translate),
+          avg: w.avg.toFixed(1),
+        })}`,
+      );
     }
     lines.push("");
   }
 
   const dealLinks = session.answers
     .filter((a) => a.itemKind === "deal")
-    .map((a) => answerResourceLink(a))
+    .map((a) => answerResourceLink(a, translate, locale))
     .filter(Boolean);
 
   lines.push(
-    "## Ressources",
+    `## ${translate("interviewReport.resourcesHeading")}`,
     "",
-    "- [Guide CV — Walk me through your CV](/cv)",
-    "- [Pyramid Principle + STAR](/pyramid)",
-    "- [Indicateurs macro](/actualite#indicateurs-macro)",
+    `- [${translate("interviewReport.link.cvGuideFull")}](/cv)`,
+    `- [${translate("interviewReport.link.pyramid")}](/pyramid)`,
+    `- [${translate("interviewReport.link.macro")}](/actualite#indicateurs-macro)`,
   );
 
   if (dealLinks.length > 0) {
@@ -85,7 +110,7 @@ export function buildInterviewMarkdown(
       lines.push(`- ${link}`);
     }
   } else {
-    lines.push("- [Actualité M&A](/actualite)");
+    lines.push(`- [${translate("interviewReport.link.actualite")}](/actualite)`);
   }
 
   lines.push("");

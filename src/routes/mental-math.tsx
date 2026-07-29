@@ -1,27 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BlocMentalMath } from "@/components/guide/BlocMentalMath";
 import { GuidePageShell } from "@/components/GuidePageShell";
+import { routeMeta } from "@/lib/i18n/route-head";
+import { useT } from "@/hooks/useT";
 
 export const Route = createFileRoute("/mental-math")({
   head: () => ({
-    meta: [
-      { title: "Calcul mental — FinancePrep" },
-      {
-        name: "description",
-        content:
-          "Trachtenberg, pourcentages rapides et mini-entraînement pour les tests de calcul mental en entretien.",
-      },
-    ],
+    meta: routeMeta("routes.mentalMath.metaTitle", "routes.mentalMath.metaDescription"),
   }),
   component: MentalMathPage,
 });
 
 function MentalMathPage() {
+  const { t } = useT();
   return (
     <GuidePageShell
-      tag="Entraînement"
-      title="Calcul mental"
-      description="Méthodes rapides et drills pour les questions chiffrées sous pression."
+      tag={t("guide.modules.mentalMath.tag")}
+      title={t("routes.mentalMath.pageTitle")}
+      description={t("routes.mentalMath.pageDescription")}
     >
       <BlocMentalMath />
     </GuidePageShell>

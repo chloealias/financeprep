@@ -44,7 +44,7 @@ function ProfileMenuPanel({
 }
 
 export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuProps) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -59,8 +59,8 @@ export function ProfileMenu({ onPageChange, hasProgress = false }: ProfileMenuPr
 
   useEffect(() => {
     if (!open) return;
-    setBadges(getProfileMenuBadges());
-  }, [open, profile]);
+    setBadges(getProfileMenuBadges(locale));
+  }, [open, profile, locale]);
 
   useEffect(() => {
     if (!open || !isMobile || !triggerRef.current) {

@@ -22,6 +22,9 @@ import {
   loadReviewList,
   questionIdKey,
 } from "@/lib/storage";
+import { createTranslator, type TranslateFn } from "@/lib/i18n/t";
+import { formatDate } from "@/lib/i18n/format";
+import { DEFAULT_LOCALE, type AppLocale } from "@/lib/i18n/types";
 
 const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
 
@@ -48,7 +51,8 @@ export type ProfileDashboard = {
   suggestedDealTitle: string | null;
 };
 
-export function getProfileDashboard(): ProfileDashboard {
+export function getProfileDashboard(locale: AppLocale = DEFAULT_LOCALE): ProfileDashboard {
+  const translate = createTranslator(locale);
   const profile = loadProfile();
   const ratings = loadRatings();
   const totalQuestions = (questions as { id: string | number }[]).length;
@@ -75,7 +79,13 @@ export function getProfileDashboard(): ProfileDashboard {
 
   const last = sessions[0];
   const lastSessionLabel = last
-    ? `${last.mode === "full" ? "Simulation" : "Mini-entretien"} · ${new Date(last.startedAt).toLocaleDateString("fr-FR")} · ${last.avgStars.toFixed(1)}★`
+    ? translate("profileDashboard.lastSession", {
+        mode: translate(
+          last.mode === "full" ? "profileDashboard.mode.full" : "profileDashboard.mode.mini",
+        ),
+        date: formatDate(last.startedAt, locale),
+        stars: last.avgStars.toFixed(1),
+      })
     : null;
 
   const suggestSimulation =
@@ -100,7 +110,11 @@ export function getProfileDashboard(): ProfileDashboard {
     recentSimAvg,
     lastSessionLabel,
     suggestSimulation,
-    interviewPlan: getInterviewPlanMessage(daysUntil, { srsDue, weakCount, suggestSimulation }),
+    interviewPlan: getInterviewPlanMessage(
+      daysUntil,
+      { srsDue, weakCount, suggestSimulation },
+      translate,
+    ),
     todayHighlights: getTodayHighlightKeys(profile),
     targetBankCount: getTargetBankIds().length,
     suggestedDealId: suggestedDeal?.id ?? null,
@@ -108,26 +122,24 @@ export function getProfileDashboard(): ProfileDashboard {
   };
 }
 
+/** Compact countdown shown on the avatar badge — null when it is not worth showing. */
+function countdownBadge(daysUntil: number | null, translate: TranslateFn): string | null {
+  if (daysUntil === null || daysUntil < 0) return null;
+  if (daysUntil === 0) return translate("profileDashboard.countdownBadge.today");
+  return daysUntil <= 14 ? String(daysUntil) : null;
+}
+
 /** Badges pour le menu avatar. */
-export function getProfileMenuBadges(): {
+export function getProfileMenuBadges(locale: AppLocale = DEFAULT_LOCALE): {
   srsDue: number;
   countdown: string | null;
   targetBankCount: number;
 } {
   const profile = loadProfile();
-  const dashboard = getProfileDashboard();
+  const dashboard = getProfileDashboard(locale);
   return {
     srsDue: dashboard.srsDue,
     targetBankCount: dashboard.targetBankCount,
-    countdown:
-      daysUntilInterview(profile.interviewDate) !== null
-        ? (() => {
-            const d = daysUntilInterview(profile.interviewDate)!;
-            if (d < 0) return null;
-            if (d === 0) return "J";
-            if (d <= 14) return String(d);
-            return null;
-          })()
-        : null,
+    countdown: countdownBadge(daysUntilInterview(profile.interviewDate), createTranslator(locale)),
   };
 }

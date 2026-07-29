@@ -14,7 +14,7 @@ type BankPanelProps = {
 };
 
 export function BankPanel({ bank, onClose }: BankPanelProps) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const [showReponse, setShowReponse] = useState(false);
 
   const emblematicDealSearch =
@@ -24,10 +24,10 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
         ? ({ deal: bank.emblematicDealId } as const)
         : null;
 
-  const deals = getDealsForBank(bank.name);
+  const deals = getDealsForBank(bank.name, locale);
   const emblematicDeal =
     bank.emblematicDealId && bank.emblematicLinkType !== "bank"
-      ? getDealById(bank.emblematicDealId)
+      ? getDealById(bank.emblematicDealId, locale)
       : undefined;
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
       key={bank.id}
       className="mt-3 bg-card rounded-2xl border-2 border-primary/30 shadow-card-elevated p-4 sm:p-8 relative animate-in fade-in slide-in-from-bottom-2 duration-300"
       role="region"
-      aria-label={`Fiche ${bank.name}`}
+      aria-label={t("hub.banks.sheetTitle", { name: bank.name })}
     >
       <button
         type="button"
@@ -65,7 +65,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 mt-2 text-sm text-primary hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
           >
-            Site de la banque
+            {t("hub.banks.panel.website")}
             <ExternalLink className="w-3.5 h-3.5" aria-hidden />
           </a>
         </div>
@@ -74,7 +74,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
       <div className="mb-6">
         <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
           <div className="h-px w-4 bg-primary/70" />
-          Valeurs
+          {t("hub.banks.panel.values")}
         </div>
         <div className="flex flex-wrap gap-2">
           {bank.valeurs.map((v) => (
@@ -93,7 +93,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
           <div>
             <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
               <div className="h-px w-4 bg-primary/70" />
-              Divisions clés
+              {t("hub.banks.panel.divisions")}
             </div>
             <div className="space-y-1.5">
               {bank.divisions.map((d, i) => (
@@ -107,7 +107,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
           {bank.piegeAEviter && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4">
               <div className="text-destructive text-xs font-semibold uppercase tracking-wider mb-1">
-                Piège à éviter
+                {t("hub.banks.panel.pitfall")}
               </div>
               <p className="text-foreground text-sm font-light leading-relaxed">
                 {bank.piegeAEviter}
@@ -119,7 +119,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
         <div>
           <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
             <div className="h-px w-4 bg-primary/70" />
-            Particularités
+            {t("hub.banks.panel.specifics")}
           </div>
           <div className="space-y-2.5 mb-5">
             {bank.particularites.map((p, i) => (
@@ -134,7 +134,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
           {bank.recrutement && (
             <div>
               <div className="text-xs uppercase tracking-wider text-primary font-medium mb-2">
-                Recrutement
+                {t("hub.banks.panel.recruiting")}
               </div>
               <p className="text-muted-foreground text-sm font-light leading-relaxed">
                 {bank.recrutement}
@@ -147,7 +147,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
           <div>
             <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
               <div className="h-px w-4 bg-primary/70" />
-              Deal emblématique
+              {t("hub.banks.panel.emblematicDeal")}
             </div>
             {emblematicDealSearch ? (
               <Link
@@ -156,8 +156,8 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
                 className="block bg-primary rounded-xl p-4 text-primary-foreground hover:brightness-110 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 aria-label={
                   bank.emblematicLinkType === "bank"
-                    ? `Voir tous les deals de ${bank.name} dans Actualité M&A`
-                    : `Voir le deal ${bank.dealEmblematique.titre} dans Actualité M&A`
+                    ? t("hub.banks.panel.allBankDealsAria", { name: bank.name })
+                    : t("hub.banks.panel.viewDealAria", { deal: bank.dealEmblematique.titre })
                 }
               >
                 <div className="flex items-start justify-between gap-2">
@@ -191,7 +191,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
           <div>
             <div className="text-xs uppercase tracking-wider text-primary font-medium mb-3 flex items-center gap-2">
               <div className="h-px w-4 bg-primary/70" />
-              Question piège
+              {t("hub.banks.panel.trickyQuestion")}
             </div>
             <div className="bg-muted border border-border rounded-xl p-4 mb-2">
               <p className="text-foreground text-sm font-light italic">
@@ -204,12 +204,12 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
                 onClick={() => setShowReponse(true)}
                 className="w-full text-center text-primary text-xs underline underline-offset-2 hover:text-primary/80 transition-colors py-1"
               >
-                Voir la réponse attendue
+                {t("hub.banks.panel.showAnswer")}
               </button>
             ) : (
               <div className="bg-primary/10 border border-primary/20 rounded-xl p-4">
                 <div className="text-primary text-xs font-semibold uppercase tracking-wider mb-1">
-                  Réponse
+                  {t("hub.banks.panel.answer")}
                 </div>
                 <p className="text-foreground text-sm font-light leading-relaxed">
                   {bank.reponsePiège}
@@ -219,7 +219,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
                   onClick={() => setShowReponse(false)}
                   className="text-primary text-xs underline mt-2"
                 >
-                  Masquer
+                  {t("hub.banks.panel.hide")}
                 </button>
               </div>
             )}
@@ -229,7 +229,7 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
 
       <div className="mb-6">
         <h4 className="text-xs uppercase tracking-wider text-primary font-medium mb-3">
-          Deals récents (Actualité M&A)
+          {t("hub.banks.panel.recentDeals")}
         </h4>
         {deals.length > 0 ? (
           <>
@@ -264,20 +264,19 @@ export function BankPanel({ bank, onClose }: BankPanelProps) {
               search={{ bank: bank.id }}
               className="inline-block mt-3 text-primary text-xs hover:text-primary/80 underline underline-offset-2"
             >
-              Voir tous les deals de {bank.name} dans Actualité M&A
+              {t("hub.banks.panel.allBankDealsLink", { name: bank.name })}
             </Link>
           </>
         ) : (
           <p className="text-muted-foreground text-sm font-light italic">
-            Aucun deal récent référencé pour cette banque dans l&apos;actualité M&A — privilégier le
-            deal emblématique ci-dessus.
+            {t("hub.banks.panel.noRecentDeals")}
           </p>
         )}
       </div>
 
       <div className="bg-muted border border-border rounded-xl p-4">
         <div className="text-primary text-xs font-semibold uppercase tracking-wider mb-1">
-          Point clé pour l&apos;entretien
+          {t("hub.banks.panel.keyPoint")}
         </div>
         <p className="text-foreground text-sm font-light leading-relaxed">{bank.pointEntretien}</p>
       </div>

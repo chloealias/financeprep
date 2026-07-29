@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { SectorId } from "@/lib/sectors";
 import type { SectorMeta } from "@/data/sector-meta";
+import { useT } from "@/hooks/useT";
 
 const MAP_WIDTH = 640;
 const MAP_HEIGHT = 360;
@@ -52,6 +53,7 @@ export function SectorBuilding({
   onLeave,
   children,
 }: SectorBuildingProps) {
+  const { t } = useT();
   const { mapSlot, labelOffset, label } = meta;
   const lift = isSelected ? -6 : 0;
   const opacity = isDimmed ? 0.55 : isHovered ? 0.92 : 1;
@@ -119,7 +121,7 @@ export function SectorBuilding({
         role="button"
         tabIndex={0}
         aria-pressed={isSelected}
-        aria-label={`Ouvrir la fiche ${label}`}
+        aria-label={t("hub.sectors.map.openSheetAria", { name: label })}
         onClick={(e) => {
           e.stopPropagation();
           onSelect();

@@ -17,7 +17,7 @@ import {
   getQuestionCategories,
   getRatingFilterOptions,
 } from "@/lib/categories";
-import { questions } from "@/data/questions";
+import { getQuestions } from "@/data/questions";
 import {
   loadSavedFilters,
   saveSavedFilters,
@@ -43,6 +43,7 @@ import { PracticeBackButton } from "@/components/hub/PracticeHub";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import { useT } from "@/hooks/useT";
+import { pluralSuffix } from "@/lib/i18n/t";
 
 const ALLOWED_CATEGORIES = [
   "all",
@@ -99,7 +100,8 @@ export function QuestionsTab({
   filtersKey = 0,
   onBackToHub,
 }: QuestionsTabProps) {
-  const { t } = useT();
+  const { t, locale } = useT();
+  const questions = getQuestions(locale);
   const [activeCategory, setActiveCategory] = useState(DEFAULT_QUESTION_FILTERS.activeCategory);
   const [activeDifficulty, setActiveDifficulty] = useState(
     DEFAULT_QUESTION_FILTERS.activeDifficulty,
@@ -221,6 +223,7 @@ export function QuestionsTab({
       return matchCategory && matchDifficulty && matchSearch && matchRating && matchReview;
     });
   }, [
+    questions,
     activeCategory,
     activeDifficulty,
     searchQuery,
@@ -239,7 +242,7 @@ export function QuestionsTab({
       avancé: questions.filter((q) => q.difficulty === "avancé").length,
       brainteasers: questions.filter((q) => q.category === "brainteaser").length,
     }),
-    [filteredQuestions],
+    [questions, filteredQuestions],
   );
 
   const getDifficultyColor = (diff: string) => {
@@ -273,7 +276,7 @@ export function QuestionsTab({
           }`}
         >
           <BookMarked className="w-4 h-4" />
-          Lecture
+          {t("hub.questions.mode.lecture")}
         </button>
         <button
           type="button"
@@ -285,7 +288,7 @@ export function QuestionsTab({
           }`}
         >
           <Mic className="w-4 h-4" />
-          Répondre d&apos;abord
+          {t("hub.questions.mode.interview")}
         </button>
         <button
           type="button"
@@ -296,7 +299,9 @@ export function QuestionsTab({
               setShowFilters(false);
             }
           }}
-          aria-label={showFilters ? "Masquer les filtres" : "Afficher les filtres et recherche"}
+          aria-label={
+            showFilters ? t("hub.questions.filters.hideAria") : t("hub.questions.filters.showAria")
+          }
           aria-expanded={showFilters}
           aria-controls="questions-filters-panel"
           className={`touch-target-bar relative gap-2 px-4 rounded-xl border-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring ${
@@ -306,7 +311,7 @@ export function QuestionsTab({
           }`}
         >
           <Filter className="w-4 h-4" />
-          Filtres
+          {t("hub.questions.filters.button")}
           {(activeCategory !== "all" ||
             activeDifficulty !== "all" ||
             ratingFilter !== "all" ||
@@ -325,7 +330,7 @@ export function QuestionsTab({
         <div
           id="questions-filters-panel"
           role="region"
-          aria-label="Filtres et recherche"
+          aria-label={t("hub.questions.filters.regionAria")}
           onKeyDown={(e) => {
             if (e.key === "Escape") {
               setShowFilters(false);
@@ -335,12 +340,12 @@ export function QuestionsTab({
         >
           <div className="flex items-center gap-2 mb-5">
             <Filter className="w-4 h-4 text-primary" />
-            <h2 className="type-section-title">Filtres & recherche</h2>
+            <h2 className="type-section-title">{t("hub.questions.filters.title")}</h2>
           </div>
 
           <div className="relative mb-5">
             <label htmlFor="finance-search" className="sr-only">
-              Rechercher une question ou un concept
+              {t("hub.questions.search.label")}
             </label>
             <Search
               className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
@@ -352,7 +357,7 @@ export function QuestionsTab({
               role="searchbox"
               inputMode="search"
               enterKeyHint="search"
-              placeholder="Rechercher..."
+              placeholder={t("hub.questions.search.placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={(e) => {
@@ -367,7 +372,7 @@ export function QuestionsTab({
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                aria-label="Effacer la recherche"
+                aria-label={t("hub.questions.search.clearAria")}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary focus:outline-none focus:ring-2 focus:ring-ring rounded"
               >
                 <X className="w-5 h-5" aria-hidden="true" />
@@ -376,7 +381,7 @@ export function QuestionsTab({
           </div>
 
           <FilterRadioGroup
-            label="Catégorie"
+            label={t("hub.questions.filters.category")}
             value={activeCategory}
             onChange={setActiveCategory}
             options={categories.map((c) => ({ id: c.id, label: c.label, icon: c.icon }))}
@@ -386,7 +391,7 @@ export function QuestionsTab({
 
           <div className="grid md:grid-cols-2 gap-5">
             <FilterRadioGroup
-              label="Difficulté"
+              label={t("hub.questions.filters.difficulty")}
               value={activeDifficulty}
               onChange={setActiveDifficulty}
               options={difficulties.map((d) => ({ id: d.id, label: d.label }))}
@@ -394,7 +399,7 @@ export function QuestionsTab({
               inactiveClass="bg-card text-foreground border-border hover:border-primary/50 hover:bg-muted"
             />
             <FilterRadioGroup
-              label="Filtre par notation"
+              label={t("hub.questions.filters.rating")}
               value={ratingFilter}
               onChange={setRatingFilter}
               options={ratingFilters.map((r) => ({ id: r.id, label: r.label }))}
@@ -406,7 +411,7 @@ export function QuestionsTab({
 
           <div className="mt-5 pt-5 border-t border-border">
             <div className="text-foreground text-xs uppercase tracking-wider font-semibold mb-2 flex items-center gap-1.5">
-              <Bookmark className="w-3.5 h-3.5" /> À réviser
+              <Bookmark className="w-3.5 h-3.5" /> {t("hub.questions.filters.reviewLabel")}
             </div>
             <button
               type="button"
@@ -423,7 +428,9 @@ export function QuestionsTab({
               ) : (
                 <Bookmark className="w-4 h-4" />
               )}
-              {showReviewOnly ? "Afficher tout" : "Voir uniquement à réviser"}
+              {showReviewOnly
+                ? t("hub.questions.filters.showAll")
+                : t("hub.questions.filters.reviewOnly")}
               <span
                 className={`ml-1 px-1.5 py-0.5 rounded text-xs font-bold ${showReviewOnly ? "bg-white/20" : "bg-muted text-foreground"}`}
               >
@@ -434,8 +441,10 @@ export function QuestionsTab({
 
           <div className="mt-5 pt-5 border-t border-border flex items-center justify-between text-sm flex-wrap gap-2">
             <span className="text-muted-foreground">
-              <span className="font-semibold text-foreground">{stats.filtered}</span> question
-              {stats.filtered > 1 ? "s" : ""} affichée{stats.filtered > 1 ? "s" : ""}
+              {t("hub.questions.filteredCount", {
+                count: stats.filtered,
+                s: pluralSuffix(stats.filtered, locale),
+              })}
             </span>
             {(activeCategory !== "all" ||
               activeDifficulty !== "all" ||
@@ -452,7 +461,7 @@ export function QuestionsTab({
                 }}
                 className="touch-target-bar text-primary hover:text-primary/80 underline underline-offset-2"
               >
-                Réinitialiser
+                {t("hub.questions.filters.reset")}
               </button>
             )}
           </div>
@@ -466,8 +475,8 @@ export function QuestionsTab({
             <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground text-lg mb-4">
               {showReviewOnly && reviewList.length === 0
-                ? "Vous n'avez encore marqué aucune question à réviser."
-                : "Aucune question ne correspond à vos critères."}
+                ? t("hub.questions.empty.noReview")
+                : t("hub.questions.empty.noMatch")}
             </p>
             <button
               onClick={() => {
@@ -479,7 +488,7 @@ export function QuestionsTab({
               }}
               className="touch-target-bar px-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
             >
-              Réinitialiser les filtres
+              {t("hub.questions.empty.reset")}
             </button>
           </div>
         ) : (
@@ -501,7 +510,9 @@ export function QuestionsTab({
                     onToggleReview(q.id);
                   }}
                   aria-label={
-                    inReview ? "Retirer de la liste à réviser" : "Marquer comme à réviser"
+                    inReview
+                      ? t("hub.questions.review.removeAria")
+                      : t("hub.questions.review.addAria")
                   }
                   aria-pressed={inReview}
                   className={`absolute top-3 right-3 z-10 touch-target rounded-full border transition-all ${inReview ? "bg-primary text-primary-foreground border-primary shadow-md" : "bg-card text-primary border-border hover:bg-muted hover:border-primary/40"}`}
@@ -535,7 +546,9 @@ export function QuestionsTab({
                           return (
                             <span
                               title={catLabel}
-                              aria-label={`Catégorie : ${catLabel}`}
+                              aria-label={t("hub.questions.categoryAria", {
+                                category: catLabel,
+                              })}
                               className={`inline-flex max-w-full ${hubBadgeClass} ${isBrain ? "bg-primary/10 text-primary border-primary/40" : ""}`}
                             >
                               <CatIcon className="w-3.5 h-3.5 shrink-0" />
@@ -550,7 +563,11 @@ export function QuestionsTab({
                               : q.difficulty === "intermédiaire"
                                 ? 2
                                 : 3;
-                          const label = `Difficulté : ${q.difficulty}`;
+                          const diffLabel =
+                            difficulties.find((d) => d.id === q.difficulty)?.label ?? q.difficulty;
+                          const label = t("hub.questions.difficultyAria", {
+                            difficulty: diffLabel,
+                          });
                           return (
                             <>
                               <span
@@ -566,7 +583,7 @@ export function QuestionsTab({
                                 ))}
                               </span>
                               <span className={`hidden sm:inline-flex capitalize ${hubBadgeClass}`}>
-                                {q.difficulty}
+                                {diffLabel}
                               </span>
                             </>
                           );
@@ -621,7 +638,7 @@ export function QuestionsTab({
                     ) : studyMode === "entretien" && !revealedKeys.has(qKey) ? (
                       <div className="ml-0 sm:ml-16 mt-6 space-y-4 text-center py-8">
                         <p className="text-muted-foreground text-sm">
-                          Répondez à voix haute avant de révéler la solution.
+                          {t("hub.questions.interview.prompt")}
                         </p>
                         {answerTimers[qKey] !== undefined && answerTimers[qKey] > 0 && (
                           <div className="text-4xl font-serif text-primary tabular-nums">
@@ -633,7 +650,7 @@ export function QuestionsTab({
                           onClick={() => revealAnswer(q.id)}
                           className="touch-target-bar mx-auto px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90"
                         >
-                          J&apos;ai répondu (à voix haute)
+                          {t("hub.questions.interview.reveal")}
                         </button>
                       </div>
                     ) : (
@@ -650,7 +667,7 @@ export function QuestionsTab({
                             <div className="flex items-center gap-2 mb-3">
                               <div className="h-px w-6 bg-primary" />
                               <h4 className="text-foreground font-semibold text-sm uppercase tracking-wider">
-                                Visualisation
+                                {t("hub.questions.visual.title")}
                               </h4>
                             </div>
                             <ClientOnly fallback={<Skeleton className="h-48 w-full rounded-xl" />}>
@@ -663,10 +680,10 @@ export function QuestionsTab({
                           <div className="flex items-center justify-between flex-wrap gap-3">
                             <div>
                               <div className="text-amber-900 text-xs uppercase tracking-[0.2em] font-bold mb-1">
-                                Mon niveau sur cette question
+                                {t("hub.questions.rating.title")}
                               </div>
                               <div className="text-amber-700 text-sm">
-                                1 = à revoir | 3 = correct | 5 = je maîtrise totalement
+                                {t("hub.questions.rating.scale")}
                               </div>
                             </div>
                             <StarRating

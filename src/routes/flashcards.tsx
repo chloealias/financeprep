@@ -5,19 +5,13 @@ import { FlashcardSession } from "@/components/flashcards/FlashcardSession";
 import { TrainingSession } from "@/components/flashcards/TrainingSession";
 import { PageHeader } from "@/components/ui/page-header";
 import { validateFlashcardsSearch, defaultHomeSearch } from "@/lib/route-search";
+import { routeMeta } from "@/lib/i18n/route-head";
 import { useT } from "@/hooks/useT";
 
 export const Route = createFileRoute("/flashcards")({
   validateSearch: validateFlashcardsSearch,
   head: () => ({
-    meta: [
-      { title: "Flashcards & Entraînement — FinancePrep" },
-      {
-        name: "description",
-        content:
-          "Révisez en flashcards SRS ou en entraînement chronométré (pack 5/7, limite 30 min optionnelle) avec rapport.",
-      },
-    ],
+    meta: routeMeta("routes.flashcards.metaTitle", "routes.flashcards.metaDescription"),
   }),
   component: FlashcardsPage,
 });
@@ -60,10 +54,7 @@ function ToolPicker({ onPick }: { onPick: (t: Tool) => void }) {
         {t("routes.flashcards.back")}
       </Link>
 
-      <PageHeader
-        eyebrow={t("routes.flashcards.eyebrow")}
-        title={t("routes.flashcards.heading")}
-      />
+      <PageHeader eyebrow={t("routes.flashcards.eyebrow")} title={t("routes.flashcards.heading")} />
 
       <div className="grid sm:grid-cols-2 gap-5">
         <ToolCard

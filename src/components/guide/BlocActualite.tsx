@@ -27,12 +27,13 @@ import {
   MA_DEAL_SECTOR_IDS,
   MA_DEAL_TYPES,
   getDealById,
-  MA_DEALS,
+  getMaDeals,
   getDealInterviewAngles,
   type MaDeal,
 } from "@/data/ma-deals";
 import { MacroIndicatorsPanel } from "@/components/guide/MacroIndicatorsPanel";
 import { Route } from "@/routes/actualite";
+import { useT } from "@/hooks/useT";
 
 const typeColors: Record<string, string> = {
   "M&A": "bg-blue-100 text-blue-700",
@@ -57,6 +58,7 @@ function DealSection({ title, children }: { title: string; children: ReactNode }
 }
 
 function AdvisorBlock({ deal }: { deal: MaDeal }) {
+  const { t } = useT();
   const advisors = deal.advisors ?? {};
   const hasAdvisors =
     (advisors.sellSide?.length ?? 0) > 0 ||
@@ -66,7 +68,7 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
   if (!hasAdvisors) {
     return (
       <p className="text-muted-foreground text-sm font-light italic">
-        Advisors non confirmés publiquement.
+        {t("guide.actualite.advisors.none")}
       </p>
     );
   }
@@ -75,7 +77,9 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
     <div className="space-y-3 text-sm">
       {advisors.sellSide && advisors.sellSide.length > 0 && (
         <div>
-          <span className="text-primary text-xs uppercase tracking-wider">Vendeur / débiteur</span>
+          <span className="text-primary text-xs uppercase tracking-wider">
+            {t("guide.actualite.advisors.sellSide")}
+          </span>
           <ul className="mt-1 space-y-0.5 text-foreground font-light">
             {advisors.sellSide.map((a, i) => (
               <li key={i}>
@@ -87,7 +91,9 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
       )}
       {advisors.buySide && advisors.buySide.length > 0 && (
         <div>
-          <span className="text-primary text-xs uppercase tracking-wider">Acquéreur</span>
+          <span className="text-primary text-xs uppercase tracking-wider">
+            {t("guide.actualite.advisors.buySide")}
+          </span>
           <ul className="mt-1 space-y-0.5 text-foreground font-light">
             {advisors.buySide.map((a, i) => (
               <li key={i}>
@@ -114,6 +120,7 @@ function AdvisorBlock({ deal }: { deal: MaDeal }) {
 }
 
 function DealDetail({ deal }: { deal: MaDeal }) {
+  const { t } = useT();
   const isTrend = deal.kind === "trend";
 
   return (
@@ -127,13 +134,13 @@ function DealDetail({ deal }: { deal: MaDeal }) {
             search={{ sector: deal.sectorId }}
             className="text-xs text-primary hover:text-primary/80 underline underline-offset-2"
           >
-            Tous les deals du secteur
+            {t("guide.actualite.allSectorDeals")}
           </Link>
         )}
       </div>
 
       {!isTrend && deal.valorisation && deal.valorisation.length > 0 && (
-        <DealSection title="Valorisation">
+        <DealSection title={t("guide.actualite.section.valuation")}>
           <div className="space-y-1.5">
             {deal.valorisation.map((v, i) => (
               <div key={i} className="flex gap-2 text-sm">
@@ -150,7 +157,9 @@ function DealDetail({ deal }: { deal: MaDeal }) {
         </DealSection>
       )}
 
-      <DealSection title={isTrend ? "Panorama" : "Parties"}>
+      <DealSection
+        title={t(isTrend ? "guide.actualite.section.panorama" : "guide.actualite.section.parties")}
+      >
         <div className="space-y-4">
           {deal.parties.map((p, i) => (
             <div key={i}>
@@ -164,12 +173,12 @@ function DealDetail({ deal }: { deal: MaDeal }) {
       </DealSection>
 
       {!isTrend && (
-        <DealSection title="Advisors">
+        <DealSection title={t("guide.actualite.section.advisors")}>
           <AdvisorBlock deal={deal} />
         </DealSection>
       )}
 
-      <DealSection title="Intérêts des parties">
+      <DealSection title={t("guide.actualite.section.interests")}>
         <div className="grid md:grid-cols-2 gap-3">
           {deal.interests.map((item, i) => (
             <div key={i} className="bg-muted/80 rounded-lg px-3 py-2.5">
@@ -181,7 +190,7 @@ function DealDetail({ deal }: { deal: MaDeal }) {
       </DealSection>
 
       {deal.contexte && (
-        <DealSection title="Contexte">
+        <DealSection title={t("guide.actualite.section.context")}>
           <p className="text-muted-foreground text-sm font-light leading-relaxed">
             <DealRefText text={deal.contexte} />
           </p>
@@ -190,7 +199,7 @@ function DealDetail({ deal }: { deal: MaDeal }) {
 
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
         <div className="text-amber-700 text-xs font-semibold uppercase tracking-wider mb-1">
-          Point clé pour l&apos;entretien
+          {t("guide.actualite.keyPoint")}
         </div>
         <p className="text-amber-900 text-sm font-light leading-relaxed">
           <DealRefText text={deal.pointEntretien} />
@@ -215,7 +224,7 @@ function DealDetail({ deal }: { deal: MaDeal }) {
           className="touch-target-bar gap-1.5 text-primary text-xs hover:text-primary/80 transition-colors"
         >
           <ExternalLink className="w-3.5 h-3.5" />
-          Lire dans le Financial Times
+          {t("guide.actualite.ftLink")}
         </a>
       )}
     </div>
@@ -237,14 +246,16 @@ function dealPassesFilters(
 }
 
 export function BlocActualite() {
+  const { t, locale } = useT();
   const { deal: dealFromUrl, bank: bankFromUrl, sector: sectorFromUrl } = Route.useSearch();
   const navigate = Route.useNavigate();
-  const bankFromUrlProfile = bankFromUrl ? getBankById(bankFromUrl) : undefined;
+  const bankFromUrlProfile = bankFromUrl ? getBankById(bankFromUrl, locale) : undefined;
   const [filterBanque, setFilterBanque] = useState(() => bankFromUrlProfile?.name ?? "all");
   const [filterType, setFilterType] = useState("all");
   const [filterSector, setFilterSector] = useState(() => sectorFromUrl ?? "all");
   const openDeal = dealFromUrl ?? null;
   const captureScroll = usePreserveScrollOnDetailClose(openDeal !== null);
+  const maDeals = getMaDeals(locale);
 
   useEffect(() => {
     if (bankFromUrlProfile) {
@@ -260,7 +271,7 @@ export function BlocActualite() {
 
   useEffect(() => {
     if (!dealFromUrl) return;
-    if (getDealById(dealFromUrl)) {
+    if (getDealById(dealFromUrl, locale)) {
       setFilterType("all");
       if (!bankFromUrl) setFilterBanque("all");
       if (!sectorFromUrl) setFilterSector("all");
@@ -291,8 +302,8 @@ export function BlocActualite() {
   };
 
   const filtered = useMemo(
-    () => MA_DEALS.filter((d) => dealPassesFilters(d, filterBanque, filterType, filterSector)),
-    [filterBanque, filterType, filterSector],
+    () => maDeals.filter((d) => dealPassesFilters(d, filterBanque, filterType, filterSector)),
+    [filterBanque, filterType, filterSector, maDeals],
   );
 
   useEffect(() => {
@@ -303,21 +314,29 @@ export function BlocActualite() {
 
   const toggleDeal = (id: string) => {
     if (openDeal === id) {
-      navigate({ search: (prev: import("@/lib/route-search").ActualiteSearch) => ({ deal: undefined, bank: prev.bank, sector: prev.sector }) });
+      navigate({
+        search: (prev: import("@/lib/route-search").ActualiteSearch) => ({
+          deal: undefined,
+          bank: prev.bank,
+          sector: prev.sector,
+        }),
+      });
     } else {
       if (!openDeal) captureScroll();
-      navigate({ search: (prev: import("@/lib/route-search").ActualiteSearch) => ({ deal: id, bank: prev.bank, sector: prev.sector }) });
+      navigate({
+        search: (prev: import("@/lib/route-search").ActualiteSearch) => ({
+          deal: id,
+          bank: prev.bank,
+          sector: prev.sector,
+        }),
+      });
     }
   };
 
   return (
     <>
       <div className={`${guideAlertClass} mb-6`}>
-        <p>
-          Contexte macro (ci-dessous) puis deals récents. Dernière mise à jour deals : 2025-2026.
-          Citer un deal récent avec la banque cible est un signal fort d&apos;intérêt réel. Sources
-          deals : Financial Times, Bloomberg, Mergermarket.
-        </p>
+        <p>{t("guide.actualite.intro")}</p>
       </div>
 
       <MacroIndicatorsPanel />
@@ -326,27 +345,27 @@ export function BlocActualite() {
         <div className="grid md:grid-cols-2 gap-4">
           <GuideSelect
             id="actualite-filter-bank"
-            label="Banque conseil"
+            label={t("guide.actualite.filter.bankLabel")}
             value={filterBanque}
             onChange={setBankFilter}
             options={MA_DEAL_BANKS.map((b) => ({
               value: b,
-              label: b === "all" ? "Toutes les banques" : b,
+              label: b === "all" ? t("guide.actualite.filter.bankAll") : b,
             }))}
           />
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium mb-2">
-              Type de deal
+              {t("guide.actualite.filter.typeLabel")}
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {MA_DEAL_TYPES.map((t) => (
+              {MA_DEAL_TYPES.map((dealType) => (
                 <GuideChipButton
-                  key={t}
-                  active={filterType === t}
-                  onClick={() => setFilterType(t)}
+                  key={dealType}
+                  active={filterType === dealType}
+                  onClick={() => setFilterType(dealType)}
                   size="sm"
                 >
-                  {t === "all" ? "Tous" : t}
+                  {dealType === "all" ? t("guide.actualite.filter.all") : dealType}
                 </GuideChipButton>
               ))}
             </div>
@@ -354,7 +373,7 @@ export function BlocActualite() {
         </div>
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-primary font-medium mb-2">
-            Secteur
+            {t("guide.actualite.filter.sectorLabel")}
           </p>
           <div className="flex flex-wrap gap-1.5">
             {MA_DEAL_SECTOR_IDS.map((s) => (
@@ -364,7 +383,7 @@ export function BlocActualite() {
                 onClick={() => setSectorFilter(s)}
                 size="sm"
               >
-                {s === "all" ? "Tous" : getSectorLabel(s)}
+                {s === "all" ? t("guide.actualite.filter.all") : getSectorLabel(s, locale)}
               </GuideChipButton>
             ))}
           </div>
@@ -434,7 +453,7 @@ export function BlocActualite() {
         })}
         {filtered.length === 0 && (
           <div className="text-center py-8 text-muted-foreground italic text-sm">
-            Aucun deal pour ces filtres.
+            {t("guide.actualite.empty")}
           </div>
         )}
       </div>

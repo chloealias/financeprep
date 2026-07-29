@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { CheckCircle2, ChevronRight } from "lucide-react";
 import {
-  EXERCISE_CHEATSHEET,
-  EXERCISE_THEME_LABELS,
   EXERCISE_THEMES,
-  exercises,
+  getExerciseCheatsheet,
+  getExercises,
+  getExerciseThemeLabel,
   type Exercise,
   type ExerciseTheme,
 } from "@/data/exercises";
@@ -21,7 +21,9 @@ type ExercisesTabProps = {
 };
 
 export function ExercisesTab({ solvedIds, onSolved, onBack }: ExercisesTabProps) {
-  const { t } = useT();
+  const { t, locale } = useT();
+  const exercises = getExercises(locale);
+  const cheatsheet = getExerciseCheatsheet(locale);
   const [theme, setTheme] = useState<ExerciseTheme | "all">("all");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [showTips, setShowTips] = useState(false);
@@ -29,7 +31,7 @@ export function ExercisesTab({ solvedIds, onSolved, onBack }: ExercisesTabProps)
   const filtered = useMemo(() => {
     if (theme === "all") return exercises;
     return exercises.filter((e) => e.theme === theme);
-  }, [theme]);
+  }, [theme, exercises]);
 
   const active = activeId ? exercises.find((e) => e.id === activeId) : undefined;
 
@@ -71,7 +73,7 @@ export function ExercisesTab({ solvedIds, onSolved, onBack }: ExercisesTabProps)
         </button>
         {showTips && (
           <ul className="mt-3 space-y-2 text-sm text-muted-foreground font-light leading-relaxed list-disc pl-5">
-            {EXERCISE_CHEATSHEET.map((tip) => (
+            {cheatsheet.map((tip) => (
               <li key={tip}>
                 <AcronymText text={tip} />
               </li>
@@ -104,7 +106,7 @@ export function ExercisesTab({ solvedIds, onSolved, onBack }: ExercisesTabProps)
                   : "bg-card text-foreground border-border hover:border-primary/40"
               }`}
             >
-              {EXERCISE_THEME_LABELS[th]}
+              {getExerciseThemeLabel(th, t)}
             </button>
           ))}
         </div>
@@ -120,6 +122,7 @@ export function ExercisesTab({ solvedIds, onSolved, onBack }: ExercisesTabProps)
             key={ex.id}
             exercise={ex}
             solved={solvedIds.has(ex.id)}
+            themeLabel={getExerciseThemeLabel(ex.theme, t)}
             onOpen={() => setActiveId(ex.id)}
           />
         ))}
@@ -131,10 +134,12 @@ export function ExercisesTab({ solvedIds, onSolved, onBack }: ExercisesTabProps)
 function ExerciseRow({
   exercise,
   solved,
+  themeLabel,
   onOpen,
 }: {
   exercise: Exercise;
   solved: boolean;
+  themeLabel: string;
   onOpen: () => void;
 }) {
   return (
@@ -147,9 +152,7 @@ function ExerciseRow({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-0.5">
             <span className="text-xs font-semibold text-primary tabular-nums">{exercise.id}</span>
-            <span className="text-xs text-muted-foreground">
-              {EXERCISE_THEME_LABELS[exercise.theme]}
-            </span>
+            <span className="text-xs text-muted-foreground">{themeLabel}</span>
             {solved && (
               <span className="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400">
                 <CheckCircle2 className="w-3.5 h-3.5" aria-hidden />

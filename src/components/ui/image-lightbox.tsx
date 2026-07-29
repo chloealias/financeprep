@@ -1,6 +1,7 @@
 import { useEffect, type MouseEvent } from "react";
 import { X } from "lucide-react";
 import { ClientOnly } from "@/components/hub/ClientOnly";
+import { useT } from "@/hooks/useT";
 
 type ImageLightboxProps = {
   open: boolean;
@@ -11,6 +12,8 @@ type ImageLightboxProps = {
 };
 
 export function ImageLightbox({ open, onClose, src, alt, subtitle }: ImageLightboxProps) {
+  const { t } = useT();
+
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (e: KeyboardEvent) => {
@@ -48,7 +51,7 @@ export function ImageLightbox({ open, onClose, src, alt, subtitle }: ImageLightb
             top: "max(1rem, env(safe-area-inset-top))",
             right: "max(1rem, env(safe-area-inset-right))",
           }}
-          aria-label="Fermer"
+          aria-label={t("common.close")}
         >
           <X className="w-6 h-6" />
         </button>

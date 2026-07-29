@@ -1,32 +1,5 @@
-import type { BankCategoryId } from "@/lib/bank-categories";
-import { BANK_CATEGORY_IDS } from "@/lib/bank-categories";
-import { MA_DEALS, type MaDeal } from "@/data/ma-deals";
-import { collectDealBankLabels, normalizeBankLabel } from "@/lib/bank-name-resolve";
+import type { BankProfile } from "./types";
 
-export type BankProfile = {
-  id: string;
-  categoryId: BankCategoryId;
-  name: string;
-  category: string;
-  hq: string;
-  /** Page About / Values / Purpose sur le site officiel */
-  websiteUrl: string;
-  /** Valeurs / principes officiels (libellés du site) */
-  valeurs: string[];
-  tagline: string;
-  divisions: string[];
-  particularites: string[];
-  recrutement?: string;
-  pointEntretien: string;
-  dealEmblematique: { titre: string; texte: string };
-  /** Absent si le deal emblématique n'est pas dans l'actualité M&A (ex. fusion CS/UBS) */
-  emblematicDealId?: string;
-  /** deal = lien vers ?deal= ; bank = liste filtrée ?bank= (coordinateurs dette) */
-  emblematicLinkType?: "deal" | "bank";
-  questionPiège: string;
-  reponsePiège: string;
-  piegeAEviter?: string;
-};
 
 export const BANK_LIST: BankProfile[] = [
   {
@@ -828,47 +801,3 @@ export const BANK_LIST: BankProfile[] = [
   },
 ];
 
-export const BANK_PROFILES: Record<string, BankProfile> = Object.fromEntries(
-  BANK_LIST.map((b) => [b.id, b]),
-);
-
-export const BANKS_BY_CATEGORY: Record<BankCategoryId, BankProfile[]> = Object.fromEntries(
-  BANK_CATEGORY_IDS.map((id) => [id, BANK_LIST.filter((b) => b.categoryId === id)]),
-) as Record<BankCategoryId, BankProfile[]>;
-
-export function getBankById(id: string): BankProfile | undefined {
-  return BANK_PROFILES[id];
-}
-
-export function isValidBankId(id: string): boolean {
-  return id in BANK_PROFILES;
-}
-
-export function getBanksByCategory(id: BankCategoryId): BankProfile[] {
-  return BANKS_BY_CATEGORY[id];
-}
-
-export function dealInvolvesBankProfile(deal: MaDeal, bankId: string): boolean {
-  return collectDealBankLabels(deal).some((label) => getBankIdByName(label) === bankId);
-}
-
-export function getDealsForBank(name: string): MaDeal[] {
-  const bankId = getBankIdByName(name);
-  if (!bankId) return [];
-  return MA_DEALS.filter((d) => dealInvolvesBankProfile(d, bankId));
-}
-
-const BANK_NAME_TO_ID: Record<string, string> = Object.fromEntries(
-  BANK_LIST.map((b) => [b.name, b.id]),
-);
-
-export function getBankIdByName(name: string): string | undefined {
-  const normalized = normalizeBankLabel(name);
-  return BANK_NAME_TO_ID[normalized];
-}
-
-export function dealMatchesBank(deal: MaDeal, bankFilter: string): boolean {
-  const bankId = getBankIdByName(bankFilter);
-  if (bankId) return dealInvolvesBankProfile(deal, bankId);
-  return deal.banks.includes(bankFilter);
-}

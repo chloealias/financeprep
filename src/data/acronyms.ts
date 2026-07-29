@@ -1,4 +1,6 @@
 import type { CategoryId } from "@/lib/categories";
+import type { AppLocale } from "@/lib/i18n/types";
+import { DEFAULT_LOCALE } from "@/lib/i18n/types";
 
 export interface Acronym {
   abbr: string;
@@ -282,6 +284,28 @@ export const acronymSections: AcronymSection[] = [
     ],
   },
 ];
+
+const ACRONYM_SECTION_TITLES_EN: Record<string, string> = {
+  "Valeur & valorisation": "Value & valuation",
+  Multiples: "Multiples",
+  "Coût du capital & rendement": "Cost of capital & returns",
+  "États financiers & agrégats": "Financial statements & aggregates",
+  "Cash flow & BFR": "Cash flow & working capital",
+  "M&A — Process & documents": "M&A — Process & documents",
+  "Private Equity & LBO": "Private Equity & LBO",
+  "Dette & financement": "Debt & financing",
+  "Normes & régulateurs": "Standards & regulators",
+  "SaaS & ESG": "SaaS & ESG",
+};
+
+/** Localized section titles; items stay bilingual (abbr / english / french). */
+export function getAcronymSections(locale: AppLocale = DEFAULT_LOCALE): AcronymSection[] {
+  if (locale !== "en") return acronymSections;
+  return acronymSections.map((section) => ({
+    ...section,
+    title: ACRONYM_SECTION_TITLES_EN[section.title] ?? section.title,
+  }));
+}
 
 // Backwards compatibility: flat list
 export const acronyms: Acronym[] = acronymSections.flatMap((s) => s.items);

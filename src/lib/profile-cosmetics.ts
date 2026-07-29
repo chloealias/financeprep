@@ -11,6 +11,7 @@ import {
   BarChart3,
   Wallet,
 } from "lucide-react";
+import type { TranslateFn } from "@/lib/i18n/t";
 
 export type AvatarKind = "icon" | "pattern";
 export type ProfileIconId =
@@ -41,120 +42,102 @@ export type ProfileIconColorId = "default" | "primary" | "violet" | "emerald" | 
 
 export const PROFILE_ICONS: {
   id: ProfileIconId;
-  label: string;
   Icon: LucideIcon;
   bg: string;
   fg: string;
 }[] = [
-  { id: "landmark", label: "Banque", Icon: Landmark, bg: "#1e3a8a", fg: "#fff" },
-  { id: "trending", label: "Marchés", Icon: TrendingUp, bg: "#0f766e", fg: "#fff" },
-  { id: "briefcase", label: "M&A", Icon: Briefcase, bg: "#4c1d95", fg: "#fff" },
-  { id: "pie", label: "Valorisation", Icon: PieChart, bg: "#b45309", fg: "#fff" },
-  { id: "building", label: "Corporate", Icon: Building2, bg: "#334155", fg: "#fff" },
-  { id: "banknote", label: "Levée", Icon: Banknote, bg: "#047857", fg: "#fff" },
-  { id: "scale", label: "LBO", Icon: Scale, bg: "#7c2d12", fg: "#fff" },
-  { id: "line", label: "Trading", Icon: LineChart, bg: "#1d4ed8", fg: "#fff" },
-  { id: "bars", label: "Analyse", Icon: BarChart3, bg: "#4338ca", fg: "#fff" },
-  { id: "wallet", label: "PE", Icon: Wallet, bg: "#0e7490", fg: "#fff" },
+  { id: "landmark", Icon: Landmark, bg: "#1e3a8a", fg: "#fff" },
+  { id: "trending", Icon: TrendingUp, bg: "#0f766e", fg: "#fff" },
+  { id: "briefcase", Icon: Briefcase, bg: "#4c1d95", fg: "#fff" },
+  { id: "pie", Icon: PieChart, bg: "#b45309", fg: "#fff" },
+  { id: "building", Icon: Building2, bg: "#334155", fg: "#fff" },
+  { id: "banknote", Icon: Banknote, bg: "#047857", fg: "#fff" },
+  { id: "scale", Icon: Scale, bg: "#7c2d12", fg: "#fff" },
+  { id: "line", Icon: LineChart, bg: "#1d4ed8", fg: "#fff" },
+  { id: "bars", Icon: BarChart3, bg: "#4338ca", fg: "#fff" },
+  { id: "wallet", Icon: Wallet, bg: "#0e7490", fg: "#fff" },
 ];
 
 export const PROFILE_BANNERS: {
   id: ProfileBannerId;
-  label: string;
   className: string;
 }[] = [
   {
     id: "midnight",
-    label: "Minuit",
     className: "bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950",
   },
   {
     id: "ocean",
-    label: "Océan",
     className: "bg-gradient-to-br from-cyan-800 via-blue-800 to-indigo-900",
   },
   {
     id: "slate",
-    label: "Ardoise",
     className: "bg-gradient-to-br from-slate-600 via-slate-800 to-slate-900",
   },
   {
     id: "gold",
-    label: "Or",
     className: "bg-gradient-to-br from-amber-700 via-yellow-800 to-amber-950",
   },
   {
     id: "violet",
-    label: "Violet",
     className: "bg-gradient-to-br from-violet-700 via-purple-900 to-indigo-950",
   },
   {
     id: "emerald",
-    label: "Émeraude",
     className: "bg-gradient-to-br from-emerald-700 via-teal-800 to-slate-900",
   },
   {
     id: "rose",
-    label: "Rose",
     className: "bg-gradient-to-br from-rose-700 via-fuchsia-900 to-slate-900",
   },
   {
     id: "navy",
-    label: "Marine",
     className: "bg-gradient-to-br from-blue-950 via-blue-900 to-slate-900",
   },
   {
     id: "copper",
-    label: "Cuivre",
     className: "bg-gradient-to-br from-orange-800 via-red-900 to-stone-900",
   },
 ];
 
 export const PROFILE_ACCENT_THEMES: {
   id: ProfileAccentThemeId;
-  label: string;
   primary: string;
   ring: string;
   sidebarPrimary: string;
 }[] = [
   {
     id: "navy",
-    label: "Navy",
     primary: "oklch(0.24 0.07 258)",
     ring: "oklch(0.62 0.09 258)",
     sidebarPrimary: "oklch(0.24 0.07 258)",
   },
   {
     id: "violet",
-    label: "Violet",
     primary: "oklch(0.34 0.15 305)",
     ring: "oklch(0.7 0.14 305)",
     sidebarPrimary: "oklch(0.34 0.15 305)",
   },
   {
     id: "emerald",
-    label: "Emeraude",
     primary: "oklch(0.42 0.12 165)",
     ring: "oklch(0.74 0.12 165)",
     sidebarPrimary: "oklch(0.42 0.12 165)",
   },
   {
     id: "amber",
-    label: "Ambre",
     primary: "oklch(0.55 0.14 72)",
     ring: "oklch(0.79 0.11 72)",
     sidebarPrimary: "oklch(0.55 0.14 72)",
   },
   {
     id: "rose",
-    label: "Rose",
     primary: "oklch(0.51 0.16 15)",
     ring: "oklch(0.74 0.12 15)",
     sidebarPrimary: "oklch(0.51 0.16 15)",
   },
   {
     id: "cobalt",
-    label: "Cobalt",
     primary: "oklch(0.42 0.14 266)",
     ring: "oklch(0.72 0.12 266)",
     sidebarPrimary: "oklch(0.42 0.14 266)",
@@ -163,17 +146,36 @@ export const PROFILE_ACCENT_THEMES: {
 
 export const PROFILE_ICON_COLORS: {
   id: ProfileIconColorId;
-  label: string;
   bg: string;
   fg: string;
 }[] = [
-  { id: "default", label: "Par défaut", bg: "", fg: "" },
-  { id: "primary", label: "Accent", bg: "var(--primary)", fg: "var(--primary-foreground)" },
-  { id: "violet", label: "Violet", bg: "oklch(0.34 0.15 305)", fg: "white" },
-  { id: "emerald", label: "Émeraude", bg: "oklch(0.42 0.12 165)", fg: "white" },
-  { id: "amber", label: "Ambre", bg: "oklch(0.55 0.14 72)", fg: "white" },
-  { id: "rose", label: "Rose", bg: "oklch(0.51 0.16 15)", fg: "white" },
+  { id: "default", bg: "", fg: "" },
+  { id: "primary", bg: "var(--primary)", fg: "var(--primary-foreground)" },
+  { id: "violet", bg: "oklch(0.34 0.15 305)", fg: "white" },
+  { id: "emerald", bg: "oklch(0.42 0.12 165)", fg: "white" },
+  { id: "amber", bg: "oklch(0.55 0.14 72)", fg: "white" },
+  { id: "rose", bg: "oklch(0.51 0.16 15)", fg: "white" },
 ];
+
+/** Localized cosmetic labels — the catalogs own the wording, this owns the styling. */
+export function getProfileIconLabel(id: ProfileIconId, translate: TranslateFn): string {
+  return translate(`profile.cosmetics.icon.${id}`);
+}
+
+export function getProfileBannerLabel(id: ProfileBannerId, translate: TranslateFn): string {
+  return translate(`profile.cosmetics.banner.${id}`);
+}
+
+export function getProfileAccentThemeLabel(
+  id: ProfileAccentThemeId,
+  translate: TranslateFn,
+): string {
+  return translate(`profile.cosmetics.accent.${id}`);
+}
+
+export function getProfileIconColorLabel(id: ProfileIconColorId, translate: TranslateFn): string {
+  return translate(`profile.cosmetics.iconColor.${id}`);
+}
 
 const ICON_MAP = Object.fromEntries(PROFILE_ICONS.map((i) => [i.id, i])) as Record<
   ProfileIconId,

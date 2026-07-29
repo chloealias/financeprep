@@ -3,6 +3,10 @@ import { RefreshCw, Sparkles } from "lucide-react";
 import { ProfileAvatar } from "@/components/profile/ProfileAvatar";
 import { ProfileBanner } from "@/components/profile/ProfileBanner";
 import {
+  getProfileAccentThemeLabel,
+  getProfileBannerLabel,
+  getProfileIconColorLabel,
+  getProfileIconLabel,
   PROFILE_ACCENT_THEMES,
   PROFILE_BANNERS,
   PROFILE_ICON_COLORS,
@@ -100,7 +104,7 @@ export function ProfileAppearanceEditor({
                 const selected =
                   (profile.avatarKind ?? "icon") !== "pattern" &&
                   (profile.avatarId ?? "landmark") === id;
-                const label = t(`profile.cosmetics.icon.${id}`);
+                const label = getProfileIconLabel(id, t);
                 return (
                   <button
                     key={id}
@@ -147,7 +151,7 @@ export function ProfileAppearanceEditor({
                           borderColor: opt.id === "default" ? "var(--border)" : "transparent",
                         }}
                       />
-                      {t(`profile.cosmetics.iconColor.${opt.id}`)}
+                      {getProfileIconColorLabel(opt.id, t)}
                     </button>
                   );
                 })}
@@ -190,7 +194,7 @@ export function ProfileAppearanceEditor({
                   className="h-3.5 w-3.5 rounded-full border border-black/10"
                   style={{ backgroundColor: theme.primary }}
                 />
-                {t(`profile.cosmetics.accent.${theme.id}`)}
+                {getProfileAccentThemeLabel(theme.id, t)}
               </button>
             );
           })}
@@ -215,7 +219,7 @@ export function ProfileAppearanceEditor({
                 aria-pressed={selected}
               >
                 <span className="absolute bottom-1 left-2 text-xs font-medium text-white/90 drop-shadow">
-                  {t(`profile.cosmetics.banner.${id}`)}
+                  {getProfileBannerLabel(id, t)}
                 </span>
               </button>
             );

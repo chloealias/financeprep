@@ -1,3 +1,5 @@
+import type { MacroSnapshot } from "./types";
+
 /**
  * Snapshot macro trimestriel — MAJ manuelle.
  *
@@ -9,22 +11,6 @@
  * - Spreads : FRED — BAMLHE00EHYIOAS (HY EU), BAMLC0A0CM (IG US, référence)
  * - Brent : spot ICE (Trading Economics / Convex, 03–05/07/2026)
  */
-export const MACRO_SNAPSHOT_REVIEW_INTERVAL_DAYS = 90;
-export type MacroIndicator = {
-  id: string;
-  label: string;
-  value: string;
-  delta?: string;
-  interviewNote?: string;
-};
-
-export type MacroSnapshot = {
-  quarter: string;
-  updatedAt: string;
-  sources: string[];
-  indicators: MacroIndicator[];
-};
-
 export const MACRO_SNAPSHOT: MacroSnapshot = {
   quarter: "Q3 2026",
   updatedAt: "2026-07-05",

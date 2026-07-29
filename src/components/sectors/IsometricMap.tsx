@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { SectorId } from "@/lib/sectors";
-import { SECTOR_META, SECTOR_LIST } from "@/data/sector-meta";
+import { getSectorMeta, SECTOR_LIST } from "@/data/sector-meta";
 import { GuideChipButton } from "@/components/guide/guide-ui";
 import {
   MAP_HEIGHT,
@@ -10,6 +10,7 @@ import {
   SectorBuilding,
 } from "@/components/sectors/sector-map-parts";
 import { SECTOR_BUILDING_COMPONENTS } from "@/components/sectors/sector-buildings-3d";
+import { useT } from "@/hooks/useT";
 
 type IsometricMapProps = {
   onSectorSelect: (id: SectorId) => void;
@@ -17,12 +18,14 @@ type IsometricMapProps = {
 };
 
 export function IsometricMap({ onSectorSelect, selectedSectorId = null }: IsometricMapProps) {
+  const { t, locale } = useT();
   const [hovered, setHovered] = useState<SectorId | null>(null);
+  const sectorMeta = getSectorMeta(locale);
 
   const buildingProps = (id: SectorId) => {
     const Building = SECTOR_BUILDING_COMPONENTS[id];
     return {
-      meta: SECTOR_META[id],
+      meta: sectorMeta[id],
       isSelected: selectedSectorId === id || hovered === id,
       isHovered: hovered === id,
       isDimmed: hovered !== null && hovered !== id,
@@ -41,7 +44,7 @@ export function IsometricMap({ onSectorSelect, selectedSectorId = null }: Isomet
           className="w-full h-auto max-h-[min(50vh,360px)] block"
           preserveAspectRatio="xMidYMid meet"
           role="group"
-          aria-label="Carte isométrique des 8 secteurs — utilisez Tab pour naviguer entre les bâtiments ou les boutons ci-dessous"
+          aria-label={t("hub.sectors.map.aria")}
         >
           <MapDefs />
           <MapBackground />
@@ -54,13 +57,11 @@ export function IsometricMap({ onSectorSelect, selectedSectorId = null }: Isomet
         </svg>
 
         <p className="text-center text-xs text-muted-foreground font-light italic py-4 px-4 bg-white">
-          Cliquez sur un bâtiment ou utilisez les boutons ci-dessous pour ouvrir une fiche
+          {t("hub.sectors.map.caption")}
         </p>
 
         <div className="px-3 pb-3 pt-2 border-t border-slate-100 bg-white">
-          <p className="type-label mb-1.5 hidden sm:block">
-            Accès rapide
-          </p>
+          <p className="type-label mb-1.5 hidden sm:block">{t("hub.sectors.map.quickAccess")}</p>
           <div className="flex flex-wrap justify-center gap-1.5">
             {SECTOR_LIST.map((id) => (
               <GuideChipButton
@@ -69,7 +70,7 @@ export function IsometricMap({ onSectorSelect, selectedSectorId = null }: Isomet
                 active={selectedSectorId === id}
                 onClick={() => onSectorSelect(id)}
               >
-                {SECTOR_META[id].shortLabel}
+                {sectorMeta[id].shortLabel}
               </GuideChipButton>
             ))}
           </div>

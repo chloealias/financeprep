@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { ChevronRight } from "lucide-react";
-import { concepts } from "@/data/concepts";
+import { getConcepts } from "@/data/concepts";
 import { getQuestionCategories, getCategoryLabel } from "@/lib/categories";
 import { ConceptCard } from "@/components/interview/ConceptCard";
 import { PageHeader } from "@/components/ui/page-header";
@@ -20,7 +20,8 @@ const ALLOWED_CATEGORIES = [
 ];
 
 export function ConceptsTab() {
-  const { t } = useT();
+  const { t, locale } = useT();
+  const concepts = getConcepts(locale);
   const [conceptCategory, setConceptCategory] = useState("all");
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export function ConceptsTab() {
 
   const filteredConcepts = useMemo(
     () => concepts.filter((c) => conceptCategory === "all" || c.category === conceptCategory),
-    [conceptCategory],
+    [concepts, conceptCategory],
   );
 
   const persistCategory = (cat: string) => {

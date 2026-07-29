@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import { SECTOR_DATA } from "@/data/sector-data";
+import { getSectorData } from "@/data/sector-data";
 import type { SectorId } from "@/lib/sectors";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { DetailSheet } from "@/components/hub/DetailSheet";
@@ -67,8 +67,9 @@ export function SectorDetailDialog({
   onOpenChange,
   returnFocusRef,
 }: SectorDetailDialogProps) {
+  const { t, locale } = useT();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const data = SECTOR_DATA[sectorId];
+  const data = getSectorData(locale)[sectorId];
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -116,7 +117,9 @@ export function SectorDetailDialog({
         >
           <DialogHeader className="sr-only">
             <DialogTitle>{data.name}</DialogTitle>
-            <DialogDescription>Fiche sectorielle — {data.tag}</DialogDescription>
+            <DialogDescription>
+              {t("hub.sectors.dialogDescription", { tag: data.tag })}
+            </DialogDescription>
           </DialogHeader>
           <div className="shrink-0 px-5 sm:px-8 pt-5 sm:pt-6 bg-card rounded-t-2xl">{header}</div>
           <div
