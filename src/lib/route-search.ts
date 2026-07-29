@@ -3,10 +3,19 @@ import { isValidBankId } from "@/data/bank-profiles";
 import { isValidDealId } from "@/data/ma-deals";
 import { isValidSectorId, type SectorId } from "@/lib/sectors";
 
+export const PRACTICE_VIEWS = ["hub", "questions", "exercices", "cas"] as const;
+export type PracticeView = (typeof PRACTICE_VIEWS)[number];
+
+export function isPracticeView(value: unknown): value is PracticeView {
+  return typeof value === "string" && (PRACTICE_VIEWS as readonly string[]).includes(value);
+}
+
 export type HomeSearch = {
   tab: AppTab;
   bank?: string;
   sector?: SectorId;
+  /** Sous-vue de l'onglet Pratique (`questions`). Absent = hub. */
+  view?: PracticeView;
 };
 
 /** Search par défaut pour les liens vers `/` (tab requis par le routeur). */
@@ -28,7 +37,17 @@ export function validateHomeSearch(search: Record<string, unknown>): HomeSearch 
   if (sector && tabResolved !== "secteurs") resolved = "secteurs";
   else if (bank && tabResolved !== "banques") resolved = "banques";
 
-  return { tab: resolved, bank, sector };
+  const viewRaw = typeof search.view === "string" ? search.view : undefined;
+  const view =
+    resolved === "questions" && isPracticeView(viewRaw) && viewRaw !== "hub"
+      ? viewRaw
+      : undefined;
+
+  const result: HomeSearch = { tab: resolved };
+  if (bank) result.bank = bank;
+  if (sector) result.sector = sector;
+  if (view) result.view = view;
+  return result;
 }
 
 export type ActualiteSearch = {

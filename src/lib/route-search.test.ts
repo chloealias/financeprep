@@ -6,6 +6,19 @@ describe("validateHomeSearch", () => {
     expect(validateHomeSearch({})).toEqual({ tab: "guide" });
   });
 
+  it("accepts pratique view on questions tab", () => {
+    expect(validateHomeSearch({ tab: "questions", view: "exercices" })).toEqual({
+      tab: "questions",
+      view: "exercices",
+    });
+  });
+
+  it("drops view when tab is not questions", () => {
+    expect(validateHomeSearch({ tab: "guide", view: "exercices" })).toEqual({
+      tab: "guide",
+    });
+  });
+
   it("preserves secteurs tab and sector for modal deep link", () => {
     expect(validateHomeSearch({ tab: "secteurs", sector: "tmt" })).toEqual({
       tab: "secteurs",

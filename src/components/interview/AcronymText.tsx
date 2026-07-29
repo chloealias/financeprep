@@ -10,16 +10,40 @@ type AcronymMatch = {
   end: number;
 };
 
-const ACRONYM_MAP = new Map<string, { french: string; english?: string }>();
+type AcronymEntry = { french: string; english?: string };
+
+const ACRONYM_MAP = new Map<string, AcronymEntry>();
+
+/**
+ * Register primary abbr + space-slash aliases ("TRI / IRR" → TRI, IRR).
+ * Does not split compact forms like EV/EBITDA (no spaces around /).
+ */
+function registerAbbr(rawAbbr: string, entry: AcronymEntry): void {
+  const key = rawAbbr.toUpperCase();
+  if (!ACRONYM_MAP.has(key)) ACRONYM_MAP.set(key, entry);
+
+  if (rawAbbr.includes(" / ")) {
+    for (const part of rawAbbr.split(" / ")) {
+      const p = part.trim().toUpperCase();
+      if (p && !ACRONYM_MAP.has(p)) ACRONYM_MAP.set(p, entry);
+    }
+  }
+}
+
 for (const section of acronymSections) {
   for (const item of section.items) {
-    ACRONYM_MAP.set(item.abbr.toUpperCase(), { french: item.french, english: item.english });
+    registerAbbr(item.abbr, { french: item.french, english: item.english });
   }
 }
 
 const SORTED_ABBRS = [...ACRONYM_MAP.keys()].sort((a, b) => b.length - a.length);
 
-function findAcronyms(text: string): AcronymMatch[] {
+/** Word boundary: letters/digits continue a token; `/` starts a new token (so DSO matches in DSO/DIO). */
+function isBoundary(c: string): boolean {
+  return !/[A-Z0-9&]/.test(c);
+}
+
+export function findAcronyms(text: string): AcronymMatch[] {
   const matches: AcronymMatch[] = [];
   const upper = text.toUpperCase();
   for (const abbr of SORTED_ABBRS) {
@@ -27,14 +51,14 @@ function findAcronyms(text: string): AcronymMatch[] {
     while (idx < upper.length) {
       const pos = upper.indexOf(abbr, idx);
       if (pos === -1) break;
-      const before = pos > 0 ? upper[pos - 1] : " ";
-      const after = pos + abbr.length < upper.length ? upper[pos + abbr.length] : " ";
-      const isBoundary = (c: string) => !/[A-Z0-9/]/.test(c);
-      if (isBoundary(before!) && isBoundary(after!)) {
+      const before = pos > 0 ? upper[pos - 1]! : " ";
+      const after = pos + abbr.length < upper.length ? upper[pos + abbr.length]! : " ";
+      if (isBoundary(before) && isBoundary(after)) {
+        const entry = ACRONYM_MAP.get(abbr)!;
         matches.push({
           abbr,
-          french: ACRONYM_MAP.get(abbr)!.french,
-          english: ACRONYM_MAP.get(abbr)?.english,
+          french: entry.french,
+          english: entry.english,
           start: pos,
           end: pos + abbr.length,
         });
@@ -42,7 +66,15 @@ function findAcronyms(text: string): AcronymMatch[] {
       idx = pos + 1;
     }
   }
-  return matches.sort((a, b) => a.start - b.start);
+  const sorted = matches.sort((a, b) => a.start - b.start || b.end - a.end);
+  const nonOverlapping: AcronymMatch[] = [];
+  let cursor = 0;
+  for (const m of sorted) {
+    if (m.start < cursor) continue;
+    nonOverlapping.push(m);
+    cursor = m.end;
+  }
+  return nonOverlapping;
 }
 
 type AcronymPart =

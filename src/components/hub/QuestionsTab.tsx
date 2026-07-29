@@ -39,6 +39,7 @@ import { StarRating } from "@/components/interview/StarRating";
 import { FilterRadioGroup } from "@/components/interview/FilterRadioGroup";
 import { hubBadgeClass, hubBadgeGroupClass } from "@/components/guide/guide-ui";
 import { PageHeader } from "@/components/ui/page-header";
+import { PracticeBackButton } from "@/components/hub/PracticeHub";
 import { smoothScrollIntoViewAfterLayout } from "@/lib/scroll";
 import { usePreserveScrollOnDetailClose } from "@/hooks/usePreserveScrollOnDetailClose";
 import { useT } from "@/hooks/useT";
@@ -87,6 +88,7 @@ type QuestionsTabProps = {
   reviewList: string[];
   onToggleReview: (qid: string | number) => void;
   filtersKey?: number;
+  onBackToHub?: () => void;
 };
 
 export function QuestionsTab({
@@ -95,6 +97,7 @@ export function QuestionsTab({
   reviewList,
   onToggleReview,
   filtersKey = 0,
+  onBackToHub,
 }: QuestionsTabProps) {
   const { t } = useT();
   const [activeCategory, setActiveCategory] = useState(DEFAULT_QUESTION_FILTERS.activeCategory);
@@ -252,10 +255,11 @@ export function QuestionsTab({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:pb-12">
+      {onBackToHub && <PracticeBackButton onBack={onBackToHub} />}
       <PageHeader
-        eyebrow="Entraînement"
-        title="Questions"
-        description={`${questions.length} questions d'entretien avec réponses modèles, filtres et auto-évaluation.`}
+        eyebrow={t("hub.questions.eyebrow")}
+        title={t("hub.questions.title")}
+        description={t("hub.questions.description", { count: questions.length })}
       />
 
       <div className="flex flex-wrap gap-2 mb-6">

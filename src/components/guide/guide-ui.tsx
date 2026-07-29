@@ -106,11 +106,9 @@ type GuideModuleLinkProps = {
   | {
       to:
         | "/cv"
-        | "/excel"
         | "/pyramid"
         | "/accretion"
         | "/actualite"
-        | "/glossaire"
         | "/mental-math";
       search?: never;
     }

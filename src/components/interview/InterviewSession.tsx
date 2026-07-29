@@ -11,6 +11,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { StarRating } from "@/components/interview/StarRating";
+import { AcronymText } from "@/components/interview/AcronymText";
 import { hubBadgeClass } from "@/components/guide/guide-ui";
 import { getCategoryLabel } from "@/lib/categories";
 import {
@@ -283,7 +284,9 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                     <div className="flex-shrink-0 w-7 h-7 rounded-lg bg-primary text-primary-foreground font-serif text-xs flex items-center justify-center">
                       {i + 1}
                     </div>
-                    <p className="text-foreground leading-relaxed flex-1 text-sm">{step}</p>
+                    <p className="text-foreground leading-relaxed flex-1 text-sm">
+                      <AcronymText text={step} />
+                    </p>
                   </li>
                 ))}
               </ol>
@@ -292,7 +295,9 @@ export function InterviewSession({ mode, packSize = 5, globalLimitMs, onBack }: 
                   <div className="text-primary-foreground/80 text-xs uppercase tracking-[0.2em] font-medium mb-1">
                     {t("interview.tip")}
                   </div>
-                  <p className="text-sm font-light leading-relaxed">{itemTip(current)}</p>
+                  <p className="text-sm font-light leading-relaxed">
+                    <AcronymText text={itemTip(current)!} />
+                  </p>
                 </div>
               )}
               {guideLinks.length > 0 && (

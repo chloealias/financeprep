@@ -1,18 +1,16 @@
 import type { LucideIcon } from "lucide-react";
-import { Calculator, Library, Newspaper, Table2, TrendingUp, Triangle, User } from "lucide-react";
+import { Calculator, Newspaper, TrendingUp, Triangle, User } from "lucide-react";
 
 export type GuideModuleId =
   | "actualite"
   | "cv"
   | "pyramid"
   | "mentalMath"
-  | "excel"
-  | "accretion"
-  | "glossaire";
+  | "accretion";
 
 export type GuideModule = {
   id: GuideModuleId;
-  href: "/cv" | "/excel" | "/pyramid" | "/accretion" | "/actualite" | "/glossaire" | "/mental-math";
+  href: "/cv" | "/pyramid" | "/accretion" | "/actualite" | "/mental-math";
   /** Fallback FR — prefer `t(\`guide.modules.${id}.tag\`)` at render. */
   tag: string;
   /** Fallback FR — prefer `t(\`guide.modules.${id}.title\`)` at render. */
@@ -50,24 +48,10 @@ export const guideModules: GuideModule[] = [
     icon: Calculator,
   },
   {
-    id: "excel",
-    href: "/excel",
-    tag: "Différenciant TS / PE",
-    title: "Astuces Excel essentielles",
-    icon: Table2,
-  },
-  {
     id: "accretion",
     href: "/accretion",
     tag: "Éliminatoire en M&A",
     title: "Accretion / Dilution analysis",
     icon: TrendingUp,
-  },
-  {
-    id: "glossaire",
-    href: "/glossaire",
-    tag: "Référence technique",
-    title: "Glossaire des acronymes",
-    icon: Library,
   },
 ];

@@ -4,7 +4,6 @@ import { ListChecks, Library, BookMarked, Building2, Landmark } from "lucide-rea
 import { useEffect, useState } from "react";
 import type { AppTab, HubNavTab } from "@/lib/app-tabs";
 import { isHubNavTab } from "@/lib/app-tabs";
-import { questions } from "@/data/questions";
 import { concepts } from "@/data/concepts";
 import { ProfileMenu } from "@/components/hub/ProfileMenu";
 import { ProfileBanner } from "@/components/profile/ProfileBanner";
@@ -40,9 +39,8 @@ export function AppHubLayout({
   const pages: HubPage[] = [
     {
       id: "questions",
-      label: t("hub.layout.nav.questions"),
+      label: t("hub.layout.nav.pratique"),
       icon: ListChecks,
-      count: questions.length,
     },
     { id: "concepts", label: t("hub.layout.nav.concepts"), icon: Library, count: concepts.length },
     { id: "guide", label: t("hub.layout.nav.guide"), icon: BookMarked },

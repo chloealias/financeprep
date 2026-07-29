@@ -13,6 +13,7 @@ import {
   type SrsStore,
 } from "@/lib/srs";
 import { PageHeader } from "@/components/ui/page-header";
+import { AcronymText } from "@/components/interview/AcronymText";
 import { defaultHomeSearch } from "@/lib/route-search";
 import { logDailyActivity } from "@/lib/daily-goal";
 import { useT } from "@/hooks/useT";
@@ -355,8 +356,7 @@ function CardView({
               <div className="border-t border-dashed border-border my-4" />
               <div className="type-label text-primary mb-3">{t("flashcards.backLabel")}</div>
               <p className="text-foreground leading-relaxed font-light text-base sm:text-lg whitespace-pre-line">
-                {card.back}
-                {moreSteps ? `\n\n${moreSteps}` : ""}
+                <AcronymText text={`${card.back}${moreSteps ? `\n\n${moreSteps}` : ""}`} />
               </p>
               {card.hubQuestionId && (
                 <Link
@@ -375,7 +375,9 @@ function CardView({
                       ? t("flashcards.hint.formula")
                       : t("flashcards.hint.tip")}
                   </div>
-                  <p className="text-sm font-light leading-relaxed">{card.hint}</p>
+                  <p className="text-sm font-light leading-relaxed">
+                    <AcronymText text={card.hint} />
+                  </p>
                 </div>
               )}
             </>

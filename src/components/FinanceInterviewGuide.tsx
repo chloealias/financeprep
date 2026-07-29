@@ -19,15 +19,23 @@ import { BankHubPage } from "@/components/banks/BankHubPage";
 import { SectorsTab } from "@/components/sectors/SectorsTab";
 import { GuideTab } from "@/components/hub/GuideTab";
 import { ConceptsTab } from "@/components/hub/ConceptsTab";
-import { QuestionsTab } from "@/components/hub/QuestionsTab";
+import { PracticeTab } from "@/components/hub/PracticeTab";
 import { StreakBanner } from "@/components/hub/StreakBanner";
+import type { PracticeView } from "@/lib/route-search";
 
 type FinanceInterviewGuideProps = {
   activePage: AppTab;
+  practiceView: PracticeView;
   onPageChange: (page: AppTab) => void;
+  onPracticeViewChange: (view: PracticeView) => void;
 };
 
-const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGuideProps) => {
+const FinanceInterviewGuide = ({
+  activePage,
+  practiceView,
+  onPageChange,
+  onPracticeViewChange,
+}: FinanceInterviewGuideProps) => {
   const [ratings, setRatings] = useState<QuestionRatings>({});
   const [reviewList, setReviewList] = useState<string[]>([]);
   const [questionsFiltersKey, setQuestionsFiltersKey] = useState(0);
@@ -75,7 +83,9 @@ const FinanceInterviewGuide = ({ activePage, onPageChange }: FinanceInterviewGui
         activePage={activePage}
         panels={{
           questions: (
-            <QuestionsTab
+            <PracticeTab
+              view={practiceView}
+              onViewChange={onPracticeViewChange}
               ratings={ratings}
               onUpdateRating={updateRating}
               reviewList={reviewList}

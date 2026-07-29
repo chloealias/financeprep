@@ -22,13 +22,20 @@ export const acronymSections: AcronymSection[] = [
       { abbr: "EqV", english: "Equity Value", french: "Valeur des fonds propres (actionnaires)" },
       { abbr: "DCF", english: "Discounted Cash Flow", french: "Valorisation par flux actualisés" },
       { abbr: "TV", english: "Terminal Value", french: "Valeur terminale" },
+      { abbr: "VT", english: "Terminal Value", french: "Valeur terminale" },
       {
         abbr: "APV",
         english: "Adjusted Present Value",
         french: "DCF alternatif (FCFF + tax shield séparé)",
       },
+      { abbr: "PV", english: "Present Value", french: "Valeur actuelle / actualisée" },
       { abbr: "DDM", english: "Dividend Discount Model", french: "Valorisation par dividendes" },
       { abbr: "GW", english: "Goodwill", french: "Écart d'acquisition" },
+      {
+        abbr: "TSM",
+        english: "Treasury Stock Method",
+        french: "Méthode du rachat d'actions (dilution options)",
+      },
     ],
   },
   {
@@ -139,6 +146,11 @@ export const acronymSections: AcronymSection[] = [
     hubCategory: "accounting",
     items: [
       {
+        abbr: "FCF",
+        english: "Free Cash Flow",
+        french: "Flux de trésorerie disponible (souvent FCFF en DCF)",
+      },
+      {
         abbr: "FCFF",
         english: "Free Cash Flow to Firm",
         french: "FCF pour tous les financeurs (utilisé en DCF)",
@@ -155,6 +167,11 @@ export const acronymSections: AcronymSection[] = [
       },
       { abbr: "CAPEX", english: "Capital Expenditures", french: "Investissements" },
       { abbr: "NWC / WC", english: "(Net) Working Capital", french: "BFR" },
+      {
+        abbr: "BFR",
+        english: "Working Capital",
+        french: "Besoin en fonds de roulement (NWC)",
+      },
       { abbr: "DSO", english: "Days Sales Outstanding", french: "Délai d'encaissement clients" },
       { abbr: "DPO", english: "Days Payable Outstanding", french: "Délai paiement fournisseurs" },
       { abbr: "DIO", english: "Days Inventory Outstanding", french: "Durée de stockage" },

@@ -13,9 +13,7 @@ import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as MentalMathRouteImport } from './routes/mental-math'
 import { Route as McpRouteImport } from './routes/mcp'
-import { Route as GlossaireRouteImport } from './routes/glossaire'
 import { Route as FlashcardsRouteImport } from './routes/flashcards'
-import { Route as ExcelRouteImport } from './routes/excel'
 import { Route as CvRouteImport } from './routes/cv'
 import { Route as ActualiteRouteImport } from './routes/actualite'
 import { Route as AccretionRouteImport } from './routes/accretion'
@@ -45,19 +43,9 @@ const McpRoute = McpRouteImport.update({
   path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GlossaireRoute = GlossaireRouteImport.update({
-  id: '/glossaire',
-  path: '/glossaire',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FlashcardsRoute = FlashcardsRouteImport.update({
   id: '/flashcards',
   path: '/flashcards',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExcelRoute = ExcelRouteImport.update({
-  id: '/excel',
-  path: '/excel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CvRoute = CvRouteImport.update({
@@ -109,9 +97,7 @@ export interface FileRoutesByFullPath {
   '/accretion': typeof AccretionRoute
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
-  '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
-  '/glossaire': typeof GlossaireRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
@@ -126,9 +112,7 @@ export interface FileRoutesByTo {
   '/accretion': typeof AccretionRoute
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
-  '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
-  '/glossaire': typeof GlossaireRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
@@ -144,9 +128,7 @@ export interface FileRoutesById {
   '/accretion': typeof AccretionRoute
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
-  '/excel': typeof ExcelRoute
   '/flashcards': typeof FlashcardsRoute
-  '/glossaire': typeof GlossaireRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
   '/profil': typeof ProfilRoute
@@ -163,9 +145,7 @@ export interface FileRouteTypes {
     | '/accretion'
     | '/actualite'
     | '/cv'
-    | '/excel'
     | '/flashcards'
-    | '/glossaire'
     | '/mcp'
     | '/mental-math'
     | '/profil'
@@ -180,9 +160,7 @@ export interface FileRouteTypes {
     | '/accretion'
     | '/actualite'
     | '/cv'
-    | '/excel'
     | '/flashcards'
-    | '/glossaire'
     | '/mcp'
     | '/mental-math'
     | '/profil'
@@ -197,9 +175,7 @@ export interface FileRouteTypes {
     | '/accretion'
     | '/actualite'
     | '/cv'
-    | '/excel'
     | '/flashcards'
-    | '/glossaire'
     | '/mcp'
     | '/mental-math'
     | '/profil'
@@ -215,9 +191,7 @@ export interface RootRouteChildren {
   AccretionRoute: typeof AccretionRoute
   ActualiteRoute: typeof ActualiteRoute
   CvRoute: typeof CvRoute
-  ExcelRoute: typeof ExcelRoute
   FlashcardsRoute: typeof FlashcardsRoute
-  GlossaireRoute: typeof GlossaireRoute
   McpRoute: typeof McpRoute
   MentalMathRoute: typeof MentalMathRoute
   ProfilRoute: typeof ProfilRoute
@@ -258,25 +232,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/glossaire': {
-      id: '/glossaire'
-      path: '/glossaire'
-      fullPath: '/glossaire'
-      preLoaderRoute: typeof GlossaireRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/flashcards': {
       id: '/flashcards'
       path: '/flashcards'
       fullPath: '/flashcards'
       preLoaderRoute: typeof FlashcardsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/excel': {
-      id: '/excel'
-      path: '/excel'
-      fullPath: '/excel'
-      preLoaderRoute: typeof ExcelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cv': {
@@ -343,9 +303,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccretionRoute: AccretionRoute,
   ActualiteRoute: ActualiteRoute,
   CvRoute: CvRoute,
-  ExcelRoute: ExcelRoute,
   FlashcardsRoute: FlashcardsRoute,
-  GlossaireRoute: GlossaireRoute,
   McpRoute: McpRoute,
   MentalMathRoute: MentalMathRoute,
   ProfilRoute: ProfilRoute,
