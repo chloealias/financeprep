@@ -37,6 +37,14 @@
               "type": "string",
               "description": "Optional difficulty filter (e.g. 'basique', 'intermédiaire', 'avancé')."
             },
+            "locale": {
+              "type": "string",
+              "enum": [
+                "fr",
+                "en"
+              ],
+              "description": "Content locale. Defaults to French."
+            },
             "limit": {
               "type": "integer",
               "description": "Max number of results. Use 20 by default.",
@@ -67,6 +75,14 @@
             "category": {
               "type": "string",
               "description": "Optional category filter."
+            },
+            "locale": {
+              "type": "string",
+              "enum": [
+                "fr",
+                "en"
+              ],
+              "description": "Content locale. Defaults to French."
             },
             "includeDeepDive": {
               "type": "boolean",
@@ -100,6 +116,15 @@
               "type": "integer",
               "description": "Max number of results.",
               "default": 50
+            },
+            "locale": {
+              "type": "string",
+              "enum": [
+                "fr",
+                "en"
+              ],
+              "description": "Locale for section titles (fr default).",
+              "default": "fr"
             }
           },
           "additionalProperties": false,
