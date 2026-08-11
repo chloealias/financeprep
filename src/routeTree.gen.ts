@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as NetworkingRouteImport } from './routes/networking'
 import { Route as MentalMathRouteImport } from './routes/mental-math'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as FlashcardsRouteImport } from './routes/flashcards'
@@ -32,6 +33,11 @@ const PyramidRoute = PyramidRouteImport.update({
 const ProfilRoute = ProfilRouteImport.update({
   id: '/profil',
   path: '/profil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NetworkingRoute = NetworkingRouteImport.update({
+  id: '/networking',
+  path: '/networking',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentalMathRoute = MentalMathRouteImport.update({
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/flashcards': typeof FlashcardsRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
+  '/networking': typeof NetworkingRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/flashcards': typeof FlashcardsRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
+  '/networking': typeof NetworkingRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/flashcards': typeof FlashcardsRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
+  '/networking': typeof NetworkingRoute
   '/profil': typeof ProfilRoute
   '/pyramid': typeof PyramidRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/mcp'
     | '/mental-math'
+    | '/networking'
     | '/profil'
     | '/pyramid'
     | '/.mcp/list-tools'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/mcp'
     | '/mental-math'
+    | '/networking'
     | '/profil'
     | '/pyramid'
     | '/.mcp/list-tools'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/flashcards'
     | '/mcp'
     | '/mental-math'
+    | '/networking'
     | '/profil'
     | '/pyramid'
     | '/.mcp/list-tools'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   FlashcardsRoute: typeof FlashcardsRoute
   McpRoute: typeof McpRoute
   MentalMathRoute: typeof MentalMathRoute
+  NetworkingRoute: typeof NetworkingRoute
   ProfilRoute: typeof ProfilRoute
   PyramidRoute: typeof PyramidRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
@@ -229,6 +242,13 @@ declare module '@tanstack/react-router' {
       path: '/profil'
       fullPath: '/profil'
       preLoaderRoute: typeof ProfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/networking': {
+      id: '/networking'
+      path: '/networking'
+      fullPath: '/networking'
+      preLoaderRoute: typeof NetworkingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mental-math': {
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   FlashcardsRoute: FlashcardsRoute,
   McpRoute: McpRoute,
   MentalMathRoute: MentalMathRoute,
+  NetworkingRoute: NetworkingRoute,
   ProfilRoute: ProfilRoute,
   PyramidRoute: PyramidRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,

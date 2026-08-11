@@ -1,21 +1,74 @@
-import { Link } from "@tanstack/react-router";
-import { ChevronRight, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
-import { guideModules } from "@/data/guide-modules";
-import { GuideModuleLink } from "@/components/guide/guide-ui";
+import { useEffect, useMemo, useState } from "react";
+import {
+  guideModuleGroups,
+  getGuideModulesByGroup,
+  type GuideModule,
+} from "@/data/guide-modules";
+import {
+  GuideHeroModuleLink,
+  GuideModuleLink,
+  GuideModuleSection,
+} from "@/components/guide/guide-ui";
+import { GuideDiagnosticWidget } from "@/components/hub/GuideDiagnosticWidget";
 import { PageHeader } from "@/components/ui/page-header";
-import { getProfileMenuBadges } from "@/lib/profile-dashboard";
+import { getGuideModuleProgress, sortGuideModulesByUrgency } from "@/lib/guide-progress";
 import { useT } from "@/hooks/useT";
 
+const GROUP_LABEL_KEYS = {
+  fundamentals: "hub.guide.groups.fundamentals",
+  training: "hub.guide.groups.training",
+  networking: "hub.guide.groups.networking",
+} as const;
+
+function renderModuleCard(module: GuideModule, badgeLabel: string | null, t: ReturnType<typeof useT>["t"]) {
+  if (module.hero) {
+    return (
+      <GuideHeroModuleLink
+        key={module.id}
+        to={module.href}
+        eyebrow={t("hub.guide.flashcards.eyebrow")}
+        title={t(`guide.modules.${module.id}.title`)}
+        icon={module.icon}
+        badge={badgeLabel ? { label: badgeLabel, variant: "hero" } : undefined}
+      />
+    );
+  }
+
+  return (
+    <GuideModuleLink
+      key={module.id}
+      to={module.href}
+      tag={t(`guide.modules.${module.id}.tag`)}
+      title={t(`guide.modules.${module.id}.title`)}
+      icon={module.icon}
+      badge={badgeLabel ? { label: badgeLabel } : undefined}
+    />
+  );
+}
+
 export function GuideTab() {
-  const { t } = useT();
-  const [srsDue, setSrsDue] = useState(0);
+  const { t, locale } = useT();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setSrsDue(getProfileMenuBadges().srsDue);
+    setMounted(true);
   }, []);
 
-  const [actualiteModule, ...otherModules] = guideModules;
+  const groupedModules = useMemo(() => {
+    if (!mounted) {
+      return guideModuleGroups.map((group) => ({ group, modules: getGuideModulesByGroup(group) }));
+    }
+    return guideModuleGroups.map((group) => ({
+      group,
+      modules: sortGuideModulesByUrgency(getGuideModulesByGroup(group), locale),
+    }));
+  }, [mounted, locale]);
+
+  const getBadgeLabel = (module: GuideModule): string | null => {
+    if (!mounted || !module.progressKey) return null;
+    const progress = getGuideModuleProgress(module.progressKey, t, locale);
+    return progress?.label ?? null;
+  };
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
@@ -26,53 +79,13 @@ export function GuideTab() {
         className="mb-8 sm:mb-10"
       />
 
-      <div className="mb-10">
-        <GuideModuleLink
-          to={actualiteModule.href}
-          tag={t(`guide.modules.${actualiteModule.id}.tag`)}
-          title={t(`guide.modules.${actualiteModule.id}.title`)}
-          icon={actualiteModule.icon}
-        />
-      </div>
+      <GuideDiagnosticWidget />
 
-      <Link
-        to="/flashcards"
-        className="group block mb-10 rounded-2xl bg-primary text-primary-foreground p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden"
-      >
-        {srsDue > 0 && (
-          <span className="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full bg-white/20 text-xs font-semibold">
-            {t("hub.guide.flashcards.srsBadge", { count: srsDue })}
-          </span>
-        )}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="relative flex items-center gap-5">
-          <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center">
-            <Sparkles className="w-7 h-7 text-primary-foreground/80" aria-hidden="true" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-primary-foreground/70 text-xs uppercase tracking-[0.2em] font-semibold mb-1">
-              {t("hub.guide.flashcards.eyebrow")}
-            </div>
-            <h3 className="type-card-title text-xl sm:text-2xl">
-              {t("hub.guide.flashcards.title")}
-            </h3>
-          </div>
-          <ChevronRight
-            className="w-6 h-6 text-primary-foreground/70 group-hover:translate-x-1 transition-transform"
-            aria-hidden="true"
-          />
-        </div>
-      </Link>
-
-      <div className="space-y-6">
-        {otherModules.map((module) => (
-          <GuideModuleLink
-            key={module.href}
-            to={module.href}
-            tag={t(`guide.modules.${module.id}.tag`)}
-            title={t(`guide.modules.${module.id}.title`)}
-            icon={module.icon}
-          />
+      <div className="space-y-10">
+        {groupedModules.map(({ group, modules }) => (
+          <GuideModuleSection key={group} title={t(GROUP_LABEL_KEYS[group])}>
+            {modules.map((module) => renderModuleCard(module, getBadgeLabel(module), t))}
+          </GuideModuleSection>
         ))}
       </div>
     </div>
