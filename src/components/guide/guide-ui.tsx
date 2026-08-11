@@ -109,7 +109,8 @@ type GuideModuleLinkProps = {
         | "/pyramid"
         | "/accretion"
         | "/actualite"
-        | "/mental-math";
+        | "/mental-math"
+        | "/diagnostic";
       search?: never;
     }
   | { to: "/"; search: { tab: "banques" | "secteurs" | "guide" } }

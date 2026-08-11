@@ -2487,4 +2487,62 @@ export const questions = [
     ],
     tip: "Pour les entretiens, la méthode « arrondir puis corriger » est souvent la plus rapide.",
   },
+
+  // ===== QUESTIONS TEST CAHIER (Q134–Q136) =====
+  {
+    id: 134,
+    interviewSlot: "technical",
+    category: "valuation",
+    difficulty: "avancé",
+    question:
+      "LVMH étudie l'acquisition de NOSH (food tech). Comment structurez-vous l'analyse de valorisation et le raisonnement stratégique en entretien ?",
+    explanation:
+      "Cas type « strategic buyer + cible growth » : croiser la logique industrielle LVMH avec une triangulation de valorisation (DCF, comps, primes) et les risques d'intégration.",
+    steps: [
+      "Cadre stratégique : NOSH apporte-t-il une adjacence (nutrition / lifestyle premium), un canal digital, ou une marque young affluent ? Clarifier le « why LVMH » vs un PE ou un concurrent food.",
+      "Stand-alone vs synergies : valoriser NOSH seul (DCF + comps food tech / DTC), puis quantifier les synergies (distribution LVMH, pricing power, cross-sell) actualisées au WACC combiné — ne jamais noyer la prime dans un DCF unique.",
+      "Multiples : EV/Sales (si non profitable) ou EV/EBITDA ; comparer à des transactions DTC / food premium ; expliquer pourquoi un multiple strategic est plus élevé qu'un multiple financier.",
+      "Bridge EV → EqV : dette nette, earn-outs, options salariés, cash excess — typique des cibles scale-up.",
+      "Sensibilités & risques : churn, CAC, dépendance fondateur, exécution supply chain, dilution de la marque LVMH si mal positionné.",
+      "Recommandation en 30 secondes : fourchette de valeur, premium max justifiable par NPV des synergies, et conditions (earn-out, retention management).",
+    ],
+    tip: "Annoncez d'abord le framework (stratégie → stand-alone → synergies → structure) avant les chiffres — le recruteur teste la structure autant que le multiple.",
+  },
+  {
+    id: 135,
+    interviewSlot: "technical",
+    category: "dcf",
+    difficulty: "avancé",
+    question:
+      "Calculez / discutez le WACC de LVMH. Quel est le piège classique que les candidats ratent ?",
+    explanation:
+      "Le piège n'est pas la formule du WACC, c'est la cohérence des inputs : β releveré, structure cible vs actuelle, devises, et surtout ne pas utiliser un Ke « peer average » sans ajuster le levier.",
+    steps: [
+      "Formule : WACC = E/V × Ke + D/V × Kd × (1−t). Ke = Rf + βₗ × ERP (+ size premium si justifié).",
+      "Rf et ERP : taux sans risque de la devise des flux (euro pour LVMH) ; ERP marché mature — citer une source (Damodaran, Duff & Phelps) sans inventer un chiffre magique.",
+      "β : partir d'un β unlevered de peers luxury / consumer discretionary, puis relever au D/E cible de LVMH (pas forcément au D/E spot si la structure cible diffère).",
+      "Kd : yield de la dette LVMH (obligations existantes / credit spread), pas le taux BCE. Appliquer le bouclier fiscal avec le taux marginal pertinent.",
+      "Piège n°1 — structure : utiliser E et D de marché (pas book) pour les poids ; incohérence book vs market = erreur fréquente.",
+      "Piège n°2 — β : prendre le β levered de LVMH tel quel sans vérifier si le levier a changé, ou comparer à un peer sous-levé sans unlever/relever.",
+      "Piège n°3 — devises / pays : actualiser des flux USD avec un WACC 100 % EUR, ou oublier que LVMH a une dette multi-devises.",
+      "Conclusion entretien : donner un ordre de grandeur cohérent (luxury investment-grade → WACC souvent dans une bande basse à mid-single digit +) et surtout expliquer les sensibilités WACC × g.",
+    ],
+    tip: "Dites explicitement le piège : « le WACC se trompe surtout sur β et les poids de marché, pas sur la formule ». Ça montre que vous avez déjà vu des modèles cassés.",
+  },
+  {
+    id: 136,
+    interviewSlot: "technical",
+    category: "ma",
+    difficulty: "basique",
+    question: "Cite-moi 2 noms de data room (virtual data room / VDR) utilisés en M&A.",
+    explanation:
+      "Question de culture process sell-side : montrer que vous connaissez les outils de due diligence, pas seulement la théorie du DCF.",
+    steps: [
+      "Réponse attendue : citer au moins deux acteurs parmi Intralinks, Datasite (ex-Merrill Datasite), DealRoom, Ansarada, Firmex, Box (parfois), SecureDocs, etc.",
+      "Rôle : la VDR héberge le data room virtuel — documents juridiques, financiers, RH, commerciaux — avec droits d'accès granulaires et tracking des questions Q&A.",
+      "Process : ouverture après teaser / NDA ; index de documents ; Q&A log ; reporting d'activité des buyers (qui lit quoi) utile au sell-side pour jauger l'intérêt.",
+      "Lien entretien : un analyste junior passe beaucoup de temps à peupler / contrôler la VDR et à répondre aux questions DD — montrer que vous connaissez le workflow.",
+    ],
+    tip: "Intralinks + Datasite sont les deux réponses les plus « safe » en Europe. Ajoutez une phrase sur le Q&A tracking pour marquer un point process.",
+  },
 ];

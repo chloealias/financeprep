@@ -18,17 +18,22 @@ import { validateTargetBankIds } from "@/lib/profile-personalization";
 import { isValidSectorId, SECTOR_IDS, type SectorId } from "@/lib/sectors";
 import { loadSrsStore, resetSrs, type SrsStore } from "@/lib/srs";
 import {
+  clearDiagnosticState,
   clearRatings,
   loadCvChecklist,
+  loadDiagnosticState,
   loadInterviewSessions,
   loadRatings,
   loadReviewList,
   loadSavedFilters,
+  normalizeDiagnosticState,
   saveCvChecklist,
+  saveDiagnosticState,
   saveRatings,
   saveReviewList,
   saveSavedFilters,
   type CvChecklist,
+  type DiagnosticState,
   type InterviewSessionRecord,
   type QuestionRatings,
   type SavedFilters,
@@ -239,6 +244,8 @@ export type FinancePrepBackup = {
   srs: SrsStore;
   reviewList: string[];
   cvChecklist: CvChecklist;
+  /** Optional for backward compatibility with older backups. */
+  diagnosticState?: DiagnosticState;
   targetBankIds: string[];
   interviewSessions: InterviewSessionRecord[];
   filters: SavedFilters | null;
@@ -261,6 +268,7 @@ export function buildBackup(): FinancePrepBackup {
     srs: loadSrsStore(),
     reviewList: loadReviewList(),
     cvChecklist: loadCvChecklist(),
+    diagnosticState: loadDiagnosticState(),
     targetBankIds: getTargetBankIds(),
     interviewSessions: loadInterviewSessions(),
     filters: readJson(FILTERS_KEY, null),
@@ -333,6 +341,7 @@ export function importBackup(json: string): ImportResult {
     if (raw.srs) writeJson(SRS_KEY, raw.srs);
     if (Array.isArray(raw.reviewList)) saveReviewList(raw.reviewList);
     if (raw.cvChecklist) saveCvChecklist(raw.cvChecklist);
+    if (raw.diagnosticState) saveDiagnosticState(normalizeDiagnosticState(raw.diagnosticState));
     if (Array.isArray(raw.targetBankIds)) {
       writeJson(TARGET_BANKS_KEY, validateTargetBankIds(raw.targetBankIds));
     }
@@ -366,6 +375,7 @@ export function resetData(scope: ResetScope): void {
     if (scope === "all") {
       saveReviewList([]);
       saveCvChecklist({});
+      clearDiagnosticState();
       writeJson(TARGET_BANKS_KEY, []);
     }
   }

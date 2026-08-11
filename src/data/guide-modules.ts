@@ -1,16 +1,17 @@
 import type { LucideIcon } from "lucide-react";
-import { Calculator, Newspaper, TrendingUp, Triangle, User } from "lucide-react";
+import { Calculator, ClipboardCheck, Newspaper, TrendingUp, Triangle, User } from "lucide-react";
 
 export type GuideModuleId =
   | "actualite"
   | "cv"
   | "pyramid"
   | "mentalMath"
-  | "accretion";
+  | "accretion"
+  | "diagnostic";
 
 export type GuideModule = {
   id: GuideModuleId;
-  href: "/cv" | "/pyramid" | "/accretion" | "/actualite" | "/mental-math";
+  href: "/cv" | "/pyramid" | "/accretion" | "/actualite" | "/mental-math" | "/diagnostic";
   /** Fallback FR — prefer `t(\`guide.modules.${id}.tag\`)` at render. */
   tag: string;
   /** Fallback FR — prefer `t(\`guide.modules.${id}.title\`)` at render. */
@@ -25,6 +26,13 @@ export const guideModules: GuideModule[] = [
     tag: "Preuve d'intérêt réel",
     title: "Actualité M&A 2025-2026",
     icon: Newspaper,
+  },
+  {
+    id: "diagnostic",
+    href: "/diagnostic",
+    tag: "Diagnostic de rentrée",
+    title: "Checklist prep entretien",
+    icon: ClipboardCheck,
   },
   {
     id: "cv",

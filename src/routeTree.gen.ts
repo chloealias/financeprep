@@ -9,53 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AccretionRouteImport } from './routes/accretion'
-import { Route as ActualiteRouteImport } from './routes/actualite'
-import { Route as CvRouteImport } from './routes/cv'
-import { Route as FlashcardsRouteImport } from './routes/flashcards'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as MentalMathRouteImport } from './routes/mental-math'
-import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as PyramidRouteImport } from './routes/pyramid'
-import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as ProfilRouteImport } from './routes/profil'
+import { Route as MentalMathRouteImport } from './routes/mental-math'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as FlashcardsRouteImport } from './routes/flashcards'
+import { Route as DiagnosticRouteImport } from './routes/diagnostic'
+import { Route as CvRouteImport } from './routes/cv'
+import { Route as ActualiteRouteImport } from './routes/actualite'
+import { Route as AccretionRouteImport } from './routes/accretion'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as SecteurSectorIdRouteImport } from './routes/secteur/$sectorId'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccretionRoute = AccretionRouteImport.update({
-  id: '/accretion',
-  path: '/accretion',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ActualiteRoute = ActualiteRouteImport.update({
-  id: '/actualite',
-  path: '/actualite',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CvRoute = CvRouteImport.update({
-  id: '/cv',
-  path: '/cv',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FlashcardsRoute = FlashcardsRouteImport.update({
-  id: '/flashcards',
-  path: '/flashcards',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MentalMathRoute = MentalMathRouteImport.update({
-  id: '/mental-math',
-  path: '/mental-math',
+const PyramidRoute = PyramidRouteImport.update({
+  id: '/pyramid',
+  path: '/pyramid',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfilRoute = ProfilRouteImport.update({
@@ -63,28 +34,63 @@ const ProfilRoute = ProfilRouteImport.update({
   path: '/profil',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PyramidRoute = PyramidRouteImport.update({
-  id: '/pyramid',
-  path: '/pyramid',
+const MentalMathRoute = MentalMathRouteImport.update({
+  id: '/mental-math',
+  path: '/mental-math',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlashcardsRoute = FlashcardsRouteImport.update({
+  id: '/flashcards',
+  path: '/flashcards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiagnosticRoute = DiagnosticRouteImport.update({
+  id: '/diagnostic',
+  path: '/diagnostic',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvRoute = CvRouteImport.update({
+  id: '/cv',
+  path: '/cv',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActualiteRoute = ActualiteRouteImport.update({
+  id: '/actualite',
+  path: '/actualite',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccretionRoute = AccretionRouteImport.update({
+  id: '/accretion',
+  path: '/accretion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecteurSectorIdRoute = SecteurSectorIdRouteImport.update({
+  id: '/secteur/$sectorId',
+  path: '/secteur/$sectorId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
-const SecteurSectorIdRoute = SecteurSectorIdRouteImport.update({
-  id: '/secteur/$sectorId',
-  path: '/secteur/$sectorId',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/accretion': typeof AccretionRoute
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
+  '/diagnostic': typeof DiagnosticRoute
   '/flashcards': typeof FlashcardsRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/accretion': typeof AccretionRoute
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
+  '/diagnostic': typeof DiagnosticRoute
   '/flashcards': typeof FlashcardsRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
@@ -128,6 +136,7 @@ export interface FileRoutesById {
   '/accretion': typeof AccretionRoute
   '/actualite': typeof ActualiteRoute
   '/cv': typeof CvRoute
+  '/diagnostic': typeof DiagnosticRoute
   '/flashcards': typeof FlashcardsRoute
   '/mcp': typeof McpRoute
   '/mental-math': typeof MentalMathRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/accretion'
     | '/actualite'
     | '/cv'
+    | '/diagnostic'
     | '/flashcards'
     | '/mcp'
     | '/mental-math'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/accretion'
     | '/actualite'
     | '/cv'
+    | '/diagnostic'
     | '/flashcards'
     | '/mcp'
     | '/mental-math'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/accretion'
     | '/actualite'
     | '/cv'
+    | '/diagnostic'
     | '/flashcards'
     | '/mcp'
     | '/mental-math'
@@ -191,6 +203,7 @@ export interface RootRouteChildren {
   AccretionRoute: typeof AccretionRoute
   ActualiteRoute: typeof ActualiteRoute
   CvRoute: typeof CvRoute
+  DiagnosticRoute: typeof DiagnosticRoute
   FlashcardsRoute: typeof FlashcardsRoute
   McpRoute: typeof McpRoute
   MentalMathRoute: typeof MentalMathRoute
@@ -204,53 +217,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/accretion': {
-      id: '/accretion'
-      path: '/accretion'
-      fullPath: '/accretion'
-      preLoaderRoute: typeof AccretionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/actualite': {
-      id: '/actualite'
-      path: '/actualite'
-      fullPath: '/actualite'
-      preLoaderRoute: typeof ActualiteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cv': {
-      id: '/cv'
-      path: '/cv'
-      fullPath: '/cv'
-      preLoaderRoute: typeof CvRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/flashcards': {
-      id: '/flashcards'
-      path: '/flashcards'
-      fullPath: '/flashcards'
-      preLoaderRoute: typeof FlashcardsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mental-math': {
-      id: '/mental-math'
-      path: '/mental-math'
-      fullPath: '/mental-math'
-      preLoaderRoute: typeof MentalMathRouteImport
+    '/pyramid': {
+      id: '/pyramid'
+      path: '/pyramid'
+      fullPath: '/pyramid'
+      preLoaderRoute: typeof PyramidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profil': {
@@ -260,18 +231,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfilRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pyramid': {
-      id: '/pyramid'
-      path: '/pyramid'
-      fullPath: '/pyramid'
-      preLoaderRoute: typeof PyramidRouteImport
+    '/mental-math': {
+      id: '/mental-math'
+      path: '/mental-math'
+      fullPath: '/mental-math'
+      preLoaderRoute: typeof MentalMathRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flashcards': {
+      id: '/flashcards'
+      path: '/flashcards'
+      fullPath: '/flashcards'
+      preLoaderRoute: typeof FlashcardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diagnostic': {
+      id: '/diagnostic'
+      path: '/diagnostic'
+      fullPath: '/diagnostic'
+      preLoaderRoute: typeof DiagnosticRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv': {
+      id: '/cv'
+      path: '/cv'
+      fullPath: '/cv'
+      preLoaderRoute: typeof CvRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/actualite': {
+      id: '/actualite'
+      path: '/actualite'
+      fullPath: '/actualite'
+      preLoaderRoute: typeof ActualiteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accretion': {
+      id: '/accretion'
+      path: '/accretion'
+      fullPath: '/accretion'
+      preLoaderRoute: typeof AccretionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/secteur/$sectorId': {
+      id: '/secteur/$sectorId'
+      path: '/secteur/$sectorId'
+      fullPath: '/secteur/$sectorId'
+      preLoaderRoute: typeof SecteurSectorIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.well-known/oauth-protected-resource': {
@@ -281,11 +301,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/secteur/$sectorId': {
-      id: '/secteur/$sectorId'
-      path: '/secteur/$sectorId'
-      fullPath: '/secteur/$sectorId'
-      preLoaderRoute: typeof SecteurSectorIdRouteImport
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
@@ -303,6 +323,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccretionRoute: AccretionRoute,
   ActualiteRoute: ActualiteRoute,
   CvRoute: CvRoute,
+  DiagnosticRoute: DiagnosticRoute,
   FlashcardsRoute: FlashcardsRoute,
   McpRoute: McpRoute,
   MentalMathRoute: MentalMathRoute,

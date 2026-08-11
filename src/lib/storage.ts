@@ -3,6 +3,7 @@ const LEGACY_RATINGS_KEY = "finance-ratings";
 const FILTERS_KEY = "finance-filters-v1";
 const REVIEW_KEY = "finance-review-v1";
 const CV_CHECKLIST_KEY = "finance-cv-checklist-v1";
+const DIAGNOSTIC_KEY = "finance-diagnostic-v1";
 const GUIDE_OPEN_BLOC_KEY = "finance-guide-open-bloc-v1";
 const STUDY_MODE_KEY = "finance-study-mode-v1";
 const GUIDE_GOALS_KEY = "finance-guide-goals-v1";
@@ -33,6 +34,20 @@ export type InterviewSessionRecord = {
 
 export type QuestionRatings = Record<string, number>;
 export type CvChecklist = Record<string, boolean>;
+
+export type DiagnosticTechnicalStatus = "mastered" | "review";
+
+export type DiagnosticState = {
+  technical: Record<string, DiagnosticTechnicalStatus>;
+  fit: Record<string, boolean>;
+  networking: Record<string, boolean>;
+};
+
+export const EMPTY_DIAGNOSTIC_STATE: DiagnosticState = {
+  technical: {},
+  fit: {},
+  networking: {},
+};
 
 export type SavedFilters = {
   activeCategory: string;
@@ -152,6 +167,51 @@ export function loadCvChecklist(): CvChecklist {
 
 export function saveCvChecklist(checked: CvChecklist): void {
   writeJson(CV_CHECKLIST_KEY, checked);
+}
+
+function normalizeBoolMap(raw: unknown): Record<string, boolean> {
+  if (!raw || typeof raw !== "object") return {};
+  const out: Record<string, boolean> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (v === true) out[k] = true;
+  }
+  return out;
+}
+
+function normalizeTechnicalMap(raw: unknown): Record<string, DiagnosticTechnicalStatus> {
+  if (!raw || typeof raw !== "object") return {};
+  const out: Record<string, DiagnosticTechnicalStatus> = {};
+  for (const [k, v] of Object.entries(raw as Record<string, unknown>)) {
+    if (v === "mastered" || v === "review") out[k] = v;
+  }
+  return out;
+}
+
+export function normalizeDiagnosticState(raw: unknown): DiagnosticState {
+  if (!raw || typeof raw !== "object") return { ...EMPTY_DIAGNOSTIC_STATE, technical: {}, fit: {}, networking: {} };
+  const obj = raw as Record<string, unknown>;
+  return {
+    technical: normalizeTechnicalMap(obj.technical),
+    fit: normalizeBoolMap(obj.fit),
+    networking: normalizeBoolMap(obj.networking),
+  };
+}
+
+export function loadDiagnosticState(): DiagnosticState {
+  return normalizeDiagnosticState(readJson<unknown>(DIAGNOSTIC_KEY, EMPTY_DIAGNOSTIC_STATE));
+}
+
+export function saveDiagnosticState(state: DiagnosticState): void {
+  writeJson(DIAGNOSTIC_KEY, normalizeDiagnosticState(state));
+}
+
+export function clearDiagnosticState(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(DIAGNOSTIC_KEY);
+  } catch {
+    /* ignore */
+  }
 }
 
 export function loadGuideOpenBloc(): string | null {

@@ -2488,4 +2488,62 @@ export const questions = [
     ],
     tip: 'In interviews, the "round then correct" method is often the fastest.',
   },
+
+  // ===== CAHIER TEST QUESTIONS (Q134–Q136) =====
+  {
+    id: 134,
+    interviewSlot: "technical",
+    category: "valuation",
+    difficulty: "avancé",
+    question:
+      "LVMH is considering acquiring NOSH (food tech). How would you structure the valuation analysis and strategic reasoning in an interview?",
+    explanation:
+      "Classic strategic-buyer + growth-target case: combine LVMH’s industrial logic with a valuation triangulation (DCF, comps, premiums) and integration risks.",
+    steps: [
+      "Strategic frame: does NOSH bring adjacency (nutrition / premium lifestyle), a digital channel, or a young-affluent brand? Clarify the “why LVMH” vs a PE firm or a food competitor.",
+      "Stand-alone vs synergies: value NOSH alone (DCF + food-tech / DTC comps), then quantify synergies (LVMH distribution, pricing power, cross-sell) discounted at the combined WACC — never bury the premium inside a single blended DCF.",
+      "Multiples: EV/Sales (if unprofitable) or EV/EBITDA; compare with DTC / premium-food transactions; explain why a strategic multiple sits above a financial multiple.",
+      "EV → Equity bridge: net debt, earn-outs, employee options, excess cash — typical for scale-up targets.",
+      "Sensitivities & risks: churn, CAC, founder dependency, supply-chain execution, brand dilution for LVMH if poorly positioned.",
+      "30-second recommendation: value range, max premium justified by NPV of synergies, and conditions (earn-out, management retention).",
+    ],
+    tip: "State the framework first (strategy → stand-alone → synergies → structure) before the numbers — interviewers grade structure as much as the multiple.",
+  },
+  {
+    id: 135,
+    interviewSlot: "technical",
+    category: "dcf",
+    difficulty: "avancé",
+    question:
+      "Walk through / discuss LVMH’s WACC. What is the classic trap candidates miss?",
+    explanation:
+      "The trap is not the WACC formula — it is input consistency: relevered beta, target vs actual structure, currencies, and not using a peer-average Ke without adjusting leverage.",
+    steps: [
+      "Formula: WACC = E/V × Ke + D/V × Kd × (1−t). Ke = Rf + βₗ × ERP (+ size premium if justified).",
+      "Rf and ERP: risk-free rate in the currency of the cash flows (euro for LVMH); mature-market ERP — cite a source (Damodaran, Duff & Phelps) rather than inventing a magic number.",
+      "Beta: start from an unlevered beta of luxury / consumer-discretionary peers, then relever at LVMH’s target D/E (not necessarily spot D/E if the target structure differs).",
+      "Kd: yield on LVMH debt (existing bonds / credit spread), not the ECB policy rate. Apply the tax shield with the relevant marginal rate.",
+      "Trap #1 — structure: use market E and D for weights, not book values; book vs market inconsistency is a common error.",
+      "Trap #2 — beta: take LVMH’s levered beta as-is without checking whether leverage changed, or compare to an under-levered peer without unlever/relever.",
+      "Trap #3 — currencies / countries: discounting USD cash flows with a 100% EUR WACC, or ignoring multi-currency debt.",
+      "Interview close: give a coherent order of magnitude (investment-grade luxury → WACC often in a low-to-mid single-digit band) and stress WACC × g sensitivities.",
+    ],
+    tip: "Name the trap out loud: “WACC usually breaks on beta and market weights, not on the formula.” It shows you have seen broken models before.",
+  },
+  {
+    id: 136,
+    interviewSlot: "technical",
+    category: "ma",
+    difficulty: "basique",
+    question: "Name two virtual data room (VDR) providers used in M&A.",
+    explanation:
+      "Sell-side process culture check: show you know diligence tools, not only DCF theory.",
+    steps: [
+      "Expected answer: name at least two among Intralinks, Datasite (formerly Merrill Datasite), DealRoom, Ansarada, Firmex, Box (sometimes), SecureDocs, etc.",
+      "Role: the VDR hosts the virtual data room — legal, financial, HR, commercial docs — with granular access rights and Q&A tracking.",
+      "Process: opens after teaser / NDA; document index; Q&A log; buyer activity reporting (who reads what) helps the sell-side gauge interest.",
+      "Interview link: a junior analyst spends a lot of time populating / policing the VDR and answering DD questions — show you know the workflow.",
+    ],
+    tip: "Intralinks + Datasite are the safest two answers in Europe. Add one sentence on Q&A tracking to score a process point.",
+  },
 ];
