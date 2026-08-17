@@ -10,11 +10,12 @@ export const conceptsFr: Concept[] = [
     intuition:
       "Imaginez une maison : le prix total (toit + crédit) correspond à l'EV. Ce qu'il vous reste vraiment à payer après le crédit, c'est l'Equity Value.",
     formula:
-      "EV = Equity Value + Dette nette\n  + Minoritaires + Provisions retraites − Associates",
+      "EV = Equity Value + Dette nette + Actions préférentielles\n  + Minoritaires + Provisions retraites − Associates",
     steps: [
       "Pourquoi l'EV en M&A ? Pour comparer des entreprises avec des dettes différentes : l'EV/EBITDA regarde le business, pas la structure financière.",
-      "Pont Equity → EV : on ajoute la dette (l'acheteur la reprend), les minoritaires et les provisions retraites ; on retire le cash et les associates.",
-      "Pont EV → Equity (prix par action) : on fait l'inverse — on retire dette, minoritaires et provisions ; on ajoute cash et associates.",
+      "Formule canonique du livre : EV = Equity Value + Dette totale + Preferred Stock + Minoritaires − Cash. Provisions retraites et associates sont des extensions de marché autour de ce socle.",
+      "Pont Equity → EV : on ajoute la dette (l'acheteur la reprend), les actions préférentielles, les minoritaires et les provisions retraites ; on retire le cash et les associates.",
+      "Pont EV → Equity (prix par action) : on fait l'inverse — on retire dette, preferred, minoritaires et provisions ; on ajoute cash et associates.",
     ],
     example: {
       label: "Exemple express",
@@ -27,6 +28,7 @@ export const conceptsFr: Concept[] = [
       rows: [
         ["Dette financière", "Sera repayée par l'acheteur", "+ EV"],
         ["Cash", "Récupéré par l'acheteur", "− EV"],
+        ["Actions préférentielles", "Créance senior aux actions ordinaires", "+ EV"],
         ["Intérêts minoritaires", "Quote-part non détenue", "+ EV"],
         ["Provisions retraites", "Engagement futur", "+ EV"],
         ["Associates (20-50%)", "Participation non consolidée", "− EV"],
@@ -36,6 +38,7 @@ export const conceptsFr: Concept[] = [
     visual: "ev-bridge",
     pitfalls: [
       "Oublier les minoritaires dans le pont",
+      "Oublier les actions préférentielles (poste standard de la formule du livre, souvent zappé)",
       "Mélanger cash « disponible » et cash minimum d'exploitation",
       "Confondre dette brute et dette nette",
       "Ignorer les engagements hors bilan (retraites, garanties)",
@@ -51,10 +54,12 @@ export const conceptsFr: Concept[] = [
       "Combien vaut l'entreprise si on projette ses cash futurs et qu'on les ramène à aujourd'hui ? C'est toute la logique du DCF.",
     formula: "EV = Σ FCFF(t) / (1+WACC)^t\n  + VT / (1+WACC)^n",
     steps: [
-      "Projeter les FCFF (cash généré par l'activité) sur 5 à 10 ans.",
+      "Projeter les FCFF (cash généré par l'activité) sur 5 ans en général ; jusqu'à 15-20 ans pour des activités à revenus très prévisibles/contractuels (utilities, concessions).",
       "Calculer le WACC, le taux d'actualisation.",
       "Actualiser chaque flux : plus il est loin, moins il compte.",
       "Calculer la valeur terminale (cash après la période de projection).",
+      "Convention mid-year (milieu d'année) : les FCFF et la VT en croissance perpétuelle (PGM) s'actualisent en mid-year ; la VT par multiple de sortie (EMM) reste en year-end, car elle repose sur des multiples LTM de fin d'année.",
+      "Sensibiliser en priorité WACC, multiple de sortie et marges d'EBIT, puis g et la croissance du CA.",
       "Sommer le tout = EV, puis retirer la dette nette pour l'Equity Value.",
     ],
     example: {
@@ -62,7 +67,7 @@ export const conceptsFr: Concept[] = [
       body: "FCFF an 1 = 100, WACC = 10 %. Valeur actualisée ≈ 100 / 1,10 ≈ 91. Le même flux dans 5 ans ne vaut plus que ~62. La valeur terminale (souvent 60–80 % de l'EV) amplifie cet effet — d'où les sensibilités WACC / g.",
     },
     interview:
-      "Savoir dérouler les 5–6 étapes à l'oral, et expliquer pourquoi on teste plusieurs couples WACC / g.",
+      "Savoir dérouler les étapes à l'oral. Question type : quelles variables sensibiliser ? WACC, multiple de sortie, marges d'EBIT — puis g et croissance du CA.",
     table: {
       headers: ["Composant", "Formule", "Ordre de grandeur"],
       rows: [
@@ -70,7 +75,9 @@ export const conceptsFr: Concept[] = [
         ["WACC", "(E/V)×Ke + (D/V)×Kd×(1−t)", "6-12% en mid-cap"],
         ["Valeur terminale (Gordon)", "FCF × (1+g) / (WACC−g)", "60-80% de l'EV"],
         ["g (croissance perpétuelle)", "Croissance long terme", "1,5-3% (≤ inflation+1pt)"],
-        ["Horizon explicite", "Période de projection", "5-10 ans"],
+        ["Horizon explicite", "Période de projection", "5 ans (15-20 ans si revenus contractuels)"],
+        ["Mid-year — PGM", "VT croissance perpétuelle", "Actualisation mid-year"],
+        ["Mid-year — EMM", "VT multiple de sortie LTM", "Actualisation year-end"],
       ],
     },
     visual: "dcf-bridge",
@@ -80,6 +87,7 @@ export const conceptsFr: Concept[] = [
       "Sous-estimer le CAPEX de maintenance",
       "Actualiser avec Ke au lieu du WACC",
       "Ne pas tester plusieurs hypothèses WACC / g",
+      "Actualiser l'EMM en mid-year : le multiple de sortie LTM reste en year-end",
     ],
   },
   {
@@ -219,21 +227,25 @@ export const conceptsFr: Concept[] = [
       "Le fonds met une partie d'equity, les banques le reste. La holding emprunte, achète, et rembourse avec le cash de la cible — horizon classique 4 à 7 ans.",
     formula: "TRI = (Equity Exit / Equity Entry)^(1/n) − 1\nMOIC = Equity Exit / Equity Entry",
     steps: [
-      "Structure type : 30–50 % equity (fonds PE), 50–70 % dette.",
+      "Structure type : 30–40 % equity selon le livre (jusqu'à 50 % selon le cycle de crédit), le reste en dette.",
       "Créer une holding qui emprunte et achète la cible ; rembourser via les cash-flows / dividendes remontés.",
+      "Cash disponible pour la dette = CF opérationnel + CF d'investissement (avant financement). D'abord l'amortissement obligatoire, puis le sweep optionnel.",
+      "Cash sweep 100 % : tout le cash restant après remboursements obligatoires va au remboursement optionnel de la dette prepayable (généralement la dette bancaire), dans l'ordre Revolver → Term Loan A → Term Loan B.",
+      "Term Loan B : amortissement standard ~1 % par an du principal, le reste en bullet à maturité. High yield (senior / sub notes) : pas d'amortissement obligatoire, solde identique chaque année.",
+      "Séniorité / maturité typique (du plus court au plus long) : Revolver → Term Loan institutionnel → Senior Notes → Senior Subordinated Notes.",
+      "Intérêts : convention « average interest expense » = moyenne des soldes début et fin d'année, car la dette est remboursée en cours d'année.",
       "Trois leviers de gain : croître l'EBITDA, revendre à un multiple plus élevé, rembourser la dette.",
-      "Aujourd'hui, environ la moitié du TRI vient de la perf opérationnelle, pas seulement du désendettement.",
     ],
     example: {
       label: "Exemple express",
       body: "EV 100 : Equity 40 + Dette 60. Après 5 ans, EV sortie 150, dette remboursée à 20 → equity exit 130. MOIC = 130/40 = 3,25× ; TRI ≈ 27 %.",
     },
     interview:
-      "Expliquer structure, horizon et les trois leviers — et ne pas oublier BFR / CAPEX dans le business plan.",
+      "Expliquer structure, horizon, cash sweep et les trois leviers — et ne pas oublier BFR / CAPEX. Le livre cite 30–40 % d'equity comme fourchette de référence ; en pratique récente (crédit tendu, multiples élevés), on observe parfois jusqu'à 50 %.",
     table: {
       headers: ["Composant", "% typique", "Coût", "Rang"],
       rows: [
-        ["Equity (Sponsor + MEP)", "30-50%", "TRI cible 20-25%", "Junior"],
+        ["Equity (Sponsor + MEP)", "30-40% (livre) / jusqu'à 50% selon cycle", "TRI cible 20-25%", "Junior"],
         ["Senior Term Loan", "40-50%", "Euribor + 250-450 bps", "Senior 1"],
         ["Unitranche", "0-60%", "Euribor + 500-700 bps", "Senior 1 (hybride)"],
         ["Mezzanine", "10-20%", "10-15% (cash + PIK)", "Junior secured"],
@@ -244,6 +256,7 @@ export const conceptsFr: Concept[] = [
     pitfalls: [
       "LBO sur une cible très cyclique (cash instable)",
       "Oublier le BFR ou le CAPEX dans le business plan",
+      "Oublier le cash sweep (100 % du cash excess vers la dette bancaire prepayable)",
       "TRI calculé sans les frais de transaction",
       "Hypothèse de revente trop optimiste sur le multiple",
     ],
@@ -260,7 +273,7 @@ export const conceptsFr: Concept[] = [
       "Δ Equity = Δ EBITDA × Multiple_entrée\n  + EBITDA_sortie × Δ Multiple\n  + Δ Dette nette",
     steps: [
       "Levier 1 — Croissance EBITDA (~50 % du TRI) : ventes, marges, build-ups. Le plus dur, le plus valorisé.",
-      "Levier 2 — Expansion du multiple (~15–20 %) : revendre plus cher. Peu contrôlable, dépend du marché.",
+      "Levier 2 — Expansion du multiple (~15–20 %) : revendre plus cher. Peu contrôlable, dépend du marché. Convention de modélisation : multiple de sortie ≤ multiple d'entrée, par prudence.",
       "Levier 3 — Désendettement (~30–35 %) : cash → remboursement dette. À EV constant, l'equity monte.",
     ],
     example: {
@@ -280,6 +293,7 @@ export const conceptsFr: Concept[] = [
     visual: "lbo-value-bridge",
     pitfalls: [
       "Compter surtout sur le multiple (incertain)",
+      "Supposer un multiple de sortie supérieur au multiple d'entrée sans justification — la convention standard est un multiple de sortie ≤ multiple d'entrée, par prudence.",
       "Sous-estimer le temps pour améliorer l'EBITDA",
       "Pas d'acquisitions add-on dans le plan",
       "Croissance du CA sans CAPEX ni BFR associés",
@@ -298,6 +312,7 @@ export const conceptsFr: Concept[] = [
       "EV/EBITDA : standard M&A, compare indépendamment de la dette.",
       "EV/Sales : utile si pas encore rentable (startups).",
       "P/E : utile en bourse, moins comparable en M&A (dette + fiscalité).",
+      "Règle de cohérence : un multiple EV se rapporte à un agrégat avant intérêts (EBITDA, EBIT, Sales) ; un multiple Equity Value à un agrégat après intérêts (Net Income, EPS). EV/Net Income et Equity Value/EBITDA sont incorrects.",
       "Méthode : 5–10 comps → médiane → appliquer à la cible → croiser plusieurs multiples.",
     ],
     example: {
@@ -324,6 +339,7 @@ export const conceptsFr: Concept[] = [
       "Oublier les retraitements (add-backs, IFRS 16)",
       "Trop peu de comparables ou trop hétérogènes",
       "Donner une moyenne sans préciser la médiane",
+      "Mélanger un agrégat « equity » (Net Income, EPS) avec l'EV, ou un agrégat « firme » (EBITDA, Sales) avec l'Equity Value — la cohérence numérateur/dénominateur est un piège classique testé à l'oral.",
     ],
   },
   {
@@ -552,6 +568,7 @@ export const conceptsFr: Concept[] = [
     formula:
       "Ke = Rf + β × (Rm − Rf)\n  + primes (size, country, illiquidity)",
     steps: [
+      "Rf : obligation d'État long terme (OAT 10 ans en zone euro ; aux US, interpolé ~20 ans). Jamais un taux monétaire court terme (Fed Funds, Euribor, LIBOR).",
       "Prendre des comparables cotés.",
       "Déléverage : β_u = β_l / (1 + (1−t) × D/E).",
       "Médiane des β unlevered, puis releverage à la structure cible.",
@@ -562,7 +579,7 @@ export const conceptsFr: Concept[] = [
       body: "Rf 3,5 %, β 1,2, ERP 5,5 % → Ke = 3,5 % + 1,2 × 5,5 % = 10,1 %.",
     },
     interview:
-      "Citez toujours le parcours unlever / relever — utiliser un beta levered tel quel est une faute classique.",
+      "Citez toujours le parcours unlever / relever — et un Rf d'obligation long terme, jamais un taux monétaire court.",
     table: {
       headers: ["Secteur", "β unlevered typique", "β levered (typique)", "Caractère"],
       rows: [
@@ -580,6 +597,7 @@ export const conceptsFr: Concept[] = [
     visual: "beta-sectors",
     pitfalls: [
       "Beta levered utilisé sans déléverage",
+      "Prendre Fed Funds, Euribor ou LIBOR comme Rf au lieu d'une obligation d'État long terme",
       "Période de calcul trop courte ou trop longue",
       "Pas de prime small cap pour une mid-cap",
       "Oublier le risque pays à l'étranger",
@@ -1016,6 +1034,307 @@ export const conceptsFr: Concept[] = [
       "Oublier IFRS 16 dans la dette nette",
       "Confondre ARR (métrique business) et revenue IFRS 15",
       "Supposer que goodwill est amorti sous IFRS",
+    ],
+  },
+  {
+    id: "c24",
+    category: "valuation",
+    title: "Treasury Stock Method (TSM) et actions diluées",
+    simple:
+      "Le TSM calcule combien d'actions supplémentaires existeraient si tous les détenteurs d'options dans la monnaie les exerçaient. On suppose que l'argent récolté sert à racheter des actions au cours actuel — seul le solde net (actions émises − actions rachetées) dilue vraiment le capital.",
+    intuition:
+      "Une option in-the-money (prix d'exercice < cours actuel) crée de nouvelles actions. Mais l'exercice rapporte du cash à l'entreprise, qui peut s'en servir pour racheter des actions — donc la dilution nette est plus faible que le nombre brut d'options.",
+    formula:
+      "Actions nettes nouvelles = Options in-the-money − (Produit total de l'exercice / Cours actuel)\nActions diluées = Actions de base + Actions nettes nouvelles (options) + Actions nettes nouvelles (convertibles)\nNSS : Valeur de conversion = Actions sous-jacentes × Cours actuel\nExcédent = Valeur de conversion − Montant nominal du convertible\nActions nettes NSS = Excédent / Cours actuel",
+    steps: [
+      "Identifier les tranches d'options in-the-money uniquement (prix d'exercice < cours actuel) — les autres sont ignorées.",
+      "Calculer le produit total de l'exercice (Σ prix d'exercice × nombre d'options in-the-money).",
+      "Diviser ce produit par le cours actuel pour obtenir le nombre théorique d'actions rachetées.",
+      "Actions nettes nouvelles = actions in-the-money − actions rachetées.",
+      "Pour les convertibles : choisir entre if-converted method et net share settlement (NSS) selon le cas — l'implied share price crée une référence circulaire (le prix dépend des actions diluées, qui dépendent du prix) : activer les itérations Excel pour la résoudre.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "20M d'options, prix d'exercice 10€, cours actuel 25€. Produit de l'exercice = 200M€. Actions rachetées = 200M€/25€ = 8M. Actions nettes nouvelles = 20M − 8M = 12M. NSS : convertible de 225 M€, prix de conversion 22,50€ → 10M actions sous-jacentes. Cours actuel 30€ → valeur de conversion 300M€. Excédent = 300 − 225 = 75M€. Actions nettes NSS = 75M€/30€ = 2,5M (vs 10M en if-converted — la NSS est presque toujours moins diluante).",
+    },
+    interview:
+      "Toujours vérifier que l'option est in-the-money avant de l'inclure — une option hors la monnaie n'est jamais diluante. Et si le calcul boucle (le cours dépend des actions diluées), c'est normal : c'est une référence circulaire classique, pas une erreur de modèle.",
+    table: {
+      headers: ["Méthode", "Instrument", "Logique"],
+      rows: [
+        [
+          "TSM",
+          "Options / warrants",
+          "Rachat théorique au cours actuel avec le produit de l'exercice",
+        ],
+        [
+          "If-converted",
+          "Convertibles",
+          "Conversion totale, ajout des actions sous-jacentes au pair",
+        ],
+        [
+          "Net Share Settlement (NSS)",
+          "Convertibles",
+          "Seul l'excédent (valeur de conversion − montant au pair) devient des actions",
+        ],
+      ],
+    },
+    pitfalls: [
+      "Inclure des options hors la monnaie (exercice > cours actuel)",
+      "Oublier de nettoyer le produit de l'exercice avant de calculer les actions rachetées",
+      "Confondre if-converted method (conversion totale) et net share settlement (seul l'excédent devient des actions) — l'écart de dilution entre les deux peut être considérable",
+      "Ne pas gérer la référence circulaire implied share price ↔ actions diluées (activer les itérations Excel)",
+    ],
+  },
+  {
+    id: "c25",
+    category: "valuation",
+    title: "Premium Paid Analysis",
+    simple:
+      "Le premium paid mesure combien l'acheteur paie en plus du cours de bourse non affecté de la cible, en %. C'est la prime que l'acheteur accepte de payer pour obtenir le contrôle.",
+    intuition:
+      "Le cours de bourse juste avant l'annonce a souvent déjà bougé (fuites, rumeurs) — il faut alors remonter à un cours « propre », non affecté par l'anticipation du deal.",
+    formula:
+      "% Premium Paid = (Offer Price per Share / Unaffected Share Price) − 1\nEquity Value = Cours unaffected × (1 + Premium) × Actions diluées\nEV = Equity Value + Dette + Préférentielles + Minoritaires − Cash",
+    steps: [
+      "Identifier le cours unaffected — généralement mesuré à 1, 7 et 30 jours avant l'annonce.",
+      "Vérifier qu'aucune fuite, rumeur ou annonce de revue stratégique n'a déjà fait bouger le cours à ces dates.",
+      "Si c'est le cas, remonter plus loin dans le temps pour trouver un cours réellement propre.",
+      "Calculer la prime sur chacun des horizons (1j / 7j / 30j) pour donner une fourchette, pas un chiffre unique.",
+      "Combiner avec le pont Equity → EV (c1) : Equity Value = Cours unaffected × (1 + Premium) × Actions diluées ; EV = Equity Value + Dette + Préférentielles + Minoritaires − Cash.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Offre 20€/action. Cours 1 jour avant annonce : 17,39€ (déjà 15% de prime — fuite probable). Cours 30 jours avant (non affecté) : 14,60€ → prime réelle 37%. L'écart 15% vs 37% trahit une fuite d'information avant l'annonce officielle.",
+    },
+    interview:
+      "Toujours préciser sur quel horizon (1j/7j/30j) la prime est calculée, et pourquoi le cours « 1 jour avant » peut être trompeur en cas de fuite.",
+    table: {
+      headers: ["Facteur", "Effet sur la prime", "Explication"],
+      rows: [
+        ["Deal hostile", "↑", "Tender offer direct aux actionnaires, risque de surenchère"],
+        ["Fuite / rumeur avant annonce", "Cours déjà gonflé", "Utiliser un cours plus ancien comme référence"],
+        [
+          "Acheteur stratégique avec synergies",
+          "↑",
+          "Capacité à payer plus car création de valeur additionnelle",
+        ],
+        ["Cible en difficulté / vente forcée", "↓", "Moins de pouvoir de négociation côté vendeur"],
+        [
+          "Merger-of-equals (MOE)",
+          "↓↓",
+          "Consideration typiquement 100% actions, prime faible comparée à un takeover classique",
+        ],
+      ],
+    },
+    pitfalls: [
+      "Utiliser le cours « 1 jour avant annonce » sans vérifier qu'il n'a pas déjà réagi à une fuite",
+      "Donner un seul chiffre de prime au lieu d'une fourchette (1j/7j/30j)",
+      "Appliquer une analyse de premium paid à une cible non cotée (non pertinent)",
+      "Confondre prime de contrôle et prime totale (qui inclut aussi l'anticipation de synergies)",
+      "Appliquer la logique takeover premium à un merger-of-equals, où la prime est structurellement plus faible",
+    ],
+  },
+  {
+    id: "c26",
+    category: "ma",
+    title: "Accretion / Dilution Analysis",
+    simple:
+      "Un deal est accrétif si l'EPS de l'acquéreur augmente après la transaction, dilutif s'il baisse. C'est le test que les acquéreurs cotés appliquent presque systématiquement avant de valider un deal.",
+    intuition:
+      "On compare l'EPS pro forma (après fusion) à l'EPS standalone de l'acquéreur seul. Si le nouvel ensemble génère plus de résultat net par action qu'avant, le marché y voit un signal positif.",
+    formula:
+      "EPS combiné pro forma = Résultat net combiné pro forma / Actions diluées pro forma\nAccretion/(Dilution) $ = EPS combiné pro forma − EPS standalone acquéreur\nAccretion/(Dilution) % = (EPS combiné pro forma / EPS standalone acquéreur) − 1\nSynergies pré-impôt pour breakeven = − (Accretion/(Dilution) $ × Actions diluées pro forma) / (1 − taux IS)",
+    steps: [
+      "Calculer le résultat net combiné pro forma (résultat acquéreur + résultat cible + synergies − charges financières supplémentaires liées au financement du deal − D&A additionnel sur les write-ups d'actifs).",
+      "Calculer les actions diluées pro forma (actions acquéreur + actions nouvelles émises si paiement en titres).",
+      "EPS combiné pro forma = résultat net combiné / actions diluées pro forma.",
+      "Comparer à l'EPS standalone de l'acquéreur → accrétif si supérieur, dilutif si inférieur.",
+      "Si dilutif, calculer les synergies pré-impôt nécessaires pour atteindre le breakeven.",
+      "Identifier les 3 sources de financement — cash disponible, dette, actions — et leurs arbitrages : coût du capital, flexibilité du bilan, avis des agences de notation, rapidité/certitude de closing.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Résultat net combiné 1 000, actions diluées pro forma 250M → EPS 4,00€. EPS standalone acquéreur 3,50€. Accretion = +0,50€ (+14,3%) → deal accrétif.",
+    },
+    interview:
+      "Règle rapide pour un deal 100% actions : si le P/E de l'acquéreur est supérieur à celui de la cible, le deal est mécaniquement accrétif (et inversement). Mais accrétif ≠ créateur de valeur : un deal peut rester dilutif au départ et être justifié si les synergies sont crédibles, si l'actif est stratégique, ou si plus d'actions préservent le rating. Le test DCF/NPV reste le juge de paix économique.",
+    table: {
+      headers: ["Driver", "Effet sur l'accretion"],
+      rows: [
+        ["Prix payé plus bas", "↑ accrétif"],
+        ["Financement en cash/dette peu chère plutôt qu'en actions", "↑ accrétif (pas de nouvelles actions émises)"],
+        ["P/E acquéreur > P/E cible (deal tout actions)", "↑ accrétif"],
+        ["Synergies élevées et rapides", "↑ accrétif"],
+        ["Coût de la dette élevé", "↓ dilutif"],
+        [
+          "Augmenter la part actions pour préserver le rating",
+          "↓ dilutif à court terme, mais protège le bilan",
+        ],
+      ],
+    },
+    pitfalls: [
+      "Se focaliser uniquement sur l'accretion/dilution sans regarder la création de valeur réelle (un deal peut être accrétif mais destructeur de valeur, et inversement)",
+      "Oublier les charges financières supplémentaires liées à la dette d'acquisition",
+      "Oublier l'amortissement des write-ups d'actifs incorporels dans le résultat pro forma",
+      "Confondre accretion/dilution (test comptable EPS) et création de valeur DCF (test économique)",
+      "Ignorer que la contribution analysis (part de CA/EBITDA/résultat net/equity value apportée par chaque partie) est l'outil de référence pour un merger-of-equals, distinct de l'accretion/dilution classique",
+    ],
+  },
+  {
+    id: "c27",
+    category: "lbo",
+    title: "Ratios de crédit et séniorité de la dette",
+    simple:
+      "Les ratios de crédit mesurent la capacité d'une entreprise à porter et rembourser sa dette. Ils déterminent combien de levier un prêteur est prêt à accorder dans un LBO, et se répartissent en deux familles : ratios de levier (dette vs cash-flow) et ratios de couverture (capacité à payer les intérêts).",
+    intuition:
+      "Un prêteur ne regarde pas seulement « combien elle vaut » mais « combien elle peut rembourser chaque année ». Deux entreprises à l'EV identique peuvent supporter des niveaux de dette très différents selon leur génération de cash.",
+    formula:
+      "Levier : Dette / EBITDA, Dette senior secured / EBITDA, Dette nette / EBITDA\nCouverture : EBITDA / Intérêts, (EBITDA − Capex) / Intérêts, EBIT / Intérêts",
+    steps: [
+      "Dette senior secured / EBITDA : levier prioritaire, celui que regardent les prêteurs bancaires senior.",
+      "Dette totale / EBITDA : levier global de la structure, y compris subordonnée / high yield.",
+      "EBITDA / Intérêts (interest coverage) : plus il est élevé, plus la structure est solide — un ratio bas signale un risque de défaut sur les intérêts.",
+      "(EBITDA − Capex) / Intérêts : version plus stricte, retire le capex avant de mesurer la capacité à payer les intérêts — pertinent pour les activités capitalistiques.",
+      "Ces ratios se lisent dans le temps : un LBO réussi voit le levier baisser et la couverture augmenter (désendettement).",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "LTM EBITDA 700, intérêts 248,5, dette senior secured 2 800, dette totale 3 650. EBITDA/Intérêts = 2,8x. Dette senior/EBITDA = 4,0x. Dette totale/EBITDA = 5,2x.",
+    },
+    interview:
+      "Le levier moyen des LBO fluctue avec le cycle de crédit : ~3,9x en 2002, jusqu'à 6,1x au pic de 2007, 4,0x en 2009, puis ~6,0x en 2018. Savoir situer le cycle actuel dans cette fourchette montre une vraie culture marché.",
+    table: {
+      headers: ["Ratio", "Formule", "Ce qu'il mesure"],
+      rows: [
+        [
+          "Dette senior secured / EBITDA",
+          "Dette senior secured / EBITDA",
+          "Levier prioritaire — ce que les prêteurs bancaires regardent en premier",
+        ],
+        ["Dette totale / EBITDA", "Dette totale / EBITDA", "Levier global de la structure"],
+        ["Dette nette / EBITDA", "(Dette totale − Cash) / EBITDA", "Levier net de la trésorerie disponible"],
+        ["EBITDA / Intérêts", "EBITDA / Charges financières", "Capacité à couvrir les intérêts"],
+        [
+          "(EBITDA − Capex) / Intérêts",
+          "(EBITDA − Capex) / Charges financières",
+          "Version plus stricte pour activités capitalistiques",
+        ],
+        [
+          "Debt-to-Total Cap.",
+          "Dette / (Dette + Capitaux propres)",
+          "Poids de la dette dans la structure de financement",
+        ],
+      ],
+    },
+    pitfalls: [
+      "Confondre dette senior secured/EBITDA (levier prioritaire) et dette totale/EBITDA (levier global) — deux covenants, deux seuils",
+      "Utiliser l'EBITDA brut sans soustraire le capex pour un secteur très capitalistique",
+      "Ignorer le cycle de crédit — un même niveau de levier n'a pas le même sens en 2007 qu'en 2009",
+      "Oublier que les ratios de couverture doivent s'améliorer dans le temps (sinon alerte covenant)",
+    ],
+  },
+  {
+    id: "c28",
+    category: "lbo",
+    title: "Instruments de dette LBO : séniorité, covenants et maturité",
+    simple:
+      "Dans un LBO, tous les créanciers ne sont pas égaux : certains sont remboursés en premier (senior secured), d'autres après (subordonnés), et certains prêteurs sont structurellement derrière d'autres selon l'entité juridique qui porte la dette (OpCo vs HoldCo).",
+    intuition:
+      "Deux notions de priorité à ne pas confondre : la séniorité contractuelle (qui est payé en premier au sein d'une même entité) et la subordination structurelle (qui est payé en premier selon l'entité juridique qui détient les actifs).",
+    formula:
+      "Séniorité contractuelle (même entité) : Senior secured > Senior unsecured > Senior subordinated > Equity\nSubordination structurelle : Dette OpCo > Dette HoldCo (les actifs sont à l'OpCo)",
+    steps: [
+      "Ordre de maturité typique (du plus court au plus long) : Revolver → Term Loan B → Senior Notes → Senior Subordinated Notes.",
+      "Dette bancaire (revolver, term loan) : prêteurs traditionnels, covenants de maintenance stricts (tests trimestriels), amortissement obligatoire (~1%/an pour un TLB, bullet final).",
+      "High yield bonds : prêteurs institutionnels, covenants d'incurrence plus souples (testés seulement lors d'un événement), pas d'amortissement obligatoire avant maturité, mais call protection.",
+      "Le revolver reste généralement non tiré à la clôture (undrawn at close) — coussin de liquidité (BFR saisonnier, capex imprévu), avec une commitment fee sur la portion non utilisée.",
+      "Financement relais (bridge loan) : solution temporaire (≤ 1 an) en attendant un financement permanent — une commission de conversion s'applique s'il reste en place au-delà.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Structure typique : Revolver (undrawn, maturité 5-6 ans) → Term Loan B (maturité 7 ans, amort. 1%/an) → Senior Notes (maturité 7-10 ans, aucun amort. avant échéance, call protection). En cas de défaut, le revolver et le TLB sont remboursés avant les Senior Notes.",
+    },
+    interview:
+      "Savoir distinguer covenants maintenance (bancaires, testés en continu) et covenants incurrence (high yield, testés seulement à un événement) est un point que le livre teste explicitement — c'est aussi pourquoi les fonds PE apprécient la flexibilité des high yield malgré un coût plus élevé.",
+    table: {
+      headers: ["Instrument", "Prêteur type", "Covenants", "Amortissement", "Coût relatif"],
+      rows: [
+        ["Revolver", "Banques commerciales", "Maintenance", "Aucun (ligne de liquidité)", "Le moins cher (souvent non tiré)"],
+        ["Term Loan A/B", "Banques / institutionnels", "Maintenance", "~1%/an + bullet final", "Modéré"],
+        [
+          "Senior Notes (High Yield)",
+          "Investisseurs obligataires",
+          "Incurrence (plus souples)",
+          "Aucun avant maturité",
+          "Plus élevé, mais flexible",
+        ],
+        [
+          "Senior Subordinated Notes",
+          "Investisseurs obligataires",
+          "Incurrence",
+          "Aucun avant maturité",
+          "Le plus élevé (junior)",
+        ],
+        ["Mezzanine / PIK", "Fonds mezzanine", "Incurrence", "Aucun, intérêts capitalisables", "Élevé (10-15%), hybride dette/equity"],
+      ],
+    },
+    pitfalls: [
+      "Confondre séniorité contractuelle (même entité) et subordination structurelle (entités différentes, OpCo vs HoldCo)",
+      "Croire que le revolver est automatiquement tiré à la clôture — il sert surtout de coussin de liquidité",
+      "Oublier la call protection des high yield bonds, qui limite un refinancement rapide si les taux baissent",
+      "Confondre covenants de maintenance (bancaires, stricts) et d'incurrence (high yield, souples)",
+    ],
+  },
+  {
+    id: "c29",
+    category: "ma",
+    title: "Stock Deal vs Asset Deal : structuration fiscale d'une acquisition",
+    simple:
+      "Racheter une entreprise, ce n'est pas toujours racheter les actions : on peut aussi racheter les actifs un par un. Le choix change qui paie combien d'impôt, et qui porte les risques cachés (litiges, passifs non identifiés).",
+    intuition:
+      "Stock deal = l'acheteur reprend tout, y compris les passifs inconnus, mais l'opération est plus simple et souvent moins taxée pour le vendeur. Asset deal = l'acheteur choisit ce qu'il reprend, limite son risque, et peut réévaluer fiscalement les actifs (step-up) — plus complexe, parfois plus taxé pour le vendeur (double imposition possible).",
+    formula:
+      "Inside basis = base fiscale des actifs de la société\nOutside basis = base fiscale des actions de la société\nDTL = (Write-up tangible + Write-up intangible) × Taux d'IS",
+    steps: [
+      "Cadre US (IRC, Ch. buy-side du livre). En France/Europe : pas de 338(h)(10) ; regarder droits d'enregistrement, mali/boni de fusion, intégration fiscale. Le principe stock vs asset et le step-up restent transposables, pas les dispositifs précis.",
+      "Stock deal (achat d'actions) : la cible devient filiale à 100% ; l'acquéreur reprend tous les passifs (connus et inconnus). Structure la plus courante pour les C Corp aux US.",
+      "Asset deal (achat d'actifs) : l'entité juridique de la cible continue d'exister ; l'acheteur choisit actifs repris et passifs assumés — protège contre les passifs cachés, plus complexe à documenter.",
+      "Step-up fiscal (asset deal) : l'acheteur réévalue la base fiscale des actifs à la juste valeur → D&A déductible pendant la période de step-up, un vrai bénéfice cash.",
+      "338(h)(10) (US, filiale de groupe) : hybride — stock deal juridiquement, asset deal fiscalement (step-up autorisé). Consentement conjoint acheteur/vendeur ; l'acheteur paie souvent plus cher en échange du step-up.",
+      "DTL : dans un stock deal, l'amortissement du write-up GAAP n'est pas déductible fiscalement → écart base comptable/fiscale → passif d'impôt différé.",
+    ],
+    example: {
+      label: "Exemple express",
+      body: "Asset deal avec step-up de 550M€ (tangible + intangible), IS 25% → DTL de 137,5M€ ajouté au passif. Ce step-up génère du D&A fiscalement déductible — contrairement à un stock deal classique où ce D&A n'est pas déductible.",
+    },
+    interview:
+      "Le vendeur préfère souvent un stock deal payé en titres : l'imposition de la plus-value peut être différée. Le double niveau d'imposition (société puis actionnaires à la distribution) est un risque spécifique de l'asset deal. Ne pas plaquer le 338(h)(10) US sur un deal français.",
+    table: {
+      headers: ["Critère", "Stock Deal", "Asset Deal"],
+      rows: [
+        ["Entité cible", "Disparaît (filiale de l'acquéreur)", "Continue d'exister juridiquement"],
+        ["Passifs repris", "Tous, y compris inconnus", "Seulement ceux spécifiés au contrat"],
+        ["Step-up fiscal", "Non (sauf 338(h)(10))", "Oui — base fiscale réévaluée"],
+        [
+          "Risque double imposition",
+          "Non",
+          "Oui, si le produit de cession est distribué aux actionnaires",
+        ],
+        ["Complexité", "Plus simple", "Plus complexe (transfert actif par actif)"],
+        [
+          "Préférence typique",
+          "Vendeur (simplicité, report d'imposition si stock)",
+          "Acheteur (moins de risque, step-up déductible)",
+        ],
+        ["Structure la plus courante (US, C Corp)", "Stock deal", "—"],
+      ],
+    },
+    pitfalls: [
+      "Croire qu'un step-up d'actifs est automatique dans un stock deal classique — seulement via une élection spécifique (338(h)(10) aux US, sans équivalent direct en France)",
+      "Confondre inside basis (base fiscale des actifs) et outside basis (base fiscale des actions)",
+      "Oublier le risque de double imposition en asset deal si le produit de cession est ensuite distribué aux actionnaires",
+      "Plaquer telles quelles les règles fiscales américaines du livre sur un deal français/européen sans vérifier les équivalents locaux",
     ],
   },
 ];

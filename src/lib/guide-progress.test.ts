@@ -62,20 +62,15 @@ describe("sortGuideModulesByUrgency", () => {
     { id: "actualite", progressKey: null, defaultOrder: 0 },
     { id: "cv", progressKey: "cv", defaultOrder: 1 },
     { id: "pyramid", progressKey: "pyramid", defaultOrder: 2 },
-    { id: "flashcards", progressKey: "flashcards", defaultOrder: 0, hero: true },
+    { id: "flashcards", progressKey: "flashcards", defaultOrder: 0 },
     { id: "diagnostic", progressKey: "diagnostic", defaultOrder: 1 },
   ];
 
-  it("keeps hero modules first", () => {
+  it("sorts modules with progress before those without", () => {
     const sorted = sortGuideModulesByUrgency(modules);
-    expect(sorted[0]?.id).toBe("flashcards");
-  });
-
-  it("sorts non-hero modules with progress before those without", () => {
-    const sorted = sortGuideModulesByUrgency(modules);
-    const nonHeroIds = sorted.filter((m) => !m.hero).map((m) => m.id);
-    expect(nonHeroIds.indexOf("cv")).toBeLessThan(nonHeroIds.indexOf("actualite"));
-    expect(nonHeroIds.indexOf("pyramid")).toBeLessThan(nonHeroIds.indexOf("actualite"));
+    const ids = sorted.map((m) => m.id);
+    expect(ids.indexOf("cv")).toBeLessThan(ids.indexOf("actualite"));
+    expect(ids.indexOf("pyramid")).toBeLessThan(ids.indexOf("actualite"));
   });
 });
 

@@ -39,7 +39,6 @@ export type GuideModule = {
   group: GuideModuleGroup;
   progressKey?: GuideProgressKey | null;
   defaultOrder: number;
-  hero?: boolean;
   /** Fallback FR — prefer `t(\`guide.modules.${id}.tag\`)` at render. */
   tag: string;
   /** Fallback FR — prefer `t(\`guide.modules.${id}.title\`)` at render. */
@@ -84,7 +83,6 @@ export const guideModules: GuideModule[] = [
     group: "training",
     progressKey: "flashcards",
     defaultOrder: 0,
-    hero: true,
     tag: "Entraînement actif",
     title: "Flashcards avec répétition espacée",
     icon: Sparkles,

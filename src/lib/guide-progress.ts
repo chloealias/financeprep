@@ -28,7 +28,6 @@ export type GuideModuleProgress = {
 export type GuideModuleSortable = {
   progressKey?: GuideProgressKey | null;
   defaultOrder: number;
-  hero?: boolean;
 };
 
 const BLOC_TIEBREAK_ORDER: DiagnosticBloc[] = ["technical", "fit", "networking"];
@@ -92,15 +91,6 @@ export function getWeakestDiagnosticBloc(
   }
 
   return weakest;
-}
-
-export function getDiagnosticBlocHref(bloc: DiagnosticBloc): {
-  to: "/diagnostic" | "/networking";
-  hash?: string;
-} {
-  if (bloc === "networking") return { to: "/networking" };
-  if (bloc === "fit") return { to: "/diagnostic", hash: "fit" };
-  return { to: "/diagnostic", hash: "technical" };
 }
 
 export function getCompletionRate(
@@ -208,33 +198,12 @@ export function sortGuideModulesByUrgency<T extends GuideModuleSortable>(
   modules: T[],
   locale: AppLocale = DEFAULT_LOCALE,
 ): T[] {
-  const heroes = modules.filter((module) => module.hero);
-  const rest = modules.filter((module) => !module.hero);
-
-  const sortedRest = [...rest].sort((a, b) => {
+  const sorted = [...modules].sort((a, b) => {
     const rateA = getCompletionRate(a.progressKey, locale) ?? 1;
     const rateB = getCompletionRate(b.progressKey, locale) ?? 1;
     if (rateA !== rateB) return rateA - rateB;
     return a.defaultOrder - b.defaultOrder;
   });
 
-  return [...heroes, ...sortedRest];
-}
-
-export function getGuideDiagnosticSummary(locale: AppLocale = DEFAULT_LOCALE) {
-  const content = getGuideDiagnostic(locale);
-  const state = loadDiagnosticState();
-  const itemIds = getDiagnosticTechnicalItemIds(content);
-  const { reviewCount, evaluatedCount } = countTechnicalReview(state.technical, itemIds);
-  const rates = getBlocCompletionRates(state, content);
-  const weakestBloc = getWeakestDiagnosticBloc(rates);
-
-  return {
-    reviewCount,
-    evaluatedCount,
-    totalTechnical: itemIds.length,
-    rates,
-    weakestBloc,
-    blocHref: getDiagnosticBlocHref(weakestBloc),
-  };
+  return sorted;
 }

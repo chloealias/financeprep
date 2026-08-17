@@ -100,7 +100,6 @@ export function GuideChipButton({
 
 export type GuideModuleBadge = {
   label: string;
-  variant?: "default" | "hero";
 };
 
 type GuideModuleRoute =
@@ -128,14 +127,8 @@ type GuideModuleLinkProps = {
 );
 
 function GuideModuleBadgePill({ badge }: { badge: GuideModuleBadge }) {
-  const variantClass =
-    badge.variant === "hero"
-      ? "bg-white/20 text-primary-foreground"
-      : "bg-primary/10 text-primary";
   return (
-    <span
-      className={`absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full text-xs font-semibold ${variantClass}`}
-    >
+    <span className="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary">
       {badge.label}
     </span>
   );
@@ -178,47 +171,6 @@ export function GuideModuleLink({
           />
         </div>
       </article>
-    </Link>
-  );
-}
-
-type GuideHeroModuleLinkProps = {
-  to: GuideModuleRoute;
-  eyebrow: string;
-  title: string;
-  icon: LucideIcon;
-  badge?: GuideModuleBadge;
-};
-
-export function GuideHeroModuleLink({
-  to,
-  eyebrow,
-  title,
-  icon: Icon,
-  badge,
-}: GuideHeroModuleLinkProps) {
-  return (
-    <Link
-      to={to}
-      className="group block rounded-2xl bg-primary text-primary-foreground p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-all relative overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-    >
-      {badge && <GuideModuleBadgePill badge={{ ...badge, variant: "hero" }} />}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-      <div className="relative flex items-center gap-5">
-        <div className="flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center">
-          <Icon className="w-7 h-7 text-primary-foreground/80" aria-hidden="true" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="text-primary-foreground/70 text-xs uppercase tracking-[0.2em] font-semibold mb-1">
-            {eyebrow}
-          </div>
-          <h3 className="type-card-title text-xl sm:text-2xl">{title}</h3>
-        </div>
-        <ChevronRight
-          className="w-6 h-6 text-primary-foreground/70 group-hover:translate-x-1 transition-transform"
-          aria-hidden="true"
-        />
-      </div>
     </Link>
   );
 }

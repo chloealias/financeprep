@@ -1,15 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  guideModules,
   guideModuleGroups,
   getGuideModulesByGroup,
   type GuideModule,
 } from "@/data/guide-modules";
-import {
-  GuideHeroModuleLink,
-  GuideModuleLink,
-  GuideModuleSection,
-} from "@/components/guide/guide-ui";
-import { GuideDiagnosticWidget } from "@/components/hub/GuideDiagnosticWidget";
+import { GuideModuleLink, GuideModuleSection } from "@/components/guide/guide-ui";
 import { PageHeader } from "@/components/ui/page-header";
 import { getGuideModuleProgress, sortGuideModulesByUrgency } from "@/lib/guide-progress";
 import { useT } from "@/hooks/useT";
@@ -20,20 +16,15 @@ const GROUP_LABEL_KEYS = {
   networking: "hub.guide.groups.networking",
 } as const;
 
-function renderModuleCard(module: GuideModule, badgeLabel: string | null, t: ReturnType<typeof useT>["t"]) {
-  if (module.hero) {
-    return (
-      <GuideHeroModuleLink
-        key={module.id}
-        to={module.href}
-        eyebrow={t("hub.guide.flashcards.eyebrow")}
-        title={t(`guide.modules.${module.id}.title`)}
-        icon={module.icon}
-        badge={badgeLabel ? { label: badgeLabel, variant: "hero" } : undefined}
-      />
-    );
-  }
+function isPinnedDiagnostic(module: GuideModule): boolean {
+  return module.id === "diagnostic";
+}
 
+function renderModuleCard(
+  module: GuideModule,
+  badgeLabel: string | null,
+  t: ReturnType<typeof useT>["t"],
+) {
   return (
     <GuideModuleLink
       key={module.id}
@@ -49,18 +40,22 @@ function renderModuleCard(module: GuideModule, badgeLabel: string | null, t: Ret
 export function GuideTab() {
   const { t, locale } = useT();
   const [mounted, setMounted] = useState(false);
+  const diagnosticModule = guideModules.find(isPinnedDiagnostic) ?? null;
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const groupedModules = useMemo(() => {
+    const modulesForGroup = (group: (typeof guideModuleGroups)[number]) =>
+      getGuideModulesByGroup(group).filter((module) => !isPinnedDiagnostic(module));
+
     if (!mounted) {
-      return guideModuleGroups.map((group) => ({ group, modules: getGuideModulesByGroup(group) }));
+      return guideModuleGroups.map((group) => ({ group, modules: modulesForGroup(group) }));
     }
     return guideModuleGroups.map((group) => ({
       group,
-      modules: sortGuideModulesByUrgency(getGuideModulesByGroup(group), locale),
+      modules: sortGuideModulesByUrgency(modulesForGroup(group), locale),
     }));
   }, [mounted, locale]);
 
@@ -79,7 +74,11 @@ export function GuideTab() {
         className="mb-8 sm:mb-10"
       />
 
-      <GuideDiagnosticWidget />
+      {diagnosticModule && (
+        <div className="mb-10">
+          {renderModuleCard(diagnosticModule, getBadgeLabel(diagnosticModule), t)}
+        </div>
+      )}
 
       <div className="space-y-10">
         {groupedModules.map(({ group, modules }) => (
