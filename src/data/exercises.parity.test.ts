@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { exercisesEn, EXERCISE_CHEATSHEET as cheatEn } from "@/data/exercises/en";
-import { exercisesFr, EXERCISE_CHEATSHEET as cheatFr } from "@/data/exercises/fr";
+import { exercisesEn } from "@/data/exercises/en";
+import { exercisesFr } from "@/data/exercises/fr";
 
 describe("exercises locale parity", () => {
   it("has the same ids in FR and EN", () => {
@@ -23,13 +23,6 @@ describe("exercises locale parity", () => {
           expect(v.answerLabel.trim().length, `answerLabel ${e.id}.${i}`).toBeGreaterThan(0);
         }
       }
-    }
-  });
-
-  it("has the same cheatsheet length", () => {
-    expect(cheatEn.length).toBe(cheatFr.length);
-    for (const tip of cheatEn) {
-      expect(tip.trim().length).toBeGreaterThan(0);
     }
   });
 });

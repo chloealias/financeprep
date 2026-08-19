@@ -1,19 +1,15 @@
-import { ArrowLeft, BookOpen, Calculator, Briefcase } from "lucide-react";
+import { ArrowLeft, BookOpen, Calculator } from "lucide-react";
 import { PageHeader } from "@/components/ui/page-header";
 import { useT } from "@/hooks/useT";
 import type { PracticeView } from "@/lib/route-search";
 
 type PracticeHubProps = {
   questionCount: number;
-  exerciseCount: number;
-  solvedCount: number;
   onSelect: (view: Exclude<PracticeView, "hub">) => void;
 };
 
 export function PracticeHub({
   questionCount,
-  exerciseCount,
-  solvedCount,
   onSelect,
 }: PracticeHubProps) {
   const { t } = useT();
@@ -31,19 +27,8 @@ export function PracticeHub({
       view: "exercices" as const,
       icon: Calculator,
       title: t("hub.practice.card.exercises.title"),
-      description: t("hub.practice.card.exercises.description", { count: exerciseCount }),
-      meta: t("hub.practice.card.exercises.meta", {
-        solved: solvedCount,
-        total: exerciseCount,
-      }),
-      disabled: false,
-    },
-    {
-      view: "cas" as const,
-      icon: Briefcase,
-      title: t("hub.practice.card.cases.title"),
-      description: t("hub.practice.card.cases.description"),
-      meta: t("hub.practice.card.cases.meta"),
+      description: t("hub.practice.card.exercises.description"),
+      meta: t("hub.practice.card.exercises.meta"),
       disabled: false,
     },
   ];
@@ -56,7 +41,7 @@ export function PracticeHub({
         description={t("hub.practice.description")}
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2">
         {cards.map((card) => {
           const Icon = card.icon;
           return (

@@ -1,11 +1,13 @@
 export type ExerciseTheme =
-  | "leverage"
-  | "accretion"
-  | "paper-lbo"
+  | "comparable-companies"
+  | "precedent-transactions"
   | "dcf"
-  | "football-field"
-  | "merger"
-  | "working-capital";
+  | "leveraged-buyouts"
+  | "lbo-analysis"
+  | "sell-side-ma"
+  | "buy-side-ma"
+  | "ipos"
+  | "ipo-process";
 
 export type NumericUnit = "number" | "percent" | "percent_or_decimal" | "multiple";
 
@@ -42,39 +44,46 @@ export type ExerciseVariant = NumericVariant | ChoiceVariant | OpenVariant;
 export type Exercise = {
   id: string;
   theme: ExerciseTheme;
+  section?: string;
   title: string;
   variants: ExerciseVariant[];
 };
 
 export const EXERCISE_THEMES: ExerciseTheme[] = [
-  "leverage",
-  "accretion",
-  "paper-lbo",
+  "comparable-companies",
+  "precedent-transactions",
   "dcf",
-  "football-field",
-  "merger",
-  "working-capital",
+  "leveraged-buyouts",
+  "lbo-analysis",
+  "sell-side-ma",
+  "buy-side-ma",
+  "ipos",
+  "ipo-process",
 ];
 
 /** @deprecated Prefer getExerciseThemeLabel(theme, t) for localized labels. */
 export const EXERCISE_THEME_LABELS: Record<ExerciseTheme, string> = {
-  leverage: "Leverage Math",
-  accretion: "Accretion / Dilution",
-  "paper-lbo": "Paper LBO",
-  dcf: "DCF simplifié",
-  "football-field": "Football Field",
-  merger: "Merger Consequences",
-  "working-capital": "Working Capital",
+  "comparable-companies": "Comparable Companies Analysis",
+  "precedent-transactions": "Precedent Transactions Analysis",
+  dcf: "Discounted Cash Flow Analysis",
+  "leveraged-buyouts": "Leveraged Buyouts",
+  "lbo-analysis": "LBO Analysis",
+  "sell-side-ma": "Sell-Side M&A",
+  "buy-side-ma": "Buy-Side M&A",
+  ipos: "Initial Public Offerings",
+  "ipo-process": "The IPO Process",
 };
 
 const THEME_I18N_KEYS: Record<ExerciseTheme, string> = {
-  leverage: "hub.exercises.theme.leverage",
-  accretion: "hub.exercises.theme.accretion",
-  "paper-lbo": "hub.exercises.theme.paper-lbo",
+  "comparable-companies": "hub.exercises.theme.comparable-companies",
+  "precedent-transactions": "hub.exercises.theme.precedent-transactions",
   dcf: "hub.exercises.theme.dcf",
-  "football-field": "hub.exercises.theme.football-field",
-  merger: "hub.exercises.theme.merger",
-  "working-capital": "hub.exercises.theme.working-capital",
+  "leveraged-buyouts": "hub.exercises.theme.leveraged-buyouts",
+  "lbo-analysis": "hub.exercises.theme.lbo-analysis",
+  "sell-side-ma": "hub.exercises.theme.sell-side-ma",
+  "buy-side-ma": "hub.exercises.theme.buy-side-ma",
+  ipos: "hub.exercises.theme.ipos",
+  "ipo-process": "hub.exercises.theme.ipo-process",
 };
 
 /** Localized theme label via the app translator. */

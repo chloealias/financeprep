@@ -3,7 +3,7 @@ import { isValidBankId } from "@/data/bank-profiles";
 import { isValidDealId } from "@/data/ma-deals";
 import { isValidSectorId, type SectorId } from "@/lib/sectors";
 
-export const PRACTICE_VIEWS = ["hub", "questions", "exercices", "cas"] as const;
+export const PRACTICE_VIEWS = ["hub", "questions", "exercices"] as const;
 export type PracticeView = (typeof PRACTICE_VIEWS)[number];
 
 export function isPracticeView(value: unknown): value is PracticeView {

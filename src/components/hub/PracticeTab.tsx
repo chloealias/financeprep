@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { questions } from "@/data/questions";
-import { exercises } from "@/data/exercises";
 import { QuestionsTab } from "@/components/hub/QuestionsTab";
 import { ExercisesTab } from "@/components/hub/ExercisesTab";
-import { CaseStudiesPlaceholder } from "@/components/hub/CaseStudiesPlaceholder";
 import { PracticeHub } from "@/components/hub/PracticeHub";
 import {
   loadSolvedExerciseIds,
@@ -45,8 +43,6 @@ export function PracticeTab({
     return (
       <PracticeHub
         questionCount={questions.length}
-        exerciseCount={exercises.length}
-        solvedCount={solvedIds.size}
         onSelect={(v) => onViewChange(v)}
       />
     );
@@ -75,5 +71,5 @@ export function PracticeTab({
     );
   }
 
-  return <CaseStudiesPlaceholder onBack={() => onViewChange("hub")} />;
+  return null;
 }

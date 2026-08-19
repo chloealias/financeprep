@@ -1,14 +1,8 @@
 import type { Exercise, ExerciseTheme } from "@/data/exercise-types";
 import type { AppLocale } from "@/lib/i18n/types";
 import { DEFAULT_LOCALE } from "@/lib/i18n/types";
-import {
-  EXERCISE_CHEATSHEET as cheatsheetFr,
-  exercisesFr,
-} from "@/data/exercises/fr";
-import {
-  EXERCISE_CHEATSHEET as cheatsheetEn,
-  exercisesEn,
-} from "@/data/exercises/en";
+import { exercisesFr } from "@/data/exercises/fr";
+import { exercisesEn } from "@/data/exercises/en";
 
 export type { Exercise, ExerciseTheme } from "@/data/exercise-types";
 export {
@@ -20,15 +14,8 @@ export {
 /** French corpus — locale-agnostic id/stats lookups. */
 export const exercises: Exercise[] = exercisesFr;
 
-/** @deprecated Prefer getExerciseCheatsheet(locale). */
-export const EXERCISE_CHEATSHEET = cheatsheetFr;
-
 export function getExercises(locale: AppLocale = DEFAULT_LOCALE): Exercise[] {
   return locale === "en" ? exercisesEn : exercisesFr;
-}
-
-export function getExerciseCheatsheet(locale: AppLocale = DEFAULT_LOCALE): string[] {
-  return locale === "en" ? cheatsheetEn : cheatsheetFr;
 }
 
 export function getExerciseById(
